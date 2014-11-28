@@ -52,17 +52,13 @@ module.exports = function(grunt) {
                 }
             }
         },
-        // running `grunt watch` will watch for changes
         watch: {
-            options:{
-                livereload: true
-            },
             css: {
-                files: "less/master.less",
+                files: ["less/*.less", ],
                 tasks: ["less"]
             },
             js: {
-                files: "js/*.js",
+                files: ["js/functions.js", "js/plugins.js"],
                 tasks: ["uglify"]
             }
         },
