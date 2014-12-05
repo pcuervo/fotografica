@@ -1,7 +1,8 @@
 /*** MIXINS ***/
 
-.font( @size: 14px, @line: 18px, @family){
-	font: @size / @line @family;
+.font( @size: 1em, @line: 1.4em, @weight: 400, @family: ~'', @style: ~'' ){
+	font: @style @size / @line @family;
+	font-weight: @weight;
 }
 
 .clearfix() {
