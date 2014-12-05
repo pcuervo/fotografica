@@ -2,10 +2,10 @@
 	"use strict";
 	$(function(){
 
-        /**
-         * Menu
-        **/
-        new mlPushMenu( document.getElementById( 'mp-menu' ), document.getElementById( 'trigger' ) );
+		/**
+		* Menu
+		**/
+		new mlPushMenu( document.getElementById( 'mp-menu' ), document.getElementById( 'trigger' ) );
 
 	});
 

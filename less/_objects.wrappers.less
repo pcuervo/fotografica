@@ -1,10 +1,32 @@
 /**
+ * Main containers 100% height
+**/
+html, body,
+.container, .content-wrapper{ height: 100%; }
+
+/**
+ * These wrappers maintains the scroll and the full-height menu
+**/
+.container {
+	background: @claro;
+	position: relative;
+	overflow: hidden;
+}
+.content-wrapper, .content { position: relative; }
+.content-wrapper { overflow-y: scroll; }
+
+.mp-pusher {
+	height: 100%;
+	position: relative; left: 0;
+}
+
+/**
  * Maintains everything at the same widht
 **/
-.wrapper{ width: 90%; max-width: 1280px; min-width: 300px; margin: 0 auto @unidad auto; }
-
-
-
+.wrapper{
+	width: 90%; max-width: 1280px; min-width: 300px;
+	margin: 0 auto @unidad auto;
+}
 
 /**
  * Column wrapper for clearfix and floats
