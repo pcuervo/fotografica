@@ -4,7 +4,12 @@
 ::selection{ background: @highlight; color: @claro; }
 ::-moz-selection { background: @highlight; color: @claro; }
 
+
 /**
- * HTML general elements
+ * Box sizing
 **/
-body{ background: #fff; .font; }
+*, *:before, *:after {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}

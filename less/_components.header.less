@@ -4,8 +4,21 @@
 
 
 .header-container{ }
-.header{}
+.header{
+    margin-top: @unidad; margin-bottom: @unidad;
+}
+.menu-trigger{}
+.menu-trigger i{
+    padding: (@unidad/3) 0;
+    font-size: 1.4em;
+}
 
-h1{  }
+.bg-logo-wrapper--logo-fotografica{
+    .img-retina('images/logo-fotografica--big.png'; 'images/logo-fotografica--big@2x.png';)
+}
+.bg-logo-wrapper--logo-fotografica .bg-logo{ padding-bottom: 25.74%; }
 
-.bg-image--logo{ .img-retina('images/logo-fotografica--big.png'; 'images/logo-fotografica--big@2x.png';) }
+.bg-logo-wrapper--logo-fundacion-televisa{
+    .img-retina('images/logo-fundacion-televisa.png'; 'images/logo-fundacion-televisa@2x.png';)
+}
+.bg-logo-wrapper--logo-fundacion-televisa .bg-logo{ padding-bottom: 78.04%; }

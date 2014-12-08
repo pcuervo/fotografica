@@ -1,4 +1,6 @@
-/*** FONTFACE ***/
+/*------------------------------------*\
+    #FONTFACE
+\*------------------------------------*/
 
 @font-face {
 	font-family: 'cassia medium';
@@ -12,7 +14,6 @@
 	font-style: normal;
 }
 
-
 @font-face {
 	font-family: 'cassia light';
 	src:  url('fonts/cassia-light.eot');
@@ -24,7 +25,6 @@
 	font-weight: normal;
 	font-style: normal;
 }
-
 
 @font-face {
 	font-family: 'cassia light italic';
@@ -41,20 +41,48 @@
 
 
 
+/*------------------------------------*\
+    #GENRALES
+\*------------------------------------*/
+
+/**
+ * HTML general elements
+**/
+body{ font-family: 'cassia light'; }
 
 /**
  * Headers
 **/
-h2, h3, h4, h5, h6{ font-family: 'proxima-nova'; }
+h2, h3, h4, h5, h6{
+	margin-top: 0;
+	font-family: 'proxima-nova';
+}
 h2{ .font(24px, 38px, 400); }
 
 /**
+ * Titles, subtitles
+**/
+.sub-title{
+	.font(10px, 1, normal, 'cassia light italic');
+	position: relative;
+}
+h2 .sub-title{ top: -20px; }
+
+ /**
  * Content
 **/
 p{
-	margin-bottom: 1em;
-	.font( 22px, 30px, normal, 'cassia light');
+	margin: 0 0 1em 0;
+	.font( 22px, 30px, normal, 'cassia light' );
 }
+
+
+
+
+
+/*------------------------------------*\
+    #UTILITIES
+\*------------------------------------*/
 
 /**
  * Text Alignment
@@ -62,3 +90,31 @@ p{
 .text-left{ text-align: left; }
 .text-center{ text-align: center; }
 .text-right{ text-align: right; }
+
+/**
+ * Text Transform
+**/
+.uppercase{ text-transform: uppercase; }
+.lowercase{ text-transform: lowercase; }
+
+
+
+
+/*------------------------------------*\
+    #MEDIA INFO
+\*------------------------------------*/
+
+/**
+ * Photograph nomenclature
+**/
+.media-info{ color: @claro; }
+.media-info p{
+	.font( 14px, 20px, normal, 'cassia light italic' ); color: inherit;
+}
+.media-info a{
+	.font( 14px, 20px, normal, 'proxima-nova' ); color: inherit; text-transform: uppercase;
+}
+
+.media-info__tags a{ font-size: 12px; line-height: 1; }
+
+
