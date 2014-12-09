@@ -160,7 +160,7 @@
 									</div><!-- filters__tabs -->
 									<div class="[ filters__content ] [ text-center ]">
 										<div class="[ filter-colecciones ]">
-											<a class="[ filter filter--info filter--active ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">Manuel Álvarez Bravo <span><i class="fa fa-info-circle"></i></span></a>
+											<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">Manuel Álvarez Bravo <span><i class="fa fa-info-circle"></i></span></a>
 											<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">Centro Cultural de Arte Contemporáneo <span><i class="fa fa-info-circle"></i></span></a>
 											<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">Nuevas adquisiciónes <span><i class="fa fa-info-circle"></i></span></a>
 											<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">Favoritas <span><i class="fa fa-info-circle"></i></span></a>
@@ -168,23 +168,42 @@
 										</div><!-- .filter-colecciones -->
 										<div class="[ filter-fotografos ]">
 											<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">A</a>
+											<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">C</a>
+											<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">E</a>
+											<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">G</a>
+											<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">I</a>
+											<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">K</a>
+											<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">M</a>
+											<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">O</a>
+											<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">Q</a>
+											<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">S</a>
+											<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">U</a>
+											<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">W</a>
+											<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">Z</a>
 										</div><!-- .filter-fotografos -->
 										<div class="[ filter-decada ]">
-											<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">1960</a>
+											<a class="[ filter filter--active ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">1960</a>
 										</div><!-- .filter-decada -->
 										<div class="[ filter-tema ]">
-											<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">#méxico</a>
+											<a class="[ filter filter--active ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">#méxico</a>
 										</div><!-- .filter-tema -->
 										<div class="[ filter-buscar ]">
+											<form class="[ margin-bottom--small ]" action="">
+												<fieldset class="[ row ]">
+													<input class="[ columna xmall-10 ]" type="email" placeholder="¿Qué quieres ver?">
+													<button class="[ columna xmall-2 ]" type="submit">
+														<i class="fa fa-search"></i>
+													</button>
+												</fieldset>
+											</form>
 										</div><!-- .filter-buscar -->
 										<div class="[ filter-opciones ]">
 										</div><!-- .filter-opciones -->
 									</div><!-- filters__content -->
 									<div class="[ filters__results ] [ padding--small text-center ]">
 										<p class="[ uppercase ]">2,396 resultados con los filtros:</p>
-										<a class="[ filter--active ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">Manuel Álvarez Bravo</a>
-										<a class="[ filter--active ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">#méxico</a>
-										<a class="[ filter--active ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">1960</a>
+										<a class="[ filter filter--active ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">#méxico</a>
+										<a class="[ filter filter--active ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">1960</a>
 									</div>
 								</section><!-- .filters -->
 								<section class="[ results ] [ row ] [ margin-bottom ]">
@@ -323,6 +342,14 @@
 			\*------------------------------------*/
 			$('.tab-filter').on('click', function(){
 				showFilters( this );
+			});
+
+			$('.filters__content .filter').on('click', function(){
+				addFilter( this );
+			});
+
+			$('.filters__results .filter').on('click', function(){
+				removeFilter( this );
 			});
 
 
