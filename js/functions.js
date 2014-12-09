@@ -63,6 +63,29 @@ function runMasonry(container, item){
 	#Triggered events
 \*------------------------------------*/
 
+function showFilters(element){
+	//Check if this is already open and close it
+	if ( $(element).hasClass('tab-filter--active') ){
+		$('.tab-filter').removeClass('tab-filter--active');
+		$('.filters__content > div').css('height', '0px').removeClass('padding--small');
+		return;
+	}
+
+	//Make all .tab-filter un-active
+	$('.tab-filter').removeClass('tab-filter--active');
+	//Make this active
+	$(element).addClass('tab-filter--active');
+
+	//Get the filter category
+	var filterCategory = $(element).data('filter');
+	//Hide other filters category
+	$('.filters__content > div').css('height', '0px').removeClass('padding--small');
+	//Show this filter category
+	$('.filters__content .filter-'+filterCategory).addClass('padding--small').height('auto');
+
+
+}
+
 
 
 

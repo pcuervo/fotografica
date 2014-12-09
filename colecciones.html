@@ -151,15 +151,15 @@
 								</section>
 								<section class="[ filters ] [ margin-bottom--small ]">
 									<div class="[ filters__tabs ] [ clearfix ]">
-										<a class="[ tab-filter tab-filter--active ] [ text-center ] [ columna xmall-4 ]" href="#">Colecciones</a>
-										<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 ]" href="#">Fotógrafos</a>
-										<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 ]" href="#">Década</a>
-										<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 ]" href="#">Tema</a>
-										<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 ]" href="#">Buscar</a>
-										<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 ]" href="#">Opciones</a>
+										<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 ]" href="#" data-filter="colecciones">Colecciones</a>
+										<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 ]" href="#" data-filter="fotografos">Fotógrafos</a>
+										<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 ]" href="#" data-filter="decada">Década</a>
+										<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 ]" href="#" data-filter="tema">Tema</a>
+										<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 ]" href="#" data-filter="buscar">Buscar</a>
+										<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 ]" href="#" data-filter="opciones">Opciones</a>
 									</div><!-- filters__tabs -->
-									<div class="[ filters__content ] [ padding--small ]">
-										<div class="[ filter-colecciones ] [ text-center ]">
+									<div class="[ filters__content ] [ text-center ]">
+										<div class="[ filter-colecciones ]">
 											<a class="[ filter filter--info filter--active ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">Manuel Álvarez Bravo <span><i class="fa fa-info-circle"></i></span></a>
 											<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">Centro Cultural de Arte Contemporáneo <span><i class="fa fa-info-circle"></i></span></a>
 											<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">Nuevas adquisiciónes <span><i class="fa fa-info-circle"></i></span></a>
@@ -167,10 +167,13 @@
 											<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">Foto+media <span><i class="fa fa-info-circle"></i></span></a>
 										</div><!-- .filter-colecciones -->
 										<div class="[ filter-fotografos ]">
+											<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">A</a>
 										</div><!-- .filter-fotografos -->
 										<div class="[ filter-decada ]">
+											<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">1960</a>
 										</div><!-- .filter-decada -->
 										<div class="[ filter-tema ]">
+											<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">#méxico</a>
 										</div><!-- .filter-tema -->
 										<div class="[ filter-buscar ]">
 										</div><!-- .filter-buscar -->
@@ -318,7 +321,9 @@
 			/*------------------------------------*\
 				#Triggered events
 			\*------------------------------------*/
-
+			$('.tab-filter').on('click', function(){
+				showFilters( this );
+			});
 
 
 

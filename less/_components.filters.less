@@ -3,8 +3,7 @@
 \*------------------------------------*/
 .filters{}
 
-.filters__tabs{
-}
+.filters__tabs{ background: @dark; }
 
 .tab-filter{
     padding: @unidad @unidad @unidad (@unidad/2);
@@ -13,6 +12,7 @@
     white-space: nowrap; text-overflow: ellipsis;
     overflow: hidden;
     position: relative;
+    .transition();
 }
 .tab-filter:after{
     content: '\f107';
@@ -29,18 +29,25 @@
 }
 
 
-.filters__content{}
+.filters__content, .filters__content>div{ .transition(); }
+.filters__content>div{
+    height: 0px; padding-bottom: 0px !important;
+    overflow: hidden;
+}
 
 
 .filter{
-    padding-right: 26px;
     position: relative;
 }
 .filter--active{
-    background: @dark;
+    background: @dark !important;
     color: @claro !important;
 }
 
+
+.filter--info{
+    padding-right: 26px;
+}
 .filter--info span{
     width: 20px; height: 100%;
     position: absolute; top: 0; right: 0;
