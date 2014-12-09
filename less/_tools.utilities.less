@@ -27,7 +27,11 @@
 **/
 .margin-bottom{ margin-bottom: @unidad; }
 .margin-bottom--small{ margin-bottom: (@unidad/2); }
-.margin-bottom--big{ margin-bottom: (@unidad*2); }
+.margin-bottom--large{ margin-bottom: (@unidad*2); }
+
+.padding{ padding: @unidad; }
+.padding--small{ padding: (@unidad/2); }
+.padding--large{ padding: (@unidad*2); }
 
 
 /**
@@ -57,10 +61,35 @@
 
 
 
+/*------------------------------------*\
+	#SCREENS
+\*------------------------------------*/
+.opacity-gradient{
+    width: 100%;
+    .opacity-gradient;
+    position: relative;
+}
+
+.opacity-gradient--full{
+    width: 100%; height: 100%;
+    .opacity-gradient;
+    position: absolute; top: 0; left: 0;
+}
+
+
 
 /*------------------------------------*\
 	#RESPONSIVE UTILITIES
 \*------------------------------------*/
+
+/**
+ * RESPONSIVE IMAGES
+**/
+.image-responsive{
+	display: block;
+	width: 100%; max-width: 100%; height: auto;
+}
+
 
 /**
  * Responsive background images for logos

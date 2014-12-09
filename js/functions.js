@@ -14,7 +14,6 @@
 
 
 
-
 		/*------------------------------------*\
 			#Triggered events
 		\*------------------------------------*/
@@ -38,12 +37,23 @@
 * as the height to the home secctions ( .square elements )
 **/
 
-
 function setSquareHeight(){
 	var windowWidth = $(window).width();
 	$('.j-square').height(windowWidth);
 }
 
+
+/**
+* Masonry layout for results
+**/
+function runMasonry(container, item){
+	var $container = $(container).masonry();
+	$container.imagesLoaded( function() {
+		$container.masonry({
+			itemSelector: item
+		});
+	});
+}
 
 
 

@@ -9,8 +9,9 @@
 }
 
 .clearfix() {
-	&:before, &:after { content: " "; display: table; }
+	&:before, &:after { content: ""; display: table; }
 	&:after { clear: both; }
+	.clearfix { zoom:1; }
 }
 
 .border-radiuses (@topright: 0, @bottomright: 0, @bottomleft: 0, @topleft: 0) {

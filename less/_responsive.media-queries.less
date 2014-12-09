@@ -1,11 +1,18 @@
+.shown--xmall{  }
+.hidden--xmall{  }
+
+.shown--medium{ display: none !important; }
+
 /* min-width 321px */
 @media only screen and (min-width: 25em) {
-	.shown--small{ display: block !important; }
+	.shown--small{  }
 	.hidden--small{  }
 }
 
 /* min-width 641px, medium screens */
-@media only screen and (min-width: 40.063em) {}
+@media only screen and (min-width: 40.063em) {
+	.shown--medium{ display: block !important; }
+}
 /* min-width 641px and max-width 1024px, use when QAing tablet-only issues */
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {}
 

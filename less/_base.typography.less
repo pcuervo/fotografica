@@ -48,7 +48,7 @@
 /**
  * HTML general elements
 **/
-body{ font-family: 'cassia light'; }
+body{ font-family: 'cassia light'; color: @dark; }
 
 /**
  * Headers
@@ -62,11 +62,15 @@ h2{ .font(24px, 38px, 400); }
 /**
  * Titles, subtitles
 **/
+.title{
+	.font( 1.6em, 1.3 ); letter-spacing: 1px; text-transform: uppercase;
+}
 .sub-title{
-	.font(10px, 1, normal, 'cassia light italic');
+	.font(10px, 1, normal, 'cassia light italic'); letter-spacing: 0; text-transform: none;
 	position: relative;
 }
-h2 .sub-title{ top: -20px; }
+
+.bg-image .title, .bg-image .sub-title{ color: @claro; }
 
  /**
  * Content
