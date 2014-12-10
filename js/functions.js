@@ -55,6 +55,21 @@ function runMasonry(container, item){
 	});
 }
 
+//Get the header height
+function getHeaderHeight(){
+	return $('.header-wrapper').height();
+}
+
+function setPadding(element, direction, amount){
+	$(element).css('padding-'+direction, amount);
+}
+
+function setHeaderHeightPadding(element, direction){
+	//Get the header height
+	var headerHeight = getHeaderHeight();
+	//Apply that height to the main wrapper as padding top
+	$(element).css('padding-'+direction, headerHeight);
+}
 
 
 
@@ -124,13 +139,40 @@ function removeFilter(element){
 	//Get its content so we can deactivate it
 	// in .filters__content
 	var filterContent = $(element).html();
-	console.log(filterContent);
 
 	//Delete it
 	$(element).remove();
 
 	//Deactive it in .filters__content
 	$('.filters__content .filter:contains('+filterContent+')').removeClass('filter--active');
+}
+
+function fixedHeader(){
+	//Get the header height so we can now when
+	//to change the heade state
+	var headerHeight = getHeaderHeight();
+	//Scrolled pixels in Y axis
+	var sy = scrollY();
+	//Compare the two numbers, when they are the same of less
+	//add fixed class to the header.
+	if ( sy >= headerHeight ) {
+		//Get the window height so we now how to position
+		//the header at the bottom
+		var windowHeight = $(window).outerHeight();
+		//Substract the header height feom the window height
+		//and apply it as its top
+		var topHeader =  windowHeight - headerHeight;
+		$('.header-wrapper').addClass('header-wrapper--fixed').css('top', topHeader);
+		setHeaderHeightPadding('.footer-wrapper', 'bottom');
+	} else {
+		$('.header-wrapper').removeClass('header-wrapper--fixed').css('top', 0);
+		setPadding('.footer-wrapper', 'bottom', 0);
+	}
+}
+
+//Get the scrolled pixels in Y axis
+function scrollY() {
+	return $('.content-wrapper').scrollTop();
 }
 
 

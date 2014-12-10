@@ -3,9 +3,19 @@
 \*------------------------------------*/
 
 
-.header-container{ }
+.header-wrapper{
+    width: 100%;
+    position: fixed; top: 0; left: 0;
+    background: @claro;
+    .z-index-10;
+    .transition();
+}
+.header-wrapper--fixed{ background: rgba(255, 255, 255, 0.5); }
+.header-wrapper--fixed .header{ margin-top: (@unidad/2); margin-bottom: (@unidad/2); }
+
 .header{
     margin-top: @unidad; margin-bottom: @unidad;
+    .transition();
 }
 .menu-trigger{}
 .menu-trigger i{
