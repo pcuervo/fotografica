@@ -60,6 +60,16 @@ function getHeaderHeight(){
 	return $('.header-wrapper').height();
 }
 
+//Get the window height
+function getWindowHeight(){
+	return $(window).height();
+}
+
+//Set the window height to another element
+function setWindowHeight(element){
+	$(element).height( getWindowHeight() );
+}
+
 function setPadding(element, direction, amount){
 	$(element).css('padding-'+direction, amount);
 }
@@ -173,6 +183,19 @@ function fixedHeader(){
 //Get the scrolled pixels in Y axis
 function scrollY() {
 	return $('.content-wrapper').scrollTop();
+}
+
+//Show lightbox and run cycle
+function openLightbox(){
+	$('.cycle-slideshow').cycle({
+		slides 		: ".image-single",
+		fx 			: "scrollHorz",
+		swipe 		: "true",
+		timeout 	: "0",
+		centerHorz : "true",
+		centerVert : "true"
+	});
+	$('.lightbox').show();
 }
 
 

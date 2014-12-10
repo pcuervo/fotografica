@@ -332,6 +332,8 @@
 				#ON LOAD
 			\*------------------------------------*/
 			runMasonry('.results', '.result' );
+			setHeaderHeightPadding('.main-wrapper', 'top');
+			setHeaderHeightPadding('.footer-wrapper', 'bottom');
 
 
 
@@ -351,6 +353,10 @@
 			$('.filters__results .filter').on('click', function(){
 				removeFilter( this );
 			});
+			
+			$('.content-wrapper').scroll(function(){
+				fixedHeader();
+			});
 
 
 
@@ -358,7 +364,8 @@
 				#RESPONSIVE
 			\*------------------------------------*/
 			$(window).resize(function(){
-				//setSquareHeight();
+				setHeaderHeightPadding('.main-wrapper', 'top');
+				setHeaderHeightPadding('.footer-wrapper', 'bottom');
 			});
 
 		</script>

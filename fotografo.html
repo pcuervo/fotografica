@@ -147,7 +147,7 @@
 								<section class="[ margin-bottom--large ]">
 									<div class="[ wrapper ]">
 										<p>Juan Guzmán (Hans Gutmann) nació en Colonia, Alemania, en 1911 y murió en la Ciudad de México en 1982. Fue un fotógrafo autodidacta inuido por las vanguardias, el cine y las revistas ilustradas europeas y norteamericanas de la primera mitad del siglo XX.</p>
-										<div class="[ image ]">
+										<div class="[ image-single ]">
 											<img class="[ image-responsive ]" src="images/test-9.jpg" alt="">
 											<p class="[ image-caption ] [ text-center ]">Retrato de Gerardo Murillo “Dr. atl”, Ciudad de México, ca. 1956</p>
 										</div>
@@ -169,6 +169,20 @@
 								</form>
 							</footer>
 						</div>
+						<div class="[ lightbox ] [ cycle-slideshow ]">
+							<div class="[ image-single ]">
+								<div class="[ wrapper ]">
+									<img class="[ image-responsive ]" src="images/test-9.jpg" alt="">
+									<p class="[ image-caption ] [ text-center ]">Retrato de Gerardo Murillo “Dr. atl”, Ciudad de México, ca. 1956</p>
+								</div><!-- wrapper -->
+							</div>
+							<div class="[ image-single ]">
+								<div class="[ wrapper ]">
+									<img class="[ image-responsive ]" src="images/test-7.jpg" alt="">
+									<p class="[ image-caption ] [ text-center ]">Retrato de Gerardo Murillo “Dr. atl”, Ciudad de México, ca. 1956</p>
+								</div><!-- wrapper -->
+							</div>
+						</div><!-- .lightbox -->
 					</div><!-- /content -->
 				</div><!-- /content-wrapper -->
 			</div><!-- /pusher -->
@@ -178,13 +192,17 @@
 		<script src="js/vendor/classie.js"></script>
 		<script src="js/vendor/mlpushmenu.js"></script>
 		<script src="js/vendor/modernizr.custom.js"></script>
-		<script src="js/vendor/masonry.js"></script>
 		<script src="js/functions.js"></script>
+		<script src="js/vendor/cycle.js"></script>
 		<script type="text/javascript" charset="utf-8">
 			/*------------------------------------*\
 				#ON LOAD
 			\*------------------------------------*/
-
+			setHeaderHeightPadding('.main-wrapper', 'top');
+			setHeaderHeightPadding('.footer-wrapper', 'bottom');
+			
+			setWindowHeight('.lightbox');
+			
 
 
 
@@ -203,6 +221,14 @@
 			$('.filters__results .filter').on('click', function(){
 				removeFilter( this );
 			});
+			
+			$('.content-wrapper').scroll(function(){
+				fixedHeader();
+			});
+			
+			$('.image-single').on('click', function(){
+				openLightbox(this);
+			});
 
 
 
@@ -210,8 +236,10 @@
 				#RESPONSIVE
 			\*------------------------------------*/
 			$(window).resize(function(){
-				//setSquareHeight();
+				setHeaderHeightPadding('.main-wrapper', 'top');
+				setHeaderHeightPadding('.footer-wrapper', 'bottom');
 			});
+			
 
 		</script>
 	</body>
