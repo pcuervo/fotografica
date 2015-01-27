@@ -70,10 +70,12 @@ function setWindowHeight(element){
 	$(element).height( getWindowHeight() );
 }
 
+//Set the padding
 function setPadding(element, direction, amount){
 	$(element).css('padding-'+direction, amount);
 }
 
+//Set the heather height as padding for another element
 function setHeaderHeightPadding(element, direction){
 	//Get the header height
 	var headerHeight = getHeaderHeight();
@@ -81,6 +83,19 @@ function setHeaderHeightPadding(element, direction){
 	$(element).css('padding-'+direction, headerHeight);
 }
 
+// Set the height of an element substracting the
+// element's outer wrapper minus it's title
+function setHeightMinusElement(element, wrapper, title){
+	$.each($(element), function(index, val) {
+		var thisWrapper = $(this).closest(wrapper);
+		var thisTitle = thisWrapper.find(title+':first');
+		var thisWrapperHeight = thisWrapper.outerHeight();
+		var thisTitleHeight = thisTitle.outerHeight();
+		var heightForElement = getWindowHeight() - thisTitleHeight;
+		$(this).height(heightForElement);
+	});
+
+}
 
 
 

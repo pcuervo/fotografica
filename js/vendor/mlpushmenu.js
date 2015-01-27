@@ -72,7 +72,7 @@
 		defaults : {
 			// overlap: there will be a gap between open levels
 			// cover: the open levels will be on top of any previous open level
-			type : 'overlap', // overlap || cover
+			type : 'cover', // overlap || cover
 			// space between each overlaped level
 			levelSpacing : 40,
 			// classname for the element (if any) that when clicked closes the current level
