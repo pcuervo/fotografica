@@ -1,0 +1,135 @@
+/*------------------------------------*\
+    #FONTFACE
+\*------------------------------------*/
+
+@font-face {
+	font-family: 'cassia medium';
+	src: url('fonts/cassia-medium.eot');
+	src: url('fonts/cassia-medium.eot?#iefix') format('embedded-opentype'),
+		url('fonts/cassia-medium.woff2') format('woff2'),
+		url('fonts/cassia-medium.woff') format('woff'),
+		url('fonts/cassia-medium.ttf') format('truetype'),
+		url('fonts/cassia-medium.svg#cassia-medium') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'cassia light';
+	src:  url('fonts/cassia-light.eot');
+	src:  url('fonts/cassia-light.eot?#iefix') format('embedded-opentype'),
+		url('fonts/cassia-light.woff2') format('woff2'),
+		url('fonts/cassia-light.woff') format('woff'),
+		url('fonts/cassia-light.ttf') format('truetype'),
+		url('fonts/cassia-light.svg#cassia-light') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'cassia light italic';
+	src:  url('fonts/cassia-light-italic.eot');
+	src:  url('fonts/cassia-light-italic.eot?#iefix') format('embedded-opentype'),
+		url('fonts/cassia-light-italic.woff2') format('woff2'),
+		url('fonts/cassia-light-italic.woff') format('woff'),
+		url('fonts/cassia-light-italic.ttf') format('truetype'),
+		url('fonts/cassia-light-italic.svg#cassia-light-italic') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+
+
+
+/*------------------------------------*\
+    #GENRALES
+\*------------------------------------*/
+
+/**
+ * HTML general elements
+**/
+body{ font-family: 'cassia light'; color: @dark; }
+
+/**
+ * Headers
+**/
+h2, h3, h4, h5, h6{
+	margin-top: 0;
+	font-family: 'proxima-nova';
+}
+h2{ .font(24px, 38px, 400); }
+
+/**
+ * Titles, subtitles
+**/
+.title{
+	.font( 1.6em, 1.3 ); letter-spacing: 1px; text-transform: uppercase;
+}
+.sub-title{
+	.font(10px, 1, normal, 'cassia light italic'); letter-spacing: 0; text-transform: none;
+	position: relative;
+}
+
+.bg-image .title, .bg-image .sub-title{ color: @claro; }
+.bg-image .title{
+	width: 100%;
+	text-align: center;
+}
+
+/**
+ * Content
+**/
+p{
+	margin: 0 0 1em 0;
+	.font( 20px, 30px, normal, 'cassia light' );
+}
+
+
+/**
+ * Image captions
+**/
+.image-caption{
+	.font( 18px, 28px, normal, 'cassia light italic' ); color: @light-dark;
+}
+
+
+
+
+/*------------------------------------*\
+    #UTILITIES
+\*------------------------------------*/
+
+/**
+ * Text Alignment
+**/
+.text-left{ text-align: left; }
+.text-center{ text-align: center; }
+.text-right{ text-align: right; }
+
+/**
+ * Text Transform
+**/
+.uppercase{ text-transform: uppercase; }
+.lowercase{ text-transform: lowercase; }
+
+
+
+
+/*------------------------------------*\
+    #MEDIA INFO
+\*------------------------------------*/
+
+/**
+ * Photograph nomenclature
+**/
+.media-info{ color: @claro; }
+.media-info p{
+	.font( 14px, 20px, normal, 'cassia light italic' ); color: inherit;
+}
+.media-info a{
+	.font( 14px, 20px, normal, 'proxima-nova' ); color: inherit; text-transform: uppercase;
+}
+
+.media-info__tags a{ font-size: 12px; line-height: 1; }
+
+
