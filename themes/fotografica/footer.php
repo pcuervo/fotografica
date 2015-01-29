@@ -12,11 +12,11 @@
 									</fieldset>
 								</form>
 							</footer>
-							<?php wp_footer(); ?>
 						</div>
 					</div><!-- /content -->
 				</div><!-- /content-wrapper -->
 			</div><!-- /pusher -->
 		</div><!-- /container -->
+		<?php wp_footer(); ?>
 	</body>
 </html>

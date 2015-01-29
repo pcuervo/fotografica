@@ -22,7 +22,7 @@
 		wp_enqueue_script( 'plugins', JSPATH.'plugins.js', array('jquery'), '1.0', true );
 		wp_enqueue_script( 'classie', JSPATH.'/vendor/classie.js', array('plugins'), '1.0', true );
 		wp_enqueue_script( 'modernizr', JSPATH.'/vendor/modernizr.custom.js', array('classie'), '1.0', true );
-		wp_enqueue_script( 'mlpushmenu', JSPATH.'/vendor/modernizr.custom.js', array('modernizr'), '1.0', true );
+		wp_enqueue_script( 'mlpushmenu', JSPATH.'/vendor/mlpushmenu.js', array('modernizr'), '1.0', true );
 		wp_enqueue_script( 'functions', JSPATH.'functions.js', array('mlpushmenu'), '1.0', true );
 
 
@@ -146,13 +146,10 @@
 
 
 
-// REMOVE ADMIN BAR FOR NON ADMINS ///////////////////////////////////////////////////
+// REMOVE ADMIN BAR IN FRONT END ///////////////////////////////////////////////////
 
 
-
-	add_filter( 'show_admin_bar', function($content){
-		return ( current_user_can('administrator') ) ? $content : false;
-	});
+	show_admin_bar( false );
 
 
 

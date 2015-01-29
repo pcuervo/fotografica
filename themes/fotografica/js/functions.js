@@ -33,6 +33,12 @@
 \*------------------------------------*/
 
 /**
+* Declare $
+**/
+var $=jQuery.noConflict();
+
+
+/**
 * Get the width of the window and apply it
 * as the height to the home secctions ( .square elements )
 **/
