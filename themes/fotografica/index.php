@@ -1,5 +1,5 @@
 <?php get_header(); ?>
-	<section class="[ colecciones ] [ bg-image ]" style="background-image: url(images/test-1.jpg)">
+	<section class="[ colecciones ] [ bg-image ]" style="background-image: url(<?php echo THEMEPATH; ?>images/test-1.jpg)">
 		<div class="[ opacity-gradient square ]">
 			<a href="colecciones.html" class="[ button button--hollow button--large ] [ center-full ]">
 				Colecciones
@@ -14,7 +14,7 @@
 			</div>
 		</div>
 	</section>
-	<section class="[ colecciones ] [ bg-image ]" style="background-image: url(images/test-2.jpg)">
+	<section class="[ colecciones ] [ bg-image ]" style="background-image: url(<?php echo THEMEPATH; ?>images/test-2.jpg)">
 		<div class="[ opacity-gradient square ]">
 			<a class="[ button button--hollow button--large ] [ center-full ]">
 				<i class="fa fa-play"></i>
@@ -24,7 +24,7 @@
 			</div>
 		</div>
 	</section>
-	<section class="[ colecciones ] [ bg-image ]" style="background-image: url(images/test-3.jpg)">
+	<section class="[ colecciones ] [ bg-image ]" style="background-image: url(<?php echo THEMEPATH; ?>images/test-3.jpg)">
 		<div class="[ opacity-gradient square ]">
 			<a class="[ button button--hollow button--large ] [ center-full ]">
 				Nuevas adquisiciones
@@ -39,7 +39,7 @@
 			</div>
 		</div>
 	</section>
-	<section class="[ colecciones ] [ bg-image ]" style="background-image: url(images/test-4.jpg)">
+	<section class="[ colecciones ] [ bg-image ]" style="background-image: url(<?php echo THEMEPATH; ?>images/test-4.jpg)">
 		<div class="[ opacity-gradient square ]">
 			<a class="[ button button--hollow button--large ] [ center-full ]">
 				Proyectos
@@ -54,7 +54,7 @@
 			</div>
 		</div>
 	</section>
-	<section class="[ colecciones ] [ bg-image ]" style="background-image: url(images/test-5.jpg)">
+	<section class="[ colecciones ] [ bg-image ]" style="background-image: url(<?php echo THEMEPATH; ?>images/test-5.jpg)">
 		<div class="[ opacity-gradient square ]">
 			<a class="[ button button--hollow button--large ] [ center-full ]">
 				Publicaciones
@@ -69,7 +69,7 @@
 			</div>
 		</div>
 	</section>
-	<section class="[ colecciones ] [ bg-image ]" style="background-image: url(images/test-6.jpg)">
+	<section class="[ colecciones ] [ bg-image ]" style="background-image: url(<?php echo THEMEPATH; ?>images/test-6.jpg)">
 		<div class="[ opacity-gradient square ]">
 			<a class="[ button button--hollow button--large ] [ center-full ]">
 				Exposiciones
