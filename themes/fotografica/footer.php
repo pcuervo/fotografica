@@ -4,10 +4,10 @@
 							<footer class="[ wrapper ]">
 								<h2 class="[ title ] [ text-center ]">Newsletter <br /><span class="[ sub-title ] [ block xmall-12 ] [ text-center ]">Suscríbete</span></h2>
 								<form action="">
-									<fieldset class="[ row ]">
-										<input class="[ columna xmall-10 ]" type="email" placeholder="tu@correo.com">
-										<button class="[ columna xmall-2 ]" type="submit">
-											<i class="fa fa-newspaper-o"></i>
+									<fieldset class="[ columna xmall-8 ] [ center ]">
+										<input class="[ columna xmall-11 ]" type="email" placeholder="tu@correo.com">
+										<button class="" type="submit">
+											<i class="icon-newsletter"></i>
 										</button>
 									</fieldset>
 								</form>
