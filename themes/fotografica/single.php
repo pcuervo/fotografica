@@ -1,6 +1,6 @@
 <?php get_header();
 	the_post();
-	the_post_thumbnail('full', array('class' => '[ image-responsive margin-bottom--small ]'));
+	the_post_thumbnail('full', array('class' => '[ margin-bottom ] [ full-height ]'));
 
 	$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
 
@@ -182,8 +182,8 @@
 
 					$permalinkColeccion = get_permalink( $post->ID );
 				?>
-					<section class="[ relacionadas ] [ bg-image ] [ span xmall-12 medium-6 ]" style="background-image: url(<?php echo $bgColecciones[0]; ?>)">
-						<div class="[ opacity-gradient <?php echo ( $counter == 1 ) ? '[ square ]' : '[ rectangle ]' ?> ]">
+					<article class="[ relacionadas ] [ bg-image ] [ span xmall-12 medium-6 ]" style="background-image: url(<?php echo $bgColecciones[0]; ?>)">
+						<div class="[ opacity-gradient <?php echo ( $counter == 1 ) ? '[ square square-absolute ]' : '[ rectangle rectangle-absolute ]' ?> ]">
 							<div class="[ media-info media-info--small ] [ xmall-12 ]">
 								<p class="[ text-center ]">
 
@@ -223,7 +223,7 @@
 								</p>
 							</div>
 						</div>
-					</section>
+					</article>
 				<?php $counter++; endwhile; endif; wp_reset_query(); ?>
 			</div><!-- row -->
 		</div><!-- wrapper -->

@@ -14,6 +14,16 @@
 }
 
 
+/**
+ * Relative to screen size
+**/
+.full-height{
+	display: block;
+	width: auto; max-width: 100%; height: auto; max-height: calc( ~'100vh - 60px' );
+	margin-right: auto;
+	margin-left: auto;
+}
+
 .media-info{
 	position: absolute;
 }
@@ -50,6 +60,17 @@
 @media (min-width: @medium) {
 
 	/**
+	 * Absolute size
+	**/
+	.square-absolute{
+		padding-bottom: 100%;
+	}
+	.rectangle-absolute{
+		padding-bottom: 50%;
+	}
+
+
+	/**
 	 * Relative to screen size
 	**/
 	.square{
@@ -57,6 +78,10 @@
 	}
 	.rectangle{
 		padding-bottom: calc( ~'50vh - 80px' );
+	}
+
+	.full-height{
+		width: auto; height: calc( ~'100vh - 80px' );
 	}
 
 }
