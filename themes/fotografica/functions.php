@@ -20,10 +20,11 @@
 
 		// scripts
 		wp_enqueue_script( 'plugins', JSPATH.'plugins.js', array('jquery'), '1.0', true );
+		wp_enqueue_script( 'mlpushmenu', JSPATH.'/vendor/mlpushmenu.js', array('plugins'), '1.0', true );
 		wp_enqueue_script( 'classie', JSPATH.'/vendor/classie.js', array('plugins'), '1.0', true );
-		wp_enqueue_script( 'modernizr', JSPATH.'/vendor/modernizr.custom.js', array('classie'), '1.0', true );
-		wp_enqueue_script( 'mlpushmenu', JSPATH.'/vendor/mlpushmenu.js', array('modernizr'), '1.0', true );
-		wp_enqueue_script( 'functions', JSPATH.'functions.js', array('mlpushmenu'), '1.0', true );
+		wp_enqueue_script( 'modernizr', JSPATH.'/vendor/modernizr.custom.js', array('plugins'), '1.0', true );
+		wp_enqueue_script( 'masonry', JSPATH.'/vendor/masonry.js', array('plugins'), '1.0', true );
+		wp_enqueue_script( 'functions', JSPATH.'functions.js', array('masonry'), '1.0', true );
 
 
 		// localize scripts
@@ -37,6 +38,10 @@
 	// FRONT END SCRIPTS FOOTER //////////////////////////////////////////////////////
 	function footerScripts(){
 		if( wp_script_is( 'functions', 'done' ) ) {
+
+			/*------------------------------------*\
+			    #HOME
+			\*------------------------------------*/
 			if ( is_home() ) { ?>
 				<script type="text/javascript">
 					(function( $ ) {
@@ -46,6 +51,14 @@
 						});
 					}(jQuery));
 				</script>
+
+
+
+
+
+			<!-- /**********************************\ -->
+			<!-- #POST TYPE -->
+			<!-- \**********************************/ -->
 			<?php } elseif ( get_post_type() == 'post-type') { ?>
 				<script type="text/javascript">
 					(function( $ ) {
@@ -55,6 +68,56 @@
 						});
 					}(jQuery));
 				</script>
+
+
+
+
+			<!-- /**********************************\ -->
+			<!-- #PAGE COLECCIONES -->
+			<!-- \**********************************/ -->
+			<?php } elseif ( is_page() == 'colecciones') { ?>
+				<script type="text/javascript">
+					(function( $ ) {
+						"use strict";
+						$(function(){
+							/*------------------------------------*\
+								#ON LOAD
+							\*------------------------------------*/
+
+							runMasonry('.results', '.result' );
+
+
+
+
+							/*------------------------------------*\
+								#Triggered events
+							\*------------------------------------*/
+
+							$('.tab-filter').on('click', function(){
+								showFilters( this );
+							});
+
+							$('.filters__content .filter').on('click', function(){
+								addFilter( this );
+							});
+
+							$('.filters__results .filter').on('click', function(){
+								removeFilter( this );
+							});
+
+							$('.content-wrapper').scroll(function(){
+								fixedHeader();
+							});
+						});
+					}(jQuery));
+				</script>
+
+
+
+
+			<!-- /**********************************\ -->
+			<!-- #PAGE -->
+			<!-- \**********************************/ -->
 			<?php } elseif( is_page('page') ) { ?>
 				<script type="text/javascript">
 					(function( $ ) {
@@ -66,7 +129,13 @@
 				</script>
 			<?php } ?>
 
-			<!-- GLOBAL -->
+
+
+
+
+			<!-- /**********************************\ -->
+			<!-- #GLOBAL -->
+			<!-- \**********************************/ -->
 			<script type="text/javascript">
 				(function( $ ) {
 					"use strict";
