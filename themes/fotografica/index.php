@@ -62,8 +62,7 @@
 			}
 
 			$permalinkColeccion = get_permalink( $post->ID );
-		?>
-	<?php endwhile; endif; wp_reset_query(); ?>
+	endwhile; endif; wp_reset_query(); ?>
 	<section class="[ colecciones ] [ bg-image ]" style="background-image: url(<?php echo $bgColecciones[0]; ?>)">
 		<div class="[ opacity-gradient square ]">
 			<a href="<?php echo site_url('colecciones'); ?>" class="[ button button--hollow button--large ] [ center-full ]">
@@ -71,60 +70,46 @@
 			</a>
 			<div class="[ media-info media-info--large ] [ xmall-12 ]">
 				<p class="[ text-center ]">
-					<!-- / -->
-						<!-- COLECCION -->
-					<!-- / -->
+
+					<!-- COLECCION -->
 					De la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>,
 
-					<!-- / -->
-						<!-- NOMBRE APELLIDO -->
-					<!-- / -->
+					<!-- NOMBRE APELLIDO -->
 					<?php if ( $authorColeccionesName == 'sin autor' ){ ?>
-						<span class="[ media--info__author ]"><?php echo $authorColeccionesName; ?></span>,
+						<span><?php echo $authorColeccionesName; ?></span>,
 					<?php } else { ?>
 						<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
 					<?php } ?>
 
-					<!-- / -->
-						<!-- TÍTULO -->
-					<!-- / -->
+					<!-- TÍTULO -->
 					<?php if ( $titleColecciones ){ ?>
 						<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleColecciones; ?></a>,
 					<?php } else { ?>
 						<span class="[ media--info__name ]">sin título</span>,
 					<?php } ?>
 
-
-					<!-- / -->
-						<!-- DE LA SERIE -->
-					<!-- / -->
+					<!-- DE LA SERIE -->
 					<?php if ( $seriesColecciones ){ ?>
 						de la serie <span class="[ media--info__series ]"><?php echo $seriesColecciones; ?></span>,
 					<?php } ?>
 
-					<!-- / -->
-						<!-- LUGAR -->
-					<!-- / -->
+					<!-- LUGAR -->
 					<?php if ( $placeColecciones ){ ?>
 						<span class="[ media--info__place ]"><?php echo $placeColeccionesName; ?></span>,
 					<?php } ?>
 
-					<!-- / -->
-						<!-- CIRCA -->
-					<!-- / -->
+					<!-- CIRCA -->
 					<?php if ( $circaColecciones ){ ?>
 						<span class="[ media--info__circa ]">circa</span>
 					<?php } ?>
 
-					<!-- / -->
-						<!-- AÑO -->
-					<!-- / -->
-					<span class="[ media--info__date ]"><?php echo $dateColeccionesName; ?></span>
+					<!-- AÑO -->
+					<?php if ( $dateColecciones ){ ?>
+						<span class="[ media--info__date ]"><?php echo $dateColeccionesName; ?></span>
+					<?php } ?>
 				</p>
 
-				<!-- / -->
-					<!-- TAGS -->
-				<!-- / -->
+				<!-- TAGS -->
 				<div class="[ media-info__tags ] [ text-center ]">
 					<?php
 						if ( $themesColeccionesName ){
@@ -145,9 +130,20 @@
 
 
 	<!-- /**************************************\ -->
-	<!-- #EXTRA -->
+	<!-- #SLIDES -->
 	<!-- \**************************************/ -->
-	<section class="[ colecciones ] [ bg-image ]" style="background-image: url(<?php echo THEMEPATH; ?>images/test-2.jpg)">
+	<?php
+	$bgSlides = '';
+	$args = array(
+		'post_type' 		=> 'slides',
+		'posts_per_page' 	=> 1,
+		'orderby' 			=> 'rand'
+	);
+	$querySlides = new WP_Query( $args );
+	if ( $querySlides->have_posts() ) : while ( $querySlides->have_posts() ) : $querySlides->the_post(); ?>
+		<?php $bgSlides = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' ); ?>
+	<?php endwhile; endif; wp_reset_query(); ?>
+	<section class="[ colecciones ] [ bg-image ]" style="background-image: url(<?php echo $bgSlides[0]; ?>)">
 		<div class="[ opacity-gradient square ]">
 			<a class="[ button button--hollow button--large ] [ center-full ]">
 				<i class="icon-play"></i>

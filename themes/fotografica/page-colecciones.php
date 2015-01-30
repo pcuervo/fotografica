@@ -93,14 +93,92 @@
 			'orderby' 			=> 'rand'
 		);
 		$queryFotografias = new WP_Query( $args );
-		if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post(); ?>
-			<article class="[ result ] [ columna xmall-6 medium-3 ] [ margin-bottom--small ]">
+		if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post();
+
+			$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+
+			$coleccionColecciones 		= wp_get_post_terms( $post->ID, 'coleccion' );
+			$coleccionColeccionesName 	= $coleccionColecciones[0]->name;
+			$coleccionColeccionesSlug 	= $coleccionColecciones[0]->slug;
+
+			$authorColecciones 		= wp_get_post_terms( $post->ID, 'fotografo' );
+			if ( $authorColecciones ){
+				$authorColeccionesName 	= $authorColecciones[0]->name;
+				$authorColeccionesSlug 	= $authorColecciones[0]->slug;
+			} else {
+				$authorColeccionesName 	= NULL;
+			}
+
+			$titleColecciones = get_the_title( $post->ID );
+			if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
+				$titleColecciones = NULL;
+			}
+
+			$seriesColecciones = 0;
+
+			$placeColecciones = wp_get_post_terms( $post->ID, 'lugar' );
+			if ( $placeColecciones ){
+				$placeColeccionesName 	= $placeColecciones[0]->name;
+			}
+
+			$circaColecciones = 0;
+
+			$dateColecciones = wp_get_post_terms( $post->ID, 'año' );
+			if ( $dateColecciones ){
+				$dateColeccionesName 	= $dateColecciones[0]->name;
+			} else {
+				$dateColeccionesName 	= 's/f';
+			}
+
+			$themesColecciones = wp_get_post_terms( $post->ID, 'tema' );
+			if ( ! $themesColecciones ){
+				$themesColeccionesName 	= '';
+			}
+
+			$permalinkColeccion = get_permalink( $post->ID );
+		?>
+			<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom ]">
 				<div class="[ relative ]">
-					<a class="[ block ]" href="el-trapo-negro.html">
+					<a class="[ block ]" href="<?php ?>">
 						<?php the_post_thumbnail('medium', array('class' => '[ image-responsive ]')); ?>
 						<span class="[ opacity-gradient--full ]"></span>
 						<div class="[ media-info media-info--small ] [ xmall-12 ]">
-							<p class="[ text-center ]"><a href="#" class="[ media-info__author ]">Gerardo Suter</a>, <a href="#" class="[ media-info__name ]">El trapo negro</a>, <span class="[ media--info__place ]">Egipto</span>, <span class="[ media--info__date ]">1986</span></p>
+							<p class="[ text-center ]">
+
+								<!-- NOMBRE APELLIDO -->
+								<?php if ( $authorColeccionesName ){ ?>
+									<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>
+								<?php } else { ?>
+									<span>sin autor</span>
+								<?php } ?>
+
+								<!-- TÍTULO -->
+								<?php if ( $titleColecciones ){ ?>
+									, <a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleColecciones; ?></a>
+								<?php } else { ?>
+									, <a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]">sin título</a>
+								<?php } ?>
+
+								<!-- DE LA SERIE -->
+								<?php if ( $seriesColecciones ){ ?>
+									, de la serie <span class="[ media--info__series ]"><?php echo $seriesColecciones; ?></span>
+								<?php } ?>
+
+								<!-- LUGAR -->
+								<?php if ( $placeColecciones ){ ?>
+									, <span class="[ media--info__place ]"><?php echo $placeColeccionesName; ?></span>
+								<?php } ?>
+
+								<!-- CIRCA -->
+								<?php if ( $circaColecciones ){ ?>
+									, <span class="[ media--info__circa ]">circa</span>
+								<?php } ?>
+
+								<!-- AÑO -->
+								<?php if ( $dateColecciones ){ ?>
+									, <span class="[ media--info__date ]"><?php echo $dateColeccionesName; ?></span>
+								<?php } ?>
+							</p>
 						</div>
 					</a>
 				</div><!-- .relative -->

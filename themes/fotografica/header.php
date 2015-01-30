@@ -138,7 +138,7 @@
 								<div class="[ wrapper ][ shown--small ]">
 									<nav class="[ row ]">
 										<div class="[ columna xmall-2 ]">
-											<a id="trigger" class="[ inline-block ][ menu-trigger ][ menu__item ]" href="#">
+											<a id="trigger-xmall" class="[ inline-block ][ menu-trigger ][ menu__item ]" href="#">
 												<i class="[ icon-menu ][ bg-highlight color-claro ]"></i>
 											</a>
 										</div>
@@ -159,7 +159,7 @@
 								<div class="[ wrapper ][ shown--medium ]">
 									<nav class="[ row ]">
 										<div class="[ columna xmall-4 ][ text-left ]">
-											<a id="trigger" class="[ inline-block ][ menu-trigger ][ menu__item ]" href="#">
+											<a id="trigger-medium" class="[ inline-block ][ menu-trigger ][ menu__item ]" href="#">
 												<i class="[ icon-menu ][ bg-highlight color-claro ]"></i>
 											</a>
 										</div>
