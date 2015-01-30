@@ -1,60 +1,105 @@
 /*------------------------------------*\
-    #BUTTONS
+	#BUTTONS
 \*------------------------------------*/
 .button{
-    padding: 8px 8px 6px 8px;
-    .font( 1em, 1, 400, 'proxima-nova' ); text-align: center; text-transform: uppercase; text-decoration: none; color: @claro;
+	padding: 8px 8px 6px 8px;
+	.font( 1em, 1, 400, 'proxima-nova' ); text-align: center; text-transform: uppercase; text-decoration: none; color: @claro;
 }
 
 
 
 
 /*------------------------------------*\
-    #STYLES
+	#STYLES
 \*------------------------------------*/
 .button--hollow{
-    border: 3px solid @claro;
-    background: transparent;
+	border: 3px solid @claro;
+	background: transparent;
 }
 
 
 .button__share{ padding: @unidad (@unidad/4); }
 .button__share i{ font-size: 16px; }
 .button__share span {
-    .font(20px, 1, 100); text-overflow: ellipsis; //text-align: right;
-    white-space: nowrap;
-    overflow: hidden;
+	.font(20px, 1, 100); text-overflow: ellipsis; //text-align: right;
+	white-space: nowrap;
+	overflow: hidden;
 }
 
 
 
 
 /*------------------------------------*\
-    #SIZES
+	#SIZES
 \*------------------------------------*/
 .button--small{
-    padding: 6px 6px 4px 6px; border-width: 2px;
-    .font( 0.9em, 1 );
+	padding: 6px 6px 4px 6px; border-width: 2px;
+	.font( 0.9em, 1 );
 }
 
 .button--large{
-    padding: 10px 10px 8px 10px;
-    .font( 1.6em, 1.3 ); letter-spacing: 1px;
+	padding: 10px 10px 8px 10px;
+	.font( 1.6em, 1.3 ); letter-spacing: 1px;
 }
 
 
 
 
 /*------------------------------------*\
-    #COLORES
+	#COLORES
 \*------------------------------------*/
 .button--hollow.button--dark{
-    border-color: @dark;
-    color: @dark;
-    background: none;
+	border-color: @dark;
+	color: @dark;
+	background: none;
 }
 
 .button--dark{
-    background: @dark;
-    color: @claro;
+	background: @dark;
+	color: @claro;
+}
+
+
+
+
+
+/*------------------------------------*\
+    #MEDIUM
+\*------------------------------------*/
+@media (min-width: @medium) {
+
+	.button{
+		padding: 12px 12px 10px 12px;
+		.font( 1.2em );
+	}
+
+
+
+
+
+	/*------------------------------------*\
+		#STYLES
+	\*------------------------------------*/
+
+	.button--hollow{
+		border: 3px solid @claro;
+		background: transparent;
+	}
+
+
+
+
+	/*------------------------------------*\
+		#SIZES
+	\*------------------------------------*/
+
+	.button--small{
+		padding: 10px 10px 8px 10px; border-width: 2px;
+		.font( 1em );
+	}
+	.button--large{
+		padding: 20px 20px 18px 20px; border-width: 6px;
+		.font( 2.6em, 1.3 ); letter-spacing: 4px;
+	}
+
 }

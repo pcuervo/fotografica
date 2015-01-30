@@ -14,7 +14,7 @@
 			<h2 class="[ center-full ] [ title ]">
 				Colecciones <br /><span class="[ sub-title ] [ block xmall-12 ] [ text-center ]">Lorem ipsum dolro sit amet</span>
 			</h2>
-			<div class="[ media-info ] [ xmall-12 ] [ shown--medium ]">
+			<div class="[ media-info media-info--large ] [ xmall-12 ] [ shown--medium ]">
 				<p class="[ text-center ]"><a href="#" class="[ media-info__author ]">Gerardo Suter</a>, <a href="#" class="[ media-info__name ]">El trapo negro</a>, <span class="[ media--info__place ]">Egipto</span>, <span class="[ media--info__date ]">1986</span></p>
 				<div class="[ media-info__tags ] [ text-center ]">
 					<a href="#" class="[ tag ]">#méxico</a>
@@ -26,12 +26,16 @@
 	</section>
 	<section class="[ filters ] [ margin-bottom--small ]">
 		<div class="[ filters__tabs ] [ clearfix ]">
-			<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="colecciones">Colecciones</a>
-			<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="fotografos">Fotógrafos</a>
-			<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="decada">Década</a>
-			<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="tema">Tema</a>
-			<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="buscar">Buscar</a>
-			<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="opciones">Opciones</a>
+			<div class="[ wrapper ]">
+				<div class="[ row ]">
+					<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="colecciones">Colecciones</a>
+					<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="fotografos">Fotógrafos</a>
+					<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="decada">Década</a>
+					<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="tema">Tema</a>
+					<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="buscar">Buscar</a>
+					<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="opciones">Opciones</a>
+				</div><!-- row -->
+			</div><!-- wrapper -->
 		</div><!-- filters__tabs -->
 		<div class="[ filters__content ] [ text-center ]">
 			<div class="[ filter-colecciones ]">
@@ -95,7 +99,7 @@
 					<a class="[ block ]" href="el-trapo-negro.html">
 						<?php the_post_thumbnail('medium', array('class' => '[ image-responsive ]')); ?>
 						<span class="[ opacity-gradient--full ]"></span>
-						<div class="[ media-info ] [ xmall-12 ]">
+						<div class="[ media-info media-info--small ] [ xmall-12 ]">
 							<p class="[ text-center ]"><a href="#" class="[ media-info__author ]">Gerardo Suter</a>, <a href="#" class="[ media-info__name ]">El trapo negro</a>, <span class="[ media--info__place ]">Egipto</span>, <span class="[ media--info__date ]">1986</span></p>
 						</div>
 					</a>

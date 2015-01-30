@@ -144,7 +144,7 @@
 										</div>
 										<div class="[ columna xmall-8 ][ text-center ]">
 											<h1 class="[ text-center ]">
-												<a class="[ inline-block ][ menu__item menu__item-large ]" href="#">
+												<a class="[ inline-block ][ menu__item menu__item-large ]" href="<?php echo site_url(); ?>">
 													<i class="[ icon-logo-fotografica ]"></i>
 												</a>
 											</h1>
@@ -165,7 +165,7 @@
 										</div>
 										<div class="[ columna xmall-4 ]">
 											<h1 class="[ text-center ]">
-												<a class="[ inline-block ][ menu__item menu__item-large ]" href="#">
+												<a class="[ inline-block ][ menu__item menu__item-large ]" href="<?php echo site_url(); ?>">
 													<i class="[ icon-logo-fotografica ]"></i>
 												</a>
 											</h1>

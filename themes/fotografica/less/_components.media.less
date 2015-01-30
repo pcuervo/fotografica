@@ -1,15 +1,30 @@
 /*------------------------------------*\
-    #IMAGES
+	#IMAGES
 \*------------------------------------*/
 
 
-.square{ padding-bottom: 100%; }
-.rectangle{ padding-bottom: 50%; }
+/**
+ * Absolute size
+**/
+.square{
+	padding-bottom: 100%;
+}
+.rectangle{
+	padding-bottom: 50%;
+}
 
 
 .media-info{
-    padding: (@unidad/2);
-    position: absolute; bottom: 0;
+	position: absolute;
+}
+
+.media-info--small{
+	padding: (@unidad/2);
+	bottom: 0;
+}
+.media-info--large{
+	padding: (@unidad);
+	bottom: (@unidad/2);
 }
 
 
@@ -21,9 +36,28 @@
 \*------------------------------------*/
 
 .result{
-    position: relative;
+	position: relative;
 }
 .result .media-info > p{ margin: 0; }
 
+
+
+
+/*------------------------------------*\
+    #MEDIUM
+\*------------------------------------*/
+@media (min-width: @medium) {
+
+	/**
+	 * Relative to screen size
+	**/
+	.square{
+		padding-bottom: calc( ~'100vh - 80px' );
+	}
+	.rectangle{
+		padding-bottom: calc( ~'50vh - 80px' );
+	}
+
+}
 
 
