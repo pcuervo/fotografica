@@ -39,6 +39,33 @@
 			register_taxonomy( 'coleccion', $postTypeColecciones, $args );
 		}
 
+		// LUGAR
+		if( ! taxonomy_exists('lugar')){
+
+			$labels = array(
+				'name'              => 'Lugares',
+				'singular_name'     => 'Lugar',
+				'search_items'      => 'Buscar',
+				'all_items'         => 'Todos',
+				'edit_item'         => 'Editar Lugar',
+				'update_item'       => 'Actualizar Lugar',
+				'add_new_item'      => 'Nuevo Lugar',
+				'new_item_name'     => 'Nombre Nuevo Lugar',
+				'menu_name'         => 'Lugares'
+			);
+			$args = array(
+				'hierarchical'      => true,
+				'labels'            => $labels,
+				'show_ui'           => true,
+				'show_admin_column' => true,
+				'show_in_nav_menus' => true,
+				'query_var'         => true,
+				'rewrite'           => array( 'slug' => 'lugar' ),
+			);
+
+			register_taxonomy( 'lugar', 'fotografias', $args );
+		}
+
 		// AÑO
 		if( ! taxonomy_exists('año')){
 
@@ -326,7 +353,7 @@
 			register_taxonomy( 'tema', $postTypeTema, $args );
 		}// taxonomy medio
 
-		// Agregar palabras 
+		// Agregar palabras
 		insertYearTaxonomyTerms();
 		insertPhotographerTaxonomyTerms();
 		insertPhotographerTaxonomyTermsFromPostType();

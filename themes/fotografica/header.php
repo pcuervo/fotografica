@@ -30,7 +30,7 @@
 								<a class="[ text-center uppercase ]" href="#">Colecciones</a>
 								<div class="[ mp-level ]">
 									<h2 class="[ text-center uppercase ]">Colecciones</h2>
-									<a class="[ mp-back ] [ text-center uppercase ]" href="#">atrás</a>
+									<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
 									<ul class="[ overflow-scroll ]">
 										<li><a class="[ text-center uppercase ]" href="#">Manuel Álvarez Bravo</a></li>
 										<li><a class="[ text-center uppercase ]" href="#">Centro Cultural de Arte Contemporáneo</a></li>
@@ -40,7 +40,7 @@
 											<a class="[ text-center uppercase ]" href="#">Foto+media</a>
 											<div class="[ mp-level ]">
 												<h2 class="[ text-center uppercase ]">Foto+media</h2>
-												<a class="[ mp-back ] [ text-center uppercase ]" href="#">atrás</a>
+												<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
 												<ul>
 													<li><a class="[ text-center uppercase ]" href="#">Nombre colección</a></li>
 													<li><a class="[ text-center uppercase ]" href="#">Nombre colección</a></li>
@@ -73,14 +73,14 @@
 								<a class="[ text-center uppercase ]" href="#">Proyectos</a>
 								<div class="[ mp-level ]">
 									<h2 class="[ text-center uppercase ]">Proyectos</h2>
-									<a class="[ mp-back ] [ text-center uppercase ]" href="#">atrás</a>
+									<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
 									<ul class="[ overflow-scroll ]">
 										<li><a class="[ text-center uppercase ]" href="#">Fotógrafos en movimiento</a></li>
 										<li>
 											<a class="[ text-center uppercase ]" href="#">Curadurías virtuales</a>
 											<div class="[ mp-level ]">
 												<h2 class="[ text-center uppercase ]">Curadurías virtuales</h2>
-												<a class="[ mp-back ] [ text-center uppercase ]" href="#">atrás</a>
+												<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
 												<ul>
 													<li><a class="[ text-center uppercase ]" href="#">Una curaduría</a></li>
 													<li><a class="[ text-center uppercase ]" href="#">Otra curaduría</a></li>
@@ -97,7 +97,7 @@
 								<a class="[ text-center uppercase ]" href="#">Publicaciones</a>
 								<div class="[ mp-level ]">
 									<h2 class="[ text-center uppercase ]">Publicaciones</h2>
-									<a class="[ mp-back ] [ text-center uppercase ]" href="#">atrás</a>
+									<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
 									<ul class="[ overflow-scroll ]">
 										<li><a class="[ text-center uppercase ]" href="#">Nuestras publicaciones</a></li>
 										<li><a class="[ text-center uppercase ]" href="#">Coediciones</a></li>
@@ -109,7 +109,7 @@
 								<a class="[ text-center uppercase ]" href="#">Cartelera</a>
 								<div class="[ mp-level ]">
 									<h2 class="[ text-center uppercase ]">Cartelera</h2>
-									<a class="[ mp-back ] [ text-center uppercase ]" href="#">atrás</a>
+									<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
 									<ul class="[ overflow-scroll ]">
 										<li><a class="[ text-center uppercase ]" href="#">Eventos</a></li>
 									</ul>
@@ -120,7 +120,7 @@
 								<a class="[ text-center uppercase ]" href="#">Nuestro trabajo</a>
 								<div class="[ mp-level ]">
 									<h2 class="[ text-center uppercase ]">Nuestro trabajo</h2>
-									<a class="[ mp-back ] [ text-center uppercase ]" href="#">atrás</a>
+									<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
 									<ul class="[ overflow-scroll ]">
 										<li><a class="[ text-center uppercase ]" href="#">Conservación</a></li>
 										<li><a class="[ text-center uppercase ]" href="#">Investigación</a></li>
@@ -134,23 +134,62 @@
 				<div class="[ content-wrapper ]"><!-- this is for emulating position fixed of the nav -->
 					<div class="[ content ]">
 						<div class="[ header-wrapper ]">
-							<header class="[ header ] [ wrapper ] [ clearfix ]">
-								<a id="trigger" class="[ menu-trigger ] [ inline-block align-middle xmall-2 medium-1 ] [ bg-highlight ]" href="#">
-									<i class="[ fa fa-bars ] [ claro ] [ xmall-12 text-center ]"></i>
-								</a><span class="[ inline-block align-middle xmall-1 medium-3 ]"></span><h1 class="[ inline-block align-middle xmall-6 medium-4 ] [ bg-logo-wrapper bg-logo-wrapper--logo-fotografica ]">
-									<a class="[ bg-logo ]" href="#">
-										Fotográfica
-									</a>
-								</h1><span class="[ inline-block align-middle xmall-1 ]"></span><a id="trigger" class="[ menu-trigger ] [ inline-block align-middle medium medium-1 ] [ bg-highlight ]" href="#">
-									<i class="[ fa fa-bars ] [ claro ] [ xmall-12 text-center ]"></i>
-								</a><a id="trigger" class="[ menu-trigger ] [ inline-block align-middle medium medium-1 ] [ bg-highlight ]" href="#">
-									<i class="[ fa fa-bars ] [ claro ] [ xmall-12 text-center ]"></i>
-								</a><div class="[ inline-block align-middle xmall-2 medium-1 ] [ bg-logo-wrapper bg-logo-wrapper--logo-fundacion-televisa ]">
-									<a class="[ bg-logo ]" href="#">
-										Fundación Televisa
-									</a>
-								</div>
+							<header class="[ ]">
+								<div class="[ wrapper ][ shown--small ]">
+									<nav class="[ row ]">
+										<div class="[ columna xmall-2 ]">
+											<a id="trigger-xmall" class="[ inline-block ][ menu-trigger ][ menu__item ]" href="#">
+												<i class="[ icon-menu ][ bg-highlight color-claro ]"></i>
+											</a>
+										</div>
+										<div class="[ columna xmall-8 ][ text-center ]">
+											<h1 class="[ text-center ]">
+												<a class="[ inline-block ][ menu__item menu__item-large ]" href="<?php echo site_url(); ?>">
+													<i class="[ icon-logo-fotografica ]"></i>
+												</a>
+											</h1>
+										</div>
+										<div class="[ columna xmall-2 ][ text-right ]">
+											<a class="[ inline-block ][ menu__item menu__item-large ]" href="#">
+												<i class="[ icon-logo-fundacion-televisa ]"></i>
+											</a>
+										</div>
+									</nav>
+								</div><!-- [ shown-small ] -->
+								<div class="[ wrapper ][ shown--medium ]">
+									<nav class="[ row ]">
+										<div class="[ columna xmall-4 ][ text-left ]">
+											<a id="trigger-medium" class="[ inline-block ][ menu-trigger ][ menu__item ]" href="#">
+												<i class="[ icon-menu ][ bg-highlight color-claro ]"></i>
+											</a>
+										</div>
+										<div class="[ columna xmall-4 ]">
+											<h1 class="[ text-center ]">
+												<a class="[ inline-block ][ menu__item menu__item-large ]" href="<?php echo site_url(); ?>">
+													<i class="[ icon-logo-fotografica ]"></i>
+												</a>
+											</h1>
+										</div>
+										<div class="[ columna xmall-4 ][ ][ text-right ]">
+											<a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="#">
+												<i class="[ icon-twitter ]"></i>
+											</a>
+											<a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="#">
+												<i class="[ icon-facebook ]"></i>
+											</a>
+											<a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="#">
+												<i class="[ icon-pinterest ]"></i>
+											</a>
+											<a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="#">
+												<i class="[ icon-search ]"></i>
+											</a>
+											<a class="[ inline-block align-middle ][ menu__item menu__item-large ]" href="#">
+												<i class="[ icon-logo-fundacion-televisa ]"></i>
+											</a>
+										</div>
+									</nav>
+								</div><!-- [ shown-medium ] -->
 							</header>
 						</div>
-						<div class="[ main-wrapper ] [ margin-bottom ]" >
+						<div class="[ main-wrapper ][ margin-bottom ]" >
 							<div class="[ main ]">

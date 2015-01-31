@@ -1,3 +1,8 @@
+/*------------------------------------*\
+    #PUSH MENU
+\*------------------------------------*/
+
+
 .menu-trigger {
 	font-size: 0.9em;
 	position: relative;
@@ -158,4 +163,70 @@
 .no-csstransforms3d .mp-menu > .mp-level,
 .no-js .mp-menu > .mp-level {
 	display: block;
+}
+
+
+
+
+
+/*------------------------------------*\
+    #HEADER MENU
+\*------------------------------------*/
+
+h1{
+	margin: 0;
+}
+h1 a{
+	text-decoration: none;
+}
+h1 i{
+	width: 100%;
+	margin: 0;
+}
+h1 i:before{
+	width: 100% !important;
+	margin: 0 !important;
+}
+
+nav > div{
+	height: 60px
+}
+
+.menu__item{
+	font-size: 30px; line-height: 60px;
+	color: @dark;
+	text-transform: uppercase;
+}
+.menu__item-large{
+	font-size: 50px;
+}
+
+
+
+
+
+/*------------------------------------*\
+    #MEDIUM
+\*------------------------------------*/
+@media (min-width: @medium) {
+
+	/**
+	 * HEADER MENU
+	**/
+	h1 a{
+		font-size: 70px
+	}
+
+	nav > div{
+		height: 80px
+	}
+	.menu__item{
+		font-size: 40px; line-height: 80px;
+	}
+	.menu__item-small{
+		font-size: 25px;
+	}
+	.menu__item-large{
+		font-size: 70px;
+	}
 }

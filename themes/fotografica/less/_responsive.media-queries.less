@@ -1,33 +1,61 @@
-.shown--xmall{  }
+/*------------------------------------*\
+    #BREAKPOINTS
+\*------------------------------------*/
+@xmall: 	25em;
+@small: 	40.063em;
+@medium: 	64.063em;
+@large: 	90.063em;
+@xlarge: 	120.063em;
+
+
+
+
+
+/*------------------------------------*\
+    #VISIBILITY
+\*------------------------------------*/
+
+/**
+ * Xmall
+**/
+.shown--xmall{ display: block !important; }
 .hidden--xmall{  }
 
+.hidden--medium{ display: none !important; }
 .shown--medium{ display: none !important; }
 
-/* min-width 321px */
-@media only screen and (min-width: 25em) {
-	.shown--small{  }
-	.hidden--small{  }
+/**
+ * Small
+**/
+@media (min-width: @small) {
+	.shown--small{ }
+	.hidden--small{ }
 }
 
-/* min-width 641px, medium screens */
-@media only screen and (min-width: 40.063em) {
+/**
+ * Medium
+**/
+@media (min-width: @medium) {
+	.shown--small{ display: none !important; }
+
 	.shown--medium{ display: block !important; }
+	.hidden--medium{ display: none !important; }
 }
-/* min-width 641px and max-width 1024px, use when QAing tablet-only issues */
-@media only screen and (min-width: 40.063em) and (max-width: 64em) {}
 
- /* min-width 1025px, large screens */
-@media only screen and (min-width: 64.063em) {}
- /* min-width 1025px and max-width 1440px, use when QAing large screen-only issues */
-@media only screen and (min-width: 64.063em) and (max-width: 90em) {}
+/**
+ * Large
+**/
+@media (min-width: @large) {
 
-/* min-width 1441px, xlarge screens */
-@media only screen and (min-width: 90.063em) {}
-/* min-width 1441px and max-width 1920px, use when QAing xlarge screen-only issues */
-@media only screen and (min-width: 90.063em) and (max-width: 120em) {}
+}
 
- /* min-width 1921px, xlarge screens */
-@media only screen and (min-width: 120.063em) {}
+/**
+ * Xlarge
+**/
+@media (min-width: @xlarge) {
+
+}
+
 
 
 /**
