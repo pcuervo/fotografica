@@ -328,10 +328,15 @@
 
 		// Agregar palabras 
 		insertYearTaxonomyTerms();
+		insertPhotographerTaxonomyTerms();
+		insertPhotographerTaxonomyTermsFromPostType();
+
+		// Estas funciones solo se deben de correr una vez
+		//addPhotographerToPhoto();
+		//addYearToPhoto();
 	}
 
 	function insertYearTaxonomyTerms(){
-		// 1st Method - Declaring $wpdb as global and using it to execute an SQL query statement that returns a PHP object
 		global $wpdb;
 		$results = $wpdb->get_results( 'SELECT DISTINCT meta_value FROM wp_postmeta WHERE meta_key LIKE "%wpcf-ano%" AND meta_key <> "" ORDER BY meta_value', OBJECT );
 
@@ -342,3 +347,66 @@
 			wp_insert_term($year->meta_value, 'año');
 		}
 	}// insertYearTaxonomyTerms
+
+	function insertPhotographerTaxonomyTerms(){
+		global $wpdb;
+		$results = $wpdb->get_results( 'SELECT post_id, meta_key, meta_value FROM wp_postmeta WHERE (meta_key = "wpcf-nombre-fotografo" OR meta_key = "wpcf-apellido-fotografo") AND meta_key <> "" AND meta_value <> "" ORDER BY post_id, meta_key DESC, meta_value', OBJECT );	
+
+		$current_post_id = -1;
+		foreach ($results as $photographer) {
+			$term = term_exists($photographer->meta_value, 'fotografo');
+			if ($term !== 0 && $term !== null) continue;
+
+			if($current_post_id == -1){
+				$current_post_id = $photographer->post_id;
+				$nombre = $photographer->meta_value;
+				continue;
+			}
+
+			if($current_post_id == $photographer->post_id){
+				$apellido = $photographer->meta_value;
+				wp_insert_term($nombre.' '.$apellido, 'fotografo');
+				$current_post_id = -1;
+			}
+		}// foreach
+	}// insertPhotographerTaxonomyTerms
+
+	function insertPhotographerTaxonomyTermsFromPostType(){
+		global $wpdb;
+		$results = $wpdb->get_results( 'SELECT trim(post_title) as post_title from wp_posts where post_type = "fotografos" AND post_title not in ( SELECT name FROM wp_terms T INNER JOIN wp_term_taxonomy TT ON T.term_id = TT.term_id WHERE TT.taxonomy = "fotografo")', OBJECT );	
+
+		$current_post_id = -1;
+		foreach ($results as $photographer) {
+			$term = term_exists($photographer->post_title, 'fotografo');
+			if ($term !== 0 && $term !== null) continue;
+
+			wp_insert_term($photographer->post_title, 'fotografo');
+		}// foreach
+	}// insertPhotographerTaxonomyTermsFromPostType
+
+	function addYearToPhoto(){
+		global $wpdb;
+		$results = $wpdb->get_results( 'SELECT post_id, meta_value FROM wp_postmeta INNER JOIN wp_posts ON wp_posts.id = post_id WHERE meta_key = "wpcf-ano-fotografia"', OBJECT );
+
+		foreach ($results as $year_term) { $term_taxonomy_ids = wp_set_object_terms( $year_term->post_id, $year_term->meta_value, 'año', true ); }
+	}// addYearToPhoto
+
+	function addPhotographerToPhoto(){
+		global $wpdb;
+		$results = $wpdb->get_results( 'SELECT post_id, meta_key, meta_value FROM wp_posts INNER JOIN wp_postmeta ON post_id = wp_posts.id WHERE post_type = "fotografias" AND (meta_key = "wpcf-nombre-fotografo" OR meta_key = "wpcf-apellido-fotografo") AND meta_key <> "" ORDER BY post_id, meta_key DESC', OBJECT );
+
+		$current_post_id = -1;
+		foreach ($results as $photographer_term) {
+			if($current_post_id == -1){
+				$current_post_id = $photographer_term->post_id;
+				$nombre = $photographer_term->meta_value;
+				continue;
+			}
+
+			if($current_post_id == $photographer_term->post_id){
+				$apellido = $photographer_term->meta_value;
+				$term_taxonomy_ids = wp_set_object_terms( $photographer_term->post_id, $nombre.' '.$apellido, 'fotografo', true );
+				$current_post_id = -1;
+			}			
+		}
+	}// addPhotographerToPhoto
