@@ -137,7 +137,7 @@
 
 			$permalinkColeccion = get_permalink( $post->ID );
 		?>
-			<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom ]">
+			<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]">
 				<div class="[ relative ]">
 					<a class="[ block ]" href="<?php ?>">
 						<?php the_post_thumbnail('medium', array('class' => '[ image-responsive ]')); ?>
