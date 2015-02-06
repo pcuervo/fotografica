@@ -133,7 +133,7 @@ function showFilters(element){
 
 function addFilter(element){
 	//Clone this element so it won't get deleted by .append
-	// and manipulate ir instead of the clicked filter
+	// and manipulate it instead of the clicked filter
 	var $clone = $(element).clone();
 
 	//If element is already added, then delete it
@@ -179,6 +179,16 @@ function removeFilter(element){
 	$('.filters__content .filter:contains('+filterContent+')').removeClass('filter--active');
 }
 
+function getFilteredResults(){
+	var activos = $('.filters__results .filter--active');
+	$.each(activos, function(i, val){
+		var filter_type = $(val).data('type');
+		var filter_value = $(val).data('value');
+		console.log(filter_type);
+		console.log(filter_value);
+	});
+}// getFilteredResults
+
 function fixedHeader(){
 	//Get the header height so we can now when
 	//to change the heade state
@@ -219,6 +229,47 @@ function openLightbox(){
 	});
 	$('.lightbox').show();
 }
+
+// AJAX para buscadores
+function searchColeccionesTest(post_type){
+	var user_data = {};
+	user_data['action'] = 'advanced_search';
+	user_data['post_type'] = post_type;
+
+	$.post(
+        ajax_url,
+        user_data,
+        function(response){
+        	console.log(response);
+        	var json_posts = $.parseJSON(response);
+
+        	$.each(json_posts, function(i, val){
+        		var html_photo = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]"> \
+					<div class="[ relative ]"> \
+						<a class="[ block ]" href="#"> \
+							<img src="'+val.img_url+'" class="[ image-responsive ]" /> \
+							<span class="[ opacity-gradient--full ]"></span> \
+							<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
+								<p class="[ text-center ]"> \
+									<a href="#" class="[ media--info__author ]">'+val.autor+'</a> \
+									, <a href="#" class="[ media--info__name ]">'+val.titulo+'</a> \
+									, de la serie <span class="[ media--info__series ]">colecciones</span> \
+									, <span class="[ media--info__place ]">lugar</span> \
+									, <span class="[ media--info__circa ]">circa</span> \
+									, <span class="[ media--info__date ]">fecha</span> \
+								</p> \
+							</div> \
+						</a> \
+					</div> \
+				</article>';
+				$(html_photo).appendTo('.results');
+        	});
+
+        	runMasonry('.results', '.result' );
+    		
+        }// response
+    ); 
+}// searchColeccionesTest
 
 
 /*------------------------------------*\

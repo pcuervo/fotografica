@@ -84,10 +84,7 @@
 								#ON LOAD
 							\*------------------------------------*/
 
-							runMasonry('.results', '.result' );
-
-
-
+							//runMasonry('.results', '.result' );
 
 							/*------------------------------------*\
 								#Triggered events
@@ -99,15 +96,19 @@
 
 							$('.filters__content .filter').on('click', function(){
 								addFilter( this );
+								getFilteredResults();
 							});
 
 							$('.filters__results .filter').on('click', function(){
 								removeFilter( this );
+								getFilteredResults();
 							});
 
 							$('.content-wrapper').scroll(function(){
 								fixedHeader();
 							});
+
+							searchColeccionesTest('fotografias');
 						});
 					}(jQuery));
 				</script>
@@ -374,3 +375,124 @@
 			OR isset($query->post_title) AND preg_match("/$string/i", remove_accents(str_replace(' ', '-', $query->post_title) ) ) )
 			echo 'active';
 	}
+
+// ADVANCED SEARCH FOR THEME  //////////////////////////////////////////////////////
+
+	/**
+	 * Búsqueda avanzada basada en filtros.
+	 * @param  string $string
+	 * @return string
+	 */
+	function advanced_search($filtros = ''){
+		$post_type = $_POST['post_type'];
+
+		$advanced_search_results = array();
+		if($post_type == 'fotografias') $advanced_search_results = advanced_search_colecciones();
+
+		echo json_encode($advanced_search_results , JSON_FORCE_OBJECT);
+		exit();
+	}// advanced_search
+	add_action("wp_ajax_advanced_search", "advanced_search");
+
+	function advanced_search_colecciones($filtros = ''){
+		global $post;
+		global $wpdb;
+
+		$terms = array('fondo-rutilo-patino', 'coleccion-manuel-alvarez-bravo');
+		if ($filtros == ''){
+			$args = array(
+				'post_type' 		=> 'fotografias',
+				'posts_per_page' 	=> 22,
+				'orderby' 			=> 'rand',
+				'tax_query'			=> array (
+				array(
+					'taxonomy'	=> 'coleccion',
+					'field'		=> 'slug',
+					'terms'		=> $terms,
+					)
+				)
+			);
+		}
+
+		$colecciones = get_posts($args);
+		$queryFotografias = new WP_Query( $args );
+		$info_colecciones = array();
+
+		$query = "
+    		SELECT P.id, P.post_title, T.name, T.slug FROM wp_posts P
+			INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
+			INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
+			INNER JOIN wp_terms T ON T.term_id = TT.term_id
+			WHERE P.post_type = 'fotografias'
+			AND TT.taxonomy IN ('coleccion', 'año', 'fotografo', 'tema')
+			AND (
+				T.slug IN ( SELECT slug FROM wp_terms WHERE slug IN ('fondo-juan-cachu') ) 
+				OR T.slug IN ( SELECT slug FROM wp_terms WHERE slug BETWEEN '1947' AND '1947')
+				OR T.slug IN ( SELECT slug FROM wp_terms T INNER JOIN wp_term_taxonomy TT ON TT.term_id = T.term_id WHERE slug LIKE 'L%' AND taxonomy = 'fotografo' )
+				OR T.name IN ( SELECT name FROM wp_terms WHERE name = '#test' )
+			)
+			ORDER BY RAND()
+			LIMIT 20
+		";
+
+ 		$posts_info = $wpdb->get_results($query, OBJECT);
+
+ 		foreach ($posts_info as $key => $post) {
+ 			// Título
+			$titleColecciones = get_the_title( $post->id );
+			if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
+				$titleColecciones = 'Sin título';
+			}
+			// URL imagen
+			$thumb = wp_get_attachment_image_src( get_post_thumbnail_id( $post->id ), 'medium' );
+			$url = $thumb['0'];
+			// Autor
+			$authorColecciones = wp_get_post_terms( $post->id, 'fotografo' );
+			if ( $authorColecciones ){
+				$authorColeccionesName 	= $authorColecciones[0]->name;
+				$authorColeccionesSlug 	= $authorColecciones[0]->slug;
+			} else {
+				$authorColeccionesName 	= 'Sin autor';
+			}
+			// Se arma el objecto que se regresa
+			$info_colecciones[$key] = array(
+				'titulo'	=> $titleColecciones,
+				'img_url'	=> $url,
+				'autor'		=> $authorColeccionesName,
+				);
+ 		}
+
+		$i = 0;
+		if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post();
+
+			// Título
+			$titleColecciones = get_the_title( $post->ID );
+			if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
+				$titleColecciones = 'Sin título';
+			}
+			// URL imagen
+			$thumb = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'medium' );
+			$url = $thumb['0'];
+
+			// Autor
+			$authorColecciones 		= wp_get_post_terms( $post->ID, 'fotografo' );
+			if ( $authorColecciones ){
+				$authorColeccionesName 	= $authorColecciones[0]->name;
+				$authorColeccionesSlug 	= $authorColecciones[0]->slug;
+			} else {
+				$authorColeccionesName 	= 'Sin autor';
+			}
+
+			// $info_colecciones[$i] = array(
+			// 	'titulo'	=> $titleColecciones,
+			// 	'img_url'	=> $url,
+			// 	'autor'		=> $authorColeccionesName,
+			// 	);
+			$i++;
+		endwhile; endif; wp_reset_query(); 
+
+		return $info_colecciones;
+	}
+
+
+
