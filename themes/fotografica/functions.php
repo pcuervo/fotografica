@@ -475,7 +475,7 @@
 			// Close filtering terms if they exist
 			if($is_coleccion || $is_ano) $query = $query." )";
 
-			$query = $query." GROUP BY id HAVING COUNT(id) > 1 ORDER BY RAND() LIMIT ".$limit;
+			$query = $query." GROUP BY id HAVING COUNT(id) > 0 ORDER BY RAND() LIMIT ".$limit;
 			//echo $query;
 			$posts_info = $wpdb->get_results( $query );
 		}
