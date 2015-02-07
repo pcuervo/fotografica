@@ -4,6 +4,8 @@
 .button{
 	padding: 8px 8px 6px 8px;
 	.font( 1em, 1, 400, 'proxima-nova' ); text-align: center; text-transform: uppercase; text-decoration: none; color: @claro;
+	cursor: pointer;
+	.transition;
 }
 
 
@@ -52,6 +54,11 @@
 	border-color: @dark;
 	color: @dark;
 	background: none;
+
+	&:hover{
+		background: @dark;
+		color: @claro;
+	}
 }
 
 .button--dark{

@@ -57,6 +57,42 @@
 
 
 			<!-- /**********************************\ -->
+			<!-- #ARCHIVE -->
+			<!-- \**********************************/ -->
+			<?php } elseif ( is_archive() ) { ?>
+				<script type="text/javascript">
+					(function( $ ) {
+						"use strict";
+						$(function(){
+
+							/*------------------------------------*\
+								#Triggered events
+							\*------------------------------------*/
+
+							$('.tab-filter').on('click', function(){
+								showFilters( this );
+							});
+
+							$('.filters__content').on('click', '.filter', function(){
+								addFilter( this );
+								searchTest('fotografias', getFilteredResults(), 20);
+							});
+
+							$('.filters__results').on('click', '.filter', function(){
+								removeFilter( this );
+								searchTest('fotografias', getFilteredResults(), 20);
+							});
+
+
+
+						});
+					}(jQuery));
+				</script>
+
+
+
+
+			<!-- /**********************************\ -->
 			<!-- #POST TYPE -->
 			<!-- \**********************************/ -->
 			<?php } elseif ( get_post_type() == 'post-type') { ?>
@@ -84,29 +120,7 @@
 								#ON LOAD
 							\*------------------------------------*/
 
-							//runMasonry('.results', '.result' );
-
-							/*------------------------------------*\
-								#Triggered events
-							\*------------------------------------*/
-
-							$('.tab-filter').on('click', function(){
-								showFilters( this );
-							});
-
-							$('.filters__content .filter').on('click', function(){
-								addFilter( this );
-								searchTest('fotografias', getFilteredResults(), 20);
-							});
-
-							$('.filters__results .filter').on('click', function(){
-								removeFilter( this );
-								searchTest('fotografias', getFilteredResults(), 20);
-							});
-
-							$('.content-wrapper').scroll(function(){
-								fixedHeader();
-							});
+							runMasonry('.results', '.result' );
 
 							searchTest('fotografias', getFilteredResults(), 15);
 						});
@@ -155,6 +169,7 @@
 						/*------------------------------------*\
 							#Triggered events
 						\*------------------------------------*/
+
 						$('.content-wrapper').scroll(function(){
 							fixedHeader();
 						});
@@ -410,7 +425,7 @@
 				WHERE P.post_type = 'fotografias'
 				AND TT.taxonomy IN ('coleccion', 'año', 'fotografo', 'tema')
 				AND (
-					T.slug IN ( SELECT slug FROM wp_terms WHERE slug IN ('fondo-juan-cachu') ) 
+					T.slug IN ( SELECT slug FROM wp_terms WHERE slug IN ('fondo-juan-cachu') )
 					OR T.slug IN ( SELECT slug FROM wp_terms WHERE slug BETWEEN '1947' AND '1947')
 					OR T.slug IN ( SELECT slug FROM wp_terms T INNER JOIN wp_term_taxonomy TT ON TT.term_id = T.term_id WHERE slug LIKE 'L%' AND taxonomy = 'fotografo' )
 					OR T.name IN ( SELECT name FROM wp_terms WHERE name = '#test' )
@@ -419,7 +434,7 @@
 				LIMIT ".$limit;
 			$posts_info = $wpdb->get_results( $query, OBJECT );
 		} else {
-			
+
 			// SELECT P.id, P.post_title, T.name, T.slug FROM wp_posts P
 			$query = "
 	    		SELECT id, COUNT(id)  FROM wp_posts P
@@ -458,7 +473,7 @@
 			if($is_coleccion){
 				$coleccion_terms_in = implode("', '", $coleccion_terms);
 				$query = $query." T.slug IN ( SELECT slug FROM wp_terms WHERE slug IN ('".$coleccion_terms_in."') ) ";
-			} 
+			}
 
 			// Add filtering terms for años
 			if($is_ano){
@@ -467,7 +482,7 @@
 				$initial_year = $ano_terms[0];
 				$final_year = strval(intval($initial_year) + 10);
 				$query = $query."  T.slug IN ( SELECT slug FROM wp_terms WHERE slug BETWEEN '".$initial_year."' AND '".$final_year."')";
-			} 
+			}
 
 			// 	// 	OR T.slug IN ( SELECT slug FROM wp_terms T INNER JOIN wp_term_taxonomy TT ON TT.term_id = T.term_id WHERE slug LIKE 'L%' AND taxonomy = 'fotografo' )
 			// 	// 	OR T.name IN ( SELECT name FROM wp_terms WHERE name = '#test' )
@@ -521,7 +536,7 @@
 			if ( $coleccion ){
 				$coleccionName 	= $coleccion[0]->name;
 				$coleccionSlug 	= $coleccion[0]->slug;
-			} 
+			}
 
 			// Se arma el objecto que se regresa
 			$info_colecciones[$key] = array(
