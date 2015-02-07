@@ -55,6 +55,7 @@
 
 		$args = array(
 			'labels'             => $labels,
+			'description'		=> 'ssss',
 			'public'             => true,
 			'publicly_queryable' => true,
 			'show_ui'            => true,
