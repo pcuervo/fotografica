@@ -215,7 +215,7 @@
 				'query_var'         => true,
 				'rewrite'           => array( 'slug' => 'tipo-de-proyecto' ),
 			);
-			register_taxonomy( 'tipo-de-proyecto', 'fotografos', $args );
+			register_taxonomy( 'tipo-de-proyecto', 'proyectos', $args );
 		}// taxonomy apellido
 
 		// Tipo de publicacion
@@ -351,17 +351,48 @@
 				'noticias',
 				);
 			register_taxonomy( 'tema', $postTypeTema, $args );
-		}// taxonomy medio
+		}// taxonomy tema
+
+		// Lugar
+		if( ! taxonomy_exists('lugar')){
+			$labels = array(
+				'name'              => 'Lugares',
+				'singular_name'     => 'Lugar',
+				'search_items'      => 'Buscar',
+				'all_items'         => 'Todos',
+				'edit_item'         => 'Editar Lugar',
+				'update_item'       => 'Actualizar Lugar',
+				'add_new_item'      => 'Nuevo Lugar',
+				'new_item_name'     => 'Nombre Nuevo Lugar',
+				'menu_name'         => 'Lugares'
+			);
+			$args = array(
+				'hierarchical'      => true,
+				'labels'            => $labels,
+				'show_ui'           => true,
+				'show_admin_column' => true,
+				'show_in_nav_menus' => true,
+				'query_var'         => true,
+				'rewrite'           => array( 'slug' => 'lugar' ),
+			);
+			register_taxonomy( 'lugar', 'fotografias', $args );
+		}// taxonomy lugar
 
 		// Agregar palabras
 		insertYearTaxonomyTerms();
 		insertPhotographerTaxonomyTerms();
 		insertPhotographerTaxonomyTermsFromPostType();
+		insertPlaceTaxonomyTerms();
 
 		// Estas funciones solo se deben de correr una vez
 		//addPhotographerToPhoto();
 		//addYearToPhoto();
+		//addPlaceToPhoto();
 	}
+
+	/*
+	 * Insert taxonomy terms functions
+	 */
 
 	function insertYearTaxonomyTerms(){
 		global $wpdb;
@@ -411,12 +442,34 @@
 		}// foreach
 	}// insertPhotographerTaxonomyTermsFromPostType
 
+	function insertPlaceTaxonomyTerms(){
+		global $wpdb;
+		$results = $wpdb->get_results( 'SELECT DISTINCT TRIM(meta_value) as meta_value FROM wp_postmeta WHERE meta_key LIKE "%wpcf-lugar%" AND meta_value <> "" ORDER BY meta_value', OBJECT );
+
+		foreach ($results as $place) {
+			$term = term_exists($place->meta_value, 'lugar');
+			if ($term !== 0 && $term !== null) continue;
+
+			wp_insert_term($place->meta_value, 'lugar');
+		}
+	}// insertPlaceTaxonomyTerms
+
+	/*
+	 * Functions to relate taxonomy terms to post types 
+	 */
 	function addYearToPhoto(){
 		global $wpdb;
 		$results = $wpdb->get_results( 'SELECT post_id, meta_value FROM wp_postmeta INNER JOIN wp_posts ON wp_posts.id = post_id WHERE meta_key = "wpcf-ano-fotografia"', OBJECT );
 
 		foreach ($results as $year_term) { $term_taxonomy_ids = wp_set_object_terms( $year_term->post_id, $year_term->meta_value, 'año', true ); }
 	}// addYearToPhoto
+
+	function addPlaceToPhoto(){
+		global $wpdb;
+		$results = $wpdb->get_results( 'SELECT post_id, meta_value FROM wp_postmeta INNER JOIN wp_posts ON wp_posts.id = post_id WHERE meta_key LIKE "%wpcf-lugar%" AND meta_value <> ""', OBJECT );
+
+		foreach ($results as $place_term) { $term_taxonomy_ids = wp_set_object_terms( $place_term->post_id, $place_term->meta_value, 'lugar', true ); }
+	}// addPlaceToPhoto
 
 	function addPhotographerToPhoto(){
 		global $wpdb;
