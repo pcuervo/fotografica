@@ -476,7 +476,6 @@
 			if($is_coleccion || $is_ano) $query = $query." )";
 
 			$query = $query." GROUP BY id HAVING COUNT(id) > 1 ORDER BY RAND() LIMIT ".$limit;
-			echo $query;
 			//echo $query;
 			$posts_info = $wpdb->get_results( $query );
 		}
