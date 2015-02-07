@@ -59,6 +59,8 @@ function runMasonry(container, item){
 		$container.masonry({
 			itemSelector: item
 		});
+		$container.masonry( 'reloadItems' );
+		$container.masonry( 'layout' );
 	});
 }
 

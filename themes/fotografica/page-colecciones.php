@@ -210,9 +210,12 @@
 			<p class="[ uppercase ] [ js-num-resultados ]"><span></span> resultados con los filtros:</p>
 		</div>
 	</section><!-- .filters -->
+	<div class="[ loader ] [ center ]">
+		<div></div>
+	</div>
 	<section class="[ results ] [ row ] [ margin-bottom ]">
-
 	</section><!-- .results -->
+	<div class="clear"></div>
 	<div class="[ text-center ] [ margin-bottom ]">
 		<a class="[ button button--hollow button--dark ] [ inline-block ]">
 			Cargar más
