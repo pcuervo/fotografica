@@ -33,7 +33,7 @@
 					<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="decada">Década</a>
 					<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="tema">Tema</a>
 					<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="buscar">Buscar</a>
-					<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="opciones">Opciones</a>
+					<!--  <a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="opciones">Opciones</a> -->
 				</div><!-- row -->
 			</div><!-- wrapper -->
 		</div><!-- filters__tabs -->
@@ -69,7 +69,42 @@
 				<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">Z</a>
 			</div><!-- .filter-fotografos -->
 			<div class="[ filter-decada ]">
-				<a class="[ filter filter--active ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">1960</a>
+				<?php 
+					$args = array(
+					    'orderby'		=> 'name', 
+					    'order'         => 'ASC',
+					    'hide_empty'    => true, 
+					); 
+					$terms = get_terms('año', $args);
+					$decadas = array();
+					foreach ($terms as $key => $term) {
+						if (strpos($term->name,'/') !== false) {
+							$decada = 'sin fecha';
+						} else if (strpos($term->name,'-') !== false) {
+						    $rango_fechas = explode('-', $term->name);
+						    $ano_inicial = substr(trim($rango_fechas[0]), 0, -1);
+						    $ano_inicial = $ano_inicial.'0';
+						    $ano_final = substr(trim($rango_fechas[1]), 0, -1);
+						    $ano_final = $ano_final.'0';
+						    array_push($decadas, $ano_inicial);
+						    array_push($decadas, $ano_final);
+						} else {
+							$decada = substr($term->name, 0, -1);
+							$decada = $decada.'0';
+							array_push($decadas, $decada);
+						}
+					}
+					$decadas = array_unique($decadas);
+					foreach ($decadas as $decada) {
+				?>
+						<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="año" data-value="<?php echo $decada ?>"><?php echo $decada ?></a>
+				<?php 
+					}
+				?>
+						
+				<?php
+					
+				?>
 			</div><!-- .filter-decada -->
 			<div class="[ filter-tema ]">
 				<a class="[ filter filter--active ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">#méxico</a>

@@ -181,13 +181,22 @@ function removeFilter(element){
 
 function getFilteredResults(){
 	var activos = $('.filters__results .filter--active');
+	var search_filters = [];
 	$.each(activos, function(i, val){
+		var current_filter = {};
 		var filter_type = $(val).data('type');
 		var filter_value = $(val).data('value');
-		console.log(filter_type);
-		console.log(filter_value);
+		current_filter['type'] = filter_type;
+		current_filter['value'] = filter_value;
+		clearGrid();
+		search_filters.push(current_filter);
 	});
+	return search_filters;
 }// getFilteredResults
+
+function clearGrid(){
+	$('.results').empty();
+}// clearGrid
 
 function fixedHeader(){
 	//Get the header height so we can now when
@@ -231,10 +240,15 @@ function openLightbox(){
 }
 
 // AJAX para buscadores
-function searchColeccionesTest(post_type){
+function searchTest(post_type, filters, limit){
 	var user_data = {};
 	user_data['action'] = 'advanced_search';
 	user_data['post_type'] = post_type;
+	user_data['limit'] = limit;
+
+	user_data['filters'] = '';
+	if(filters.length > 0) 
+		user_data['filters'] = filters;
 
 	$.post(
         ajax_url,
@@ -242,7 +256,6 @@ function searchColeccionesTest(post_type){
         function(response){
         	console.log(response);
         	var json_posts = $.parseJSON(response);
-
         	$.each(json_posts, function(i, val){
         		var html_photo = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]"> \
 					<div class="[ relative ]"> \
@@ -253,10 +266,9 @@ function searchColeccionesTest(post_type){
 								<p class="[ text-center ]"> \
 									<a href="#" class="[ media--info__author ]">'+val.autor+'</a> \
 									, <a href="#" class="[ media--info__name ]">'+val.titulo+'</a> \
-									, de la serie <span class="[ media--info__series ]">colecciones</span> \
-									, <span class="[ media--info__place ]">lugar</span> \
-									, <span class="[ media--info__circa ]">circa</span> \
-									, <span class="[ media--info__date ]">fecha</span> \
+									, de la serie <span class="[ media--info__series ]">'+val.coleccion+'</span> \
+									, <span class="[ media--info__place ]">'+val.lugar+'</span> \
+									, <span class="[ media--info__date ]">'+val.ano+'</span> \
 								</p> \
 							</div> \
 						</a> \
@@ -264,7 +276,6 @@ function searchColeccionesTest(post_type){
 				</article>';
 				$(html_photo).appendTo('.results');
         	});
-
         	runMasonry('.results', '.result' );
     		
         }// response
