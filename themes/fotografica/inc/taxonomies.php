@@ -377,7 +377,7 @@
 
 	function insertPhotographerTaxonomyTerms(){
 		global $wpdb;
-		$results = $wpdb->get_results( 'SELECT post_id, meta_key, meta_value FROM wp_postmeta WHERE (meta_key = "wpcf-nombre-fotografo" OR meta_key = "wpcf-apellido-fotografo") AND meta_key <> "" AND meta_value <> "" ORDER BY post_id, meta_key DESC, meta_value', OBJECT );	
+		$results = $wpdb->get_results( 'SELECT post_id, meta_key, meta_value FROM wp_postmeta WHERE (meta_key = "wpcf-nombre-fotografo" OR meta_key = "wpcf-apellido-fotografo") AND meta_key <> "" AND meta_value <> "" ORDER BY post_id, meta_key DESC, meta_value', OBJECT );
 
 		$current_post_id = -1;
 		foreach ($results as $photographer) {
@@ -400,7 +400,7 @@
 
 	function insertPhotographerTaxonomyTermsFromPostType(){
 		global $wpdb;
-		$results = $wpdb->get_results( 'SELECT trim(post_title) as post_title from wp_posts where post_type = "fotografos" AND post_title not in ( SELECT name FROM wp_terms T INNER JOIN wp_term_taxonomy TT ON T.term_id = TT.term_id WHERE TT.taxonomy = "fotografo")', OBJECT );	
+		$results = $wpdb->get_results( 'SELECT trim(post_title) as post_title from wp_posts where post_type = "fotografos" AND post_title not in ( SELECT name FROM wp_terms T INNER JOIN wp_term_taxonomy TT ON T.term_id = TT.term_id WHERE TT.taxonomy = "fotografo")', OBJECT );
 
 		$current_post_id = -1;
 		foreach ($results as $photographer) {
@@ -434,6 +434,6 @@
 				$apellido = $photographer_term->meta_value;
 				$term_taxonomy_ids = wp_set_object_terms( $photographer_term->post_id, $nombre.' '.$apellido, 'fotografo', true );
 				$current_post_id = -1;
-			}			
+			}
 		}
 	}// addPhotographerToPhoto
