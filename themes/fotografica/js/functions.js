@@ -247,17 +247,17 @@ function searchTest(post_type, filters, limit){
 	user_data['limit'] = limit;
 
 	user_data['filters'] = '';
-	if(filters.length > 0) 
+	if(filters.length > 0)
 		user_data['filters'] = filters;
-
 	$.post(
-        ajax_url,
-        user_data,
-        function(response){
-        	console.log(response);
-        	var json_posts = $.parseJSON(response);
-        	$.each(json_posts, function(i, val){
-        		var html_photo = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]"> \
+		ajax_url,
+		user_data,
+		function(response){
+			$('.loader').hide();
+			console.log(response);
+			var json_posts = $.parseJSON(response);
+			$.each(json_posts, function(i, val){
+				var html_photo = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]"> \
 					<div class="[ relative ]"> \
 						<a class="[ block ]" href="#"> \
 							<img src="'+val.img_url+'" class="[ image-responsive ]" /> \
@@ -275,11 +275,11 @@ function searchTest(post_type, filters, limit){
 					</div> \
 				</article>';
 				$(html_photo).appendTo('.results');
-        	});
-        	runMasonry('.results', '.result' );
-    		
-        }// response
-    ); 
+			});
+			runMasonry('.results', '.result' );
+
+		}// response
+	);
 }// searchColeccionesTest
 
 

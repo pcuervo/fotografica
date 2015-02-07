@@ -1,9 +1,17 @@
-<?php get_header(); ?>
-	<!-- /**************************************\ -->
-	<!-- #COLECCIONES -->
-	<!-- \**************************************/ -->
-	<?php
-	$bgColecciones = '';
+<?php
+	get_header();
+
+	/*------------------------------------*\
+	    #GET THE POST TYPE
+	\*------------------------------------*/
+	$postType = get_post_type();
+
+
+
+	/*------------------------------------*\
+	    #ARCHIVE HERO
+	\*------------------------------------*/
+	$bgArchive = '';
 	$coleccionColecciones = '';
 	$authorColecciones = '';
 	$titleColecciones = '';
@@ -20,7 +28,7 @@
 	if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post(); ?>
 		<?php
 
-			$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+			$bgArchive = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
 
 			$coleccionColecciones 		= wp_get_post_terms( $post->ID, 'coleccion' );
 			$coleccionColeccionesName 	= $coleccionColecciones[0]->name;
@@ -62,10 +70,10 @@
 
 			$permalinkColeccion = get_permalink( $post->ID );
 	endwhile; endif; wp_reset_query(); ?>
-	<section class="[ colecciones ] [ bg-image ]" style="background-image: url(<?php echo $bgColecciones[0]; ?>)">
+	<section class="[ colecciones ] [ bg-image ]" style="background-image: url(<?php echo $bgArchive[0]; ?>)">
 		<div class="[ opacity-gradient rectangle ]">
 			<h2 class="[ center-full ] [ title ]">
-				Colecciones <br /><span class="[ sub-title ] [ block xmall-12 ] [ text-center ]">Lorem ipsum dolro sit amet</span>
+				<?php echo $postType; ?> <br /><span class="[ sub-title ] [ block xmall-12 ] [ text-center ]">Lorem ipsum dolro sit amet</span>
 			</h2>
 			<div class="[ media-info media-info--large ] [ xmall-12 ] [ shown--medium ]">
 				<p class="[ text-center ]">
@@ -127,43 +135,54 @@
 			</div>
 		</div>
 	</section>
+
+
 	<section class="[ filters ] [ margin-bottom--small ]">
 		<div class="[ filters__tabs ] [ clearfix ]">
 			<div class="[ wrapper ]">
 				<div class="[ row ]">
-					<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="colecciones">Colecciones</a>
-					<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="fotografos">Fotógrafos</a>
-					<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="decada">Década</a>
-					<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="tema">Tema</a>
-					<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="buscar">Buscar</a>
+					<!--  /********************************\ -->
+						<!-- #FOTOGRAFOS -->
+					<!--  \**********************************/ -->
+					<?php if ( $postType == 'fotografos' ){ ?>
+						<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="colecciones">Colecciones</a>
+						<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="pais">País</a>
+						<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="decada">Década</a>
+						<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="tema">Tema</a>
+						<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="apellido">Apellido</a>
+					<?php } ?>
 				</div><!-- row -->
 			</div><!-- wrapper -->
 		</div><!-- filters__tabs -->
 		<div class="[ filters__content ] [ text-center ]">
-			<div class="[ filter-colecciones ]">
-				<?php
-					$args = array(
-						'orderby'		=> 'name',
-						'order' 		=> 'ASC',
-						'hide_empty' 	=> true,
-					);
-					$terms = get_terms('coleccion', $args);
-					foreach ($terms as $key => $term) {
-				?>
-						<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="coleccion" data-value="<?php echo $term->slug ?>"><?php echo $term->name ?><span><i class="fa fa-info-circle"></i></span></a>
-				<?php
-					}
-				?>
-			</div><!-- .filter-colecciones -->
-			<div class="[ filter-fotografos ]">
-				<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">A</a>
-			</div><!-- .filter-fotografos -->
+			<!--  /********************************\ -->
+				<!-- #FOTOGRAFOS -->
+			<!--  \**********************************/ -->
+			<?php if ( $postType == 'fotografos' ){ ?>
+				<div class="[ filter-colecciones ]">
+					<?php
+						$args = array(
+							'orderby'		=> 'name',
+							'order'         => 'ASC',
+							'hide_empty'    => true
+						);
+						$terms = get_terms('coleccion', $args);
+						foreach ($terms as $key => $term) {
+					?>
+							<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="coleccion" data-value="<?php echo $term->slug ?>"><?php echo $term->name ?><span><i class="fa fa-info-circle"></i></span></a>
+					<?php
+						}
+					?>
+				</div><!-- .filter-colecciones -->
+			<?php } ?>
+			<div class="[ filter-pais ]">
+			</div><!-- .filter-pais -->
 			<div class="[ filter-decada ]">
 				<?php
 					$args = array(
-						'orderby'		=> 'name',
-						'order'         => 'ASC',
-						'hide_empty'    => true,
+					    'orderby'		=> 'name',
+					    'order'         => 'ASC',
+					    'hide_empty'    => true,
 					);
 					$terms = get_terms('año', $args);
 					$decadas = array();
@@ -171,13 +190,13 @@
 						if (strpos($term->name,'/') !== false) {
 							$decada = 'sin fecha';
 						} else if (strpos($term->name,'-') !== false) {
-							$rango_fechas = explode('-', $term->name);
-							$ano_inicial = substr(trim($rango_fechas[0]), 0, -1);
-							$ano_inicial = $ano_inicial.'0';
-							$ano_final = substr(trim($rango_fechas[1]), 0, -1);
-							$ano_final = $ano_final.'0';
-							array_push($decadas, $ano_inicial);
-							array_push($decadas, $ano_final);
+						    $rango_fechas = explode('-', $term->name);
+						    $ano_inicial = substr(trim($rango_fechas[0]), 0, -1);
+						    $ano_inicial = $ano_inicial.'0';
+						    $ano_final = substr(trim($rango_fechas[1]), 0, -1);
+						    $ano_final = $ano_final.'0';
+						    array_push($decadas, $ano_inicial);
+						    array_push($decadas, $ano_final);
 						} else {
 							$decada = substr($term->name, 0, -1);
 							$decada = $decada.'0';
@@ -195,23 +214,18 @@
 			<div class="[ filter-tema ]">
 				<a class="[ filter filter--active ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">#méxico</a>
 			</div><!-- .filter-tema -->
-			<div class="[ filter-buscar ]">
-				<form class="[ margin-bottom--small ]" action="">
-					<fieldset class="[ columna xmall-12 medium-8 ] [ center ]">
-						<input class="[ columna xmall-10 medium-11 ]" type="text" placeholder="¿Qué quieres ver?">
-						<button class="" type="submit">
-							<i class="[ icon-search "></i>
-						</button>
-					</fieldset>
-				</form>
-			</div><!-- .filter-buscar -->
+			<div class="[ filter-apellido ]">
+				<!-- <a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">Z</a> -->
+			</div><!-- .filter-apellido -->
 		</div><!-- filters__content -->
 		<div class="[ filters__results ] [ padding--small text-center ]">
 			<p class="[ uppercase ] [ js-num-resultados ]"><span></span> resultados con los filtros:</p>
 		</div>
 	</section><!-- .filters -->
 	<section class="[ results ] [ row ] [ margin-bottom ]">
-
+		<div class='[ loader ] [ center ]'>
+			<div></div>
+		</div>
 	</section><!-- .results -->
 	<div class="[ text-center ] [ margin-bottom ]">
 		<a class="[ button button--hollow button--dark ] [ inline-block ]">
