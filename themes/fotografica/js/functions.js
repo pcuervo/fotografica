@@ -259,6 +259,7 @@ function searchTest(post_type, filters, limit){
 			console.log(response);
 			var json_posts = $.parseJSON(response);
 			$.each(json_posts, function(i, val){
+				console.log(val);
 				var html_photo = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]"> \
 					<div class="[ relative ]"> \
 						<a class="[ block ]" href="#"> \
