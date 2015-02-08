@@ -51,11 +51,6 @@
 						});
 					}(jQuery));
 				</script>
-
-
-
-
-
 			<!-- /**********************************\ -->
 			<!-- #ARCHIVE -->
 			<!-- \**********************************/ -->
@@ -88,10 +83,6 @@
 						});
 					}(jQuery));
 				</script>
-
-
-
-
 			<!-- /**********************************\ -->
 			<!-- #POST TYPE -->
 			<!-- \**********************************/ -->
@@ -104,10 +95,6 @@
 						});
 					}(jQuery));
 				</script>
-
-
-
-
 			<!-- /**********************************\ -->
 			<!-- #PAGE COLECCIONES -->
 			<!-- \**********************************/ -->
@@ -120,7 +107,31 @@
 								#ON LOAD
 							\*------------------------------------*/
 
+							$('.tab-filter').on('click', function(){
+								showFilters( this );
+							});
+
+							$('.filters__content').on('click', '.filter', function(){
+								console.log(this);
+								addFilter( this );
+								searchTest('fotografias', getFilteredResults(), 20);
+							});
+
+							$('.filters__results').on('click', '.filter', function(){
+								removeFilter( this );
+								searchTest('fotografias', getFilteredResults(), 20);
+							});
+
 							runMasonry('.results', '.result' );
+
+							<?php 
+								global $coleccion; 
+								if($coleccion != '') { 
+							?> 		
+									var filter = $('.filter[data-value="<?php echo $coleccion; ?>"]');
+									console.log(filter);
+									addFilter( filter );
+							<?php } ?>
 
 							searchTest('fotografias', getFilteredResults(), 15);
 						});
@@ -443,11 +454,16 @@
 				INNER JOIN wp_terms T ON T.term_id = TT.term_id
 				WHERE P.post_type = 'fotografias'";
 
+			$filter_type_count = -1;
 			$taxonomies = array();
 			$is_coleccion = false;
 			$coleccion_terms = array();
 			$is_ano = false;
 			$ano_terms = array();
+			$is_fotografo = false;
+			$fotografo_terms = array();
+			$is_tema = false;
+			$tema_terms = array();
 			foreach ($filtros as $key => $filtro) {
 				array_push($taxonomies, $filtro['type']);
 
@@ -459,6 +475,14 @@
 					$is_ano = true;
 					array_push($ano_terms, $filtro['value']);
 				}
+				if( $filtro['type'] == 'fotografo' ) {
+					$is_fotografo = true;
+					array_push($fotografo_terms, $filtro['value']);
+				}
+				if( $filtro['type'] == 'tema' ) {
+					$is_tema = true;
+					array_push($tema_terms, '#'.$filtro['value']);
+				}
 			}
 			$taxonomies = array_unique($taxonomies);
 			$taxonomies_in = implode("', '", $taxonomies);
@@ -467,30 +491,62 @@
 			$query = $query." AND TT.taxonomy IN ('".$taxonomies_in."')";
 
 			// If the filters include terms, open condition
-			if($is_coleccion || $is_ano) $query = $query." AND ( ";
+			if($is_coleccion || $is_ano || $is_fotografo || $is_tema) $query = $query." AND ( ";
 
 			// Add filtering terms for colecciones
 			if($is_coleccion){
+				$filter_type_count++;
 				$coleccion_terms_in = implode("', '", $coleccion_terms);
 				$query = $query." T.slug IN ( SELECT slug FROM wp_terms WHERE slug IN ('".$coleccion_terms_in."') ) ";
 			}
 
 			// Add filtering terms for años
 			if($is_ano){
+				$filter_type_count++;
 				if($is_coleccion) $query = $query." OR";
-				$ano_terms_in = implode("', '", $ano_terms);
-				$initial_year = $ano_terms[0];
-				$final_year = strval(intval($initial_year) + 10);
-				$query = $query."  T.slug IN ( SELECT slug FROM wp_terms WHERE slug BETWEEN '".$initial_year."' AND '".$final_year."')";
+
+				$query = $query."  T.slug IN ( SELECT slug FROM wp_terms WHERE";
+				foreach ($ano_terms as $key => $ano) {
+					$initial_year = $ano;
+					$final_year = strval(intval($ano) + 10);
+					if($key == 0) {
+						$query .= " slug  BETWEEN '".$initial_year."' AND '".$final_year."'";
+						continue;
+					} 
+					$query .= " OR slug BETWEEN '".$initial_year."' AND '".$final_year."'";
+				}
+				$query .= ")";
 			}
 
-			// 	// 	OR T.slug IN ( SELECT slug FROM wp_terms T INNER JOIN wp_term_taxonomy TT ON TT.term_id = T.term_id WHERE slug LIKE 'L%' AND taxonomy = 'fotografo' )
-			// 	// 	OR T.name IN ( SELECT name FROM wp_terms WHERE name = '#test' )
+			// Add filtering terms for años
+			if($is_fotografo){
+				$filter_type_count++;
+				if($is_coleccion || $is_ano) $query = $query." OR";
+				
+				$query .= "  T.slug IN ( SELECT slug FROM wp_terms T INNER JOIN wp_term_taxonomy TT ON TT.term_id = T.term_id WHERE (";
 
-			// Close filtering terms if they exist
-			if($is_coleccion || $is_ano) $query = $query." )";
+				foreach ($fotografo_terms as $key => $letter) {
+					if($key == 0) {
+						$query .= " slug LIKE '".$letter."%'"; 
+						continue;
+					} 
+					$query .= " OR slug LIKE '".$letter."%'"; 
+				}
+				$query .= ") AND taxonomy = 'fotografo' )";
+			}
 
-			$query = $query." GROUP BY id HAVING COUNT(id) > 0 ORDER BY RAND() LIMIT ".$limit;
+			// Add filtering terms for colecciones
+			if($is_tema){
+				if($is_coleccion || $is_ano || $is_fotografo) $query = $query." OR";
+				$filter_type_count++;
+				$tema_terms_id = implode("', '", $tema_terms);
+				$query = $query." T.slug IN ( SELECT slug FROM wp_terms WHERE name IN ('".$tema_terms_id."') ) ";
+			}
+
+			// Close filtering terms if  they exist
+			if($is_coleccion || $is_ano || $is_fotografo || $is_tema) $query = $query." )";
+
+			$query = $query." GROUP BY id HAVING COUNT(id) > ".$filter_type_count." ORDER BY RAND() LIMIT ".$limit;
 			//echo $query;
 			$posts_info = $wpdb->get_results( $query );
 		}

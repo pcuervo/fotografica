@@ -383,6 +383,7 @@
 		insertPhotographerTaxonomyTerms();
 		insertPhotographerTaxonomyTermsFromPostType();
 		insertPlaceTaxonomyTerms();
+		insertLastNameTaxonomyTerms();
 
 		// Estas funciones solo se deben de correr una vez
 		//addPhotographerToPhoto();
@@ -454,6 +455,18 @@
 		}
 	}// insertPlaceTaxonomyTerms
 
+	function insertLastNameTaxonomyTerms(){
+		global $wpdb;
+		$results = $wpdb->get_results( 'SELECT DISTINCT TRIM(meta_value) as meta_value FROM wp_postmeta WHERE meta_key LIKE "%wpcf-apellido%" AND meta_value <> "" ORDER BY meta_value', OBJECT );
+
+		foreach ($results as $place) {
+			$term = term_exists($place->meta_value, 'apellidos');
+			if ($term !== 0 && $term !== null) continue;
+
+			wp_insert_term($place->meta_value, 'apellido');
+		}
+	}// insertLastNameTaxonomyTerms
+
 	/*
 	 * Functions to relate taxonomy terms to post types 
 	 */
@@ -490,3 +503,5 @@
 			}
 		}
 	}// addPhotographerToPhoto
+
+	

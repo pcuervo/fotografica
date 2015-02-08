@@ -3,6 +3,11 @@
 	<!-- #COLECCIONES -->
 	<!-- \**************************************/ -->
 	<?php
+	// ¿Hay algún filtro de colección?
+	global $coleccion; 
+	$coleccion = "";
+	if(isset($_GET['coleccion'])) $coleccion = $_GET['coleccion'];
+
 	$bgColecciones = '';
 	$coleccionColecciones = '';
 	$authorColecciones = '';
@@ -156,7 +161,24 @@
 				?>
 			</div><!-- .filter-colecciones -->
 			<div class="[ filter-fotografos ]">
-				<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">A</a>
+				<?php 
+					$query = "
+			    		SELECT DISTINCT LEFT(name, 1) as letter FROM wp_posts P
+						INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
+						INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
+						INNER JOIN wp_terms T ON T.term_id = TT.term_id
+						WHERE P.post_type = 'fotografias' 
+						AND taxonomy = 'fotografo'
+						ORDER BY letter";
+					$first_letters = $wpdb->get_results( $query );
+
+					foreach ($first_letters as $letter) {
+				?>
+					<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="fotografo" data-value="<?php echo $letter->letter ?>"><?php echo $letter->letter ?></a>		
+				<?php
+					}
+				?>
+				
 			</div><!-- .filter-fotografos -->
 			<div class="[ filter-decada ]">
 				<?php
@@ -193,7 +215,19 @@
 				?>
 			</div><!-- .filter-decada -->
 			<div class="[ filter-tema ]">
-				<a class="[ filter filter--active ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">#méxico</a>
+				<?php
+					$args = array(
+						'orderby'		=> 'name',
+						'order' 		=> 'ASC',
+						'hide_empty' 	=> true,
+					);
+					$terms = get_terms('tema', $args);
+					foreach ($terms as $key => $term) {
+				?>
+						<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="tema" data-value="<?php echo $term->slug ?>"><?php echo $term->name ?></a>
+				<?php
+					}
+				?>
 			</div><!-- .filter-tema -->
 			<div class="[ filter-buscar ]">
 				<form class="[ margin-bottom--small ]" action="">

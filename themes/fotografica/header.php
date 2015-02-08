@@ -71,7 +71,7 @@
 									</ul>
 								</div>
 							</li>
-							<li><a class="[ text-center uppercase ]" href="#">Fotógrafos</a></li>
+							<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/fotografos'?>">Fotógrafos</a></li>
 							<li>
 								<a class="[ text-center uppercase ]" href="#">Proyectos</a>
 								<div class="[ mp-level ]">
@@ -104,7 +104,7 @@
 									</ul>
 								</div>
 							</li>
-							<li><a class="[ text-center uppercase ]" href="#">Exposiciones</a></li>
+							<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/exposiciones'?>">Exposiciones</a></li>
 							<li>
 								<a class="[ text-center uppercase ]" href="#">Publicaciones</a>
 								<div class="[ mp-level ]">
@@ -190,7 +190,7 @@
 														<h2 class="[ text-center uppercase ]">Conservación</h2>
 														<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
 														<ul>
-															<li><a class="[ text-center uppercase ]" href="#"><?php the_title() ?></a></li>	
+															<li><a class="[ text-center uppercase ]" href="<?php the_permalink() ?>"><?php the_title() ?></a></li>	
 														</ul>
 													</div>
 												</li>		
