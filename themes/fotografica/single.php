@@ -95,8 +95,8 @@
 		</div>
 	</section>
 	<section class="[ share ] [ margin-bottom--large ]">
-		<div class="[ wrapper ]">
-			<div class="[ clearfix ]">
+		<div class="[ wrapper ][ clearfix ]">
+			<div class="[ clearfix ][ columna medium-6 center ]">
 				<div class="[ button button--dark button__share ] [ columna xmall-3 ]">
 					<i class="[ xmall-3 inline-block align-middle ] fa fa-twitter"></i><span class="[ xmall-2 ]">&nbsp;</span><span class="[ xmall-7 inline-block align-middle ]">54</span>
 				</div>
@@ -104,7 +104,7 @@
 					<i class="[ xmall-3 inline-block align-middle ] fa fa-facebook-square"></i><span class="[ xmall-2 ]">&nbsp;</span><span class="[ xmall-7 inline-block align-middle ]">399</span>
 				</div>
 				<div class="[ button button--dark button__share ] [ columna xmall-3 ]">
-					<i class="[ xmall-3 inline-block align-middle ] fa fa-pinterest"></i><span class="[ xmall-2 ]">&nbsp;</span><span class="[ xmall-7 inline-block align-middle ]">9</span>
+					<i class="[ xmall-3 inline-block align-middle ] fa fa-instagram"></i><span class="[ xmall-2 ]">&nbsp;</span><span class="[ xmall-7 inline-block align-middle ]">9</span>
 				</div>
 				<div class="[ button button--dark button__share ] [ columna xmall-3 ]">
 					<i class="[ xmall-3 inline-block align-middle ] fa fa-heart"></i><span class="[ xmall-2 ]">&nbsp;</span><span class="[ xmall-7 inline-block align-middle ]">9999</span>
@@ -184,6 +184,7 @@
 				?>
 					<article class="[ relacionadas ] [ bg-image ] [ span xmall-12 medium-6 ]" style="background-image: url(<?php echo $bgColecciones[0]; ?>)">
 						<div class="[ opacity-gradient <?php echo ( $counter == 1 ) ? '[ square square-absolute ]' : '[ rectangle rectangle-absolute ]' ?> ]">
+							<a class="[ block ][ media-link ]" href="<?php echo $permalinkColeccion; ?>"></a>
 							<div class="[ media-info media-info--small ] [ xmall-12 ]">
 								<p class="[ text-center ]">
 

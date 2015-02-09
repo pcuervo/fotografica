@@ -137,6 +137,25 @@
 							<?php } ?>
 
 							advancedSearch('fotografias', getFilteredResults(), 15);
+
+							/*------------------------------------*\
+								#Triggered events
+							\*------------------------------------*/
+
+							$('.tab-filter').on('click', function(){
+								showFilters( this );
+							});
+
+							$('.filters__content').on('click', '.filter', function(){
+								addFilter( this );
+								searchTest('fotografias', getFilteredResults(), 20);
+							});
+
+							$('.filters__results').on('click', '.filter', function(){
+								removeFilter( this );
+								searchTest('fotografias', getFilteredResults(), 20);
+							});
+>>>>>>> a04bbc235b7f1c14b485708d58b66937975f9226
 						});
 					}(jQuery));
 				</script>

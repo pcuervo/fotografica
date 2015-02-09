@@ -32,13 +32,13 @@
 									<h2 class="[ text-center uppercase ]">Colecciones</h2>
 									<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
 									<ul class="[ overflow-scroll ]">
-										<?php 
+										<?php
 											$args = array(
-											    'orderby'		=> 'name', 
+											    'orderby'		=> 'name',
 											    'order'         => 'ASC',
-											    'hide_empty'    => true, 
+											    'hide_empty'    => true,
 											    'parent'		=> 0,
-											); 
+											);
 											$terms = get_terms('coleccion', $args);
 											foreach ($terms as $key => $term) {
 												// Does the current term have any children?
@@ -47,7 +47,7 @@
 										?>
 													<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/colecciones?coleccion='.$term->slug ?>"><?php echo $term->name ?></a></li>
 										<?php
-													continue; 
+													continue;
 												}
 										?>
 												<li>
@@ -61,11 +61,11 @@
 															$child_term = get_term_by('id', $child, 'coleccion');
 															echo '<li><a class="[ text-center uppercase ]" href="#">'.$child_term->name.'</a></li>';
 														}
-										?>		
+										?>
 														</ul>
 													</div>
-												</li>		
-										<?php										
+												</li>
+										<?php
 											}// foreach term
 										?>
 									</ul>
@@ -84,11 +84,11 @@
 												'posts_per_page' 	=> -1,
 											);
 											$queryProyectos = new WP_Query( $args );
-											if ( $queryProyectos->have_posts() ) : while ( $queryProyectos->have_posts() ) : $queryProyectos->the_post(); 
+											if ( $queryProyectos->have_posts() ) : while ( $queryProyectos->have_posts() ) : $queryProyectos->the_post();
 										?>
 												<li><a class="[ text-center uppercase ]" href="<?php the_permalink() ?>"><?php the_title() ?></a></li>
 										<?php
-											endwhile; endif; wp_reset_query(); 
+											endwhile; endif; wp_reset_query();
 										?>
 										<li>
 											<a class="[ text-center uppercase ]" href="#">Curadurías virtuales</a>
@@ -117,11 +117,11 @@
 												'posts_per_page' 	=> -1,
 											);
 											$queryProyectos = new WP_Query( $args );
-											if ( $queryProyectos->have_posts() ) : while ( $queryProyectos->have_posts() ) : $queryProyectos->the_post(); 
+											if ( $queryProyectos->have_posts() ) : while ( $queryProyectos->have_posts() ) : $queryProyectos->the_post();
 										?>
 												<li><a class="[ text-center uppercase ]" href="<?php the_permalink() ?>"><?php the_title() ?></a></li>
 										<?php
-											endwhile; endif; wp_reset_query(); 
+											endwhile; endif; wp_reset_query();
 										?>
 									</ul>
 								</div>
@@ -138,11 +138,11 @@
 												'posts_per_page' 	=> -1,
 											);
 											$queryProyectos = new WP_Query( $args );
-											if ( $queryProyectos->have_posts() ) : while ( $queryProyectos->have_posts() ) : $queryProyectos->the_post(); 
+											if ( $queryProyectos->have_posts() ) : while ( $queryProyectos->have_posts() ) : $queryProyectos->the_post();
 										?>
 												<li><a class="[ text-center uppercase ]" href="<?php the_permalink() ?>"><?php the_title() ?></a></li>
 										<?php
-											endwhile; endif; wp_reset_query(); 
+											endwhile; endif; wp_reset_query();
 										?>
 									</ul>
 								</div>
@@ -159,11 +159,11 @@
 												'posts_per_page' 	=> -1,
 											);
 											$queryProyectos = new WP_Query( $args );
-											if ( $queryProyectos->have_posts() ) : while ( $queryProyectos->have_posts() ) : $queryProyectos->the_post(); 
+											if ( $queryProyectos->have_posts() ) : while ( $queryProyectos->have_posts() ) : $queryProyectos->the_post();
 										?>
 												<li><a class="[ text-center uppercase ]" href="<?php the_permalink() ?>"><?php the_title() ?></a></li>
 										<?php
-											endwhile; endif; wp_reset_query(); 
+											endwhile; endif; wp_reset_query();
 										?>
 									</ul>
 								</div>
@@ -182,7 +182,7 @@
 												'tipo-de-trabajo' => 'conservacion'
 											);
 											$queryConservacion = new WP_Query( $args );
-											if ( $queryConservacion->have_posts() ) : while ( $queryConservacion->have_posts() ) : $queryConservacion->the_post(); 
+											if ( $queryConservacion->have_posts() ) : while ( $queryConservacion->have_posts() ) : $queryConservacion->the_post();
 										?>
 												<li>
 													<a class="[ text-center uppercase ]" href="#">Conservación</a>
@@ -193,9 +193,9 @@
 															<li><a class="[ text-center uppercase ]" href="<?php the_permalink() ?>"><?php the_title() ?></a></li>	
 														</ul>
 													</div>
-												</li>		
+												</li>
 										<?php
-											endwhile; endif; wp_reset_query(); 
+											endwhile; endif; wp_reset_query();
 
 											$args = array(
 												'posts_per_page' => -1,
@@ -203,7 +203,7 @@
 												'tipo-de-trabajo' => 'investigacion'
 											);
 											$queryInvestigacion = new WP_Query( $args );
-											if ( $queryInvestigacion->have_posts() ) : while ( $queryInvestigacion->have_posts() ) : $queryInvestigacion->the_post(); 
+											if ( $queryInvestigacion->have_posts() ) : while ( $queryInvestigacion->have_posts() ) : $queryInvestigacion->the_post();
 										?>
 												<li>
 													<a class="[ text-center uppercase ]" href="#">Investigación</a>
@@ -211,12 +211,12 @@
 														<h2 class="[ text-center uppercase ]">Investigación</h2>
 														<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
 														<ul>
-															<li><a class="[ text-center uppercase ]" href="#"><?php the_title() ?></a></li>	
+															<li><a class="[ text-center uppercase ]" href="#"><?php the_title() ?></a></li>
 														</ul>
 													</div>
-												</li>		
+												</li>
 										<?php
-											endwhile; endif; wp_reset_query(); 
+											endwhile; endif; wp_reset_query();
 
 											$args = array(
 												'posts_per_page' => -1,
@@ -224,7 +224,7 @@
 												'tipo-de-trabajo' => 'conocenos'
 											);
 											$queryConocenos = new WP_Query( $args );
-											if ( $queryConocenos->have_posts() ) : while ( $queryConocenos->have_posts() ) : $queryConocenos->the_post(); 
+											if ( $queryConocenos->have_posts() ) : while ( $queryConocenos->have_posts() ) : $queryConocenos->the_post();
 										?>
 												<li>
 													<a class="[ text-center uppercase ]" href="#">Conócenos</a>
@@ -232,12 +232,12 @@
 														<h2 class="[ text-center uppercase ]">Conócenos</h2>
 														<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
 														<ul>
-															<li><a class="[ text-center uppercase ]" href="#"><?php the_title() ?></a></li>	
+															<li><a class="[ text-center uppercase ]" href="#"><?php the_title() ?></a></li>
 														</ul>
 													</div>
-												</li>		
+												</li>
 										<?php
-											endwhile; endif; wp_reset_query(); 
+											endwhile; endif; wp_reset_query();
 										?>
 									</ul>
 								</div>
@@ -292,7 +292,7 @@
 												<i class="[ icon-facebook ]"></i>
 											</a>
 											<a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="#">
-												<i class="[ icon-pinterest ]"></i>
+												<i class="[ icon-instagram ]"></i>
 											</a>
 											<a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="#">
 												<i class="[ icon-search ]"></i>
