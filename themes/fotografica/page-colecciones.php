@@ -174,7 +174,7 @@
 
 					foreach ($first_letters as $letter) {
 				?>
-					<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="fotografo" data-value="<?php echo $letter->letter ?>"><?php echo $letter->letter ?></a>		
+					<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="fotografo" data-value="<?php echo $letter->letter ?>"><?php echo $letter->letter?></a>		
 				<?php
 					}
 				?>				
@@ -250,7 +250,7 @@
 	</section><!-- .results -->
 	<div class="clear"></div>
 	<div class="[ text-center ] [ margin-bottom ]">
-		<a class="[ button button--hollow button--dark ] [ inline-block ]">
+		<a class="[ button button--hollow button--dark ] [ inline-block ] [ js-cargar-mas ]">
 			Cargar más
 		</a>
 	</div><!-- .text-center -->
