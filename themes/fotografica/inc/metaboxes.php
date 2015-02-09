@@ -19,7 +19,7 @@
 
 	function metabox_evento_fecha_inicial($post){
 		$fecha_inicial = get_post_meta($post->ID, '_evento_fecha_inicial_meta', true);
-		$fecha_inicial = date('Y-m-d', $fecha_inicial);
+		//$fecha_inicial = date('Y-m-d', $fecha_inicial);
 
 		wp_nonce_field(__FILE__, '_evento_fecha_inicial_meta_nonce');
 
@@ -33,7 +33,7 @@ END;
 
 	function metabox_evento_fecha_final($post){
 		$fecha_final = get_post_meta($post->ID, '_evento_fecha_final_meta', true);
-		$fecha_final = date('Y-m-d', $fecha_final);
+		//$fecha_final = date('Y-m-d', $fecha_final);
 
 		wp_nonce_field(__FILE__, '_evento_fecha_final_meta_nonce');
 
@@ -73,13 +73,13 @@ END;
 
 
 		if ( isset($_POST['_evento_fecha_inicial_meta']) and check_admin_referer(__FILE__, '_evento_fecha_inicial_meta_nonce') ){
-			$timestamp = strtotime($_POST['_evento_fecha_inicial_meta']);
-			update_post_meta($post_id, '_evento_fecha_inicial_meta', $timestamp);
+			//$timestamp = strtotime($_POST['_evento_fecha_inicial_meta']);
+			update_post_meta($post_id, '_evento_fecha_inicial_meta', $_POST['_evento_fecha_inicial_meta']);
 		}
 
 		if ( isset($_POST['_evento_fecha_final_meta']) and check_admin_referer(__FILE__, '_evento_fecha_final_meta_nonce') ){
-			$timestamp = strtotime($_POST['_evento_fecha_final_meta']);
-			update_post_meta($post_id, '_evento_fecha_final_meta', $timestamp);
+			//$timestamp = strtotime($_POST['_evento_fecha_final_meta']);
+			update_post_meta($post_id, '_evento_fecha_final_meta', $_POST['_evento_fecha_final_meta']);
 		}
 
 
