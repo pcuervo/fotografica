@@ -2,13 +2,26 @@
 	the_post();
 	the_post_thumbnail('full', array('class' => '[ margin-bottom ] [ full-height ]'));
 
+	/*------------------------------------*\
+	    #GET THE POST TYPE
+	\*------------------------------------*/
+	$postType = get_post_type();
+
+	if ( $postType == 'colecciones' ){
+		$taxonomia = 'coleccion';
+	} elseif ( $postType == 'proyectos' ){
+		$taxonomia = 'tipo-de-proyecto';
+	}
+
+
 	$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
 
-	$coleccionColecciones 		= wp_get_post_terms( $post->ID, 'coleccion' );
+	$coleccionColecciones 		= wp_get_post_terms( $post->ID, $taxonomia );
+
 	$coleccionColeccionesName 	= $coleccionColecciones[0]->name;
 	$coleccionColeccionesSlug 	= $coleccionColecciones[0]->slug;
 
-	$authorColecciones 		= wp_get_post_terms( $post->ID, 'fotografo' );
+	$authorColecciones 			= wp_get_post_terms( $post->ID, 'fotografo' );
 	if ( $authorColecciones ){
 		$authorColeccionesName 	= $authorColecciones[0]->name;
 		$authorColeccionesSlug 	= $authorColecciones[0]->slug;
@@ -50,6 +63,9 @@
 		<div class="[ media-info media-info__dark ] [ relative ] [ xmall-12 ]">
 			<p class="[ text-center ]">
 
+
+				<?php if ( $postType == 'colecciones' ){ ?>
+				<?php } ?>
 				<!-- COLECCION -->
 				De la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>,
 

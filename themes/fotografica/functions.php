@@ -54,8 +54,8 @@
 			<!-- /**********************************\ -->
 			<!-- #ARCHIVE -->
 			<!-- \**********************************/ -->
-			<?php 
-			} elseif ( is_archive() ) { 
+			<?php
+			} elseif ( is_archive() ) {
 				$postType = get_post_type();
 			?>
 				<script type="text/javascript">
@@ -80,7 +80,14 @@
 								advancedSearch('<?php echo $postType ?>', getFilteredResults(), 20);
 							});
 
-							runMasonry('.results', '.result' );
+							/**
+							 * If the postType is fotografos do not run masonry
+							**/
+							<?php if ( $postType !== 'fotografos'){ ?>
+								runMasonry('.results', '.result' );
+							<?php } ?>
+
+
 							advancedSearch('<?php echo $postType ?>', getFilteredResults(), 15);
 
 						});
@@ -110,33 +117,20 @@
 								#ON LOAD
 							\*------------------------------------*/
 
-							$('.tab-filter').on('click', function(){
-								showFilters( this );
-							});
-
-							$('.filters__content').on('click', '.filter', function(){
-								console.log(this);
-								addFilter( this );
-								advancedSearch('fotografias', getFilteredResults(), 20);
-							});
-
-							$('.filters__results').on('click', '.filter', function(){
-								removeFilter( this );
-								advancedSearch('fotografias', getFilteredResults(), 20);
-							});
-
 							runMasonry('.results', '.result' );
 
-							<?php 
-								global $coleccion; 
-								if($coleccion != '') { 
-							?> 		
+							<?php
+								global $coleccion;
+								if($coleccion != '') {
+							?>
 									var filter = $('.filter[data-value="<?php echo $coleccion; ?>"]');
 									console.log(filter);
 									addFilter( filter );
 							<?php } ?>
 
-							advancedSearch('fotografias', getFilteredResults(), 15);
+
+
+
 
 							/*------------------------------------*\
 								#Triggered events
@@ -148,14 +142,16 @@
 
 							$('.filters__content').on('click', '.filter', function(){
 								addFilter( this );
-								searchTest('fotografias', getFilteredResults(), 20);
+								advancedSearch('fotografias', getFilteredResults(), 20);
 							});
 
 							$('.filters__results').on('click', '.filter', function(){
 								removeFilter( this );
-								searchTest('fotografias', getFilteredResults(), 20);
+								advancedSearch('fotografias', getFilteredResults(), 20);
 							});
->>>>>>> a04bbc235b7f1c14b485708d58b66937975f9226
+
+							advancedSearch('fotografias', getFilteredResults(), 15);
+
 						});
 					}(jQuery));
 				</script>
@@ -528,7 +524,7 @@
 					if($key == 0) {
 						$query .= " slug  BETWEEN '".$initial_year."' AND '".$final_year."'";
 						continue;
-					} 
+					}
 					$query .= " OR slug BETWEEN '".$initial_year."' AND '".$final_year."'";
 				}
 				$query .= ")";
@@ -538,15 +534,15 @@
 			if($is_fotografo){
 				$filter_type_count++;
 				if($is_coleccion || $is_ano) $query = $query." OR";
-				
+
 				$query .= "  T.slug IN ( SELECT slug FROM wp_terms T INNER JOIN wp_term_taxonomy TT ON TT.term_id = T.term_id WHERE (";
 
 				foreach ($fotografo_terms as $key => $letter) {
 					if($key == 0) {
-						$query .= " slug LIKE '".$letter."%'"; 
+						$query .= " slug LIKE '".$letter."%'";
 						continue;
-					} 
-					$query .= " OR slug LIKE '".$letter."%'"; 
+					}
+					$query .= " OR slug LIKE '".$letter."%'";
 				}
 				$query .= ") AND taxonomy = 'fotografo' )";
 			}
@@ -707,7 +703,7 @@
 					if($key == 0) {
 						$query .= " slug  BETWEEN '".$initial_year."' AND '".$final_year."'";
 						continue;
-					} 
+					}
 					$query .= " OR slug BETWEEN '".$initial_year."' AND '".$final_year."'";
 				}
 				$query .= ")";
@@ -730,15 +726,15 @@
 			if($is_apellido){
 				$filter_type_count++;
 				if($is_coleccion || $is_ano || $is_pais || $is_tema) $query = $query." OR";
-				
+
 				$query .= "  T.slug IN ( SELECT slug FROM wp_terms T INNER JOIN wp_term_taxonomy TT ON TT.term_id = T.term_id WHERE (";
 
 				foreach ($apellido_terms as $key => $letter) {
 					if($key == 0) {
-						$query .= " slug LIKE '".$letter."%'"; 
+						$query .= " slug LIKE '".$letter."%'";
 						continue;
-					} 
-					$query .= " OR slug LIKE '".$letter."%'"; 
+					}
+					$query .= " OR slug LIKE '".$letter."%'";
 				}
 				$query .= ") AND taxonomy = 'apellido' )";
 			}
@@ -772,7 +768,7 @@
 
 		if ($filtros == ''){
 			$query = "
-	    		SELECT id FROM wp_posts 
+	    		SELECT id FROM wp_posts
 				WHERE post_type = 'eventos'
 				ORDER BY RAND()
 				LIMIT 1000";
@@ -796,7 +792,7 @@
 					$query .= " '_evento_fecha_inicial_meta' > ".$hoy;
 				}
 			}
-		
+
 			//echo $query;
 			$posts_info = $wpdb->get_results( $query );
 		}
@@ -815,7 +811,7 @@
 			$fec_ini = get_post_meta( $post->id, '_evento_fecha_inicial_meta', true );
 			$fec_fin = get_post_meta( $post->id, '_evento_fecha_final_meta', true );
 
-			
+
 
 			if($fec_ini !== '') $fec_ini = date('d/m/Y', $fec_ini);
 			if($fec_fin !== '') $fec_fin = date('d/m/Y', $fec_fin);
