@@ -155,7 +155,6 @@
 								removeFilter( this );
 								searchTest('fotografias', getFilteredResults(), 20);
 							});
->>>>>>> a04bbc235b7f1c14b485708d58b66937975f9226
 						});
 					}(jQuery));
 				</script>

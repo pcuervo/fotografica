@@ -184,13 +184,13 @@ function removeFilter(element){
 function getFilteredResults(){
 	var activos = $('.filters__results .filter--active');
 	var search_filters = [];
+	clearGrid();
 	$.each(activos, function(i, val){
 		var current_filter = {};
 		var filter_type = $(val).data('type');
 		var filter_value = $(val).data('value');
 		current_filter['type'] = filter_type;
 		current_filter['value'] = filter_value;
-		clearGrid();
 		search_filters.push(current_filter);
 	});
 	return search_filters;
@@ -259,7 +259,7 @@ function advancedSearch(post_type, filters, limit){
 			console.log(response);
 			var json_posts = $.parseJSON(response);
 			var html_resultados;
-			
+
 			$.each(json_posts, function(i, val){
 				switch(post_type){
 					case 'fotografias':

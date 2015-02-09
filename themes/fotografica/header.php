@@ -72,102 +72,11 @@
 								</div>
 							</li>
 							<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/fotografos'?>">Fotógrafos</a></li>
-							<li>
-								<a class="[ text-center uppercase ]" href="#">Proyectos</a>
-								<div class="[ mp-level ]">
-									<h2 class="[ text-center uppercase ]">Proyectos</h2>
-									<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
-									<ul class="[ overflow-scroll ]">
-										<?php
-											$args = array(
-												'post_type' 		=> 'proyectos',
-												'posts_per_page' 	=> -1,
-											);
-											$queryProyectos = new WP_Query( $args );
-											if ( $queryProyectos->have_posts() ) : while ( $queryProyectos->have_posts() ) : $queryProyectos->the_post();
-										?>
-												<li><a class="[ text-center uppercase ]" href="<?php the_permalink() ?>"><?php the_title() ?></a></li>
-										<?php
-											endwhile; endif; wp_reset_query();
-										?>
-										<li>
-											<a class="[ text-center uppercase ]" href="#">Curadurías virtuales</a>
-											<div class="[ mp-level ]">
-												<h2 class="[ text-center uppercase ]">Curadurías virtuales</h2>
-												<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
-												<ul>
-													<li><a class="[ text-center uppercase ]" href="#">Una curaduría</a></li>
-													<li><a class="[ text-center uppercase ]" href="#">Otra curaduría</a></li>
-												</ul>
-											</div>
-										</li>
-									</ul>
-								</div>
-							</li>
+							<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/proyecto'?>">Proyectos</a></li>
 							<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/exposiciones'?>">Exposiciones</a></li>
-							<li>
-								<a class="[ text-center uppercase ]" href="#">Publicaciones</a>
-								<div class="[ mp-level ]">
-									<h2 class="[ text-center uppercase ]">Publicaciones</h2>
-									<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
-									<ul class="[ overflow-scroll ]">
-										<?php
-											$args = array(
-												'post_type' 		=> 'publicaciones',
-												'posts_per_page' 	=> -1,
-											);
-											$queryProyectos = new WP_Query( $args );
-											if ( $queryProyectos->have_posts() ) : while ( $queryProyectos->have_posts() ) : $queryProyectos->the_post();
-										?>
-												<li><a class="[ text-center uppercase ]" href="<?php the_permalink() ?>"><?php the_title() ?></a></li>
-										<?php
-											endwhile; endif; wp_reset_query();
-										?>
-									</ul>
-								</div>
-							</li>
-							<li>
-								<a class="[ text-center uppercase ]" href="#">Cartelera</a>
-								<div class="[ mp-level ]">
-									<h2 class="[ text-center uppercase ]">Cartelera</h2>
-									<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
-									<ul class="[ overflow-scroll ]">
-										<?php
-											$args = array(
-												'post_type' 		=> 'carteleras',
-												'posts_per_page' 	=> -1,
-											);
-											$queryProyectos = new WP_Query( $args );
-											if ( $queryProyectos->have_posts() ) : while ( $queryProyectos->have_posts() ) : $queryProyectos->the_post();
-										?>
-												<li><a class="[ text-center uppercase ]" href="<?php the_permalink() ?>"><?php the_title() ?></a></li>
-										<?php
-											endwhile; endif; wp_reset_query();
-										?>
-									</ul>
-								</div>
-							</li>
-							<li>
-								<a class="[ text-center uppercase ]" href="#">Eventos</a>
-								<div class="[ mp-level ]">
-									<h2 class="[ text-center uppercase ]">Eventos</h2>
-									<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
-									<ul class="[ overflow-scroll ]">
-										<?php
-											$args = array(
-												'post_type' 		=> 'eventos',
-												'posts_per_page' 	=> -1,
-											);
-											$queryProyectos = new WP_Query( $args );
-											if ( $queryProyectos->have_posts() ) : while ( $queryProyectos->have_posts() ) : $queryProyectos->the_post();
-										?>
-												<li><a class="[ text-center uppercase ]" href="<?php the_permalink() ?>"><?php the_title() ?></a></li>
-										<?php
-											endwhile; endif; wp_reset_query();
-										?>
-									</ul>
-								</div>
-							</li>
+							<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/publicaciones'?>">Publicaciones</a></li>
+							<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/cartelera'?>">Cartelera</a></li>
+							<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/evento'?>">Eventos</a></li>
 							<li><a class="[ text-center uppercase ]" href="#">Contáctanos</a></li>
 							<li>
 								<a class="[ text-center uppercase ]" href="#">Nuestro trabajo</a>
@@ -175,70 +84,15 @@
 									<h2 class="[ text-center uppercase ]">Nuestro trabajo</h2>
 									<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
 									<ul class="[ overflow-scroll ]">
-										<?php
-											$args = array(
-												'posts_per_page' => -1,
-												'post_type' => 'nuestro-trabajo',
-												'tipo-de-trabajo' => 'conservacion'
-											);
-											$queryConservacion = new WP_Query( $args );
-											if ( $queryConservacion->have_posts() ) : while ( $queryConservacion->have_posts() ) : $queryConservacion->the_post();
-										?>
-												<li>
-													<a class="[ text-center uppercase ]" href="#">Conservación</a>
-													<div class="[ mp-level ]">
-														<h2 class="[ text-center uppercase ]">Conservación</h2>
-														<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
-														<ul>
-															<li><a class="[ text-center uppercase ]" href="<?php the_permalink() ?>"><?php the_title() ?></a></li>	
-														</ul>
-													</div>
-												</li>
-										<?php
-											endwhile; endif; wp_reset_query();
-
-											$args = array(
-												'posts_per_page' => -1,
-												'post_type' => 'nuestro-trabajo',
-												'tipo-de-trabajo' => 'investigacion'
-											);
-											$queryInvestigacion = new WP_Query( $args );
-											if ( $queryInvestigacion->have_posts() ) : while ( $queryInvestigacion->have_posts() ) : $queryInvestigacion->the_post();
-										?>
-												<li>
-													<a class="[ text-center uppercase ]" href="#">Investigación</a>
-													<div class="[ mp-level ]">
-														<h2 class="[ text-center uppercase ]">Investigación</h2>
-														<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
-														<ul>
-															<li><a class="[ text-center uppercase ]" href="#"><?php the_title() ?></a></li>
-														</ul>
-													</div>
-												</li>
-										<?php
-											endwhile; endif; wp_reset_query();
-
-											$args = array(
-												'posts_per_page' => -1,
-												'post_type' => 'nuestro-trabajo',
-												'tipo-de-trabajo' => 'conocenos'
-											);
-											$queryConocenos = new WP_Query( $args );
-											if ( $queryConocenos->have_posts() ) : while ( $queryConocenos->have_posts() ) : $queryConocenos->the_post();
-										?>
-												<li>
-													<a class="[ text-center uppercase ]" href="#">Conócenos</a>
-													<div class="[ mp-level ]">
-														<h2 class="[ text-center uppercase ]">Conócenos</h2>
-														<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
-														<ul>
-															<li><a class="[ text-center uppercase ]" href="#"><?php the_title() ?></a></li>
-														</ul>
-													</div>
-												</li>
-										<?php
-											endwhile; endif; wp_reset_query();
-										?>
+										<li>
+											<a class="[ text-center uppercase ]" href="<?php echo site_url().'/nuestro-trabajo/conservacion'?>">Conservación</a>
+										</li>
+										<li>
+											<a class="[ text-center uppercase ]" href="<?php echo site_url().'/nuestro-trabajo/investigacion'?>">Investigación</a>
+										</li>
+										<li>
+											<a class="[ text-center uppercase ]" href="<?php echo site_url().'/nuestro-trabajo/conocenos'?>">Conócenos</a>
+										</li>
 									</ul>
 								</div>
 							</li>

@@ -75,10 +75,10 @@
 		$labels = array(
 			'name'          => 'Proyectos',
 			'singular_name' => 'Proyecto',
-			'add_new'       => 'Nueva Proyecto',
-			'add_new_item'  => 'Nueva Proyecto',
+			'add_new'       => 'Nuevo Proyecto',
+			'add_new_item'  => 'Nuevo Proyecto',
 			'edit_item'     => 'Editar Proyecto',
-			'new_item'      => 'Nueva Proyecto',
+			'new_item'      => 'Nuevo Proyecto',
 			'all_items'     => 'Todas',
 			'view_item'     => 'Ver Proyecto',
 			'search_items'  => 'Buscar Proyecto',
