@@ -20,6 +20,7 @@
 
 		// scripts
 		wp_enqueue_script( 'plugins', JSPATH.'plugins.js', array('jquery'), '1.0', true );
+		wp_enqueue_script( 'cycle', JSPATH.'/vendor/cycle.js', array('plugins'), '1.0', true );
 		wp_enqueue_script( 'mlpushmenu', JSPATH.'/vendor/mlpushmenu.js', array('plugins'), '1.0', true );
 		wp_enqueue_script( 'classie', JSPATH.'/vendor/classie.js', array('plugins'), '1.0', true );
 		wp_enqueue_script( 'modernizr', JSPATH.'/vendor/modernizr.custom.js', array('plugins'), '1.0', true );
@@ -51,8 +52,11 @@
 						});
 					}(jQuery));
 				</script>
+
+
+
 			<!-- /**********************************\ -->
-			<!-- #ARCHIVE -->
+				<!-- #ARCHIVE -->
 			<!-- \**********************************/ -->
 			<?php
 			} elseif ( is_archive() ) {
@@ -93,8 +97,11 @@
 						});
 					}(jQuery));
 				</script>
+
+
+
 			<!-- /**********************************\ -->
-			<!-- #POST TYPE -->
+				<!-- #POST TYPE -->
 			<!-- \**********************************/ -->
 			<?php } elseif ( get_post_type() == 'post-type') { ?>
 				<script type="text/javascript">
@@ -105,8 +112,11 @@
 						});
 					}(jQuery));
 				</script>
+
+
+
 			<!-- /**********************************\ -->
-			<!-- #PAGE COLECCIONES -->
+				<!-- #PAGE COLECCIONES -->
 			<!-- \**********************************/ -->
 			<?php } elseif ( is_page() == 'colecciones') { ?>
 				<script type="text/javascript">
@@ -167,6 +177,24 @@
 					(function( $ ) {
 						"use strict";
 						$(function(){
+
+						});
+					}(jQuery));
+				</script>
+
+
+			<!-- /**********************************\ -->
+				<!-- #SINGLE -->
+			<!-- \**********************************/ -->
+			<?php } elseif ( is_single() ) { ?>
+				<script type="text/javascript">
+					(function( $ ) {
+						"use strict";
+						$(function(){
+
+							$('.single-content').on('click','.single-content-image', function(){
+								openLightbox(this);
+							});
 
 						});
 					}(jQuery));
@@ -347,6 +375,42 @@
 		$filename = str_replace('ñ', 'n', $filename);
 		return remove_accents($filename);
 	});
+
+
+// CLEAR AND CLASSIFY IMAGES UPLOAD TO THE POST CONTENT ///////////////////////////////////
+
+	/**
+	 * Add class to the images uploaded to the content
+	**/
+	function image_tag_class($class) {
+		$class .= ' single-content-image';
+		return $class;
+	}
+	add_filter('get_image_tag_class', 'image_tag_class' );
+
+
+	/**
+	 * Remove <p> tags around the image
+	**/
+	function filter_ptags_on_images($content){
+		return preg_replace('/<p>\s*(<a .*>)?\s*(<img .* \/>)\s*(<\/a>)?\s*<\/p>/iU', '\1\2\3', $content);
+	}
+	add_filter('the_content', 'filter_ptags_on_images');
+
+
+	/**
+	 * Remove <a> tags around the image
+	**/
+	function attachment_image_link_remove_filter( $content ) {
+		$content =
+		preg_replace(
+			array('{<a(.*?)(wp-att|wp-content\/uploads)[^>]*><img}', '{ wp-image-[0-9]*" /></a>}'),
+			array('<img','" />'),
+			$content
+		);
+		return $content;
+	}
+	add_filter( 'the_content', 'attachment_image_link_remove_filter' );
 
 
 

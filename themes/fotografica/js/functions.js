@@ -19,6 +19,17 @@
 			#Triggered events
 		\*------------------------------------*/
 
+		/**
+		 * Show and hide loader on ajax events
+		**/
+		$('.loader')
+		.ajaxStart(function() {
+			$(this).show();
+		})
+		.ajaxStop(function() {
+			$(this).hide();
+		})
+
 
 
 
@@ -241,7 +252,7 @@ function openLightbox(){
 	$('.lightbox').show();
 }
 
-// AJAX para buscadores
+// AJAX para filtros
 function advancedSearch(post_type, filters, limit){
 	var user_data = {};
 	user_data['action'] = 'advanced_search';
