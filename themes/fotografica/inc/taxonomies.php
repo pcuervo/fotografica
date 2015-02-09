@@ -470,7 +470,7 @@
 	}// insertLastNameTaxonomyTerms
 
 	/*
-	 * Functions to relate taxonomy terms to post types 
+	 * Functions to relate taxonomy terms to post types
 	 */
 	function addYearToPhoto(){
 		global $wpdb;
@@ -518,4 +518,3 @@
 		}
 	}// addPhotographerToPhoto
 
-	

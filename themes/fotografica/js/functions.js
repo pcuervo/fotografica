@@ -272,10 +272,14 @@ function advancedSearch(post_type, filters, limit){
 						html_resultados = get_html_eventos(val);
 						break;
 				}
-				
 				$(html_resultados).appendTo('.results');
 			});
-			runMasonry('.results', '.result' );
+			/**
+			 * If the postType is fotografos do not run masonry
+			**/
+			if ( post_type !== 'fotografos'){
+				runMasonry('.results', '.result' );
+			}
 
 		}// response
 	);
@@ -303,7 +307,7 @@ function get_html_colecciones(results){
 }
 
 function get_html_fotografos(results){
-	var html_resultados = '<a href="'+results.url+'" class="[ result ][ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">'+results.fotografo+'</a>';
+	var html_resultados = ' <a href="'+results.url+'" class="[ result ][ button button--hollow button--small button--dark ][ inline-block margin-bottom--small ]">'+results.fotografo+'</a> &nbsp;&nbsp;';
 	return html_resultados;
 }
 

@@ -247,20 +247,20 @@
 						?>
 					</div><!-- .filter-tema -->
 					<div class="[ filter-apellido ]">
-						<?php 
+						<?php
 							$query = "
-					    		SELECT DISTINCT LEFT(name, 1) as letter FROM wp_posts P
+								SELECT DISTINCT LEFT(name, 1) as letter FROM wp_posts P
 								INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
 								INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
 								INNER JOIN wp_terms T ON T.term_id = TT.term_id
-								WHERE P.post_type = 'fotografos' 
+								WHERE P.post_type = 'fotografos'
 								AND taxonomy = 'apellido'
 								ORDER BY letter";
 							$first_letters = $wpdb->get_results( $query );
 
 							foreach ($first_letters as $letter) {
 						?>
-							<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="apellido" data-value="<?php echo $letter->letter ?>"><?php echo $letter->letter ?></a>		
+							<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="apellido" data-value="<?php echo $letter->letter ?>"><?php echo $letter->letter ?></a>
 						<?php
 							}
 						?>
@@ -282,11 +282,11 @@
 			</div>
 		</section><!-- .filters -->
 	<?php } ?>
-	<div class="[ loader ] [ center ]">
+	<section class="[ results ] [ row ] [ margin-bottom ] <?php echo ($postType == 'fotografos' ? '[ text-center ]' : ''); ?>">
+	</section><!-- .results -->
+	<div class="[ loader ] [ center ] ">
 		<div></div>
 	</div>
-	<section class="[ results ] [ row ] [ margin-bottom ]">
-	</section><!-- .results -->
 	<div class="[ text-center ] [ margin-bottom ]">
 		<a class="[ button button--hollow button--dark ] [ inline-block ]">
 			Cargar más
