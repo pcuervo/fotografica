@@ -63,44 +63,55 @@
 		<div class="[ media-info media-info__dark ] [ relative ] [ xmall-12 ]">
 			<p class="[ text-center ]">
 
-
+				<!--  /********************************\ -->
+					<!-- #COLECCIONES -->
+				<!--  \**********************************/ -->
 				<?php if ( $postType == 'colecciones' ){ ?>
-				<?php } ?>
-				<!-- COLECCION -->
-				De la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>,
 
-				<!-- NOMBRE APELLIDO -->
-				<?php if ( $authorColeccionesName == 'sin autor' ){ ?>
-					<span><?php echo $authorColeccionesName; ?></span>,
-				<?php } else { ?>
-					<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
+					<!-- COLECCION -->
+					De la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>,
+
+					<!-- NOMBRE APELLIDO -->
+					<?php if ( $authorColeccionesName == 'sin autor' ){ ?>
+						<span><?php echo $authorColeccionesName; ?></span>,
+					<?php } else { ?>
+						<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
+					<?php } ?>
+
+					<!-- TÍTULO -->
+					<?php if ( $titleColecciones ){ ?>
+						<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleColecciones; ?></a>,
+					<?php } else { ?>
+						<span class="[ media--info__name ]">sin título</span>,
+					<?php } ?>
+
+					<!-- DE LA SERIE -->
+					<?php if ( $seriesColecciones ){ ?>
+						de la serie <span class="[ media--info__series ]"><?php echo $seriesColecciones; ?></span>,
+					<?php } ?>
+
+					<!-- LUGAR -->
+					<?php if ( $placeColecciones ){ ?>
+						<span class="[ media--info__place ]"><?php echo $placeColeccionesName; ?></span>,
+					<?php } ?>
+
+					<!-- CIRCA -->
+					<?php if ( $circaColecciones ){ ?>
+						<span class="[ media--info__circa ]">circa</span>
+					<?php } ?>
+
+					<!-- AÑO -->
+					<?php if ( $dateColecciones ){ ?>
+						<span class="[ media--info__date ]"><?php echo $dateColeccionesName; ?></span>
+					<?php } ?>
 				<?php } ?>
 
-				<!-- TÍTULO -->
-				<?php if ( $titleColecciones ){ ?>
-					<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleColecciones; ?></a>,
-				<?php } else { ?>
-					<span class="[ media--info__name ]">sin título</span>,
-				<?php } ?>
 
-				<!-- DE LA SERIE -->
-				<?php if ( $seriesColecciones ){ ?>
-					de la serie <span class="[ media--info__series ]"><?php echo $seriesColecciones; ?></span>,
-				<?php } ?>
-
-				<!-- LUGAR -->
-				<?php if ( $placeColecciones ){ ?>
-					<span class="[ media--info__place ]"><?php echo $placeColeccionesName; ?></span>,
-				<?php } ?>
-
-				<!-- CIRCA -->
-				<?php if ( $circaColecciones ){ ?>
-					<span class="[ media--info__circa ]">circa</span>
-				<?php } ?>
-
-				<!-- AÑO -->
-				<?php if ( $dateColecciones ){ ?>
-					<span class="[ media--info__date ]"><?php echo $dateColeccionesName; ?></span>
+				<!--  /********************************\ -->
+					<!-- #PROYECTOS -->
+				<!--  \**********************************/ -->
+				<?php if ( $postType == 'proyectos' ){ ?>
+					<span class="[ media--info__name]"> <?php the_title( ); ?></span>
 				<?php } ?>
 			</p>
 		</div>
@@ -112,7 +123,7 @@
 	</section>
 	<section class="[ share ] [ margin-bottom--large ]">
 		<div class="[ wrapper ][ clearfix ]">
-			<div class="[ clearfix ][ columna medium-6 center ]">
+			<div class="[ clearfix ][ columna medium-4 center ]">
 				<div class="[ button button--dark button__share ] [ columna xmall-3 ]">
 					<i class="[ xmall-3 inline-block align-middle ] fa fa-twitter"></i><span class="[ xmall-2 ]">&nbsp;</span><span class="[ xmall-7 inline-block align-middle ]">54</span>
 				</div>
@@ -128,8 +139,8 @@
 			</div>
 		</div><!-- .wrapper -->
 	</section><!-- .share -->
-	<section class="[ margin-bottom--large ]">
-		<div class="[ wrapper ]">
+	<section class="[ margin-bottom--large ][ single-content ]">
+		<div class="[ wrapper ][ ]">
 			<?php the_content(); ?>
 		</div><!-- .wrapper -->
 	</section>
@@ -245,4 +256,33 @@
 			</div><!-- row -->
 		</div><!-- wrapper -->
 	</section><!-- .results -->
+	<div class="[ lightbox ] [ cycle-slideshow ]">
+
+		<?php
+			$attachedMediaArgs = array(
+				'post_type' => 'attachment',
+				'post_mime_type'=>'image',
+				'numberposts' => -1,
+				'post_status' => null,
+				'post_parent' => $post->ID
+			);
+			$attachedMedia = get_embedded_media('imsage', $attachedMediaArgs);
+			// echo '<pre>';
+			// 	print_r($attachedMedia);
+			// echo '</pre>';
+
+		?>
+		<div class="[ image-single ]">
+			<div class="[ wrapper ]">
+				<img class="[ image-responsive ]" src="<?php echo THEMEPATH; ?>images/test-9.jpg" alt="">
+				<p class="[ image-caption ] [ text-center ]">Retrato de Gerardo Murillo “Dr. atl”, Ciudad de México, ca. 1956</p>
+			</div><!-- wrapper -->
+		</div>
+		<div class="[ image-single ]">
+			<div class="[ wrapper ]">
+				<img class="[ image-responsive ]" src="<?php echo THEMEPATH; ?>images/test-7.jpg" alt="">
+				<p class="[ image-caption ] [ text-center ]">Retrato de Gerardo Murillo “Dr. atl”, Ciudad de México, ca. 1956</p>
+			</div><!-- wrapper -->
+		</div>
+	</div><!-- .lightbox -->
 <?php get_footer(); ?>

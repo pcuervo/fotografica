@@ -19,6 +19,17 @@
 			#Triggered events
 		\*------------------------------------*/
 
+		/**
+		 * Show and hide loader on ajax events
+		**/
+		$('.loader')
+		.ajaxStart(function() {
+			$(this).show();
+		})
+		.ajaxStop(function() {
+			$(this).hide();
+		})
+
 
 
 
