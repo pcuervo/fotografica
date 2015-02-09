@@ -54,12 +54,14 @@
 			<!-- /**********************************\ -->
 			<!-- #ARCHIVE -->
 			<!-- \**********************************/ -->
-			<?php } elseif ( is_archive() ) { ?>
+			<?php 
+			} elseif ( is_archive() ) { 
+				$postType = get_post_type();
+			?>
 				<script type="text/javascript">
 					(function( $ ) {
 						"use strict";
 						$(function(){
-
 							/*------------------------------------*\
 								#Triggered events
 							\*------------------------------------*/
@@ -70,15 +72,16 @@
 
 							$('.filters__content').on('click', '.filter', function(){
 								addFilter( this );
-								searchTest('fotografias', getFilteredResults(), 20);
+								advancedSearch('<?php echo $postType ?>', getFilteredResults(), 20);
 							});
 
 							$('.filters__results').on('click', '.filter', function(){
 								removeFilter( this );
-								searchTest('fotografias', getFilteredResults(), 20);
+								advancedSearch('<?php echo $postType ?>', getFilteredResults(), 20);
 							});
 
-
+							runMasonry('.results', '.result' );
+							advancedSearch('<?php echo $postType ?>', getFilteredResults(), 15);
 
 						});
 					}(jQuery));
@@ -114,12 +117,12 @@
 							$('.filters__content').on('click', '.filter', function(){
 								console.log(this);
 								addFilter( this );
-								searchTest('fotografias', getFilteredResults(), 20);
+								advancedSearch('fotografias', getFilteredResults(), 20);
 							});
 
 							$('.filters__results').on('click', '.filter', function(){
 								removeFilter( this );
-								searchTest('fotografias', getFilteredResults(), 20);
+								advancedSearch('fotografias', getFilteredResults(), 20);
 							});
 
 							runMasonry('.results', '.result' );
@@ -133,7 +136,7 @@
 									addFilter( filter );
 							<?php } ?>
 
-							searchTest('fotografias', getFilteredResults(), 15);
+							advancedSearch('fotografias', getFilteredResults(), 15);
 						});
 					}(jQuery));
 				</script>
@@ -416,6 +419,8 @@
 
 		$advanced_search_results = array();
 		if($post_type == 'fotografias') $advanced_search_results = advanced_search_colecciones($filters, $limit);
+		if($post_type == 'fotografos') $advanced_search_results = advanced_search_fotografos($filters, $limit);
+		if($post_type == 'eventos') $advanced_search_results = advanced_search_eventos($filters, $limit);
 
 		echo json_encode($advanced_search_results , JSON_FORCE_OBJECT);
 		exit();
@@ -426,7 +431,6 @@
 		global $post;
 		global $wpdb;
 
-		$terms = array('fondo-rutilo-patino', 'coleccion-manuel-alvarez-bravo');
 		if ($filtros == ''){
 			$query = "
 	    		SELECT P.id, P.post_title, T.name, T.slug FROM wp_posts P
@@ -434,13 +438,6 @@
 				INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
 				INNER JOIN wp_terms T ON T.term_id = TT.term_id
 				WHERE P.post_type = 'fotografias'
-				AND TT.taxonomy IN ('coleccion', 'año', 'fotografo', 'tema')
-				AND (
-					T.slug IN ( SELECT slug FROM wp_terms WHERE slug IN ('fondo-juan-cachu') )
-					OR T.slug IN ( SELECT slug FROM wp_terms WHERE slug BETWEEN '1947' AND '1947')
-					OR T.slug IN ( SELECT slug FROM wp_terms T INNER JOIN wp_term_taxonomy TT ON TT.term_id = T.term_id WHERE slug LIKE 'L%' AND taxonomy = 'fotografo' )
-					OR T.name IN ( SELECT name FROM wp_terms WHERE name = '#test' )
-				)
 				ORDER BY RAND()
 				LIMIT ".$limit;
 			$posts_info = $wpdb->get_results( $query, OBJECT );
@@ -606,6 +603,215 @@
 
 		return $info_colecciones;
 	} // advanced_search_colecciones
+
+	function advanced_search_fotografos($filtros = '', $limit){
+		global $post;
+		global $wpdb;
+
+		if ($filtros == ''){
+			$query = "
+	    		SELECT P.id, P.post_title, T.name, T.slug FROM wp_posts P
+				INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
+				INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
+				INNER JOIN wp_terms T ON T.term_id = TT.term_id
+				WHERE P.post_type = 'fotografos'
+				ORDER BY RAND()
+				LIMIT ".$limit;
+			$posts_info = $wpdb->get_results( $query, OBJECT );
+		} else {
+
+			// SELECT P.id, P.post_title, T.name, T.slug FROM wp_posts P
+			$query = "
+	    		SELECT id, COUNT(id)  FROM wp_posts P
+				INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
+				INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
+				INNER JOIN wp_terms T ON T.term_id = TT.term_id
+				WHERE P.post_type = 'fotografos'";
+
+			$filter_type_count = -1;
+			$taxonomies = array();
+			$is_coleccion = false;
+			$coleccion_terms = array();
+			$is_ano = false;
+			$ano_terms = array();
+			$is_pais = false;
+			$pais_terms = array();
+			$is_tema = false;
+			$tema_terms = array();
+			$is_apellido = false;
+			$apellido_terms = array();
+			foreach ($filtros as $key => $filtro) {
+				array_push($taxonomies, $filtro['type']);
+
+				if( $filtro['type'] == 'coleccion' ) {
+					$is_coleccion = true;
+					array_push($coleccion_terms, $filtro['value']);
+				}
+				if( $filtro['type'] == 'pais' ) {
+					$is_pais = true;
+					array_push($pais_terms, $filtro['value']);
+				}
+				if( $filtro['type'] == 'apellido' ) {
+					$is_apellido = true;
+					array_push($apellido_terms, $filtro['value']);
+				}
+				if( $filtro['type'] == 'tema' ) {
+					$is_tema = true;
+					array_push($tema_terms, $filtro['value']);
+				}
+			}
+			$taxonomies = array_unique($taxonomies);
+			$taxonomies_in = implode("', '", $taxonomies);
+
+			// Add taxonomies to query
+			$query = $query." AND TT.taxonomy IN ('".$taxonomies_in."')";
+
+			// If the filters include terms, open condition
+			if($is_coleccion || $is_ano || $is_pais || $is_tema || $is_apellido) $query = $query." AND ( ";
+
+			// Add filtering terms for colecciones
+			if($is_coleccion){
+				$filter_type_count++;
+				$coleccion_terms_in = implode("', '", $coleccion_terms);
+				$query = $query." T.slug IN ( SELECT slug FROM wp_terms WHERE slug IN ('".$coleccion_terms_in."') ) ";
+			}
+
+			// Add filtering terms for años
+			if($is_ano){
+				$filter_type_count++;
+				if($is_coleccion) $query = $query." OR";
+
+				$query = $query."  T.slug IN ( SELECT slug FROM wp_terms WHERE";
+				foreach ($ano_terms as $key => $ano) {
+					$initial_year = $ano;
+					$final_year = strval(intval($ano) + 10);
+					if($key == 0) {
+						$query .= " slug  BETWEEN '".$initial_year."' AND '".$final_year."'";
+						continue;
+					} 
+					$query .= " OR slug BETWEEN '".$initial_year."' AND '".$final_year."'";
+				}
+				$query .= ")";
+			}
+
+			// Add filtering terms for años
+			if($is_pais){
+				$filter_type_count++;
+				$pais_terms_in = implode("', '", $pais_terms);
+				$query = $query." T.slug IN ( SELECT slug FROM wp_terms WHERE slug IN ('".$pais_terms_in."') ) ";
+			}
+			// Add filtering terms for temas
+			if($is_tema){
+				if($is_coleccion || $is_ano || $is_pais) $query = $query." OR";
+				$filter_type_count++;
+				$tema_terms_id = implode("', '", $tema_terms);
+				$query = $query." T.slug IN ( SELECT slug FROM wp_terms WHERE name IN ('".$tema_terms_id."') ) ";
+			}
+			// Add filtering terms for apellidos
+			if($is_apellido){
+				$filter_type_count++;
+				if($is_coleccion || $is_ano || $is_pais || $is_tema) $query = $query." OR";
+				
+				$query .= "  T.slug IN ( SELECT slug FROM wp_terms T INNER JOIN wp_term_taxonomy TT ON TT.term_id = T.term_id WHERE (";
+
+				foreach ($apellido_terms as $key => $letter) {
+					if($key == 0) {
+						$query .= " slug LIKE '".$letter."%'"; 
+						continue;
+					} 
+					$query .= " OR slug LIKE '".$letter."%'"; 
+				}
+				$query .= ") AND taxonomy = 'apellido' )";
+			}
+
+			// Close filtering terms if  they exist
+			if($is_coleccion || $is_ano || $is_pais || $is_tema || $is_apellido) $query = $query." )";
+
+			$query = $query." GROUP BY id HAVING COUNT(id) > ".$filter_type_count." ORDER BY RAND() LIMIT ".$limit;
+			$posts_info = $wpdb->get_results( $query );
+		}
+
+ 		$info_colecciones = array();
+ 		foreach ($posts_info as $key => $post) {
+ 			// Título
+			$fotografo = get_the_title( $post->id );
+			// URL fotografo
+			$url = get_permalink( $post->id );
+			// Se arma el objecto que se regresa
+			$info_colecciones[$key] = array(
+				'fotografo'	=> $fotografo,
+				'url'	=> $url,
+				);
+ 		}
+
+		return $info_colecciones;
+	} // advanced_search_fotografos
+
+	function advanced_search_eventos($filtros = '', $limit){
+		global $post;
+		global $wpdb;
+
+		if ($filtros == ''){
+			$query = "
+	    		SELECT id FROM wp_posts 
+				WHERE post_type = 'eventos'
+				ORDER BY RAND()
+				LIMIT 1000";
+			$posts_info = $wpdb->get_results( $query, OBJECT );
+		} else {
+
+			// SELECT P.id, P.post_title, T.name, T.slug FROM wp_posts P
+			$query = "
+	    		SELECT id FROM wp_posts P
+	    		INNER JOIN wp_postmeta PM ON PM.post_id = P.id
+				WHERE post_type = 'eventos'
+				AND meta_key IN ('_evento_fecha_final_meta', '_evento_fecha_inicial_meta')";
+
+			$hoy = strtotime("now");
+			$inicioHoy = strtotime("midnight", $hoy);
+			$finHoy = strtotime("tomorrow", $inicioHoy) - 1;
+			foreach ($filtros as $key => $filtro) {
+				if($key == 0) $query .= ' AND';
+
+				if($filtro['value'] == 'proximos') {
+					$query .= " '_evento_fecha_inicial_meta' > ".$hoy;
+				}
+			}
+		
+			//echo $query;
+			$posts_info = $wpdb->get_results( $query );
+		}
+
+ 		$info_colecciones = array();
+ 		foreach ($posts_info as $key => $post) {
+ 			// Título
+			$titleColecciones = get_the_title( $post->id );
+			if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
+				$titleColecciones = 'Sin título';
+			}
+			// URL imagen
+			$thumb = wp_get_attachment_image_src( get_post_thumbnail_id( $post->id ), 'medium' );
+			$url = $thumb['0'];
+
+			$fec_ini = get_post_meta( $post->id, '_evento_fecha_inicial_meta', true );
+			$fec_fin = get_post_meta( $post->id, '_evento_fecha_final_meta', true );
+
+			
+
+			if($fec_ini !== '') $fec_ini = date('d/m/Y', $fec_ini);
+			if($fec_fin !== '') $fec_fin = date('d/m/Y', $fec_fin);
+
+			// Se arma el objecto que se regresa
+			$info_colecciones[$key] = array(
+				'titulo'	=> $titleColecciones,
+				'img_url'	=> $url,
+				'fec_ini'	=> $fec_ini,
+				'fec_fin'	=> $fec_fin,
+				);
+ 		}
+
+		return $info_colecciones;
+	} // advanced_search_eventos
 
 
 

@@ -177,8 +177,7 @@
 					<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="fotografo" data-value="<?php echo $letter->letter ?>"><?php echo $letter->letter ?></a>		
 				<?php
 					}
-				?>
-				
+				?>				
 			</div><!-- .filter-fotografos -->
 			<div class="[ filter-decada ]">
 				<?php
@@ -224,7 +223,7 @@
 					$terms = get_terms('tema', $args);
 					foreach ($terms as $key => $term) {
 				?>
-						<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="tema" data-value="<?php echo $term->slug ?>"><?php echo $term->name ?></a>
+						<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="tema" data-value="<?php echo $term->name ?>"><?php echo $term->name ?></a>
 				<?php
 					}
 				?>

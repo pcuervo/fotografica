@@ -8,6 +8,8 @@
 	add_action('add_meta_boxes', function(){
 
 		// add_meta_box( id, title, name_meta_callback, post_type, context, priority );
+		add_meta_box( 'evento_fecha_inicial', 'Fecha inicial del evento', 'metabox_evento_fecha_inicial', 'eventos', 'advanced', 'high' );
+		add_meta_box( 'evento_fecha_final', 'Fecha final del evento', 'metabox_evento_fecha_final', 'eventos', 'advanced', 'high' );
 
 	});
 
@@ -15,7 +17,33 @@
 
 // CUSTOM METABOXES CALLBACK FUNCTIONS ///////////////////////////////////////////////
 
+	function metabox_evento_fecha_inicial($post){
+		$fecha_inicial = get_post_meta($post->ID, '_evento_fecha_inicial_meta', true);
+		$fecha_inicial = date('Y-m-d', $fecha_inicial);
 
+		wp_nonce_field(__FILE__, '_evento_fecha_inicial_meta_nonce');
+
+echo <<<END
+
+	<label>Fecha inicial (AAAA-MM-DD):</label>
+	<input type="text" class="widefat" id="lugar" name="_evento_fecha_inicial_meta" value="$fecha_inicial" />
+
+END;
+	}
+
+	function metabox_evento_fecha_final($post){
+		$fecha_final = get_post_meta($post->ID, '_evento_fecha_final_meta', true);
+		$fecha_final = date('Y-m-d', $fecha_final);
+
+		wp_nonce_field(__FILE__, '_evento_fecha_final_meta_nonce');
+
+echo <<<END
+
+	<label>Fecha final (AAAA-MM-DD):</label>
+	<input type="text" class="widefat" id="lugar" name="_evento_fecha_final_meta" value="$fecha_final" />
+
+END;
+	}
 
 	function name_meta_callback($post){
 		// $name = get_post_meta($post->ID, '_name_meta', true);
@@ -44,8 +72,14 @@
 			return $post_id;
 
 
-		if ( isset($_POST['_name_meta']) and check_admin_referer(__FILE__, '_name_meta_nonce') ){
-			update_post_meta($post_id, '_name_meta', $_POST['_name_meta']);
+		if ( isset($_POST['_evento_fecha_inicial_meta']) and check_admin_referer(__FILE__, '_evento_fecha_inicial_meta_nonce') ){
+			$timestamp = strtotime($_POST['_evento_fecha_inicial_meta']);
+			update_post_meta($post_id, '_evento_fecha_inicial_meta', $timestamp);
+		}
+
+		if ( isset($_POST['_evento_fecha_final_meta']) and check_admin_referer(__FILE__, '_evento_fecha_final_meta_nonce') ){
+			$timestamp = strtotime($_POST['_evento_fecha_final_meta']);
+			update_post_meta($post_id, '_evento_fecha_final_meta', $timestamp);
 		}
 
 

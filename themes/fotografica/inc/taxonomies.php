@@ -389,6 +389,7 @@
 		//addPhotographerToPhoto();
 		//addYearToPhoto();
 		//addPlaceToPhoto();
+		//addLastNameToPhotographer();
 	}
 
 	/*
@@ -501,6 +502,18 @@
 				$term_taxonomy_ids = wp_set_object_terms( $photographer_term->post_id, $nombre.' '.$apellido, 'fotografo', true );
 				$current_post_id = -1;
 			}
+		}
+	}// addPhotographerToPhoto
+
+	function addLastNameToPhotographer(){
+		global $wpdb;
+		$results = $wpdb->get_results( 'SELECT post_id, meta_key, meta_value FROM wp_posts INNER JOIN wp_postmeta ON post_id = wp_posts.id WHERE post_type = "fotografos" AND meta_key = "wpcf-apellido-fotografo" AND meta_key <> "" ORDER BY post_id, meta_key DESC', OBJECT );
+
+		foreach ($results as $photographer_term) {
+			$apellido = $photographer_term->meta_value;
+			$term_taxonomy_ids = wp_set_object_terms( $photographer_term->post_id, $apellido, 'apellido', true );
+			// echo  $photographer_term->meta_value;
+			//var_dump($term_taxonomy_ids);
 		}
 	}// addPhotographerToPhoto
 

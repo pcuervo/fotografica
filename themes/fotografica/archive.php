@@ -6,8 +6,6 @@
 	\*------------------------------------*/
 	$postType = get_post_type();
 
-
-
 	/*------------------------------------*\
 	    #ARCHIVE HERO
 	\*------------------------------------*/
@@ -158,7 +156,7 @@
 						<!--  /********************************\ -->
 							<!-- #FOTOGRAFOS -->
 						<!--  \**********************************/ -->
-						<?php if ( $postType == 'evento' OR $postType == 'cartelera' ){ ?>
+						<?php if ( $postType == 'eventos' OR $postType == 'carteleras' ){ ?>
 							<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="fecha">Fecha</a>
 						<?php } ?>
 					</div><!-- row -->
@@ -166,7 +164,7 @@
 			</div><!-- filters__tabs -->
 			<div class="[ filters__content ] [ text-center ]">
 				<!--  /********************************\ -->
-					<!-- #EVENTOS / CARTELERA -->
+					<!-- FOTÓGRAFOS -->
 				<!--  \**********************************/ -->
 				<?php if ( $postType == 'fotografos' ){ ?>
 					<div class="[ filter-colecciones ]">
@@ -185,6 +183,19 @@
 						?>
 					</div><!-- .filter-colecciones -->
 					<div class="[ filter-pais ]">
+						<?php
+							$args = array(
+								'orderby'		=> 'name',
+								'order' 		=> 'ASC',
+								'hide_empty' 	=> true,
+							);
+							$terms = get_terms('pais', $args);
+							foreach ($terms as $key => $term) {
+						?>
+								<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="pais" data-value="<?php echo $term->slug ?>"><?php echo $term->name ?></a>
+						<?php
+							}
+						?>
 					</div><!-- .filter-pais -->
 					<div class="[ filter-decada ]">
 						<?php
@@ -221,20 +232,48 @@
 						?>
 					</div><!-- .filter-decada -->
 					<div class="[ filter-tema ]">
-						<a class="[ filter filter--active ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">#méxico</a>
+						<?php
+							$args = array(
+								'orderby'		=> 'name',
+								'order' 		=> 'ASC',
+								'hide_empty' 	=> true,
+							);
+							$terms = get_terms('tema', $args);
+							foreach ($terms as $key => $term) {
+						?>
+								<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="tema" data-value="<?php echo $term->name ?>"><?php echo $term->name ?></a>
+						<?php
+							}
+						?>
 					</div><!-- .filter-tema -->
 					<div class="[ filter-apellido ]">
-						<!-- <a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">Z</a> -->
+						<?php 
+							$query = "
+					    		SELECT DISTINCT LEFT(name, 1) as letter FROM wp_posts P
+								INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
+								INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
+								INNER JOIN wp_terms T ON T.term_id = TT.term_id
+								WHERE P.post_type = 'fotografos' 
+								AND taxonomy = 'apellido'
+								ORDER BY letter";
+							$first_letters = $wpdb->get_results( $query );
+
+							foreach ($first_letters as $letter) {
+						?>
+							<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="apellido" data-value="<?php echo $letter->letter ?>"><?php echo $letter->letter ?></a>		
+						<?php
+							}
+						?>
 					</div><!-- .filter-apellido -->
 				<?php } ?>
 				<!--  /********************************\ -->
 					<!-- #EVENTOS / CARTELERA -->
 				<!--  \**********************************/ -->
-				<?php if ( $postType == 'evento' OR $postType == 'cartelera' ){ ?>
+				<?php if ( $postType == 'eventos' || $postType == 'carteleras' ){ ?>
 					<div class="[ filter-fecha ]">
-						<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">Próximos eventos</a>
-						<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">Hoy</a>
-						<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">Eventos anteriores</a>
+						<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="eventos" data-value="proximos">Próximos eventos</a>
+						<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="eventos" data-value="hoy">Hoy</a>
+						<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ] " data-type="eventos" data-value="anteriores">Eventos anteriores</a>
 					</div><!-- .filter-fecha -->
 				<?php } ?>
 			</div><!-- filters__content -->

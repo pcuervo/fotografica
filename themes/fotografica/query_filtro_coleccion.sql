@@ -30,9 +30,6 @@ HAVING COUNT(id) > 1
 ORDER BY RAND()
 LIMIT 20
 
-
-SELECT id, COUNT(id)  FROM wp_posts P
-INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
-INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
-INNER JOIN wp_terms T ON T.term_id = TT.term_id
-WHERE P.post_type = 'fotografias' AND TT.taxonomy IN ('tema', 'año') AND (   T.slug IN ( SELECT slug FROM wp_terms WHERE slug  BETWEEN '1940' AND '1950') T.slug IN ( SELECT slug FROM wp_terms WHERE name IN ('#test') )  ) GROUP BY id HAVING COUNT(id) &gt; 1 ORDER BY RAND() LIMIT 20
+SELECT id FROM wp_posts 
+				WHERE post_type = 'eventos'
+				AND meta_key IN ('_evento_fecha_final_meta', '_evento_fecha_inicial_meta') AND '_evento_fecha_inicial_meta' > 1423459339

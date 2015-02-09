@@ -242,7 +242,7 @@ function openLightbox(){
 }
 
 // AJAX para buscadores
-function searchTest(post_type, filters, limit){
+function advancedSearch(post_type, filters, limit){
 	var user_data = {};
 	user_data['action'] = 'advanced_search';
 	user_data['post_type'] = post_type;
@@ -258,26 +258,22 @@ function searchTest(post_type, filters, limit){
 			$('.loader').hide();
 			console.log(response);
 			var json_posts = $.parseJSON(response);
+			var html_resultados;
+			
 			$.each(json_posts, function(i, val){
-				console.log(val);
-				var html_photo = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]"> \
-					<div class="[ relative ]"> \
-						<a class="[ block ]" href="#"> \
-							<img src="'+val.img_url+'" class="[ image-responsive ]" /> \
-							<span class="[ opacity-gradient--full ]"></span> \
-							<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
-								<p class="[ text-center ]"> \
-									<a href="#" class="[ media--info__author ]">'+val.autor+'</a> \
-									, <a href="#" class="[ media--info__name ]">'+val.titulo+'</a> \
-									, de la serie <span class="[ media--info__series ]">'+val.coleccion+'</span> \
-									, <span class="[ media--info__place ]">'+val.lugar+'</span> \
-									, <span class="[ media--info__date ]">'+val.ano+'</span> \
-								</p> \
-							</div> \
-						</a> \
-					</div> \
-				</article>';
-				$(html_photo).appendTo('.results');
+				switch(post_type){
+					case 'fotografias':
+						html_resultados = get_html_colecciones(val);
+						break;
+					case 'fotografos':
+						html_resultados = get_html_fotografos(val);
+						break;
+					case 'eventos':
+						html_resultados = get_html_eventos(val);
+						break;
+				}
+				
+				$(html_resultados).appendTo('.results');
 			});
 			runMasonry('.results', '.result' );
 
@@ -285,6 +281,51 @@ function searchTest(post_type, filters, limit){
 	);
 }// searchColeccionesTest
 
+function get_html_colecciones(results){
+	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]"> \
+		<div class="[ relative ]"> \
+			<a class="[ block ]" href="#"> \
+				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
+				<span class="[ opacity-gradient--full ]"></span> \
+				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
+					<p class="[ text-center ]"> \
+						<a href="#" class="[ media--info__author ]">'+results.autor+'</a> \
+						, <a href="#" class="[ media--info__name ]">'+results.titulo+'</a> \
+						, de la serie <span class="[ media--info__series ]">'+results.coleccion+'</span> \
+						, <span class="[ media--info__place ]">'+results.lugar+'</span> \
+						, <span class="[ media--info__date ]">'+results.ano+'</span> \
+					</p> \
+				</div> \
+			</a> \
+		</div> \
+	</article>';
+	return html_resultados;
+}
+
+function get_html_fotografos(results){
+	var html_resultados = '<a href="'+results.url+'" class="[ result ][ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">'+results.fotografo+'</a>';
+	return html_resultados;
+}
+
+function get_html_eventos(results){
+	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]"> \
+		<div class="[ relative ]"> \
+			<a class="[ block ]" href="#"> \
+				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
+				<span class="[ opacity-gradient--full ]"></span> \
+				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
+					<p class="[ text-center ]"> \
+						<a href="#" class="[ media--info__name ]">'+results.titulo+'</a> \
+					</p> \
+					<p class="[ text-center ]"> \
+						del '+results.fec_ini+' al '+results.fec_fin+' \
+					</p> \
+				</div> \
+			</a> \
+		</div> \
+	</article>';
+	return html_resultados;
+}
 
 /*------------------------------------*\
 	#RESPONSIVE
