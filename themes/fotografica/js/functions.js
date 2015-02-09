@@ -22,13 +22,13 @@
 		/**
 		 * Show and hide loader on ajax events
 		**/
-		$('.loader')
-		.ajaxStart(function() {
-			$(this).show();
-		})
-		.ajaxStop(function() {
-			$(this).hide();
-		})
+		// $('.loader')
+		// .ajaxStart(function() {
+		// 	$(this).show();
+		// })
+		// .ajaxStop(function() {
+		// 	$(this).hide();
+		// })
 
 
 
@@ -266,7 +266,6 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 		ajax_url,
 		user_data,
 		function(response){
-			$('.loader').hide();
 			console.log(response);
 			var json_posts = $.parseJSON(response);
 			var html_resultados;
