@@ -250,7 +250,7 @@
 	</div>
 	<div class="clear"></div>
 	<div class="[ text-center ] [ margin-bottom ]">
-		<a class="[ button button--hollow button--dark ] [ inline-block ]">
+		<a class="[ button button--hollow button--dark ] [ inline-block ] [ js-cargar-mas ]">
 			Cargar más
 		</a>
 	</div><!-- .text-center -->

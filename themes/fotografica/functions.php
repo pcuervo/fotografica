@@ -66,6 +66,8 @@
 					(function( $ ) {
 						"use strict";
 						$(function(){
+							var existing_ids = 0;
+
 							/*------------------------------------*\
 								#Triggered events
 							\*------------------------------------*/
@@ -76,13 +78,23 @@
 
 							$('.filters__content').on('click', '.filter', function(){
 								addFilter( this );
-								advancedSearch('<?php echo $postType ?>', getFilteredResults(), 20);
+								existing_ids = getExistingIds();
+								clearGrid();
+								advancedSearch('<?php echo $postType ?>', getFilteredResults(), 20, existing_ids);
 							});
 
 							$('.filters__results').on('click', '.filter', function(){
 								removeFilter( this );
-								advancedSearch('<?php echo $postType ?>', getFilteredResults(), 20);
+								existing_ids = getExistingIds();
+								clearGrid();
+								advancedSearch('<?php echo $postType ?>', getFilteredResults(), 20, existing_ids);
 							});
+
+							$('.js-cargar-mas').on('click', function(e){
+								e.preventDefault();
+								existing_ids = getExistingIds();
+								advancedSearch('<?php echo $postType ?>', getFilteredResults(), 20, existing_ids);
+							})
 
 							/**
 							 * If the postType is fotografos do not run masonry
@@ -92,7 +104,7 @@
 							<?php } ?>
 
 
-							advancedSearch('<?php echo $postType ?>', getFilteredResults(), 15);
+							advancedSearch('<?php echo $postType ?>', getFilteredResults(), 20, existing_ids);
 
 						});
 					}(jQuery));
@@ -128,17 +140,14 @@
 							\*------------------------------------*/
 
 							runMasonry('.results', '.result' );
-
+							var existing_ids = 0;
 							<?php
 								global $coleccion;
 								if($coleccion != '') {
 							?>
 									var filter = $('.filter[data-value="<?php echo $coleccion; ?>"]');
-									console.log(filter);
 									addFilter( filter );
 							<?php } ?>
-
-
 
 
 
@@ -152,16 +161,25 @@
 
 							$('.filters__content').on('click', '.filter', function(){
 								addFilter( this );
-								advancedSearch('fotografias', getFilteredResults(), 20);
+								existing_ids = getExistingIds();
+								clearGrid();
+								advancedSearch('fotografias', getFilteredResults(), 20, existing_ids);
 							});
 
 							$('.filters__results').on('click', '.filter', function(){
 								removeFilter( this );
-								advancedSearch('fotografias', getFilteredResults(), 20);
+								clearGrid();
+								existing_ids = getExistingIds();
+								advancedSearch('fotografias', getFilteredResults(), 20, existing_ids);
 							});
 
-							advancedSearch('fotografias', getFilteredResults(), 15);
+							$('.js-cargar-mas').on('click', function(e){
+								e.preventDefault();
+								existing_ids = getExistingIds();
+								advancedSearch('fotografias', getFilteredResults(), 20, existing_ids);
+							})
 
+							advancedSearch('fotografias', getFilteredResults(), 15, existing_ids);
 						});
 					}(jQuery));
 				</script>
@@ -495,18 +513,19 @@
 		$post_type = $_POST['post_type'];
 		$filters = $_POST['filters'];
 		$limit = $_POST['limit'];
+		$existing_ids = $_POST['existing_ids'];
 
 		$advanced_search_results = array();
-		if($post_type == 'fotografias') $advanced_search_results = advanced_search_colecciones($filters, $limit);
-		if($post_type == 'fotografos') $advanced_search_results = advanced_search_fotografos($filters, $limit);
-		if($post_type == 'eventos') $advanced_search_results = advanced_search_eventos($filters, $limit);
+		if($post_type == 'fotografias') $advanced_search_results = advanced_search_colecciones($filters, $limit, $existing_ids);
+		if($post_type == 'fotografos') $advanced_search_results = advanced_search_fotografos($filters, $limit, $existing_ids);
+		if($post_type == 'eventos') $advanced_search_results = advanced_search_eventos($filters, $limit, $existing_ids);
 
 		echo json_encode($advanced_search_results , JSON_FORCE_OBJECT);
 		exit();
 	}// advanced_search
 	add_action("wp_ajax_advanced_search", "advanced_search");
 
-	function advanced_search_colecciones($filtros = '', $limit){
+	function advanced_search_colecciones($filtros = '', $limit, $existing_ids){
 		global $post;
 		global $wpdb;
 
@@ -516,9 +535,14 @@
 				INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
 				INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
 				INNER JOIN wp_terms T ON T.term_id = TT.term_id
-				WHERE P.post_type = 'fotografias'
-				ORDER BY RAND()
-				LIMIT ".$limit;
+				WHERE P.post_type = 'fotografias'";
+
+			if($existing_ids != '0'){
+				$existing_ids_in = implode("', '", $existing_ids);
+				$query .= " AND P.id NOT IN ('".$existing_ids_in."')";
+			}
+
+			$query .= " ORDER BY RAND() LIMIT ".$limit;
 			$posts_info = $wpdb->get_results( $query, OBJECT );
 		} else {
 
@@ -622,6 +646,11 @@
 			// Close filtering terms if  they exist
 			if($is_coleccion || $is_ano || $is_fotografo || $is_tema) $query = $query." )";
 
+			if($existing_ids != '0'){
+				$existing_ids_in = implode("', '", $existing_ids);
+				$query .= " AND id NOT IN ('".$existing_ids_in."')";
+			}
+
 			$query = $query." GROUP BY id HAVING COUNT(id) > ".$filter_type_count." ORDER BY RAND() LIMIT ".$limit;
 			//echo $query;
 			$posts_info = $wpdb->get_results( $query );
@@ -644,6 +673,7 @@
 				$authorColeccionesSlug 	= $authorColecciones[0]->slug;
 			} else {
 				$authorColeccionesName 	= 'Sin autor';
+				$authorColeccionesSlug = '-';
 			}
 			// Año
 			$anoFotos = wp_get_post_terms( $post->id, 'año' );
@@ -671,9 +701,12 @@
 
 			// Se arma el objecto que se regresa
 			$info_colecciones[$key] = array(
+				'id'		=> $post->id,
+				'permalink'	=> get_permalink( $post->id ),
 				'titulo'	=> $titleColecciones,
 				'img_url'	=> $url,
 				'autor'		=> $authorColeccionesName,
+				'url_autor'	=> $authorColeccionesSlug,
 				'ano'		=> $anoFotosName,
 				'lugar'		=> $lugarName,
 				'coleccion'	=> $coleccionName,
@@ -683,7 +716,7 @@
 		return $info_colecciones;
 	} // advanced_search_colecciones
 
-	function advanced_search_fotografos($filtros = '', $limit){
+	function advanced_search_fotografos($filtros = '', $limit, $existing_ids){
 		global $post;
 		global $wpdb;
 
@@ -693,9 +726,15 @@
 				INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
 				INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
 				INNER JOIN wp_terms T ON T.term_id = TT.term_id
-				WHERE P.post_type = 'fotografos'
-				ORDER BY RAND()
-				LIMIT ".$limit;
+				WHERE P.post_type = 'fotografos'";
+
+			if($existing_ids != '0'){
+				$existing_ids_in = implode("', '", $existing_ids);
+				$query .= " AND P.id NOT IN ('".$existing_ids_in."')";
+			}
+
+			$query .= " ORDER BY RAND() LIMIT ".$limit;
+
 			$posts_info = $wpdb->get_results( $query, OBJECT );
 		} else {
 
@@ -806,6 +845,11 @@
 			// Close filtering terms if  they exist
 			if($is_coleccion || $is_ano || $is_pais || $is_tema || $is_apellido) $query = $query." )";
 
+			if($existing_ids != '0'){
+				$existing_ids_in = implode("', '", $existing_ids);
+				$query .= " AND id NOT IN ('".$existing_ids_in."')";
+			}
+
 			$query = $query." GROUP BY id HAVING COUNT(id) > ".$filter_type_count." ORDER BY RAND() LIMIT ".$limit;
 			$posts_info = $wpdb->get_results( $query );
 		}
@@ -818,8 +862,9 @@
 			$url = get_permalink( $post->id );
 			// Se arma el objecto que se regresa
 			$info_colecciones[$key] = array(
+				'id'		=> $post->id,
 				'fotografo'	=> $fotografo,
-				'url'	=> $url,
+				'url'		=> $url,
 				);
  		}
 

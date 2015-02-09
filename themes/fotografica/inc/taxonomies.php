@@ -269,7 +269,7 @@
 		}// taxonomy medio
 
 		// Tipo de trabajo
-		if( ! taxonomy_exists('tipo-de-trabajo')){
+		if( ! taxonomy_exists('nuestro-trabajo')){
 			$labels = array(
 				'name'              => 'Tipos de trabajo',
 				'singular_name'     => 'Tipo de trabajo',
@@ -288,9 +288,10 @@
 				'show_admin_column' => true,
 				'show_in_nav_menus' => true,
 				'query_var'         => true,
-				'rewrite'           => array( 'slug' => 'tipo-de-trabajo' ),
+				'rewrite'           => array( 'slug' => 'nuestro-trabajo' ),
 			);
-			register_taxonomy( 'tipo-de-trabajo', 'nuestro-trabajo', $args );
+			register_taxonomy( 'nuestro-trabajo', 'nuestro-trabajo', $args );
+
 		}// taxonomy medio
 
 		// Tipo de noticia
