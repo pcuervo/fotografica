@@ -4,7 +4,7 @@
 	<!-- \**************************************/ -->
 	<?php
 	// ¿Hay algún filtro de colección?
-	global $coleccion; 
+	global $coleccion;
 	$coleccion = "";
 	if(isset($_GET['coleccion'])) $coleccion = $_GET['coleccion'];
 
@@ -161,23 +161,23 @@
 				?>
 			</div><!-- .filter-colecciones -->
 			<div class="[ filter-fotografos ]">
-				<?php 
+				<?php
 					$query = "
 			    		SELECT DISTINCT LEFT(name, 1) as letter FROM wp_posts P
 						INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
 						INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
 						INNER JOIN wp_terms T ON T.term_id = TT.term_id
-						WHERE P.post_type = 'fotografias' 
+						WHERE P.post_type = 'fotografias'
 						AND taxonomy = 'fotografo'
 						ORDER BY letter";
 					$first_letters = $wpdb->get_results( $query );
 
 					foreach ($first_letters as $letter) {
 				?>
-					<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="fotografo" data-value="<?php echo $letter->letter ?>"><?php echo $letter->letter ?></a>		
+					<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="fotografo" data-value="<?php echo $letter->letter ?>"><?php echo $letter->letter ?></a>
 				<?php
 					}
-				?>				
+				?>
 			</div><!-- .filter-fotografos -->
 			<div class="[ filter-decada ]">
 				<?php
@@ -243,11 +243,11 @@
 			<p class="[ uppercase ] [ js-num-resultados ]"><span></span> resultados con los filtros:</p>
 		</div>
 	</section><!-- .filters -->
-	<div class="[ loader ] [ center ]">
-		<div></div>
-	</div>
 	<section class="[ results ] [ row ] [ margin-bottom ]">
 	</section><!-- .results -->
+	<div class="[ loader ] [ center ] ">
+		<div></div>
+	</div>
 	<div class="clear"></div>
 	<div class="[ text-center ] [ margin-bottom ]">
 		<a class="[ button button--hollow button--dark ] [ inline-block ]">
