@@ -123,6 +123,24 @@
 							runMasonry('.results', '.result' );
 
 							searchTest('fotografias', getFilteredResults(), 15);
+
+							/*------------------------------------*\
+								#Triggered events
+							\*------------------------------------*/
+
+							$('.tab-filter').on('click', function(){
+								showFilters( this );
+							});
+
+							$('.filters__content').on('click', '.filter', function(){
+								addFilter( this );
+								searchTest('fotografias', getFilteredResults(), 20);
+							});
+
+							$('.filters__results').on('click', '.filter', function(){
+								removeFilter( this );
+								searchTest('fotografias', getFilteredResults(), 20);
+							});
 						});
 					}(jQuery));
 				</script>
