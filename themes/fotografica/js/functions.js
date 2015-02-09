@@ -336,7 +336,7 @@ function get_html_fotografos(results){
 }
 
 function get_html_eventos(results){
-	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]"> \
+	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
 			<a class="[ block ]" href="#"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \

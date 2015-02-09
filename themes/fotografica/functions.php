@@ -871,16 +871,22 @@
 		return $info_colecciones;
 	} // advanced_search_fotografos
 
-	function advanced_search_eventos($filtros = '', $limit){
+	function advanced_search_eventos($filtros = '', $limit, $existing_ids){
 		global $post;
 		global $wpdb;
 
 		if ($filtros == ''){
 			$query = "
 	    		SELECT id FROM wp_posts
-				WHERE post_type = 'eventos'
-				ORDER BY RAND()
-				LIMIT 1000";
+				WHERE post_type = 'eventos'";
+
+			if($existing_ids != '0'){
+				$existing_ids_in = implode("', '", $existing_ids);
+				$query .= " AND id NOT IN ('".$existing_ids_in."')";
+			}
+
+			$query .= "ORDER BY RAND() LIMIT ".$limit;
+
 			$posts_info = $wpdb->get_results( $query, OBJECT );
 		} else {
 
@@ -891,9 +897,10 @@
 				WHERE post_type = 'eventos'
 				AND meta_key IN ('_evento_fecha_final_meta', '_evento_fecha_inicial_meta')";
 
-			$hoy = strtotime("now");
-			$inicioHoy = strtotime("midnight", $hoy);
-			$finHoy = strtotime("tomorrow", $inicioHoy) - 1;
+			$hoy = date('Y-m-d');
+
+			//$inicioHoy = strtotime("midnight", $hoy);
+			//$finHoy = strtotime("tomorrow", $inicioHoy) - 1;
 			foreach ($filtros as $key => $filtro) {
 				if($key == 0) $query .= ' AND';
 
@@ -902,7 +909,13 @@
 				}
 			}
 
-			//echo $query;
+			if($existing_ids != '0'){
+				$existing_ids_in = implode("', '", $existing_ids);
+				$query .= " AND id NOT IN ('".$existing_ids_in."')";
+			}
+			$query .= "ORDER BY RAND() LIMIT ".$limit;
+
+			echo $query;
 			$posts_info = $wpdb->get_results( $query );
 		}
 
@@ -920,13 +933,12 @@
 			$fec_ini = get_post_meta( $post->id, '_evento_fecha_inicial_meta', true );
 			$fec_fin = get_post_meta( $post->id, '_evento_fecha_final_meta', true );
 
-
-
-			if($fec_ini !== '') $fec_ini = date('d/m/Y', $fec_ini);
-			if($fec_fin !== '') $fec_fin = date('d/m/Y', $fec_fin);
+			//if($fec_ini !== '') $fec_ini = date('d/m/Y', $fec_ini);
+			//if($fec_fin !== '') $fec_fin = date('d/m/Y', $fec_fin);
 
 			// Se arma el objecto que se regresa
 			$info_colecciones[$key] = array(
+				'id'		=> $post->id,
 				'titulo'	=> $titleColecciones,
 				'img_url'	=> $url,
 				'fec_ini'	=> $fec_ini,
