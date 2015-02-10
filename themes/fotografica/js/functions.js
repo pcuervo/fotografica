@@ -19,17 +19,6 @@
 			#Triggered events
 		\*------------------------------------*/
 
-		/**
-		 * Show and hide loader on ajax events
-		**/
-		// $('.loader')
-		// .ajaxStart(function() {
-		// 	$(this).show();
-		// })
-		// .ajaxStop(function() {
-		// 	$(this).hide();
-		// })
-
 
 
 
@@ -201,6 +190,7 @@ function getFilteredResults(){
 		var filter_value = $(val).data('value');
 		current_filter['type'] = filter_type;
 		current_filter['value'] = filter_value;
+		clearGrid();
 		search_filters.push(current_filter);
 	});
 	return search_filters;
@@ -251,13 +241,13 @@ function openLightbox(){
 	$('.lightbox').show();
 }
 
-// AJAX para buscadores
-function advancedSearch(post_type, filters, limit, existing_ids){
+// AJAX para filtros
+function advancedSearch(post_type, filters, limit){
+	console.log(post_type);
 	var user_data = {};
 	user_data['action'] = 'advanced_search';
 	user_data['post_type'] = post_type;
 	user_data['limit'] = limit;
-	user_data['existing_ids'] = existing_ids;
 
 	user_data['filters'] = '';
 	if(filters.length > 0)
@@ -266,6 +256,7 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 		ajax_url,
 		user_data,
 		function(response){
+			$('.loader').hide();
 			console.log(response);
 			var json_posts = $.parseJSON(response);
 			var html_resultados;
@@ -292,33 +283,22 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 			}
 
 		}// response
-	);
+	)
+	.fail(function(e){
+		console.log(e);
+	});
 }// searchColeccionesTest
 
-function getExistingIds(){
-	var results = $('body').find('.result');
-	var ids = [];
-	if (results.length == 0) return 0;
-	$.each(results, function(i, result){ ids.push($(result).data('id')); });
-	return ids;
-}// getExistingIds
-
 function get_html_colecciones(results){
-	console.log(results.url_autor);
-	if(results.url_autor != '-')
-		var html_autor = '<a href="'+results.url_autor+'" class="[ media--info__author ]">'+results.autor+'</a>';
-	else
-		var html_autor = '<p class="[ media--info__author ]">'+results.autor+'</p>';
-
-	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
+	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]"> \
 		<div class="[ relative ]"> \
 			<a class="[ block ]" href="#"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
 				<span class="[ opacity-gradient--full ]"></span> \
 				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
 					<p class="[ text-center ]"> \
-						'+html_autor+' \
-						, <a href="'+results.permalink+'" class="[ media--info__name ]">'+results.titulo+'</a> \
+						<a href="#" class="[ media--info__author ]">'+results.autor+'</a> \
+						, <a href="#" class="[ media--info__name ]">'+results.titulo+'</a> \
 						, de la serie <span class="[ media--info__series ]">'+results.coleccion+'</span> \
 						, <span class="[ media--info__place ]">'+results.lugar+'</span> \
 						, <span class="[ media--info__date ]">'+results.ano+'</span> \
@@ -331,12 +311,12 @@ function get_html_colecciones(results){
 }
 
 function get_html_fotografos(results){
-	var html_resultados = ' <a href="'+results.url+'" class="[ result ][ button button--hollow button--small button--dark ][ inline-block margin-bottom--small ]" data-id="'+results.id+'">'+results.fotografo+'</a> &nbsp;&nbsp;';
+	var html_resultados = ' <a href="'+results.url+'" class="[ result ][ button button--hollow button--small button--dark ][ inline-block margin-bottom--small ]">'+results.fotografo+'</a> &nbsp;&nbsp;';
 	return html_resultados;
 }
 
 function get_html_eventos(results){
-	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
+	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]"> \
 		<div class="[ relative ]"> \
 			<a class="[ block ]" href="#"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \

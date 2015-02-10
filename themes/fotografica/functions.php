@@ -510,6 +510,7 @@
 	 * @return string
 	 */
 	function advanced_search(){
+		echo 'sss';
 		$post_type = $_POST['post_type'];
 		$filters = $_POST['filters'];
 		$limit = $_POST['limit'];
@@ -528,7 +529,7 @@
 	function advanced_search_colecciones($filtros = '', $limit, $existing_ids){
 		global $post;
 		global $wpdb;
-
+		echo 'sss';
 		if ($filtros == ''){
 			$query = "
 	    		SELECT P.id, P.post_title, T.name, T.slug FROM wp_posts P
@@ -712,6 +713,11 @@
 				'coleccion'	=> $coleccionName,
 				);
  		}
+
+ 		echo '<pre>';
+			print_r( $query );
+		echo '</pre>';
+
 
 		return $info_colecciones;
 	} // advanced_search_colecciones
