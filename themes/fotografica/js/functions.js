@@ -19,17 +19,6 @@
 			#Triggered events
 		\*------------------------------------*/
 
-		/**
-		 * Show and hide loader on ajax events
-		**/
-		$('.loader')
-		.ajaxStart(function() {
-			$(this).show();
-		})
-		.ajaxStop(function() {
-			$(this).hide();
-		})
-
 
 
 
@@ -201,6 +190,7 @@ function getFilteredResults(){
 		var filter_value = $(val).data('value');
 		current_filter['type'] = filter_type;
 		current_filter['value'] = filter_value;
+		clearGrid();
 		search_filters.push(current_filter);
 	});
 
@@ -261,13 +251,13 @@ function openLightbox(){
 	$('.lightbox').show();
 }
 
-// AJAX para buscadores
-function advancedSearch(post_type, filters, limit, existing_ids){
+// AJAX para filtros
+function advancedSearch(post_type, filters, limit){
+	console.log(post_type);
 	var user_data = {};
 	user_data['action'] = 'advanced_search';
 	user_data['post_type'] = post_type;
 	user_data['limit'] = limit;
-	user_data['existing_ids'] = existing_ids;
 
 	user_data['filters'] = '';
 	if(filters.length > 0)
@@ -303,7 +293,10 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 			}
 
 		}// response
-	);
+	)
+	.fail(function(e){
+		console.log(e);
+	});
 }// searchColeccionesTest
 
 function getExistingIds(){
@@ -327,8 +320,8 @@ function getHtmlColecciones(results){
 				<span class="[ opacity-gradient--full ]"></span> \
 				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
 					<p class="[ text-center ]"> \
-						'+html_autor+' \
-						, <a href="'+results.permalink+'" class="[ media--info__name ]">'+results.titulo+'</a> \
+						<a href="#" class="[ media--info__author ]">'+results.autor+'</a> \
+						, <a href="#" class="[ media--info__name ]">'+results.titulo+'</a> \
 						, de la serie <span class="[ media--info__series ]">'+results.coleccion+'</span> \
 						, <span class="[ media--info__place ]">'+results.lugar+'</span> \
 						, <span class="[ media--info__date ]">'+results.ano+'</span> \

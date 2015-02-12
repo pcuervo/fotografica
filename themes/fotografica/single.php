@@ -8,7 +8,7 @@
 	$postType = get_post_type();
 
 	$taxonomia = '';
-	if ( $postType == 'colecciones' ){
+	if ( $postType == 'fotografias' ){
 		$taxonomia = 'coleccion';
 	} elseif ( $postType == 'proyectos' ){
 		$taxonomia = 'tipo-de-proyecto';
@@ -289,7 +289,7 @@
 				'post_status' => null,
 				'post_parent' => $post->ID
 			);
-			$attachedMedia = get_embedded_media('imsage', $attachedMediaArgs);
+			//$attachedMedia = get_embedded_media('imsage', $attachedMediaArgs);
 			// echo '<pre>';
 			// 	print_r($attachedMedia);
 			// echo '</pre>';
