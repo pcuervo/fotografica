@@ -76,7 +76,6 @@
 							<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/exposiciones'?>">Exposiciones</a></li>
 							<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/publicaciones'?>">Publicaciones</a></li>
 							<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/cartelera'?>">Cartelera</a></li>
-							<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/evento'?>">Eventos</a></li>
 							<li><a class="[ text-center uppercase ]" href="#">Contáctanos</a></li>
 							<li>
 								<a class="[ text-center uppercase ]" href="#">Nuestro trabajo</a>

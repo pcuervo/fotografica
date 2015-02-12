@@ -259,6 +259,7 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 	user_data['limit'] = limit;
 	user_data['existing_ids'] = existing_ids;
 
+	console.log(post_type);
 	user_data['filters'] = '';
 	if(filters.length > 0)
 		user_data['filters'] = filters;
@@ -270,9 +271,9 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 			console.log(response);
 			var json_posts = $.parseJSON(response);
 			var html_resultados;
-
-			var num_resultados;
+			var num_posts = 0;
 			$.each(json_posts, function(i, val){
+
 				switch(post_type){
 					case 'fotografias':
 						html_resultados = getHtmlColecciones(val);
@@ -280,23 +281,35 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 					case 'fotografos':
 						html_resultados = getHtmlFotografos(val);
 						break;
-					case 'eventos':
-						html_resultados = getHtmlEventos(val);
+					case 'carteleras':
+						html_resultados = getHtmlCarteleras(val);
 						break;
 					case 'proyectos':
 						html_resultados = getHtmlProyectos(val);
 						break;
+					case 'exposiciones':
+						html_resultados = getHtmlExposiciones(val);
+						break;
+					case 'publicaciones':
+						html_resultados = getHtmlPublicaciones(val);
+						break;
 				}
 				$(html_resultados).appendTo('.results');
-				num_resultados = i;
+				num_posts = i;
 			});
-			console.log('i: ' + num_resultados);
 			/**
 			 * If the postType is fotografos do not run masonry
 			**/
 			if ( post_type !== 'fotografos'){
 				runMasonry('.results', '.result' );
 			}
+
+			// Hide "cargar mas" when there are no more posts to load
+			num_posts = parseInt(num_posts) + 1;
+			if(parseInt(limit) > parseInt(num_posts))
+				$('.js-cargar-mas').hide();
+			else
+				$('.js-cargar-mas').show();
 
 		}// response
 	)
@@ -344,7 +357,7 @@ function getHtmlFotografos(results){
 	return html_resultados;
 }
 
-function getHtmlEventos(results){
+function getHtmlCarteleras(results){
 	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
 			<a class="[ block ]" href="#"> \
@@ -364,10 +377,27 @@ function getHtmlEventos(results){
 	return html_resultados;
 }
 
-function getHtmlProyectos(results){
+function getHtmlExposiciones(results){
 	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
-			<a class="[ block ]" href="#"> \
+			<a class="[ block ]" href="'+results.permalink+'"> \
+				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
+				<span class="[ opacity-gradient--full ]"></span> \
+				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
+					<p class="[ text-center ]"> \
+						<a href="'+results.permalink+'" class="[ media--info__name ]">'+results.titulo+'</a> \
+					</p> \
+				</div> \
+			</a> \
+		</div> \
+	</article>';
+	return html_resultados;
+}
+
+function getHtmlPublicaciones(results){
+	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
+		<div class="[ relative ]"> \
+			<a class="[ block ]" href="'+results.permalink+'"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
 				<span class="[ opacity-gradient--full ]"></span> \
 				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \

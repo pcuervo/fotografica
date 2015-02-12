@@ -7,6 +7,7 @@
 	global $coleccion;
 	$coleccion = "";
 	if(isset($_GET['coleccion'])) $coleccion = $_GET['coleccion'];
+	if(isset($_GET['filtro'])) $filtro = $_GET['filtro'];
 
 	$bgColecciones = '';
 	$coleccionColecciones = '';
@@ -238,6 +239,9 @@
 					</fieldset>
 				</form>
 			</div><!-- .filter-buscar -->
+			<div class="[ filter-nuevas-adquisiciones ] [ hide ]">
+				<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="tema" data-value="nuevas-adquisiciones">Nuevas adquisiciones</a>
+			</div><!-- .filter-nuevas-adquisiciones -->
 		</div><!-- filters__content -->
 		<div class="[ filters__results ] [ padding--small text-center ]">
 			<p class="[ uppercase ] [ js-num-resultados ]"><span></span> resultados con los filtros:</p>
