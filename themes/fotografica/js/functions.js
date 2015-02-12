@@ -203,6 +203,16 @@ function getFilteredResults(){
 		current_filter['value'] = filter_value;
 		search_filters.push(current_filter);
 	});
+
+	if($('.filter-buscar input').val() != '' && typeof $('.filter-buscar input').val() !== 'undefined' ){
+		current_filter = {};
+		filter_type = 'buscar';
+		filter_value = $('.filter-buscar input').val();
+		current_filter['type'] = filter_type;
+		current_filter['value'] = filter_value;
+		search_filters.push(current_filter);
+	}
+
 	return search_filters;
 }// getFilteredResults
 
@@ -274,13 +284,13 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 			$.each(json_posts, function(i, val){
 				switch(post_type){
 					case 'fotografias':
-						html_resultados = get_html_colecciones(val);
+						html_resultados = getHtmlColecciones(val);
 						break;
 					case 'fotografos':
-						html_resultados = get_html_fotografos(val);
+						html_resultados = getHtmlFotografos(val);
 						break;
 					case 'eventos':
-						html_resultados = get_html_eventos(val);
+						html_resultados = getHtmlEventos(val);
 						break;
 				}
 				$(html_resultados).appendTo('.results');
@@ -304,8 +314,7 @@ function getExistingIds(){
 	return ids;
 }// getExistingIds
 
-function get_html_colecciones(results){
-	console.log(results.url_autor);
+function getHtmlColecciones(results){
 	if(results.url_autor != '-')
 		var html_autor = '<a href="'+results.url_autor+'" class="[ media--info__author ]">'+results.autor+'</a>';
 	else
@@ -313,7 +322,7 @@ function get_html_colecciones(results){
 
 	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
-			<a class="[ block ]" href="#"> \
+			<a class="[ block ]" href="'+results.permalink+'"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
 				<span class="[ opacity-gradient--full ]"></span> \
 				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
@@ -331,12 +340,12 @@ function get_html_colecciones(results){
 	return html_resultados;
 }
 
-function get_html_fotografos(results){
+function getHtmlFotografos(results){
 	var html_resultados = ' <a href="'+results.url+'" class="[ result ][ button button--hollow button--small button--dark ][ inline-block margin-bottom--small ]" data-id="'+results.id+'">'+results.fotografo+'</a> &nbsp;&nbsp;';
 	return html_resultados;
 }
 
-function get_html_eventos(results){
+function getHtmlEventos(results){
 	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
 			<a class="[ block ]" href="#"> \

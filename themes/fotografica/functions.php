@@ -78,14 +78,14 @@
 
 							$('.filters__content').on('click', '.filter', function(){
 								addFilter( this );
-								existing_ids = getExistingIds();
+								//existing_ids = getExistingIds();
 								clearGrid();
 								advancedSearch('<?php echo $postType ?>', getFilteredResults(), 20, existing_ids);
 							});
 
 							$('.filters__results').on('click', '.filter', function(){
 								removeFilter( this );
-								existing_ids = getExistingIds();
+								//existing_ids = getExistingIds();
 								clearGrid();
 								advancedSearch('<?php echo $postType ?>', getFilteredResults(), 20, existing_ids);
 							});
@@ -161,7 +161,7 @@
 
 							$('.filters__content').on('click', '.filter', function(){
 								addFilter( this );
-								existing_ids = getExistingIds();
+								//existing_ids = getExistingIds();
 								clearGrid();
 								advancedSearch('fotografias', getFilteredResults(), 20, existing_ids);
 							});
@@ -169,7 +169,7 @@
 							$('.filters__results').on('click', '.filter', function(){
 								removeFilter( this );
 								clearGrid();
-								existing_ids = getExistingIds();
+								//existing_ids = getExistingIds();
 								advancedSearch('fotografias', getFilteredResults(), 20, existing_ids);
 							});
 
@@ -177,7 +177,14 @@
 								e.preventDefault();
 								existing_ids = getExistingIds();
 								advancedSearch('fotografias', getFilteredResults(), 20, existing_ids);
-							})
+							});
+
+							$('.filter-buscar button').on('click', function(e){
+								e.preventDefault();
+								clearGrid();
+								//existing_ids = getExistingIds();
+								advancedSearch('fotografias', getFilteredResults(), 20, existing_ids);
+							});
 
 							advancedSearch('fotografias', getFilteredResults(), 15, existing_ids);
 						});
@@ -564,6 +571,8 @@
 			$fotografo_terms = array();
 			$is_tema = false;
 			$tema_terms = array();
+			$is_busqueda = false;
+			$busqueda_term = '';
 			foreach ($filtros as $key => $filtro) {
 				array_push($taxonomies, $filtro['type']);
 
@@ -583,12 +592,18 @@
 					$is_tema = true;
 					array_push($tema_terms, '#'.$filtro['value']);
 				}
+				if( $filtro['type'] == 'buscar' ) {
+					$is_busqueda = true;
+					$busqueda_term = $filtro['value'];
+					array_pop($taxonomies);
+				}
 			}
 			$taxonomies = array_unique($taxonomies);
 			$taxonomies_in = implode("', '", $taxonomies);
 
 			// Add taxonomies to query
-			$query = $query." AND TT.taxonomy IN ('".$taxonomies_in."')";
+			if( ! $is_busqueda || ( $is_coleccion || $is_ano || $is_fotografo || $is_tema) )
+				$query = $query." AND TT.taxonomy IN ('".$taxonomies_in."')";
 
 			// If the filters include terms, open condition
 			if($is_coleccion || $is_ano || $is_fotografo || $is_tema) $query = $query." AND ( ";
@@ -650,6 +665,9 @@
 				$existing_ids_in = implode("', '", $existing_ids);
 				$query .= " AND id NOT IN ('".$existing_ids_in."')";
 			}
+
+			// Add filtering terms for busqueda
+			if($is_busqueda) $query .= " AND post_title LIKE '%".$busqueda_term."%'";
 
 			$query = $query." GROUP BY id HAVING COUNT(id) > ".$filter_type_count." ORDER BY RAND() LIMIT ".$limit;
 			//echo $query;
@@ -851,6 +869,7 @@
 			}
 
 			$query = $query." GROUP BY id HAVING COUNT(id) > ".$filter_type_count." ORDER BY RAND() LIMIT ".$limit;
+			// echo $query;
 			$posts_info = $wpdb->get_results( $query );
 		}
 
