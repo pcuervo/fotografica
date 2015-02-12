@@ -252,12 +252,13 @@ function openLightbox(){
 }
 
 // AJAX para filtros
-function advancedSearch(post_type, filters, limit){
+function advancedSearch(post_type, filters, limit, existing_ids){
 	console.log(post_type);
 	var user_data = {};
 	user_data['action'] = 'advanced_search';
 	user_data['post_type'] = post_type;
 	user_data['limit'] = limit;
+	user_data['existing_ids'] = existing_ids;
 
 	user_data['filters'] = '';
 	if(filters.length > 0)
