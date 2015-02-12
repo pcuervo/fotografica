@@ -253,7 +253,6 @@ function openLightbox(){
 
 // AJAX para filtros
 function advancedSearch(post_type, filters, limit, existing_ids){
-	console.log(post_type);
 	var user_data = {};
 	user_data['action'] = 'advanced_search';
 	user_data['post_type'] = post_type;
@@ -272,6 +271,7 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 			var json_posts = $.parseJSON(response);
 			var html_resultados;
 
+			var num_resultados;
 			$.each(json_posts, function(i, val){
 				switch(post_type){
 					case 'fotografias':
@@ -283,9 +283,14 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 					case 'eventos':
 						html_resultados = getHtmlEventos(val);
 						break;
+					case 'proyectos':
+						html_resultados = getHtmlProyectos(val);
+						break;
 				}
 				$(html_resultados).appendTo('.results');
+				num_resultados = i;
 			});
+			console.log('i: ' + num_resultados);
 			/**
 			 * If the postType is fotografos do not run masonry
 			**/
@@ -351,6 +356,23 @@ function getHtmlEventos(results){
 					</p> \
 					<p class="[ text-center ]"> \
 						del '+results.fec_ini+' al '+results.fec_fin+' \
+					</p> \
+				</div> \
+			</a> \
+		</div> \
+	</article>';
+	return html_resultados;
+}
+
+function getHtmlProyectos(results){
+	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
+		<div class="[ relative ]"> \
+			<a class="[ block ]" href="#"> \
+				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
+				<span class="[ opacity-gradient--full ]"></span> \
+				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
+					<p class="[ text-center ]"> \
+						<a href="'+results.permalink+'" class="[ media--info__name ]">'+results.titulo+'</a> \
 					</p> \
 				</div> \
 			</a> \

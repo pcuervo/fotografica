@@ -526,6 +526,7 @@
 		if($post_type == 'fotografias') $advanced_search_results = advanced_search_colecciones($filters, $limit, $existing_ids);
 		if($post_type == 'fotografos') $advanced_search_results = advanced_search_fotografos($filters, $limit, $existing_ids);
 		if($post_type == 'eventos') $advanced_search_results = advanced_search_eventos($filters, $limit, $existing_ids);
+		if($post_type == 'proyectos') $advanced_search_results = advanced_search_proyectos($filters, $limit, $existing_ids);
 
 		echo json_encode($advanced_search_results , JSON_FORCE_OBJECT);
 		exit();
@@ -548,7 +549,7 @@
 				$query .= " AND P.id NOT IN ('".$existing_ids_in."')";
 			}
 
-			$query .= " ORDER BY RAND() LIMIT ".$limit;
+			$query .= " AND P.post_status = 'publish' ORDER BY RAND() LIMIT ".$limit;
 			$posts_info = $wpdb->get_results( $query, OBJECT );
 		} else {
 
@@ -668,7 +669,7 @@
 			// Add filtering terms for busqueda
 			if($is_busqueda) $query .= " AND post_title LIKE '%".$busqueda_term."%'";
 
-			$query = $query." GROUP BY id HAVING COUNT(id) > ".$filter_type_count." ORDER BY RAND() LIMIT ".$limit;
+			$query = $query." AND P.post_status = 'publish' GROUP BY id HAVING COUNT(id) > ".$filter_type_count." ORDER BY RAND() LIMIT ".$limit;
 			//echo $query;
 			$posts_info = $wpdb->get_results( $query );
 		}
@@ -747,7 +748,7 @@
 
 			if($existing_ids != '0'){
 				$existing_ids_in = implode("', '", $existing_ids);
-				$query .= " AND P.id NOT IN ('".$existing_ids_in."')";
+				$query .= " AND P.post_status = 'publish' NOT IN ('".$existing_ids_in."')";
 			}
 
 			$query .= " ORDER BY RAND() LIMIT ".$limit;
@@ -867,7 +868,7 @@
 				$query .= " AND id NOT IN ('".$existing_ids_in."')";
 			}
 
-			$query = $query." GROUP BY id HAVING COUNT(id) > ".$filter_type_count." ORDER BY RAND() LIMIT ".$limit;
+			$query = $query."post_status = 'publish' GROUP BY id HAVING COUNT(id) > ".$filter_type_count." ORDER BY RAND() LIMIT ".$limit;
 			// echo $query;
 			$posts_info = $wpdb->get_results( $query );
 		}
@@ -903,7 +904,7 @@
 				$query .= " AND id NOT IN ('".$existing_ids_in."')";
 			}
 
-			$query .= "ORDER BY RAND() LIMIT ".$limit;
+			$query .= "post_status = 'publish' ORDER BY RAND() LIMIT ".$limit;
 
 			$posts_info = $wpdb->get_results( $query, OBJECT );
 		} else {
@@ -931,7 +932,7 @@
 				$existing_ids_in = implode("', '", $existing_ids);
 				$query .= " AND id NOT IN ('".$existing_ids_in."')";
 			}
-			$query .= "ORDER BY RAND() LIMIT ".$limit;
+			$query .= "post_status = 'publish' ORDER BY RAND() LIMIT ".$limit;
 
 			//echo $query;
 			$posts_info = $wpdb->get_results( $query );
@@ -966,6 +967,54 @@
 
 		return $info_colecciones;
 	} // advanced_search_eventos
+
+	function advanced_search_proyectos($filtros = '', $limit, $existing_ids){
+		global $post;
+		global $wpdb;
+
+		$query = "
+    		SELECT id FROM wp_posts
+			WHERE post_type = 'proyectos'";
+
+		if($existing_ids != '0'){
+			$existing_ids_in = implode("', '", $existing_ids);
+			$query .= " AND id NOT IN ('".$existing_ids_in."')";
+		}
+		$query .= "post_status = 'publish' ORDER BY RAND() LIMIT ".$limit;
+		$posts_info = $wpdb->get_results( $query, OBJECT );
+
+		//echo $query;
+
+ 		$info_colecciones = array();
+ 		$i=-1;
+ 		foreach ($posts_info as $key => $post) {
+ 			// Título
+			$titleColecciones = get_the_title( $post->id );
+			if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
+				$titleColecciones = 'Sin título';
+			}
+			// URL imagen
+			$thumb = wp_get_attachment_image_src( get_post_thumbnail_id( $post->id ), 'medium' );
+			$url = $thumb['0'];
+
+			$fec_ini = get_post_meta( $post->id, '_evento_fecha_inicial_meta', true );
+			$fec_fin = get_post_meta( $post->id, '_evento_fecha_final_meta', true );
+
+			//if($fec_ini !== '') $fec_ini = date('d/m/Y', $fec_ini);
+			//if($fec_fin !== '') $fec_fin = date('d/m/Y', $fec_fin);
+
+			// Se arma el objecto que se regresa
+			$info_colecciones[$key] = array(
+				'id'		=> $post->id,
+				'titulo'	=> $titleColecciones,
+				'img_url'	=> $url,
+				'permaink'	=> get_permalink( $post->id )
+				);
+			$i = $key;
+ 		}
+
+		return $info_colecciones;
+	} // advanced_search_proyectos
 
 
 
