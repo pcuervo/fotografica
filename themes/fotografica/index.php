@@ -162,7 +162,7 @@
 	<!-- \**************************************/ -->
 	<section class="[ colecciones ] [ bg-image ]" style="background-image: url(<?php echo THEMEPATH; ?>images/test-3.jpg)">
 		<div class="[ opacity-gradient square ]">
-			<a href="<?php echo site_url('nuevas-adquisiciones'); ?>" class="[ button button--hollow button--large ] [ center-full ]">
+			<a href="<?php echo site_url().'/colecciones/?filtro=nuevas-adquisiciones'; ?>" class="[ button button--hollow button--large ] [ center-full ]">
 				Nuevas adquisiciones
 			</a>
 			<div class="[ media-info media-info--large ] [ xmall-12 ]">
