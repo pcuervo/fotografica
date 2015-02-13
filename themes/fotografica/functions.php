@@ -103,7 +103,8 @@
 								runMasonry('.results', '.result' );
 							<?php } ?>
 
-
+							var filter = $('.filter[data-value="hoy"]');
+							addFilter( filter );
 							advancedSearch('<?php echo $postType ?>', getFilteredResults(), 20, existing_ids);
 
 						});
@@ -153,7 +154,7 @@
 							?>
 									var filter = $('.filter[data-value="nuevas-adquisiciones"]');
 									addFilter(filter);
-									console.log('<?php echo $filtro ?>');
+									advancedSearch('nuevas-adquisiciones', getFilteredResults(), 20, existing_ids);
 							<?php
 								}
 							?>
@@ -195,7 +196,10 @@
 								advancedSearch('fotografias', getFilteredResults(), 20, existing_ids);
 							});
 
-							advancedSearch('fotografias', getFilteredResults(), 15, existing_ids);
+							<?php if ($filtro == '') { ?> 
+								advancedSearch('fotografias', getFilteredResults(), 15, existing_ids);
+							<?php } ?>
+								
 						});
 					}(jQuery));
 				</script>
@@ -538,6 +542,7 @@
 		if($post_type == 'proyectos') $advanced_search_results = advanced_search_proyectos($filters, $limit, $existing_ids);
 		if($post_type == 'exposiciones') $advanced_search_results = advanced_search_exposiciones($filters, $limit, $existing_ids);
 		if($post_type == 'publicaciones') $advanced_search_results = advanced_search_publicaciones($filters, $limit, $existing_ids);
+		if($post_type == 'nuevas-adquisiciones') $advanced_search_results = advanced_search_nuevas_adquisiciones($filters, $limit, $existing_ids);
 
 		echo json_encode($advanced_search_results , JSON_FORCE_OBJECT);
 		exit();
@@ -905,16 +910,17 @@
 		global $post;
 		global $wpdb;
 
+		$hoy = date('Y-m-d');
 		if ($filtros == ''){
 			$query = "
-	    		SELECT id FROM wp_posts
+	    		SELECT id FROM wp_posts P INNER JOIN wp_postmeta PM ON PM.post_id = P.id
 				WHERE post_type = 'carteleras'";
 
 			if($existing_ids != '0'){
 				$existing_ids_in = implode("', '", $existing_ids);
 				$query .= " AND id NOT IN ('".$existing_ids_in."')";
 			}
-			$query .= " AND post_status = 'publish' ORDER BY RAND() LIMIT ".$limit;
+			$query .= " AND post_status = 'publish' AND meta_value = '".$hoy."' GROUP BY id ORDER BY RAND() LIMIT ".$limit;
 
 			$posts_info = $wpdb->get_results( $query, OBJECT );
 		} else {
@@ -924,25 +930,30 @@
 	    		SELECT id FROM wp_posts P
 	    		INNER JOIN wp_postmeta PM ON PM.post_id = P.id
 				WHERE post_type = 'carteleras'
-				AND meta_key IN ('_evento_fecha_final_meta', '_evento_fecha_inicial_meta')";
-
-			$hoy = date('Y-m-d');
+				AND meta_key IN ('_evento_fecha_final_meta', '_evento_fecha_inicial_meta') AND (";
 
 			//$inicioHoy = strtotime("midnight", $hoy);
 			//$finHoy = strtotime("tomorrow", $inicioHoy) - 1;
 			foreach ($filtros as $key => $filtro) {
-				if($key == 0) $query .= ' AND';
+				if($key != 0) $query .= ' OR';
 
+				if($filtro['value'] == 'anteriores') {
+					$query .= " meta_value > '".$hoy."'";
+				}
 				if($filtro['value'] == 'proximos') {
-					$query .= " '_evento_fecha_inicial_meta' > ".$hoy;
+					$query .= " meta_value < '".$hoy."'";
+				}
+				if($filtro['value'] == 'hoy') {
+					$query .= " meta_value = '".$hoy."'";
 				}
 			}
+			$query .= ')';
 
 			if($existing_ids != '0'){
 				$existing_ids_in = implode("', '", $existing_ids);
 				$query .= " AND id NOT IN ('".$existing_ids_in."')";
 			}
-			$query .= " AND post_status = 'publish' ORDER BY RAND() LIMIT ".$limit;
+			$query .= " AND post_status = 'publish' GROUP BY id ORDER BY RAND() LIMIT ".$limit;
 
 			//echo $query;
 			$posts_info = $wpdb->get_results( $query );
@@ -1100,6 +1111,83 @@
 
 		return $info_publicaciones;
 	} // advanced_search_publicaciones
+
+	function advanced_search_nuevas_adquisiciones($filtros = '', $limit, $existing_ids){
+		global $post;
+		global $wpdb;
+
+		$query = "
+    		SELECT id FROM wp_posts
+			WHERE post_type = 'fotografias'";
+
+		if($existing_ids != '0'){
+			$existing_ids_in = implode("', '", $existing_ids);
+			$query .= " AND id NOT IN ('".$existing_ids_in."')";
+		}
+		$query .= " AND post_status = 'publish' ORDER BY post_date LIMIT ".$limit;
+		$posts_info = $wpdb->get_results( $query, OBJECT );
+
+		//echo $query;
+
+ 		$info_nuevas_adquisiciones = array();
+ 		foreach ($posts_info as $key => $post) {
+ 			// Título
+			$titleColecciones = get_the_title( $post->id );
+			if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
+				$titleColecciones = 'Sin título';
+			}
+			// URL imagen
+			$thumb = wp_get_attachment_image_src( get_post_thumbnail_id( $post->id ), 'medium' );
+			$url = $thumb['0'];
+			// Autor
+			$authorColecciones = wp_get_post_terms( $post->id, 'fotografo' );
+			if ( $authorColecciones ){
+				$authorColeccionesName 	= $authorColecciones[0]->name;
+				$authorColeccionesSlug 	= $authorColecciones[0]->slug;
+			} else {
+				$authorColeccionesName 	= 'Sin autor';
+				$authorColeccionesSlug = '-';
+			}
+			// Año
+			$anoFotos = wp_get_post_terms( $post->id, 'año' );
+			if ( $anoFotos ){
+				$anoFotosName 	= $anoFotos[0]->name;
+				$anoFotosSlug 	= $anoFotos[0]->slug;
+			} else {
+				$anoFotosName 	= 'Sin fecha';
+			}
+			// Lugar
+			$lugar = wp_get_post_terms( $post->id, 'lugar' );
+			if ( $lugar ){
+				$lugarName 	= $lugar[0]->name;
+				$lugarSlug 	= $lugar[0]->slug;
+			} else {
+				$lugarName 	= 'Sin lugar';
+			}
+			// Coleccion
+			$coleccionName 	= 'Sin coleccion';
+			$coleccion = wp_get_post_terms( $post->id, 'coleccion' );
+			if ( $coleccion ){
+				$coleccionName 	= $coleccion[0]->name;
+				$coleccionSlug 	= $coleccion[0]->slug;
+			}
+
+			// Se arma el objecto que se regresa
+			$info_nuevas_adquisiciones[$key] = array(
+				'id'		=> $post->id,
+				'permalink'	=> get_permalink( $post->id ),
+				'titulo'	=> $titleColecciones,
+				'img_url'	=> $url,
+				'autor'		=> $authorColeccionesName,
+				'url_autor'	=> $authorColeccionesSlug,
+				'ano'		=> $anoFotosName,
+				'lugar'		=> $lugarName,
+				'coleccion'	=> $coleccionName,
+				);
+ 		}
+
+		return $info_nuevas_adquisiciones;
+	} // advanced_search_nuevas_adquisiciones
 
 
 

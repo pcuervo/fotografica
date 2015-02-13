@@ -163,7 +163,7 @@
 	<section class="[ colecciones ] [ bg-image ]" style="background-image: url(<?php echo THEMEPATH; ?>images/test-3.jpg)">
 		<div class="[ opacity-gradient square ]">
 			<a href="<?php echo site_url().'/colecciones/?filtro=nuevas-adquisiciones'; ?>" class="[ button button--hollow button--large ] [ center-full ]">
-				Nuevas adquisiciones
+				Adquisiciones recientes
 			</a>
 			<div class="[ media-info media-info--large ] [ xmall-12 ]">
 				<p class="[ text-center ]"><a href="#" class="[ media-info__author ]">Gerardo Suter</a>, <a href="#" class="[ media-info__name ]">El trapo negro</a>, <span class="[ media--info__place ]">Egipto</span>, <span class="[ media--info__date ]">1986</span>, de la colección <a href="#" class="[ media--info__colection ]">Manuél Álvarez Bravo</a></p>

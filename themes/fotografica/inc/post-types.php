@@ -344,7 +344,7 @@
 
 		// CARTELERA
 		$labels = array(
-			'name'          => 'Carteleras',
+			'name'          => 'Cartelera',
 			'singular_name' => 'Cartelera',
 			'add_new'       => 'Nueva Cartelera',
 			'add_new_item'  => 'Nueva Cartelera',
@@ -354,7 +354,7 @@
 			'view_item'     => 'Ver Cartelera',
 			'search_items'  => 'Buscar Cartelera',
 			'not_found'     => 'No se encontro',
-			'menu_name'     => 'Carteleras'
+			'menu_name'     => 'Cartelera'
 		);
 		$args = array(
 			'labels'             => $labels,
