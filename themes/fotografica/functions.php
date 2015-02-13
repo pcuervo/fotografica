@@ -733,6 +733,12 @@
 				$coleccionName 	= $coleccion[0]->name;
 				$coleccionSlug 	= $coleccion[0]->slug;
 			}
+			// Series
+			$coleccionSerie = 'Sin coleccion';
+			$serie = wp_get_post_terms( $post->id, 'serie' );
+			if ( $serie ){
+				$coleccionSerie = $serie[0]->name;
+			}
 
 			// Se arma el objecto que se regresa
 			$info_colecciones[$key] = array(
@@ -745,6 +751,7 @@
 				'ano'		=> $anoFotosName,
 				'lugar'		=> $lugarName,
 				'coleccion'	=> $coleccionName,
+				'serie'		=> $coleccionSerie,
 				);
  		}
 
@@ -768,7 +775,7 @@
 				$query .= " AND P.id NOT IN ('".$existing_ids_in."')";
 			}
 
-			$query .= " AND P.post_status = 'publish' GROUP BY P.id ORDER BY RAND() LIMIT ".$limit;
+			$query .= " AND P.post_status = 'publish' AND P.post_content <> '' GROUP BY P.id ORDER BY RAND() LIMIT ".$limit;
 
 			$posts_info = $wpdb->get_results( $query, OBJECT );
 		} else {
@@ -885,7 +892,7 @@
 				$query .= " AND id NOT IN ('".$existing_ids_in."')";
 			}
 
-			$query = $query." AND post_status = 'publish' GROUP BY id HAVING COUNT(id) > ".$filter_type_count." ORDER BY RAND() LIMIT ".$limit;
+			$query = $query." AND post_status = 'publish' AND post_content <> '' GROUP BY id HAVING COUNT(id) > ".$filter_type_count." ORDER BY RAND() LIMIT ".$limit;
 			// echo $query;
 			$posts_info = $wpdb->get_results( $query );
 		}

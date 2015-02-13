@@ -66,7 +66,7 @@
 			register_taxonomy( 'lugar', 'fotografias', $args );
 		}
 
-		// LUGAR
+		// COVER
 		if( ! taxonomy_exists('cover')){
 
 			$labels = array(
@@ -74,7 +74,7 @@
 				'singular_name'     => 'Cover',
 				'search_items'      => 'Buscar',
 				'all_items'         => 'Todos',
-				'edit_item'         => 'Editar cCover',
+				'edit_item'         => 'Editar Cover',
 				'update_item'       => 'Actualizar Cover',
 				'add_new_item'      => 'Nuevo Cover',
 				'new_item_name'     => 'Nombre Nuevo Cover',
@@ -91,6 +91,32 @@
 			);
 
 			register_taxonomy( 'cover', 'fotografias', $args );
+		}
+
+		// SERIES
+		if( ! taxonomy_exists('serie')){
+
+			$labels = array(
+				'name'              => 'Serie',
+				'singular_name'     => 'Serie',
+				'search_items'      => 'Buscar',
+				'all_items'         => 'Todos',
+				'edit_item'         => 'Editar Serie',
+				'update_item'       => 'Actualizar Serie',
+				'add_new_item'      => 'Nueva Serie',
+				'new_item_name'     => 'Nombre Nueva Serie',
+				'menu_name'         => 'Serie'
+			);
+			$args = array(
+				'hierarchical'      => true,
+				'labels'            => $labels,
+				'show_ui'           => true,
+				'show_admin_column' => true,
+				'show_in_nav_menus' => true,
+				'query_var'         => true,
+				'rewrite'           => array( 'slug' => 'serie' ),
+			);
+			register_taxonomy( 'serie', 'fotografias', $args );
 		}
 
 		// AÑO
@@ -412,12 +438,14 @@
 		insertPhotographerTaxonomyTermsFromPostType();
 		insertPlaceTaxonomyTerms();
 		insertLastNameTaxonomyTerms();
+		insertSeriesTaxonomyTerms();
 
 		// Estas funciones solo se deben de correr una vez
 		//addPhotographerToPhoto();
 		//addYearToPhoto();
 		//addPlaceToPhoto();
 		//addLastNameToPhotographer();
+		addSeriesToPhoto();
 	}
 
 	/*
@@ -433,6 +461,19 @@
 			if ($term !== 0 && $term !== null) continue;
 
 			wp_insert_term($year->meta_value, 'año');
+		}
+	}// insertYearTaxonomyTerms
+
+	function insertSeriesTaxonomyTerms(){
+		global $wpdb;
+		$results = $wpdb->get_results( 'SELECT DISTINCT meta_value FROM wp_postmeta WHERE meta_key LIKE "%wpcf-s%" AND meta_key <> "" AND meta_value <> "" ORDER BY meta_value', OBJECT );
+
+		foreach ($results as $year) {
+			//var_dump($year);
+			$term = term_exists($year->meta_value, 'serie');
+			if ($term !== 0 && $term !== null) continue;
+
+			wp_insert_term($year->meta_value, 'serie');
 		}
 	}// insertYearTaxonomyTerms
 
@@ -505,6 +546,13 @@
 
 		foreach ($results as $year_term) { $term_taxonomy_ids = wp_set_object_terms( $year_term->post_id, $year_term->meta_value, 'año', true ); }
 	}// addYearToPhoto
+
+	function addSeriesToPhoto(){
+		global $wpdb;
+		$results = $wpdb->get_results( 'SELECT post_id, meta_value FROM wp_postmeta INNER JOIN wp_posts ON wp_posts.id = post_id WHERE meta_key LIKE "%wpcf-serie-%"', OBJECT );
+
+		foreach ($results as $year_term) { $term_taxonomy_ids = wp_set_object_terms( $year_term->post_id, $year_term->meta_value, 'serie', true ); }
+	}// addSeriesToPhoto
 
 	function addPlaceToPhoto(){
 		global $wpdb;
