@@ -293,6 +293,9 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 					case 'publicaciones':
 						html_resultados = getHtmlPublicaciones(val);
 						break;
+					case 'nuevas-adquisiciones':
+						html_resultados = getHtmlColecciones(val);
+						break;
 				}
 				$(html_resultados).appendTo('.results');
 				num_posts = i;

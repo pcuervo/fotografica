@@ -66,6 +66,33 @@
 			register_taxonomy( 'lugar', 'fotografias', $args );
 		}
 
+		// LUGAR
+		if( ! taxonomy_exists('cover')){
+
+			$labels = array(
+				'name'              => 'Cover',
+				'singular_name'     => 'Cover',
+				'search_items'      => 'Buscar',
+				'all_items'         => 'Todos',
+				'edit_item'         => 'Editar cCover',
+				'update_item'       => 'Actualizar Cover',
+				'add_new_item'      => 'Nuevo Cover',
+				'new_item_name'     => 'Nombre Nuevo Cover',
+				'menu_name'         => 'Cover'
+			);
+			$args = array(
+				'hierarchical'      => true,
+				'labels'            => $labels,
+				'show_ui'           => true,
+				'show_admin_column' => true,
+				'show_in_nav_menus' => true,
+				'query_var'         => true,
+				'rewrite'           => array( 'slug' => 'cover' ),
+			);
+
+			register_taxonomy( 'cover', 'fotografias', $args );
+		}
+
 		// AÑO
 		if( ! taxonomy_exists('año')){
 

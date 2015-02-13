@@ -8,8 +8,8 @@
 	add_action('add_meta_boxes', function(){
 
 		// add_meta_box( id, title, name_meta_callback, post_type, context, priority );
-		add_meta_box( 'evento_fecha_inicial', 'Fecha inicial del evento', 'metabox_evento_fecha_inicial', 'eventos', 'advanced', 'high' );
-		add_meta_box( 'evento_fecha_final', 'Fecha final del evento', 'metabox_evento_fecha_final', 'eventos', 'advanced', 'high' );
+		add_meta_box( 'evento_fecha_inicial', 'Fecha inicial del evento', 'metabox_evento_fecha_inicial', 'carteleras', 'advanced', 'high' );
+		add_meta_box( 'evento_fecha_final', 'Fecha final del evento', 'metabox_evento_fecha_final', 'carteleras', 'advanced', 'high' );
 
 	});
 

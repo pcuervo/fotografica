@@ -8,6 +8,7 @@
 	$coleccion = "";
 	if(isset($_GET['coleccion'])) $coleccion = $_GET['coleccion'];
 	if(isset($_GET['filtro'])) $filtro = $_GET['filtro'];
+	else $filtro = '';
 
 	$bgColecciones = '';
 	$coleccionColecciones = '';
@@ -240,7 +241,7 @@
 				</form>
 			</div><!-- .filter-buscar -->
 			<div class="[ filter-nuevas-adquisiciones ] [ hide ]">
-				<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="tema" data-value="nuevas-adquisiciones">Nuevas adquisiciones</a>
+				<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="tema" data-value="nuevas-adquisiciones">Adquisiciones recientes</a>
 			</div><!-- .filter-nuevas-adquisiciones -->
 		</div><!-- filters__content -->
 		<div class="[ filters__results ] [ padding--small text-center ]">
