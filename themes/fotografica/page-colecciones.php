@@ -149,10 +149,25 @@
 		<div class="[ filters__content ] [ text-center ]">
 			<div class="[ filter-colecciones ]">
 				<?php
+					$termManuelAlvarez = get_term_by('slug', 'coleccion-manuel-alvarez-bravo', 'coleccion');
+					$termCCAC = get_term_by('slug', 'coleccion-centro-cultural-arte-contemporaneo', 'coleccion');
+					$termFundacionTelevisa = get_term_by('slug', 'fondo-fundacion-televisa', 'coleccion');
+				?>
+					<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="coleccion" data-value="<?php echo $termManuelAlvarez->slug ?>"><?php echo $termManuelAlvarez->name ?><span><i class="fa fa-info-circle"></i></span></a>
+					<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="coleccion" data-value="<?php echo $termCCAC->slug ?>"><?php echo $termCCAC->name ?><span><i class="fa fa-info-circle"></i></span></a>
+					<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="coleccion" data-value="<?php echo $termFundacionTelevisa->slug ?>"><?php echo $termFundacionTelevisa->name ?><span><i class="fa fa-info-circle"></i></span></a>
+					<div class="clear"></div>
+					<hr><!-- pa que se sepaaaaaaaaa -->
+				<?php
 					$args = array(
 						'orderby'		=> 'name',
 						'order' 		=> 'ASC',
 						'hide_empty' 	=> true,
+						'exclude'		=> array(
+											$termManuelAlvarez->term_id,
+											$termCCAC->term_id,
+											$termFundacionTelevisa->term_id,
+										)
 					);
 					$terms = get_terms('coleccion', $args);
 					foreach ($terms as $key => $term) {

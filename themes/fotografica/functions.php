@@ -733,6 +733,12 @@
 				$coleccionName 	= $coleccion[0]->name;
 				$coleccionSlug 	= $coleccion[0]->slug;
 			}
+			// Series
+			$coleccionSerie = 'Sin coleccion';
+			$serie = wp_get_post_terms( $post->id, 'serie' );
+			if ( $serie ){
+				$coleccionSerie = $serie[0]->name;
+			}
 
 			// Se arma el objecto que se regresa
 			$info_colecciones[$key] = array(
@@ -745,6 +751,7 @@
 				'ano'		=> $anoFotosName,
 				'lugar'		=> $lugarName,
 				'coleccion'	=> $coleccionName,
+				'serie'		=> $coleccionSerie,
 				);
  		}
 
