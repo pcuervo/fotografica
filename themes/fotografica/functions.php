@@ -149,7 +149,7 @@
 							?>
 									var filter = $('.filter[data-value="<?php echo $coleccion; ?>"]');
 									addFilter( filter );
-							<?php 
+							<?php
 								} else if ($filtro != ''){
 							?>
 									var filter = $('.filter[data-value="nuevas-adquisiciones"]');
@@ -196,10 +196,10 @@
 								advancedSearch('fotografias', getFilteredResults(), 20, existing_ids);
 							});
 
-							<?php if ($filtro == '') { ?> 
+							<?php if ($filtro == '') { ?>
 								advancedSearch('fotografias', getFilteredResults(), 15, existing_ids);
 							<?php } ?>
-								
+
 						});
 					}(jQuery));
 				</script>
@@ -548,6 +548,7 @@
 		exit();
 	}// advanced_search
 	add_action("wp_ajax_advanced_search", "advanced_search");
+	add_action("wp_ajax_nopriv_advanced_search", "advanced_search");
 
 	function advanced_search_colecciones($filtros = '', $limit, $existing_ids){
 		global $post;
