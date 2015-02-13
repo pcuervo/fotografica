@@ -35,6 +35,7 @@
 
 .media-info{
 	position: absolute;
+	.transition();
 }
 
 .media-info--small{
@@ -62,8 +63,16 @@
 	margin-bottom: 10px;
 	position: relative;
 
-	&:hover img{
-		transform:scale(1.18);
+	&:hover{
+		img {
+			transform:scale(1.18);
+		}
+		.opacity-gradient--full{
+			top: 100%;
+		}
+		.media-info{
+			bottom: 100%;
+		}
 	}
 }
 
