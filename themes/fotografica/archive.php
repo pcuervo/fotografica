@@ -71,7 +71,7 @@
 	<section class="[ colecciones ] [ bg-image ]" style="background-image: url(<?php echo $bgArchive[0]; ?>)">
 		<div class="[ opacity-gradient rectangle ]">
 			<h2 class="[ center-full ] [ title ]">
-				<?php echo $postType; ?> <br /><span class="[ sub-title ] [ block xmall-12 ] [ text-center ]">Lorem ipsum dolro sit amet</span>
+				<?php echo $postType; ?> <br />
 			</h2>
 			<div class="[ media-info media-info--large ] [ xmall-12 ] [ shown--medium ]">
 				<p class="[ text-center ]">

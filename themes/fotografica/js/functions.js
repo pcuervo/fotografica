@@ -341,13 +341,23 @@ function getHtmlColecciones(results){
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
 				<span class="[ opacity-gradient--full ]"></span> \
 				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
-					<p class="[ text-center ]"> \
-						<a href="#" class="[ media--info__author ]">'+results.autor+'</a> \
-						, <a href="#" class="[ media--info__name ]">'+results.titulo+'</a> \
-						, de la serie <span class="[ media--info__series ]">'+results.coleccion+'</span> \
-						, <span class="[ media--info__place ]">'+results.lugar+'</span> \
-						, <span class="[ media--info__date ]">'+results.ano+'</span> \
-					</p> \
+					<p class="[ text-center ]">';
+						if ( results.autor ){
+							html_resultados = html_resultados+'<a href="#" class="[ media--info__author ]">'+results.autor+'</a>, ';
+						}
+						if ( results.autor ){
+							html_resultados = html_resultados+'<a href="#" class="[ media--info__name ]">'+results.titulo+'</a>, ';
+						}
+						if ( results.autor ){
+							html_resultados = html_resultados+'de la serie <span class="[ media--info__series ]">'+results.serie+'</span>, ';
+						}
+						if ( results.autor ){
+							html_resultados = html_resultados+'<span class="[ media--info__colection ]">'+results.coleccion+'</span>, ';
+						}
+						if ( results.autor ){
+							html_resultados = html_resultados+'<span class="[ media--info__date ]">'+results.ano+'</span>';
+						}
+					html_resultados = html_resultados+'</p> \
 				</div> \
 			</a> \
 		</div> \

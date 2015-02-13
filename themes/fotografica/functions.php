@@ -707,7 +707,7 @@
 				$authorColeccionesName 	= $authorColecciones[0]->name;
 				$authorColeccionesSlug 	= $authorColecciones[0]->slug;
 			} else {
-				$authorColeccionesName 	= 'Sin autor';
+				$authorColeccionesName 	= 'Autor Desconocido';
 				$authorColeccionesSlug = '-';
 			}
 			// Año

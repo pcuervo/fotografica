@@ -3,8 +3,9 @@
 \*------------------------------------*/
 
 
-.header-wrapper{
-	width: 100%; height: 60px;
+.header-wrapper {
+	width: 100%; height: 59px;
+	border-top: 1px solid @highlight;
 	background: @claro;
 	position: fixed; top: 0; left: 0;
 	overflow: hidden;
@@ -13,6 +14,10 @@
 }
 .header-wrapper--fixed{ background: rgba(255, 255, 255, 0.5); }
 .header-wrapper--fixed .header{ margin-top: (@unidad/2); margin-bottom: (@unidad/2); }
+
+.header-wrapper .wrapper {
+	max-width: none;
+}
 
 
 /**
