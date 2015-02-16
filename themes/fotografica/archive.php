@@ -36,8 +36,8 @@
 			if ( $authorColecciones ){
 				$authorColeccionesName 	= $authorColecciones[0]->name;
 				$authorColeccionesSlug 	= $authorColecciones[0]->slug;
-			} else {
-				$authorColeccionesName 	= 'sin autor';
+			}  else {
+				$authorColeccionesName 	= 'autor no identificado';
 			}
 
 			$titleColecciones = get_the_title( $post->ID );

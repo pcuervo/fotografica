@@ -734,7 +734,7 @@
 				$coleccionSlug 	= $coleccion[0]->slug;
 			}
 			// Series
-			$coleccionSerie = 'Sin coleccion';
+			$coleccionSerie = '';
 			$serie = wp_get_post_terms( $post->id, 'serie' );
 			if ( $serie ){
 				$coleccionSerie = $serie[0]->name;

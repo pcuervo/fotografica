@@ -39,7 +39,7 @@
 				$authorColeccionesName 	= $authorColecciones[0]->name;
 				$authorColeccionesSlug 	= $authorColecciones[0]->slug;
 			} else {
-				$authorColeccionesName 	= 'sin autor';
+				$authorColeccionesName 	= 'autor no identificado';
 			}
 
 			$titleColecciones = get_the_title( $post->ID );
@@ -80,8 +80,8 @@
 
 
 				<!-- NOMBRE APELLIDO -->
-				<?php if ( $authorColeccionesName == 'sin autor' ){ ?>
-					<span><?php echo $authorColeccionesName; ?></span>,
+				<?php if ( $authorColeccionesName == 'Autor no identificado' ){ ?>
+					<span class="[ media--info__author ]"><?php echo $authorColeccionesName; ?></span>,
 				<?php } else { ?>
 					<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
 				<?php } ?>
@@ -97,7 +97,7 @@
 				<?php } ?>
 
 				<!-- COLECCION -->
-				de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>,
+				<br /> de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>,
 
 				<!-- LUGAR -->
 				<?php if ( $placeColecciones ){ ?>
@@ -106,7 +106,7 @@
 
 				<!-- CIRCA -->
 				<?php if ( $circaColecciones ){ ?>
-					<span class="[ media--info__circa ]">circa</span>
+					<span class="[ media--info__circa ]">circa </span>
 				<?php } ?>
 
 				<!-- AÑO -->
@@ -240,7 +240,7 @@
 					$terms = get_terms('tema', $args);
 					foreach ($terms as $key => $term) {
 				?>
-						<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="tema" data-value="<?php echo $term->name ?>"><?php echo $term->name ?></a>
+						<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="tema" data-value="<?php echo $term->name ?>"><?php echo $term->name ?></a>
 				<?php
 					}
 				?>

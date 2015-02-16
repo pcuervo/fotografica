@@ -19,6 +19,18 @@
 			#Triggered events
 		\*------------------------------------*/
 
+		/**
+		 * Show and hide elements with the ajax calls
+		**/
+
+		$('.loader')
+		.ajaxStart(function() {
+			$(this).show();
+		})
+		.ajaxStop(function() {
+			$(this).hide();
+		})
+
 
 
 
@@ -133,13 +145,33 @@ function showFilters(element){
 	$('.filters__content .filter-'+filterCategory).addClass('padding--small').height('auto');
 }
 
+/**
+ * Toggle filters nav if filters exist
+**/
+function toggleFiltersNav(){
+	var filtersLenght = $('.filters__results .filter').length;
+
+	console.log(filtersLenght);
+
+	if( filtersLenght == 0 ){
+		$('.filters__results').hide();
+	}
+
+	if( filtersLenght > 0 ){
+		$('.filters__results').show();
+	}
+}
+
+
 function addFilter(element){
+
 	//Clone this element so it won't get deleted by .append
 	// and manipulate it instead of the clicked filter
 	var $clone = $(element).clone();
 
 	//If element is already added, then delete it
 	if ( $(element).hasClass('filter--active') ){
+
 		//Remove class active
 		$(element).removeClass('filter--active');
 
@@ -150,6 +182,9 @@ function addFilter(element){
 		}
 		var filterContent = $clone.html();
 		$('.filters__results .filter:contains('+filterContent+')').remove();
+
+		toggleFiltersNav();
+
 		return;
 	}
 
@@ -167,6 +202,7 @@ function addFilter(element){
 
 	//And add this filter to the set of selected filters (.filters__results )
 	$clone.appendTo('.filters__results');
+	toggleFiltersNav();
 }
 
 function removeFilter(element){
@@ -179,6 +215,9 @@ function removeFilter(element){
 
 	//Deactive it in .filters__content
 	$('.filters__content .filter:contains('+filterContent+')').removeClass('filter--active');
+
+	toggleFiltersNav();
+
 }
 
 function getFilteredResults(){
@@ -194,7 +233,7 @@ function getFilteredResults(){
 		search_filters.push(current_filter);
 	});
 
-	if($('.filter-buscar input').val() != '' && typeof $('.filter-buscar input').val() !== 'undefined' ){
+	if( $('.filter-buscar input').val() != '' && typeof $('.filter-buscar input').val() !== 'undefined' ){
 		current_filter = {};
 		filter_type = 'buscar';
 		filter_value = $('.filter-buscar input').val();
@@ -208,6 +247,7 @@ function getFilteredResults(){
 
 function clearGrid(){
 	$('.results').empty();
+	runMasonry('.results', '.result' );
 }// clearGrid
 
 function fixedHeader(){
@@ -259,16 +299,17 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 	user_data['limit'] = limit;
 	user_data['existing_ids'] = existing_ids;
 
-	console.log(post_type);
+	//console.log(post_type);
 	user_data['filters'] = '';
+	//console.log(filters);
 	if(filters.length > 0)
 		user_data['filters'] = filters;
 	$.post(
 		ajax_url,
 		user_data,
 		function(response){
-			$('.loader').hide();
-			console.log(response);
+			//console.log(response);
+
 			var json_posts = $.parseJSON(response);
 			var html_resultados;
 			var num_posts = 0;
@@ -343,18 +384,30 @@ function getHtmlColecciones(results){
 				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
 					<p class="[ text-center ]">';
 						if ( results.autor ){
-							html_resultados = html_resultados+'<a href="#" class="[ media--info__author ]">'+results.autor+'</a>, ';
+							//console.log('autor: '+results.autor);
+							if ( results.autor == 'Autor no identificado' ){
+								html_resultados = html_resultados+'<span class="[ media--info__author ]">'+results.autor+'</span>, ';
+							} else {
+								html_resultados = html_resultados+'<a href="#" class="[ media--info__author ]">'+results.autor+'</a>, ';
+							}
 						}
-						if ( results.autor ){
-							html_resultados = html_resultados+'<a href="#" class="[ media--info__name ]">'+results.titulo+'</a>, ';
+						if ( results.titulo ){
+							//console.log('titulo: '+results.titulo);
+							if ( results.titulo !== 'Sin título' ){
+								html_resultados = html_resultados+'<a href="#" class="[ media--info__name ]">'+results.titulo+'</a>, ';
+							}
 						}
-						if ( results.autor ){
+						if ( results.serie ){
+							//console.log('autor: '+results.autor);
 							html_resultados = html_resultados+'de la serie <span class="[ media--info__series ]">'+results.serie+'</span>, ';
 						}
-						if ( results.autor ){
-							html_resultados = html_resultados+'<span class="[ media--info__colection ]">'+results.coleccion+'</span>, ';
+						if ( results.coleccion ){
+							//console.log('coleccion: '+results.coleccion);
+
+							html_resultados = html_resultados+'<br /> de la colección <a href="#" class="[ media--info__colection ]">'+results.coleccion+'</a>, ';
 						}
-						if ( results.autor ){
+						if ( results.ano ){
+							//console.log('ano: '+results.ano);
 							html_resultados = html_resultados+'<span class="[ media--info__date ]">'+results.ano+'</span>';
 						}
 					html_resultados = html_resultados+'</p> \
