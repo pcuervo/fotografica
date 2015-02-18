@@ -168,7 +168,11 @@
 				'query_var'         => true,
 				'rewrite'           => array( 'slug' => 'fotografo' ),
 			);
-			register_taxonomy( 'fotografo', 'fotografias', $args );
+			$postTypeFotografos = array(
+				'publicaciones',
+				'fotografias'
+				);
+			register_taxonomy( 'fotografo', $postTypeFotografos, $args );
 		}// taxonomy fotografo
 
 		// PAÍS
@@ -269,6 +273,35 @@
 				'rewrite'           => array( 'slug' => 'tipo-de-proyecto' ),
 			);
 			register_taxonomy( 'tipo-de-proyecto', 'proyectos', $args );
+		}// taxonomy apellido
+
+		// Archivo proyecto
+		if( ! taxonomy_exists('archivo-proyecto')){
+			$labels = array(
+				'name'              => 'Archivo de proyecto',
+				'singular_name'     => 'Archivo de proyecto',
+				'search_items'      => 'Buscar',
+				'all_items'         => 'Todos',
+				'edit_item'         => 'Editar Archivo de proyecto',
+				'update_item'       => 'Actualizar Archivo de proyecto',
+				'add_new_item'      => 'Nuevo Archivo de proyecto',
+				'new_item_name'     => 'Nombre Nuevo Archivo de proyecto',
+				'menu_name'         => 'Archivo de proyecto'
+			);
+			$args = array(
+				'hierarchical'      => true,
+				'labels'            => $labels,
+				'show_ui'           => true,
+				'show_admin_column' => true,
+				'show_in_nav_menus' => true,
+				'query_var'         => true,
+				'rewrite'           => array( 'slug' => 'archivo-proyecto' ),
+			);
+			$postTypeArchivoProyecto = array(
+				'proyectos',
+				'fotografos'
+				);
+			register_taxonomy( 'archivo-proyecto', $postTypeArchivoProyecto, $args );
 		}// taxonomy apellido
 
 		// Tipo de publicacion
@@ -432,26 +465,31 @@
 			register_taxonomy( 'lugar', 'fotografias', $args );
 		}// taxonomy lugar
 
-		// Agregar palabras
+	}
+
+	function updateTaxonomies(){
+		$is_updated = true;
+		// Agregar taxonomías
 		insertYearTaxonomyTerms();
 		insertPhotographerTaxonomyTerms();
 		insertPhotographerTaxonomyTermsFromPostType();
 		insertPlaceTaxonomyTerms();
 		insertLastNameTaxonomyTerms();
 		insertSeriesTaxonomyTerms();
-
+		insertArchiveNameToProject();
 		// Estas funciones solo se deben de correr una vez
 		//addPhotographerToPhoto();
 		//addYearToPhoto();
 		//addPlaceToPhoto();
 		//addLastNameToPhotographer();
-		addSeriesToPhoto();
+		//addSeriesToPhoto();
 	}
+	//add_action( 'init', 'updateTaxonomies');
+	add_action('save_post', 'updateTaxonomies');
 
 	/*
 	 * Insert taxonomy terms functions
 	 */
-
 	function insertYearTaxonomyTerms(){
 		global $wpdb;
 		$results = $wpdb->get_results( 'SELECT DISTINCT meta_value FROM wp_postmeta WHERE meta_key LIKE "%wpcf-ano%" AND meta_key <> "" ORDER BY meta_value', OBJECT );
@@ -536,6 +574,27 @@
 			wp_insert_term($place->meta_value, 'apellido');
 		}
 	}// insertLastNameTaxonomyTerms
+
+	function insertArchiveNameToProject(){
+		global $post;
+
+		$args = array(
+			'post_type' 		=> 'proyectos',
+			'posts_per_page' 	=> -1,
+			'taxonomy'			=> 'tipo-de-proyecto',
+			'term'				=> 'archivo'
+		);
+
+		$queryArchivoProyecto = new WP_Query( $args );
+		if ( $queryArchivoProyecto->have_posts() ) : while ( $queryArchivoProyecto->have_posts() ) : $queryArchivoProyecto->the_post();
+
+			$term = term_exists(get_the_title(), 'archivo-proyecto');
+			if ($term !== 0 && $term !== null) continue;
+
+			wp_insert_term(get_the_title(), 'archivo-proyecto');
+		endwhile; endif; wp_reset_query();
+
+	}// insertArchiveNameToProject
 
 	/*
 	 * Functions to relate taxonomy terms to post types

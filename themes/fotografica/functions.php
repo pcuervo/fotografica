@@ -233,7 +233,6 @@
 							$('.single-content').on('click','.single-content-image', function(){
 								openLightbox(this);
 							});
-
 						});
 					}(jQuery));
 				</script>
@@ -387,6 +386,8 @@
 		}
 		return $query;
 	});
+
+
 
 
 
@@ -844,7 +845,7 @@
 				$query = $query."  T.slug IN ( SELECT slug FROM wp_terms WHERE";
 				foreach ($ano_terms as $key => $ano) {
 					$initial_year = $ano;
-					$final_year = strval(intval($ano) + 10);
+					$final_year = strval(intval($ano) + 9);
 					if($key == 0) {
 						$query .= " slug  BETWEEN '".$initial_year."' AND '".$final_year."'";
 						continue;
@@ -1002,17 +1003,26 @@
 		global $wpdb;
 
 		$query = "
-    		SELECT id FROM wp_posts
+    		SELECT id FROM wp_posts P
+			INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
+			INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
 			WHERE post_type = 'proyectos'";
 
 		if($existing_ids != '0'){
 			$existing_ids_in = implode("', '", $existing_ids);
 			$query .= " AND id NOT IN ('".$existing_ids_in."')";
 		}
-		$query .= " AND post_status = 'publish' ORDER BY RAND() LIMIT ".$limit;
+		$query .= " 
+			AND id NOT IN 
+				(SELECT id FROM wp_posts P INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
+				INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
+				WHERE taxonomy = 'archivo-proyecto') 
+			AND post_status = 'publish' 
+			ORDER BY RAND() 
+			LIMIT ".$limit;
 		$posts_info = $wpdb->get_results( $query, OBJECT );
 
-		//echo $query;
+		// echo $query;
 
  		$info_colecciones = array();
  		foreach ($posts_info as $key => $post) {

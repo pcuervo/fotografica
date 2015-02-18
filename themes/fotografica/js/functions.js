@@ -308,7 +308,7 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 		ajax_url,
 		user_data,
 		function(response){
-			//console.log(response);
+			console.log(response);
 
 			var json_posts = $.parseJSON(response);
 			var html_resultados;
@@ -347,7 +347,6 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 			if ( post_type !== 'fotografos'){
 				runMasonry('.results', '.result' );
 			}
-
 			// Hide "cargar mas" when there are no more posts to load
 			num_posts = parseInt(num_posts) + 1;
 			if(parseInt(limit) > parseInt(num_posts))
@@ -388,7 +387,7 @@ function getHtmlColecciones(results){
 							if ( results.autor == 'Autor no identificado' ){
 								html_resultados = html_resultados+'<span class="[ media--info__author ]">'+results.autor+'</span>, ';
 							} else {
-								html_resultados = html_resultados+'<a href="#" class="[ media--info__author ]">'+results.autor+'</a>, ';
+								html_resultados = html_resultados+'<a href="'+results.url_autor+'" class="[ media--info__author ]">'+results.autor+'</a>, ';
 							}
 						}
 						if ( results.titulo ){
@@ -416,7 +415,7 @@ function getHtmlColecciones(results){
 		</div> \
 	</article>';
 	return html_resultados;
-}
+}// getHtmlColecciones
 
 function getHtmlFotografos(results){
 	var html_resultados = ' <a href="'+results.url+'" class="[ result ][ button button--hollow button--small button--dark ][ inline-block margin-bottom--small ]" data-id="'+results.id+'">'+results.fotografo+'</a> &nbsp;&nbsp;';
@@ -442,6 +441,23 @@ function getHtmlCarteleras(results){
 	</article>';
 	return html_resultados;
 }
+
+function getHtmlProyectos(results){
+	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
+		<div class="[ relative ]"> \
+			<a class="[ block ]" href="'+results.permalink+'"> \
+				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
+				<span class="[ opacity-gradient--full ]"></span> \
+				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
+					<p class="[ text-center ]"> \
+						<a href="'+results.permalink+'" class="[ media--info__name ]">'+results.titulo+'</a> \
+					</p> \
+				</div> \
+			</a> \
+		</div> \
+	</article>';
+	return html_resultados;
+}// getHtmlProyectos
 
 function getHtmlExposiciones(results){
 	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
