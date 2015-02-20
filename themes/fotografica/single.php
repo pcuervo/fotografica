@@ -150,7 +150,7 @@
 	                    <span class="_start"><?php echo $fecha_inicial ?></span>
 	                    <span class="_end"><?php echo $fecha_final ?></span>
 	                    <span class="_zonecode">12</span>
-	                    <span class="_summary">Grupo de intercambio <?php echo $post->post_title; ?></span>
+	                    <span class="_summary"><?php echo $post->post_title; ?></span>
 	                    <span class="_organizer">Organizer</span>
 	                    <span class="_organizer_email">Organizer e-mail</span>
 	                    <span class="_all_day_event">true</span>
@@ -326,10 +326,6 @@
 				'post_status' => null,
 				'post_parent' => $post->ID
 			);
-			//$attachedMedia = get_embedded_media('imsage', $attachedMediaArgs);
-			// echo '<pre>';
-			// 	print_r($attachedMedia);
-			// echo '</pre>';
 
 		?>
 		<div class="[ image-single ]">
