@@ -300,9 +300,7 @@ function openModal(element){
 	var aAbrir = element.data('modal');
 	console.log(aAbrir);
 	aAbrir = $('#js-'+aAbrir+'.modal-wrapper' );
-	aAbrir.fadeIn('fast', function(){
-		$(this).removeClass('hide');
-	});
+	aAbrir.removeClass('hide');
 }
 
 /**
@@ -311,9 +309,7 @@ function openModal(element){
 **/
 function closeModal(element){
 	var aCerrar = element.parent().parent();
-	aCerrar.fadeOut('fast', function(){
-		$(this).addClass('hide');
-	});
+	aCerrar.addClass('hide');
 }
 
 
