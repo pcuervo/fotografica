@@ -51,7 +51,7 @@
 												}
 										?>
 												<li>
-													<a class="[ text-center uppercase ]" href="#"><?php echo $term->name ?></a>
+													<a class="[ text-center uppercase ]" href="<?php echo site_url().'/colecciones?coleccion='.$term->slug ?>"><?php echo $term->name ?></a>
 													<div class="[ mp-level ]">
 														<h2 class="[ text-center uppercase ]"><?php echo $term->name ?></h2>
 														<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
@@ -76,7 +76,6 @@
 							<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/exposiciones'?>">Exposiciones</a></li>
 							<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/publicaciones'?>">Publicaciones</a></li>
 							<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/cartelera'?>">Cartelera</a></li>
-							<li><a class="[ text-center uppercase ]" href="#">Contáctanos</a></li>
 							<li>
 								<a class="[ text-center uppercase ]" href="#">Nuestro trabajo</a>
 								<div class="[ mp-level ]">
@@ -84,17 +83,18 @@
 									<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
 									<ul class="[ overflow-scroll ]">
 										<li>
-											<a class="[ text-center uppercase ]" href="<?php echo site_url().'/nuestro-trabajo/conservacion'?>">Conservación</a>
+											<a class="[ text-center uppercase ]" href="<?php echo site_url().'/nuestro-trabajo/conocenos'?>">Conócenos</a>
 										</li>
 										<li>
 											<a class="[ text-center uppercase ]" href="<?php echo site_url().'/nuestro-trabajo/investigacion'?>">Investigación</a>
 										</li>
 										<li>
-											<a class="[ text-center uppercase ]" href="<?php echo site_url().'/nuestro-trabajo/conocenos'?>">Conócenos</a>
+											<a class="[ text-center uppercase ]" href="<?php echo site_url().'/nuestro-trabajo/conservacion'?>">Conservación</a>
 										</li>
 									</ul>
 								</div>
 							</li>
+							<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/contactanos' ?>">Contáctanos</a></li>
 						</ul>
 					</div>
 				</nav><!-- /mp-menu -->
