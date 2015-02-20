@@ -451,12 +451,12 @@ function getHtmlFotografos(results){
 function getHtmlCarteleras(results){
 	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
-			<a class="[ block ]" href="#"> \
+			<a class="[ block ]" href="'+results.permalink+'"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
 				<span class="[ opacity-gradient--full ]"></span> \
 				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
 					<p class="[ text-center ]"> \
-						<a href="#" class="[ media--info__name ]">'+results.titulo+'</a> \
+						<a href="'+results.permalink+'" class="[ media--info__name ]">'+results.titulo+'</a> \
 					</p> \
 					<p class="[ text-center ]"> \
 						del '+results.fec_ini+' al '+results.fec_fin+' \

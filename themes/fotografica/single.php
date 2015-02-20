@@ -141,6 +141,26 @@
 	</section><!-- .share -->
 	<section class="[ margin-bottom--large ][ single-content ]">
 		<div class="[ wrapper ][ ]">
+			<?php 
+			if ( $postType == 'carteleras' ){ 
+				$fecha_inicial = get_post_meta( $post->ID, '_evento_fecha_inicial_meta', true); 
+				$fecha_final = get_post_meta( $post->ID, '_evento_fecha_final_meta', true); 
+			?>
+				<p><?php echo 'Del '.$fecha_inicial.' al '.$fecha_final ?></p>
+				<div class="[ form-group ] [ margin-bottom ]">
+	                <a class="[ addthisevent ] [ btn btn-primary btn-go ]" href="#" title="Add to Calendar" data-track="ga('send', 'event', 'solicitudes', 'click', 'ate-calendar');">
+	                    <span>Agregar a mi calendario</span>
+	                    <span class="_start"><?php echo $fecha_inicial ?></span>
+	                    <span class="_end"><?php echo $fecha_final ?></span>
+	                    <span class="_zonecode">12</span>
+	                    <span class="_summary">Grupo de intercambio <?php echo $post->post_title; ?></span>
+	                    <span class="_organizer">Organizer</span>
+	                    <span class="_organizer_email">Organizer e-mail</span>
+	                    <span class="_all_day_event">true</span>
+	                    <span class="_date_format">DD/MM/YYYY</span>
+	                </a>
+	            </div><!-- form-group -->
+			<?php } ?>
 			<?php the_content(); ?>
 		</div><!-- .wrapper -->
 	</section>
@@ -157,17 +177,23 @@
 					// Jalar taxonomía y termino al azar para fotos relacionadas
 					$tax = get_object_taxonomies( $post );
 					$random_tax = rand(0, count($tax)-1);
-					$terms = wp_get_post_terms( $post->ID, $tax[$random_tax] );
-					$term_test = wp_get_post_terms( $post->ID, $tax[0] );
 
-					$i = 0;
-					while( count($terms) == 0 ) {
-						$i++;
-						if( $i > 50 ) break;
-						$random_tax = rand(0, count($tax)-1);
+					if(empty($tax)){
+						$terms = [];
+					} else {
 						$terms = wp_get_post_terms( $post->ID, $tax[$random_tax] );
-					} 
-					$random_term = rand(0, count($terms)-1);			
+						$term_test = wp_get_post_terms( $post->ID, $tax[0] );
+
+						$i = 0;
+						while( count($terms) == 0 ) {
+							$i++;
+							if( $i > 50 ) break;
+							$random_tax = rand(0, count($tax)-1);
+							$terms = wp_get_post_terms( $post->ID, $tax[$random_tax] );
+						} 
+						$random_term = rand(0, count($terms)-1);	
+					}
+							
 
 					$counter = 1;
 					$bgColecciones = '';
@@ -322,4 +348,5 @@
 			</div><!-- wrapper -->
 		</div>
 	</div><!-- .lightbox -->
+	<script type="text/javascript" src="https://addthisevent.com/libs/ate-latest.min.js"></script>
 <?php get_footer(); ?>
