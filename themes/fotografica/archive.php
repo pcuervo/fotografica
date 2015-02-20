@@ -282,7 +282,7 @@
 			</div>
 		</section><!-- .filters -->
 	<?php } ?>
-	<section class="[ results ] [ row ] [ margin-bottom ] <?php echo ($postType == 'fotografos' ? '[ text-center ]' : ''); ?>">
+	<section class="[ results ] [ row row--no-margins ] [ margin-bottom ] <?php echo ($postType == 'fotografos' ? '[ text-center ]' : ''); ?>">
 	</section><!-- .results -->
 	<div class="[ loader ] [ center ] ">
 		<div></div>

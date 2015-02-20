@@ -6,7 +6,7 @@
 	$postType = get_post_type();
 
 	$terms = wp_get_post_terms( $post->ID, 'tipo-de-proyecto' );
-	
+
 	if($terms[0]->slug == 'individual'){
 		the_post();
 		the_post_thumbnail('full', array('class' => '[ margin-bottom ] [ full-height ]'));
@@ -65,16 +65,13 @@
 		<section class="[ share ] [ margin-bottom--large ]">
 			<div class="[ wrapper ][ clearfix ]">
 				<div class="[ clearfix ][ columna medium-4 center ]">
-					<div class="[ button button--dark button__share ] [ columna xmall-3 ]">
+					<div class="[ button button--dark button__share ] [ columna xmall-4 ]">
 						<i class="[ xmall-3 inline-block align-middle ] fa fa-twitter"></i><span class="[ xmall-2 ]">&nbsp;</span><span class="[ xmall-7 inline-block align-middle ]">54</span>
 					</div>
-					<div class="[ button button--dark button__share ] [ columna xmall-3 ]">
+					<div class="[ button button--dark button__share ] [ columna xmall-4 ]">
 						<i class="[ xmall-3 inline-block align-middle ] fa fa-facebook-square"></i><span class="[ xmall-2 ]">&nbsp;</span><span class="[ xmall-7 inline-block align-middle ]">399</span>
 					</div>
-					<div class="[ button button--dark button__share ] [ columna xmall-3 ]">
-						<i class="[ xmall-3 inline-block align-middle ] fa fa-instagram"></i><span class="[ xmall-2 ]">&nbsp;</span><span class="[ xmall-7 inline-block align-middle ]">9</span>
-					</div>
-					<div class="[ button button--dark button__share ] [ columna xmall-3 ]">
+					<div class="[ button button--dark button__share ] [ columna xmall-4 ]">
 						<i class="[ xmall-3 inline-block align-middle ] fa fa-heart"></i><span class="[ xmall-2 ]">&nbsp;</span><span class="[ xmall-7 inline-block align-middle ]">9999</span>
 					</div>
 				</div>
@@ -246,7 +243,7 @@
 		</section>
 		<div class="clear"></div>
 		<section class="[ results ] [ row ] [ margin-bottom ] <?php echo ($postType == 'fotografos' ? '[ text-center ]' : ''); ?>">
-			<?php 
+			<?php
 				$args = array(
 					'post_type' 		=> 'proyectos',
 					'posts_per_page' 	=> -1,
@@ -255,25 +252,25 @@
 					'orderby'			=> 'date',
 				);
 				$queryFotografias = new WP_Query( $args );
-				if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post(); 
+				if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post();
 			?>
-					<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]"> 
-						<div class="[ relative ]"> 
-							<a class="[ block ]" href="<?php the_permalink() ?>"> 
+					<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]">
+						<div class="[ relative ]">
+							<a class="[ block ]" href="<?php the_permalink() ?>">
 								<?php the_post_thumbnail('medium', array( 'class' => 'image-responsive')) ?>
-								<span class="[ opacity-gradient--full ]"></span> 
-								<div class="[ media-info media-info--small ] [ xmall-12 ]"> 
-									<p class="[ text-center ]"> 
-										<a href="<?php echo $url ?>" class="[ media--info__name ]"><?php the_title() ?></a> 
-									</p> 
-								</div> 
-							</a> 
-						</div> 
+								<span class="[ opacity-gradient--full ]"></span>
+								<div class="[ media-info media-info--small ] [ xmall-12 ]">
+									<p class="[ text-center ]">
+										<a href="<?php echo $url ?>" class="[ media--info__name ]"><?php the_title() ?></a>
+									</p>
+								</div>
+							</a>
+						</div>
 					</article>
 			<?php
 				endwhile; endif; wp_reset_query(); ?>
 		</section><!-- .results -->
-<?php 
+<?php
 	}
-	get_footer(); 
+	get_footer();
 ?>

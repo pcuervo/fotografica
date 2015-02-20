@@ -84,6 +84,14 @@ p{
 	.font( 20px, 30px, normal, 'cassia light' );
 }
 
+a{
+	color: @highlight;
+	.transition(all 0.1s ease);
+	&:hover{
+		color: darken(@highlight, 10%);
+	}
+}
+
 
 /**
  * Image captions
@@ -154,7 +162,7 @@ p{
 	font-family: 'cassia light italic';
 }
 .media--info__date{
-
+	display: none;
 }
 
 
@@ -174,6 +182,11 @@ p{
 	}
 	.sub-title{
 		.font(18px, 1);
+	}
+
+
+	.media--info__date{
+		display: block;
 	}
 
 }
