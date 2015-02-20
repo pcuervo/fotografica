@@ -10,12 +10,6 @@ msgstr ""
 "X-Generator: GlotPress/1.0-alpha-1000\n"
 "Project-Id-Version: Development\n"
 
-#: views/config.php:97
-msgid "Spam in the <a href=\"%s\">spam folder</a> older than 1 day is deleted automatically."
-msgid_plural "Spam in the <a href=\"%1$s\">spam folder</a> older than %2$d days is deleted automatically."
-msgstr[0] "Correo no deseado en el archivo <a href=\"%s\">Correo no deseado</a> con más de un día de antiguedad se borrará automáticamente."
-msgstr[1] "Correo no deseado en el archivo <a href=\"%1$s\">Correo no deseado</a> con %2$d días de antiguedad se borrará automáticamente."
-
 #: class.akismet-admin.php:700
 msgid "Please check your <a href=\"%s\">Akismet configuration</a> and contact your web host if problems persist."
 msgstr "Por favor revisa tu <a href=\"%s\">Configuración de Akismet</a> y llama a tu patrocinador de la red si el problema persiste."
@@ -304,6 +298,8 @@ msgstr "Akismet fue incapaz de revisar este comentario (respuesta: %s), se volve
 msgid "View comment history"
 msgstr "Ver historial de comentarios"
 
+#. #-#-#-#-#  akismet.pot (Akismet 3.0.5b1)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
 #: class.akismet-admin.php:76 class.akismet-admin.php:78
 #: class.akismet-admin.php:757 views/config.php:3
 msgid "Akismet"
