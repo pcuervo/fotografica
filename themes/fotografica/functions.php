@@ -201,6 +201,7 @@
 							<?php } ?>
 
 							$('.filter--info span').on('click', function(event) {
+								console.log('opening modal...');
 								openModal( $(this) );
 							});
 

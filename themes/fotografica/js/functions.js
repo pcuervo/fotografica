@@ -291,8 +291,8 @@ function openLightbox(){
 	$('.lightbox').show();
 }
 
-/**
- * Opens Modal
+/**Modal
+ * Opens 
  * @param element
 **/
 function openModal(element){
