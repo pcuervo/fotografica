@@ -71,12 +71,9 @@
 			<div class="[ media-info media-info--large ] [ xmall-12 ]">
 				<p class="[ text-center ]">
 
-				<!-- COLECCION -->
-				De la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>,
-
 				<!-- NOMBRE APELLIDO -->
-				<?php if ( $authorColeccionesName == 'sin autor' ){ ?>
-					<span><?php echo $authorColeccionesName; ?></span>,
+				<?php if ( $authorColeccionesName == 'Autor no identificado' ){ ?>
+					<span class="[ media--info__author ]"><?php echo $authorColeccionesName; ?></span>,
 				<?php } else { ?>
 					<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
 				<?php } ?>
@@ -84,14 +81,15 @@
 				<!-- TÍTULO -->
 				<?php if ( $titleColecciones ){ ?>
 					<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleColecciones; ?></a>,
-				<?php } else { ?>
-					<span class="[ media--info__name ]">sin título</span>,
 				<?php } ?>
 
 				<!-- DE LA SERIE -->
 				<?php if ( $seriesColecciones ){ ?>
 					de la serie <span class="[ media--info__series ]"><?php echo $seriesColecciones; ?></span>,
 				<?php } ?>
+
+				<!-- COLECCION -->
+				<br /> de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>,
 
 				<!-- LUGAR -->
 				<?php if ( $placeColecciones ){ ?>
@@ -100,7 +98,7 @@
 
 				<!-- CIRCA -->
 				<?php if ( $circaColecciones ){ ?>
-					<span class="[ media--info__circa ]">circa</span>
+					<span class="[ media--info__circa ]">circa </span>
 				<?php } ?>
 
 				<!-- AÑO -->

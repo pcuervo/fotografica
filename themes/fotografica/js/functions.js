@@ -291,6 +291,32 @@ function openLightbox(){
 	$('.lightbox').show();
 }
 
+/**
+ * Opens Modal
+ * @param element
+**/
+function openModal(element){
+	console.log('openModal');
+	var aAbrir = element.data('modal');
+	console.log(aAbrir);
+	aAbrir = $('#js-'+aAbrir+'.modal-wrapper' );
+	aAbrir.fadeIn('fast', function(){
+		$(this).removeClass('hide');
+	});
+}
+
+/**
+ * Closes Modal
+ * @param element to be closed
+**/
+function closeModal(element){
+	var aCerrar = element.parent().parent();
+	aCerrar.fadeOut('fast', function(){
+		$(this).addClass('hide');
+	});
+}
+
+
 // AJAX para filtros
 function advancedSearch(post_type, filters, limit, existing_ids){
 	var user_data = {};

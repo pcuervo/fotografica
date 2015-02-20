@@ -200,6 +200,14 @@
 								advancedSearch('fotografias', getFilteredResults(), 15, existing_ids);
 							<?php } ?>
 
+							$('.filter--info span').on('click', function(event) {
+								openModal( $(this) );
+							});
+
+							$('.close-modal').on('click', function(event) {
+								closeModal( $(this) );
+							});
+
 						});
 					}(jQuery));
 				</script>
@@ -1013,13 +1021,13 @@
 			$existing_ids_in = implode("', '", $existing_ids);
 			$query .= " AND id NOT IN ('".$existing_ids_in."')";
 		}
-		$query .= " 
-			AND id NOT IN 
+		$query .= "
+			AND id NOT IN
 				(SELECT id FROM wp_posts P INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
 				INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
-				WHERE taxonomy = 'archivo-proyecto') 
-			AND post_status = 'publish' 
-			ORDER BY RAND() 
+				WHERE taxonomy = 'archivo-proyecto')
+			AND post_status = 'publish'
+			ORDER BY RAND()
 			LIMIT ".$limit;
 		$posts_info = $wpdb->get_results( $query, OBJECT );
 
