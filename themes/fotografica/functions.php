@@ -929,7 +929,8 @@
 				$existing_ids_in = implode("', '", $existing_ids);
 				$query .= " AND id NOT IN ('".$existing_ids_in."')";
 			}
-			$query .= " AND post_status = 'publish' AND meta_value = '".$hoy."' GROUP BY id ORDER BY RAND() LIMIT ".$limit;
+			//$query .= " AND post_status = 'publish' AND meta_value = '".$hoy."' GROUP BY id ORDER BY RAND() LIMIT ".$limit;
+			$query .= " AND post_status = 'publish' GROUP BY id ORDER BY RAND() LIMIT ".$limit;
 
 			$posts_info = $wpdb->get_results( $query, OBJECT );
 		} else {
@@ -947,10 +948,10 @@
 				if($key != 0) $query .= ' OR';
 
 				if($filtro['value'] == 'anteriores') {
-					$query .= " meta_value > '".$hoy."'";
+					$query .= " meta_value < '".$hoy."'";
 				}
 				if($filtro['value'] == 'proximos') {
-					$query .= " meta_value < '".$hoy."'";
+					$query .= " meta_value > '".$hoy."'";
 				}
 				if($filtro['value'] == 'hoy') {
 					$query .= " meta_value = '".$hoy."'";
@@ -964,11 +965,10 @@
 			}
 			$query .= " AND post_status = 'publish' GROUP BY id ORDER BY RAND() LIMIT ".$limit;
 
-			//echo $query;
 			$posts_info = $wpdb->get_results( $query );
 		}
 
-		echo $query;
+		//echo $query;
  		$info_colecciones = array();
  		foreach ($posts_info as $key => $post) {
  			// Título
@@ -993,6 +993,7 @@
 				'img_url'	=> $url,
 				'fec_ini'	=> $fec_ini,
 				'fec_fin'	=> $fec_fin,
+				'permalink'	=> get_permalink( $post->id ),
 				);
  		}
 
