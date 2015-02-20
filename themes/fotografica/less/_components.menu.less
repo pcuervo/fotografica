@@ -137,11 +137,11 @@
 .mp-back {
 	display: block;
 	padding: 0.5em 0;
-	.font(0.6em, 1, 100, 'proxima-nova'); color: @claro; letter-spacing: 0.1em; text-decoration: none;
+	.font(13px, 1, 100, 'proxima-nova'); color: @claro; letter-spacing: 0.1em; text-decoration: none;
 	background: @highlight;
 	position: relative;
 	outline: none; box-shadow: inset 0 1px rgba(0,0,0,0.1);
-	.transition(background 0.3s);
+	.transition();
 }
 
 .mp-menu .mp-level.mp-level-overlay > .mp-back{
@@ -229,4 +229,18 @@ nav > div{
 	.menu__item-large{
 		font-size: 70px;
 	}
+}
+
+
+/*------------------------------------*\
+    #MEDIUM
+\*------------------------------------*/
+@media (min-width: @medium) {
+
+	.mp-back {
+		display: block;
+		padding: 0.5em 0;
+		font-size: 24px;
+	}
+
 }

@@ -4,7 +4,7 @@
 							<footer class="[ wrapper ]">
 								<article class="[ margin-bottom ]">
 									<h2 class="[ title ] [ text-center ]">Newsletter <br /><span class="[ sub-title ] [ block xmall-12 ] [ text-center ]">Suscríbete</span></h2>
-									<form action="">
+									<form class="[ form form--large ]" action="">
 										<fieldset class="[ columna xmall-12 medium-8 ] [ center ]">
 											<input class="[ columna xmall-10 medium-11 ]" type="email" placeholder="tu@correo.com">
 											<button class="" type="submit">
@@ -15,6 +15,7 @@
 								</article>
 								<article>
 									<p class="[ text-center ]"><small>Todos los derechos reservados Fundación Televisa</small></p>
+									<p class="[ text-center ]"><small><a href="<?php echo site_url('aviso-de-privacidad'); ?>">Aviso de privacidad</a></small></p>
 								</article>
 							</footer>
 						</section>

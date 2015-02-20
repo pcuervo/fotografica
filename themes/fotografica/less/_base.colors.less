@@ -9,5 +9,9 @@
  * Backgrounds
 **/
 .bg-claro{ background-color: @claro !important; }
-.bg-highlight{ background-color: @highlight !important; }
+.bg-highlight{ background-color: @highlight !important;
+	&:hover{
+		background: darken(@highlight, 10%)!important ;
+	}
+}
 .bg-dark{ background-color: @dark !important; }

@@ -262,7 +262,7 @@
 			<p class="[ uppercase ] [ js-num-resultados ]"><span></span> resultados con los filtros:</p>
 		</div>
 	</section><!-- .filters -->
-	<section class="[ results ] [ row ] [ margin-bottom ]">
+	<section class="[ results ] [ row row--no-margins ] [ margin-bottom ]">
 	</section><!-- .results -->
 	<div class="[ loader ] [ center ] ">
 		<div></div>
