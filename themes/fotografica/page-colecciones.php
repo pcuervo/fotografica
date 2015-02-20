@@ -180,7 +180,7 @@
 			<div class="[ filter-fotografos ]">
 				<?php
 					$query = "
-			    		SELECT DISTINCT LEFT(name, 1) as letter FROM wp_posts P
+						SELECT DISTINCT LEFT(name, 1) as letter FROM wp_posts P
 						INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
 						INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
 						INNER JOIN wp_terms T ON T.term_id = TT.term_id
