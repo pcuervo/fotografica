@@ -141,6 +141,7 @@
 							\*------------------------------------*/
 
 							runMasonry('.results', '.result' );
+
 							var existing_ids = 0;
 							<?php
 								global $coleccion;
@@ -201,8 +202,10 @@
 							<?php } ?>
 
 							$('.filter--info span').on('click', function(event) {
-								console.log('opening modal...');
+								var coleccion_id = $(this).data('coleccion-term-id');
+								var descripcion = getDescripcionColeccion(coleccion_id);
 								openModal( $(this) );
+
 							});
 
 							$('.close-modal').on('click', function(event) {
@@ -1217,6 +1220,17 @@
 
 		return $info_nuevas_adquisiciones;
 	} // advanced_search_nuevas_adquisiciones
+
+	function get_descripcion_coleccion(){
+		$term_id_coleccion = $_POST['id_coleccion'];
+		$descripcion = term_description( $term_id_coleccion, 'coleccion' );
+
+		echo json_encode($descripcion , JSON_FORCE_OBJECT);
+		exit();
+	} // get_descripcion_coleccion
+
+	add_action("wp_ajax_get_descripcion_coleccion", "get_descripcion_coleccion");
+	add_action("wp_ajax_nopriv_get_descripcion_coleccion", "get_descripcion_coleccion");
 
 
 

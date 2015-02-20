@@ -312,8 +312,7 @@ function closeModal(element){
 	aCerrar.addClass('hide');
 }
 
-
-// AJAX para filtros
+// AJAX 
 function advancedSearch(post_type, filters, limit, existing_ids){
 	var user_data = {};
 	user_data['action'] = 'advanced_search';
@@ -330,7 +329,6 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 		ajax_url,
 		user_data,
 		function(response){
-			console.log(response);
 
 			var json_posts = $.parseJSON(response);
 			var html_resultados;
@@ -382,6 +380,22 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 		console.log(e);
 	});
 }// searchColeccionesTest
+
+function getDescripcionColeccion(id_coleccion){
+	var coleccion_data = {};
+	coleccion_data['action'] = 'get_descripcion_coleccion';
+	coleccion_data['id_coleccion'] = id_coleccion;
+
+	$.post(
+		ajax_url,
+		coleccion_data,
+		function(response){
+			var json_response = $.parseJSON(response);
+			console.log(json_response)
+			$('#js-info-coleccion .modal-body').html(json_response);
+		}
+	);
+}// getDescripcionColeccion
 
 function getExistingIds(){
 	var results = $('body').find('.result');
