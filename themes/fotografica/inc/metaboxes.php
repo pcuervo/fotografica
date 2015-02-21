@@ -10,6 +10,7 @@
 		// add_meta_box( id, title, name_meta_callback, post_type, context, priority );
 		add_meta_box( 'evento_fecha_inicial', 'Fecha inicial del evento', 'metabox_evento_fecha_inicial', 'carteleras', 'advanced', 'high' );
 		add_meta_box( 'evento_fecha_final', 'Fecha final del evento', 'metabox_evento_fecha_final', 'carteleras', 'advanced', 'high' );
+		add_meta_box( 'video_proyecto', 'Video del proyecto', 'metabox_video_proyecto', 'proyectos', 'advanced', 'high' );
 
 	});
 
@@ -41,6 +42,18 @@ echo <<<END
 
 	<label>Fecha final (AAAA-MM-DD):</label>
 	<input type="text" class="widefat" id="lugar" name="_evento_fecha_final_meta" value="$fecha_final" />
+
+END;
+	}
+
+	function metabox_video_proyecto($post){
+		$video_proyecto = get_post_meta($post->ID, '_evento_video_proyecto_meta', true);
+		wp_nonce_field(__FILE__, '_evento_video_proyecto_meta_nonce');
+
+echo <<<END
+
+	<label>URL de video (Vimeo):</label>
+	<input type="text" class="widefat" id="lugar" name="_evento_video_proyecto_meta" value="$video_proyecto" />
 
 END;
 	}
@@ -80,6 +93,11 @@ END;
 		if ( isset($_POST['_evento_fecha_final_meta']) and check_admin_referer(__FILE__, '_evento_fecha_final_meta_nonce') ){
 			//$timestamp = strtotime($_POST['_evento_fecha_final_meta']);
 			update_post_meta($post_id, '_evento_fecha_final_meta', $_POST['_evento_fecha_final_meta']);
+		}
+
+		if ( isset($_POST['_evento_video_proyecto_meta']) and check_admin_referer(__FILE__, '_evento_video_proyecto_meta_nonce') ){
+			//$timestamp = strtotime($_POST['_evento_video_proyecto_meta']);
+			update_post_meta($post_id, '_evento_video_proyecto_meta', $_POST['_evento_video_proyecto_meta']);
 		}
 
 

@@ -6,6 +6,7 @@
 	$postType = get_post_type();
 
 	$terms = wp_get_post_terms( $post->ID, 'tipo-de-proyecto' );
+	$url_video_proyecto = get_post_meta($post->ID, '_evento_video_proyecto_meta', true);
 
 	if($terms[0]->slug == 'individual'){
 		the_post();
@@ -80,6 +81,9 @@
 		<section class="[ margin-bottom--large ][ single-content ]">
 			<div class="[ wrapper ][ ]">
 				<?php the_content(); ?>
+				<?php if ( $url_video_proyecto != '' ) { ?>
+					<div class="[ url-video ]]"><?php echo $url_video_proyecto ?></div>
+				<?php } ?>
 			</div><!-- .wrapper -->
 		</section>
 
