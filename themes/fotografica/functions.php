@@ -465,6 +465,58 @@
 
 
 
+
+// MANAGE DASHBOARD MENUS //////////////////////////////////////////////////////
+
+	add_action( 'admin_menu', 'manage_dashboard_menus');
+	function manage_dashboard_menus(){
+		// Editar información de contacto
+		add_options_page('orden-home', 'Orden en el home', 'publish_posts', 'ajustes-home-orden', 'show_home_orden_menu');
+
+		//Quitar el menu de Herramientas
+		$remove = array(__('Tools'));
+		remove_dashboard_menus($remove);
+	}
+
+	/**
+	 * Quita elementos del sidebar dentro del dashboard
+	 *
+	 * @param  remove : (Array) Arreglo con los elementos que se omitiran
+	 *
+	 **/
+	function remove_dashboard_menus($remove){
+			global $menu; end($menu);
+		while(prev($menu)){
+			$value = explode(' ',$menu[key($menu)][0]);
+			if(in_array($value[0] != NULL ? $value[0] : '' , $remove)){
+				unset( $menu[key($menu)] );
+			}
+		}
+	}
+
+	function show_home_orden_menu(){
+		require_once 'inc/order-home.php';
+	}
+
+	function menu_contacto_save(){
+		$direccion_mexico  = (isset($_POST['direccion_mexico']))  ? $_POST['direccion_mexico']  : '';
+		$telefono_mexico   = (isset($_POST['telefono_mexico']))   ? $_POST['telefono_mexico']   : '';
+		$fax_mexico        = (isset($_POST['fax_mexico']))        ? $_POST['fax_mexico']        : '';
+		$direccion_morelia = (isset($_POST['direccion_morelia'])) ? $_POST['direccion_morelia'] : '';
+		$telefono_morelia  = (isset($_POST['telefono_morelia']))  ? $_POST['telefono_morelia']  : '';
+		$results[] = update_option( 'direccion_mexico', $direccion_mexico, '', 'yes' );
+		$results[] = update_option( 'telefono_mexico', $telefono_mexico, '', 'yes' );
+		$results[] = update_option( 'fax_mexico', $fax_mexico, '', 'yes' );
+		$results[] = update_option( 'direccion_morelia', $direccion_morelia, '', 'yes' );
+		$results[] = update_option( 'telefono_morelia', $telefono_morelia, '', 'yes' );
+
+		echo json_encode( $results );
+		exit;
+	}
+	add_action('wp_ajax_menu_contacto_save', 'menu_contacto_save');
+	add_action('wp_ajax_nopriv_menu_contacto_save', 'menu_contacto_save');
+
+
 // HELPER METHODS AND FUNCTIONS //////////////////////////////////////////////////////
 
 

@@ -60,15 +60,15 @@ END;
 	add_action('save_post', function($post_id){
 
 
-		if ( ! current_user_can('edit_page', $post_id)) 
+		if ( ! current_user_can('edit_page', $post_id))
 			return $post_id;
 
 
-		if ( defined('DOING_AUTOSAVE') and DOING_AUTOSAVE ) 
+		if ( defined('DOING_AUTOSAVE') and DOING_AUTOSAVE )
 			return $post_id;
-		
-		
-		if ( wp_is_post_revision($post_id) OR wp_is_post_autosave($post_id) ) 
+
+
+		if ( wp_is_post_revision($post_id) OR wp_is_post_autosave($post_id) )
 			return $post_id;
 
 
@@ -81,14 +81,6 @@ END;
 			//$timestamp = strtotime($_POST['_evento_fecha_final_meta']);
 			update_post_meta($post_id, '_evento_fecha_final_meta', $_POST['_evento_fecha_final_meta']);
 		}
-
-
-		// Guardar correctamente los checkboxes
-		/*if ( isset($_POST['_checkbox_meta']) and check_admin_referer(__FILE__, '_checkbox_nonce') ){
-			update_post_meta($post_id, '_checkbox_meta', $_POST['_checkbox_meta']);
-		} else if ( ! defined('DOING_AJAX') ){
-			delete_post_meta($post_id, '_checkbox_meta', $_POST['_checkbox_meta']);
-		}*/
 
 
 	});
