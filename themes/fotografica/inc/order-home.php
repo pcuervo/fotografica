@@ -1,13 +1,12 @@
 <?php
-	$direccion_mexico  = get_option('direccion_mexico');
-	$telefono_mexico   = get_option('telefono_mexico');
-	$direccion_morelia = get_option('direccion_morelia');
-	$telefono_morelia  = get_option('telefono_morelia');
-	$fax_mexico        = get_option('fax_mexico');
+	$direccion_mexico 	= get_option('direccion_mexico');
+	$telefono_mexico 	= get_option('telefono_mexico');
+	$direccion_morelia 	= get_option('direccion_morelia');
+	$telefono_morelia 	= get_option('telefono_morelia');
+	$fax_mexico 		= get_option('fax_mexico');
 ?>
 
 	<div class="wrap editar-contacto-container">
-
 
 		<div id="icon-generic" class="icon32"><br></div>
 		<h2>Orden en el home</h2>
