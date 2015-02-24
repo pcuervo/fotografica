@@ -162,7 +162,7 @@ a{
 	font-family: 'cassia light italic';
 }
 .media--info__date{
-	display: none;
+
 }
 
 
@@ -178,7 +178,7 @@ a{
 	 * Titles, subtitles
 	**/
 	.title{
-		.font( 1.9em, 1 ); letter-spacing: 2px; text-transform: uppercase;
+		.font( 1.9em, 1 ); letter-spacing: 2px;
 	}
 	.sub-title{
 		.font(18px, 1);
@@ -186,7 +186,28 @@ a{
 
 
 	.media--info__date{
-		display: block;
+
 	}
+
+}
+
+
+
+
+/*------------------------------------*\
+    #LARGE
+\*------------------------------------*/
+@media (min-width: @large) {
+
+	/**
+	 * Titles, subtitles
+	**/
+	.title{
+		.font( 2.2em, 1 ); letter-spacing: 2px;
+	}
+	.sub-title{
+		.font(24px, 1);
+	}
+
 
 }

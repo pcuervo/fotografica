@@ -102,7 +102,7 @@
 					<div class="[ content ]">
 						<div class="[ header-wrapper ]">
 							<header class="[ ]">
-								<div class="[ wrapper ][ shown--small ]">
+								<div class="[ wrapper ][ hidden--large ]">
 									<nav class="[ row ]">
 										<div class="[ columna xmall-2 ]">
 											<a id="trigger-xmall" class="[ inline-block ][ menu-trigger ][ menu__item ]" href="#">
@@ -122,8 +122,8 @@
 											</a>
 										</div>
 									</nav>
-								</div><!-- [ shown-small ] -->
-								<div class="[ wrapper ][ shown--medium ]">
+								</div><!-- [ hidden-large ] -->
+								<div class="[ wrapper ][ shown--large ]">
 									<nav class="[ row ]">
 										<div class="[ columna xmall-4 ][ text-left ]">
 											<a id="trigger-medium" class="[ inline-block ][ menu-trigger ][ menu__item ]" href="#">
@@ -155,7 +155,7 @@
 											</a>
 										</div>
 									</nav>
-								</div><!-- [ shown-medium ] -->
+								</div><!-- [ shown-large ] -->
 							</header>
 						</div>
 						<div class="[ main-wrapper ][ margin-bottom ]" >

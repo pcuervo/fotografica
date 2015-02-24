@@ -75,7 +75,7 @@
 			<h2 class="[ center-full ] [ title ]">
 				Colecciones
 			</h2>
-			<div class="[ media-info media-info--large ] [ xmall-12 ] [ shown--medium ]">
+			<div class="[ media-info media-info--large ] [ xmall-12 ] [ shown--large ]">
 				<p class="[ text-center ]">
 
 

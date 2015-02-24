@@ -34,7 +34,8 @@
 
 
 /* min-width 321px */
-@media only screen and (min-width: 25em) {
+
+@media (min-width: @small) {
 	.columna, .span{
 		&.small-1{ width: 8.33333333%; }
 		&.small-2{ width: 16.6666666%; }
@@ -64,7 +65,7 @@
 }
 
 /* min-width 641px, medium screens */
-@media only screen and (min-width: 40.063em) {
+@media (min-width: @medium) {
 	.columna, .span{
 		&.medium-1{ width: 8.33333333%; }
 		&.medium-2{ width: 16.6666666%; }
@@ -95,7 +96,7 @@
 
 
  /* min-width 1025px, large screens */
-@media only screen and (min-width: 64.063em) {
+@media (min-width: @large) {
 	.columna, .span{
 		&.large-1{ width: 8.33333333%; }
 		&.large-2{ width: 16.6666666%; }
@@ -126,7 +127,7 @@
 
 
 /* min-width 1441px, xlarge screens */
-@media only screen and (min-width: 90.063em) {
+@media (min-width: @xlarge) {
 	.columna, .span{
 		&.xlarge-1{ width: 8.33333333%; }
 		&.xlarge-2{ width: 16.6666666%; }
@@ -157,7 +158,7 @@
 
 
  /* min-width 1921px, xxlarge screens */
-@media only screen and (min-width: 120.063em) {
+@media (min-width: @xxlarge) {
 	.columna, .span{
 		&.xxlarge-1{ width: 8.33333333%; }
 		&.xxlarge-2{ width: 16.6666666%; }

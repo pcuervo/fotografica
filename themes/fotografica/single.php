@@ -228,6 +228,7 @@
 
 						$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
 
+
 						$coleccionColecciones 		= wp_get_post_terms( $post->ID, 'coleccion' );
 						$coleccionColeccionesName 	= $coleccionColecciones[0]->name;
 						$coleccionColeccionesSlug 	= $coleccionColecciones[0]->slug;
@@ -237,7 +238,7 @@
 							$authorColeccionesName 	= $authorColecciones[0]->name;
 							$authorColeccionesSlug 	= $authorColecciones[0]->slug;
 						} else {
-							$authorColeccionesName 	= 'sin autor';
+							$authorColeccionesName 	= 'autor no identificado';
 						}
 
 						$titleColecciones = get_the_title( $post->ID );
@@ -275,8 +276,8 @@
 									<p class="[ text-center ]">
 
 										<!-- NOMBRE APELLIDO -->
-										<?php if ( $authorColeccionesName == 'sin autor' ){ ?>
-											<span><?php echo $authorColeccionesName; ?></span>,
+										<?php if ( $authorColeccionesName == 'Autor no identificado' ){ ?>
+											<span class="[ media--info__author ]"><?php echo $authorColeccionesName; ?></span>,
 										<?php } else { ?>
 											<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
 										<?php } ?>
@@ -284,8 +285,6 @@
 										<!-- TÍTULO -->
 										<?php if ( $titleColecciones ){ ?>
 											<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleColecciones; ?></a>,
-										<?php } else { ?>
-											<span class="[ media--info__name ]">sin título</span>,
 										<?php } ?>
 
 										<!-- DE LA SERIE -->
@@ -293,14 +292,12 @@
 											de la serie <span class="[ media--info__series ]"><?php echo $seriesColecciones; ?></span>,
 										<?php } ?>
 
-										<!-- LUGAR -->
-										<?php if ( $placeColecciones ){ ?>
-											<span class="[ media--info__place ]"><?php echo $placeColeccionesName; ?></span>,
-										<?php } ?>
+										<!-- COLECCION -->
+										<br /> de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>,
 
 										<!-- CIRCA -->
 										<?php if ( $circaColecciones ){ ?>
-											<span class="[ media--info__circa ]">circa</span>
+											<span class="[ media--info__circa ]">circa </span>
 										<?php } ?>
 
 										<!-- AÑO -->

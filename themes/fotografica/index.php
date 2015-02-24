@@ -103,7 +103,7 @@
 
 				<!-- AÑO -->
 				<?php if ( $dateColecciones ){ ?>
-					<span class="[ media--info__date ]"><?php echo $dateColeccionesName; ?></span>
+					<span class="[ media--info__date ][ shown--medium shown--medium--inline ]"><?php echo $dateColeccionesName; ?></span>
 				<?php } ?>
 				</p>
 

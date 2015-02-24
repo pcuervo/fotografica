@@ -8,8 +8,15 @@
 		</div>
 	</section>
 	<section class="[ margin-bottom--large ][ single-content ]">
-		<div class="[ wrapper ][ ]">
-			<?php the_content(); ?>
+		<div class="[ wrapper ]">
+			<div class="[ row ]">
+				<div class="[ shown--large ][ columna medium-2 large-3 ]">
+					<p><a href="#">vimeo.com/nddbn3635</a></p>
+				</div>
+				<div class="[ columna small-12 medium-10 large-6 xxlarge-4 center ]">
+					<?php the_content(); ?>
+				</div>
+			</div>
 		</div><!-- .wrapper -->
 	</section>
 	<?php
@@ -88,7 +95,7 @@
 							$authorColeccionesName 	= $authorColecciones[0]->name;
 							$authorColeccionesSlug 	= $authorColecciones[0]->slug;
 						} else {
-							$authorColeccionesName 	= 'sin autor';
+							$authorColeccionesName 	= 'autor no identificado';
 						}
 
 						$titleColecciones = get_the_title( $post->ID );
@@ -126,8 +133,8 @@
 									<p class="[ text-center ]">
 
 										<!-- NOMBRE APELLIDO -->
-										<?php if ( $authorColeccionesName == 'sin autor' ){ ?>
-											<span><?php echo $authorColeccionesName; ?></span>,
+										<?php if ( $authorColeccionesName == 'Autor no identificado' ){ ?>
+											<span class="[ media--info__author ]"><?php echo $authorColeccionesName; ?></span>,
 										<?php } else { ?>
 											<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
 										<?php } ?>
@@ -135,8 +142,6 @@
 										<!-- TÍTULO -->
 										<?php if ( $titleColecciones ){ ?>
 											<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleColecciones; ?></a>,
-										<?php } else { ?>
-											<span class="[ media--info__name ]">sin título</span>,
 										<?php } ?>
 
 										<!-- DE LA SERIE -->
@@ -144,14 +149,12 @@
 											de la serie <span class="[ media--info__series ]"><?php echo $seriesColecciones; ?></span>,
 										<?php } ?>
 
-										<!-- LUGAR -->
-										<?php if ( $placeColecciones ){ ?>
-											<span class="[ media--info__place ]"><?php echo $placeColeccionesName; ?></span>,
-										<?php } ?>
+										<!-- COLECCION -->
+										<br /> de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>,
 
 										<!-- CIRCA -->
 										<?php if ( $circaColecciones ){ ?>
-											<span class="[ media--info__circa ]">circa</span>
+											<span class="[ media--info__circa ]">circa </span>
 										<?php } ?>
 
 										<!-- AÑO -->

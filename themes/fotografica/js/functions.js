@@ -69,7 +69,8 @@ function runMasonry(container, item){
 	var $container = $(container).masonry();
 	$container.imagesLoaded( function() {
 		$container.masonry({
-			itemSelector: item
+			itemSelector: 	item,
+			gutter: 		0
 		});
 		$container.masonry( 'reloadItems' );
 		$container.masonry( 'layout' );
@@ -292,7 +293,7 @@ function openLightbox(){
 }
 
 /**Modal
- * Opens 
+ * Opens
  * @param element
 **/
 function openModal(element){
@@ -312,7 +313,7 @@ function closeModal(element){
 	aCerrar.addClass('hide');
 }
 
-// AJAX 
+// AJAX
 function advancedSearch(post_type, filters, limit, existing_ids){
 	var user_data = {};
 	user_data['action'] = 'advanced_search';
@@ -442,7 +443,7 @@ function getHtmlColecciones(results){
 						}
 						if ( results.ano ){
 							//console.log('ano: '+results.ano);
-							html_resultados = html_resultados+'<span class="[ media--info__date ]">'+results.ano+'</span>';
+							html_resultados = html_resultados+'<span class="[ media--info__date ][ shown--large--inline ]">'+results.ano+'</span>';
 						}
 					html_resultados = html_resultados+'</p> \
 				</div> \
