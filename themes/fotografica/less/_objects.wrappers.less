@@ -24,12 +24,30 @@ html, body,
 }
 
 /**
- * Maintains everything at the same widht
+ * Maintains everything at the same width
 **/
 .wrapper{
 	width: 90%; max-width: 1280px; min-width: 300px;
 	margin-right: auto; margin-left: auto;
 }
+
+
+
+/**
+ * Wrapper around the main div, separeted from the header
+**/
+.main-wrapper{
+	padding-top: 60px;
+}
+
+
+/**
+ * Wrapper around the footer div, separeted from the header
+**/
+.footer-wrapper{
+	padding-bottom: 60px;
+}
+
 
 /**
  * Column wrapper for clearfix and floats
@@ -53,13 +71,25 @@ html, body,
 }
 
 
+
+
 /*------------------------------------*\
-    #POSITIONS
+    #MEDIUM
 \*------------------------------------*/
-.relative{ position: relative !important; }
-.absolute{ position: absolute !important; }
+@media (min-width: @medium) {
 
+	.main-wrapper{
+		padding-top: 80px;
+	}
 
+	/**
+	 * Wrapper around the footer div, separeted from the header
+	**/
+	.footer-wrapper{
+		padding-bottom: 80px;
+	}
+
+}
 
 
 

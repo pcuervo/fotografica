@@ -264,8 +264,6 @@
 						/*------------------------------------*\
 							#ON LOAD
 						\*------------------------------------*/
-						setHeaderHeightPadding('.main-wrapper', 'top');
-						setHeaderHeightPadding('.footer-wrapper', 'bottom');
 						setHeightMinusElement('.overflow-scroll', '.mp-level', 'h2');
 
 
@@ -288,8 +286,7 @@
 							#RESPONSIVE
 						\*------------------------------------*/
 						$(window).resize(function(){
-							setHeaderHeightPadding('.main-wrapper', 'top');
-							setHeaderHeightPadding('.footer-wrapper', 'bottom');
+
 						});
 					});
 				}(jQuery));
