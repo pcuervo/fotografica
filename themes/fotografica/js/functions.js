@@ -69,8 +69,7 @@ function runMasonry(container, item){
 	var $container = $(container).masonry();
 	$container.imagesLoaded( function() {
 		$container.masonry({
-			itemSelector: 	item,
-			gutter: 		0
+			itemSelector: item
 		});
 		$container.masonry( 'reloadItems' );
 		$container.masonry( 'layout' );
