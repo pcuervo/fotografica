@@ -117,7 +117,7 @@
 											</h1>
 										</div>
 										<div class="[ columna xmall-2 ][ text-right ]">
-											<a class="[ inline-block ][ menu__item menu__item-large ]" href="#">
+											<a class="[ inline-block ][ menu__item menu__item-large ]" href="http://www.fundaciontelevisa.org/" target="_blank">
 												<i class="[ icon-logo-fundacion-televisa ]"></i>
 											</a>
 										</div>
@@ -150,7 +150,7 @@
 											<a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="#">
 												<i class="[ icon-search ]"></i>
 											</a>
-											<a class="[ inline-block align-middle ][ menu__item menu__item-large ]" href="#">
+											<a class="[ inline-block align-middle ][ menu__item menu__item-large ]" href="http://www.fundaciontelevisa.org/" target="_blank">
 												<i class="[ icon-logo-fundacion-televisa ]"></i>
 											</a>
 										</div>

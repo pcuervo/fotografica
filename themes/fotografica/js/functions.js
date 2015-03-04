@@ -76,6 +76,13 @@ function runMasonry(container, item){
 	});
 }
 
+/**
+* Destroy Masonry
+**/
+function destroyMasonry(container){
+	var $container = $(container).masonry('destroy');
+}
+
 //Get the header height
 function getHeaderHeight(){
 	return $('.header-wrapper').height();
@@ -361,12 +368,27 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 				$(html_resultados).appendTo('.results');
 				num_posts = i;
 			});
+
 			/**
 			 * If the postType is fotografos do not run masonry
 			**/
-			if ( post_type !== 'fotografos'){
+			if ( post_type !== 'fotografos' ){
 				runMasonry('.results', '.result' );
 			}
+
+
+			/**
+			 * If there are no results show a message staying the fact.
+			**/
+			if ( num_posts == 0 ){
+				var emptyMessage = '<div class="[ wrapper ]"><h2 class="[ padding ][ margin-bottom ][ text-center ][ bg-highlight color-claro ]">Tu búsqueda no generó ningún resultado, elimina alguno de los filtros de arriba hasta obtener resultados.</h2></div>';
+				$(emptyMessage).appendTo('.results');
+				setTimeout(function() {
+					destroyMasonry('.results');
+				}, 50);
+			}
+
+
 			// Hide "cargar mas" when there are no more posts to load
 			num_posts = parseInt(num_posts) + 1;
 			if(parseInt(limit) > parseInt(num_posts))

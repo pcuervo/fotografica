@@ -18,6 +18,9 @@
 									<p class="[ text-center ]"><small><a href="<?php echo site_url('aviso-de-privacidad'); ?>">Aviso de privacidad</a></small></p>
 								</article>
 							</footer>
+							<section>
+								<iframe src="http://www.fundaciontelevisa.org/footer/" frameborder="0" height="468px" width="100%"></iframe>
+							</section>
 						</section>
 					</div><!-- /content -->
 				</div><!-- /content-wrapper -->
@@ -32,7 +35,7 @@
 							<h2 class="[ text-center ]">Colección Manuél Álvarez Bravo</h2>
 						</div><!-- modal-header -->
 						<div class="[ modal-body ]">
-							
+
 						</div><!-- modal-body -->
 					</div><!-- modal-content -->
 				</div>

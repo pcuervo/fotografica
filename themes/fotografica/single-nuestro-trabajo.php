@@ -1,17 +1,20 @@
 <?php get_header();
 	the_post();
-	the_post_thumbnail('full', array('class' => '[ margin-bottom ] [ full-height ]'));
+	$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+	$video_trabajo = get_post_meta($post->ID, '_video_trabajo_meta', true);
 ?>
-	<section class="[ margin-bottom--large ]">
-		<div class="[ media-info media-info__dark ] [ relative ] [ xmall-12 ]">
-			<h2 class="[ text-center ]"><?php the_title(); ?></h2>
+	<section class="[ colecciones ][ bg-image ][ margin-bottom ]" style="background-image: url(<?php echo $bgColecciones[0]; ?>)">
+		<div class="[ opacity-gradient rectangle ]">
+			<h2 class="[ center-full ] [ title ]">
+				<?php the_title(); ?>
+			</h2>
 		</div>
 	</section>
 	<section class="[ margin-bottom--large ][ single-content ]">
 		<div class="[ wrapper ]">
 			<div class="[ row ]">
 				<div class="[ shown--large ][ columna medium-2 large-3 ]">
-					<p><a href="#">vimeo.com/nddbn3635</a></p>
+					<p><a href="#"><?php echo $video_trabajo; ?></a></p>
 				</div>
 				<div class="[ columna small-12 medium-10 large-6 xxlarge-4 center ]">
 					<?php the_content(); ?>

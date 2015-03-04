@@ -5,6 +5,9 @@
 	    #GET THE POST TYPE
 	\*------------------------------------*/
 	$postType = get_post_type();
+	if( $postType == 'fotografos' ){
+		$postType = 'fotógrafos';
+	}
 
 	/*------------------------------------*\
 	    #ARCHIVE HERO
@@ -76,12 +79,9 @@
 			<div class="[ media-info media-info--large ] [ xmall-12 ] [ shown--medium ]">
 				<p class="[ text-center ]">
 
-				<!-- COLECCION -->
-				De la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>,
-
 				<!-- NOMBRE APELLIDO -->
-				<?php if ( $authorColeccionesName == 'sin autor' ){ ?>
-					<span><?php echo $authorColeccionesName; ?></span>,
+				<?php if ( $authorColeccionesName == 'Autor no identificado' ){ ?>
+					<span class="[ media--info__author ]"><?php echo $authorColeccionesName; ?></span>,
 				<?php } else { ?>
 					<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
 				<?php } ?>
@@ -89,14 +89,15 @@
 				<!-- TÍTULO -->
 				<?php if ( $titleColecciones ){ ?>
 					<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleColecciones; ?></a>,
-				<?php } else { ?>
-					<span class="[ media--info__name ]">sin título</span>,
 				<?php } ?>
 
 				<!-- DE LA SERIE -->
 				<?php if ( $seriesColecciones ){ ?>
 					de la serie <span class="[ media--info__series ]"><?php echo $seriesColecciones; ?></span>,
 				<?php } ?>
+
+				<!-- COLECCION -->
+				<br /> de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>,
 
 				<!-- LUGAR -->
 				<?php if ( $placeColecciones ){ ?>
@@ -105,7 +106,7 @@
 
 				<!-- CIRCA -->
 				<?php if ( $circaColecciones ){ ?>
-					<span class="[ media--info__circa ]">circa</span>
+					<span class="[ media--info__circa ]">circa </span>
 				<?php } ?>
 
 				<!-- AÑO -->
@@ -146,7 +147,7 @@
 						<!--  /********************************\ -->
 							<!-- #FOTOGRAFOS -->
 						<!--  \**********************************/ -->
-						<?php if ( $postType == 'fotografos' ){ ?>
+						<?php if ( $postType == 'fotógrafos' ){ ?>
 							<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="colecciones">Colecciones</a>
 							<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="pais">País</a>
 							<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="decada">Década</a>
@@ -154,7 +155,7 @@
 							<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="apellido">Apellido</a>
 						<?php } ?>
 						<!--  /********************************\ -->
-							<!-- #FOTOGRAFOS -->
+							<!-- #EVENTOS / CARTELERA -->
 						<!--  \**********************************/ -->
 						<?php if ( $postType == 'eventos' OR $postType == 'carteleras' ){ ?>
 							<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="fecha">Fecha</a>
@@ -166,7 +167,7 @@
 				<!--  /********************************\ -->
 					<!-- FOTÓGRAFOS -->
 				<!--  \**********************************/ -->
-				<?php if ( $postType == 'fotografos' ){ ?>
+				<?php if ( $postType == 'fotógrafos' ){ ?>
 					<div class="[ filter-colecciones ]">
 						<?php
 							$args = array(
@@ -177,7 +178,7 @@
 							$terms = get_terms('coleccion', $args);
 							foreach ($terms as $key => $term) {
 						?>
-								<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="coleccion" data-value="<?php echo $term->slug ?>"><?php echo $term->name ?><span><i class="fa fa-info-circle"></i></span></a>
+								<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="coleccion" data-value="<?php echo $term->slug ?>"><?php echo $term->name ?><span><i class="fa fa-info-circle"></i></span></a>
 						<?php
 							}
 						?>
@@ -192,7 +193,7 @@
 							$terms = get_terms('pais', $args);
 							foreach ($terms as $key => $term) {
 						?>
-								<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="pais" data-value="<?php echo $term->slug ?>"><?php echo $term->name ?></a>
+								<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="pais" data-value="<?php echo $term->slug ?>"><?php echo $term->name ?></a>
 						<?php
 							}
 						?>
@@ -241,7 +242,7 @@
 							$terms = get_terms('tema', $args);
 							foreach ($terms as $key => $term) {
 						?>
-								<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="tema" data-value="<?php echo $term->name ?>"><?php echo $term->name ?></a>
+								<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="tema" data-value="<?php echo $term->name ?>"><?php echo $term->name ?></a>
 						<?php
 							}
 						?>
@@ -282,7 +283,7 @@
 			</div>
 		</section><!-- .filters -->
 	<?php } ?>
-	<section class="[ results ] [ row row--no-margins ] [ margin-bottom ] <?php echo ($postType == 'fotografos' ? '[ text-center ]' : ''); ?>">
+	<section class="[ results ] [ row row--no-margins ] [ margin-bottom ] <?php echo ($postType == 'fotógrafos' ? '[ text-center ]' : ''); ?>">
 	</section><!-- .results -->
 	<div class="[ loader ] [ center ] ">
 		<div></div>
