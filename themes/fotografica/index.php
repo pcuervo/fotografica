@@ -191,7 +191,7 @@
 	<section class="[ colecciones ] [ bg-image ]" style="background-image: url(<?php echo $bgFeatured[0]; ?>)">
 		<div class="[ opacity-gradient square ]">
 			<a href="<?php echo site_url('colecciones'); ?>" class="[ button button--hollow button--large ] [ center-full ]">
-				Destacados
+				Destacado
 			</a>
 			<div class="[ media-info media-info--large ] [ xmall-12 ]">
 				<p class="[ text-center ]"><a href="<?php echo $authorFeaturedSlug ?>" class="[ media-info__author ]"><?php echo $authorFeaturedName?></a>, <a href="<?php echo $permalinkFeatured ?>" class="[ media-info__name ]"><?php echo $titleFeatured ?></a>, <span class="[ media--info__place ]"><?php echo $placeFeaturedName ?></span>, <span class="[ media--info__date ]"><?php echo $dateFeaturedName  ?></span>, de la colección <a href="<?php echo $coleccionFeaturedSlug ?>" class="[ media--info__colection ]"><?php echo $coleccionFeaturedName ?></a></p>

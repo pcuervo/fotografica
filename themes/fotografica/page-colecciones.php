@@ -257,6 +257,9 @@
 			<div class="[ filter-nuevas-adquisiciones ] [ hide ]">
 				<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="tema" data-value="nuevas-adquisiciones">Adquisiciones recientes</a>
 			</div><!-- .filter-nuevas-adquisiciones -->
+			<div class="[ filter-favoritos ] [ hide ]">
+				<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="tema" data-value="favoritos">Favoritos</a>
+			</div><!-- .filter-favoritos -->
 		</div><!-- filters__content -->
 		<div class="[ filters__results ] [ padding--small text-center ]">
 			<p class="[ uppercase ] [ js-num-resultados ]"><span></span> resultados con los filtros:</p>
