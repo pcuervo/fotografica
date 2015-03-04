@@ -245,12 +245,14 @@
 				?>
 			</div><!-- .filter-tema -->
 			<div class="[ filter-buscar ]">
-				<form class="[ margin-bottom--small ]" action="">
-					<fieldset class="[ columna xmall-12 medium-8 ] [ center ]">
-						<input class="[ columna xmall-10 medium-11 ]" type="text" placeholder="¿Qué quieres ver?">
-						<button class="" type="submit">
-							<i class="[ icon-search "></i>
-						</button>
+				<form class="[ form ]" action="">
+					<fieldset class="[ columna xmall-12 medium-8 ][ center ]">
+						<div class="input-group">
+							<input type="text" placeholder="¿Qué quieres ver?">
+							<span class="input-group-addon">
+								<button type="submit"><i class="[ icon-search ]"></i></button>
+							</span>
+						</div>
 					</fieldset>
 				</form>
 			</div><!-- .filter-buscar -->
