@@ -80,7 +80,7 @@ END;
 echo <<<END
 
 	<label>Fecha de nacimiento:</label>
-	<input type="text" class="widefat" id="lugar" name="_fecha_nacimiento_meta" value="$fecha_nacimiento" />
+	<input type="text" class="widefat js-datepicker" id="lugar" name="_fecha_nacimiento_meta" value="$fecha_nacimiento" />
 
 END;
 	}// metabox_video_proyecto
