@@ -131,26 +131,70 @@
 
 
 	<!-- /**************************************\ -->
-	<!-- #SLIDES -->
+	<!-- #FEATURED -->
 	<!-- \**************************************/ -->
 	<?php
-	$bgSlides = '';
+	$bgFeatured = '';
+	$post_types = get_post_types( '', 'names' ); 
 	$args = array(
-		'post_type' 		=> 'slides',
-		'posts_per_page' 	=> 1,
-		'orderby' 			=> 'rand'
-	);
-	$querySlides = new WP_Query( $args );
-	if ( $querySlides->have_posts() ) : while ( $querySlides->have_posts() ) : $querySlides->the_post(); ?>
-		<?php $bgSlides = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' ); ?>
+		'post_type' => $post_types,
+	    'tax_query' => array(
+			        array(
+			        	'taxonomy'	=> 'category',
+			        	'field'		=> 'slug',
+			        	'terms'		=> array('destacado')
+			        )
+			    )
+    );
+	$queryFeatured = new WP_Query( $args );
+	if ( $queryFeatured->have_posts() ) : while ( $queryFeatured->have_posts() ) : $queryFeatured->the_post(); 
+		$bgFeatured = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' ); 
+
+		$coleccionFeatured 		= wp_get_post_terms( $post->ID, 'coleccion' );
+		$coleccionFeaturedName 	= $coleccionFeatured[0]->name;
+		$coleccionFeaturedSlug 	= $coleccionFeatured[0]->slug;
+
+		$authorFeatured 			= wp_get_post_terms( $post->ID, 'fotografo' );
+		if ( $authorFeatured ){
+			$authorFeaturedName 	= $authorFeatured[0]->name;
+			$authorFeaturedSlug 	= $authorFeatured[0]->slug;
+		} else {
+			$authorFeaturedName 	= 'sin autor';
+		}
+
+		$titleFeatured = get_the_title( $post->ID );
+		$permalinkFeatured = get_permalink( $post->ID );
+		if ( strpos($titleFeatured, 'Sin título') !== false OR $titleFeatured == '' OR strpos($titleFeatured, '&nbsp') !== false ){
+			$titleFeatured = NULL;
+		}
+
+
+		$placeFeatured = wp_get_post_terms( $post->ID, 'lugar' );
+		$placeFeaturedName = '';
+		if ( $placeFeatured ){
+			$placeFeaturedName 	= $placeFeatured[0]->name;
+		}
+
+		$dateFeatured = wp_get_post_terms( $post->ID, 'año' );
+		if ( $dateFeatured ){
+			$dateFeaturedName 	= $dateFeatured[0]->name;
+		} else {
+			$dateFeaturedName 	= 's/f';
+		}
+
+		$themesFeatured = wp_get_post_terms( $post->ID, 'tema' );
+		if ( ! $themesFeatured ){
+			$themesFeaturedName 	= '';
+		}
+	?>
 	<?php endwhile; endif; wp_reset_query(); ?>
-	<section class="[ colecciones ] [ bg-image ]" style="background-image: url(<?php echo $bgSlides[0]; ?>)">
+	<section class="[ colecciones ] [ bg-image ]" style="background-image: url(<?php echo $bgFeatured[0]; ?>)">
 		<div class="[ opacity-gradient square ]">
-			<a class="[ button button--hollow button--large ] [ center-full ]">
-				<i class="icon-play"></i>
+			<a href="<?php echo site_url('colecciones'); ?>" class="[ button button--hollow button--large ] [ center-full ]">
+				Destacados
 			</a>
 			<div class="[ media-info media-info--large ] [ xmall-12 ]">
-				<p class="[ text-center ]"><a href="#" class="[ media-info__author ]">Gerardo Suter</a>, <a href="#" class="[ media-info__name ]">El trapo negro</a>, <span class="[ media--info__place ]">Egipto</span>, <span class="[ media--info__date ]">1986</span>, de la colección <a href="#" class="[ media--info__colection ]">Manuél Álvarez Bravo</a></p>
+				<p class="[ text-center ]"><a href="<?php echo $authorFeaturedSlug ?>" class="[ media-info__author ]"><?php echo $authorFeaturedName?></a>, <a href="<?php echo $permalinkFeatured ?>" class="[ media-info__name ]"><?php echo $titleFeatured ?></a>, <span class="[ media--info__place ]"><?php echo $placeFeaturedName ?></span>, <span class="[ media--info__date ]"><?php echo $dateFeaturedName  ?></span>, de la colección <a href="<?php echo $coleccionFeaturedSlug ?>" class="[ media--info__colection ]"><?php echo $coleccionFeaturedName ?></a></p>
 			</div>
 		</div>
 	</section>

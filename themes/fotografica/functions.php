@@ -241,9 +241,16 @@
 					(function( $ ) {
 						"use strict";
 						$(function(){
-
 							$('.single-content').on('click','.single-content-image', function(){
 								openLightbox(this);
+							});
+
+							$('.button--heart').on('click', function(e){
+								e.preventDefault();
+								if( ! $(this).hasClass('active') ){
+									var post_id = $(this).data('post-id');
+									addLike(post_id);
+								}
 							});
 						});
 					}(jQuery));
@@ -584,7 +591,7 @@
 			echo 'active';
 	}
 
-// ADVANCED SEARCH FOR THEME  //////////////////////////////////////////////////////
+// AJAX FUNCTIONS //////////////////////////////////////////////////////
 
 	/**
 	 * Búsqueda avanzada basada en filtros.
@@ -1277,9 +1284,66 @@
 		echo json_encode($descripcion , JSON_FORCE_OBJECT);
 		exit();
 	} // get_descripcion_coleccion
-
 	add_action("wp_ajax_get_descripcion_coleccion", "get_descripcion_coleccion");
 	add_action("wp_ajax_nopriv_get_descripcion_coleccion", "get_descripcion_coleccion");
 
+	function add_like(){
+		$post_id = $_POST['post_id'];
+		$key = 'num_likes';
+
+		$num_likes_meta = get_post_meta( $post_id, $key, TRUE );
+
+		if($num_likes_meta == '0') {
+			add_post_meta($post_id, $key, 0, TRUE);
+			$num_likes = 0;
+		} else {
+			$num_likes = intval($num_likes_meta) + 1;
+			update_post_meta($post_id, $key, $num_likes);
+		}
+
+		echo json_encode($num_likes, JSON_FORCE_OBJECT);
+		exit();
+	}
+	add_action("wp_ajax_add_like", "add_like");
+	add_action("wp_ajax_nopriv_add_like", "add_like");
+
+
+	function update_featured_post( $post_id ){
+
+        $terms = wp_get_post_terms( $post_id, 'category' );
+		$is_destacado = false;
+		foreach ($terms as $key => $term) {
+			if ( $term->slug == 'destacado' ) {
+				$is_destacado = true;
+				break;
+			} 
+		}
+
+		if( $is_destacado ){
+			removeFeatured( $post_id );
+		}
+		
+	}// update_featured_post
+	add_action('save_post', 'update_featured_post');
+
+	function removeFeatured( $excluded_post_id ){
+
+		$post_types = get_post_types( '', 'names' ); 
+		$featured_posts_args = array(
+			'post_type' 	=> $post_types,
+		    'tax_query' 	=> array(
+					        array(
+					        	'taxonomy'	=> 'category',
+					        	'field'		=> 'slug',
+					        	'terms'		=> array('destacado')
+					        )
+					    ),
+		    'post__not_in'	=> array( $excluded_post_id )
+	    );
+		$featured_posts = get_posts( $featured_posts_args );
+
+		foreach ($featured_posts as $key => $post) wp_remove_object_terms( $post->ID, 'destacado', 'category');
+
+	}// removeFeatured
 
 

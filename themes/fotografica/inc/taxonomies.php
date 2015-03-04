@@ -354,32 +354,6 @@
 			register_taxonomy( 'medio', 'publicaciones', $args );
 		}// taxonomy medio
 
-		// Tipo de trabajo
-		// if( ! taxonomy_exists('nuestro-trabajo')){
-		// 	$labels = array(
-		// 		'name'              => 'Tipos de trabajo',
-		// 		'singular_name'     => 'Tipo de trabajo',
-		// 		'search_items'      => 'Buscar',
-		// 		'all_items'         => 'Todos',
-		// 		'edit_item'         => 'Editar Tipo de trabajo',
-		// 		'update_item'       => 'Actualizar Tipo de trabajo',
-		// 		'add_new_item'      => 'Nuevo Tipo de trabajo',
-		// 		'new_item_name'     => 'Nombre Nuevo Tipo de trabajo',
-		// 		'menu_name'         => 'Tipo de trabajo'
-		// 	);
-		// 	$args = array(
-		// 		'hierarchical'      => true,
-		// 		'labels'            => $labels,
-		// 		'show_ui'           => true,
-		// 		'show_admin_column' => true,
-		// 		'show_in_nav_menus' => true,
-		// 		'query_var'         => true,
-		// 		'rewrite'           => array( 'slug' => 'nuestro-trabajo' ),
-		// 	);
-		// 	register_taxonomy( 'nuestro-trabajo', 'nuestro-trabajo', $args );
-
-		//}// taxonomy medio
-
 		// Tipo de noticia
 		if( ! taxonomy_exists('tipo-de-noticia')){
 			$labels = array(
@@ -484,7 +458,6 @@
 		//addLastNameToPhotographer();
 		//addSeriesToPhoto();
 	}
-	//add_action( 'init', 'updateTaxonomies');
 	add_action('save_post', 'updateTaxonomies');
 
 	/*

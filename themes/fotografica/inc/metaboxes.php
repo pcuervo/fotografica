@@ -11,6 +11,7 @@
 		add_meta_box( 'evento_fecha_inicial', 'Fecha inicial del evento', 'metabox_evento_fecha_inicial', 'carteleras', 'advanced', 'high' );
 		add_meta_box( 'evento_fecha_final', 'Fecha final del evento', 'metabox_evento_fecha_final', 'carteleras', 'advanced', 'high' );
 		add_meta_box( 'video_proyecto', 'Video del proyecto', 'metabox_video_proyecto', 'proyectos', 'advanced', 'high' );
+		add_meta_box( 'fecha_nacimiento', 'Fecha de nacimieto', 'metabox_fecha_nacimiento', 'fotografos', 'advanced', 'high' );
 
 	});
 
@@ -57,6 +58,18 @@ echo <<<END
 
 END;
 	}
+
+	function metabox_fecha_nacimiento($post){
+		$fecha_nacimiento = get_post_meta($post->ID, '_fecha_nacimiento_meta', true);
+		wp_nonce_field(__FILE__, '_fecha_nacimiento_nonce');
+
+echo <<<END
+
+	<label>Fecha de nacimiento:</label>
+	<input type="text" class="widefat" id="lugar" name="_fecha_nacimiento_meta" value="$fecha_nacimiento" />
+
+END;
+	}// metabox_video_proyecto
 
 	function name_meta_callback($post){
 		// $name = get_post_meta($post->ID, '_name_meta', true);
