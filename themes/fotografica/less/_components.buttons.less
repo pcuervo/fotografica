@@ -39,12 +39,12 @@
 	overflow: hidden;
 }
 
-.button__share:hover{
+.button__share:hover, .button__share.active {
 	background: @claro; color: @dark;
 
-		&.button--twitter{ border: 2px solid @twitter; }
-		&.button--facebook{ border: 2px solid @facebook; }
-		&.button--heart{ border: 2px solid @pinterest; }
+	&.button--twitter{ border: 2px solid @twitter; }
+	&.button--facebook{ border: 2px solid @facebook; }
+	&.button--heart{ border: 2px solid @pinterest; }
 
 	i{
 		transform:scale(1.3);
@@ -55,6 +55,10 @@
 	}
 }
 
+&.button__share.active { 
+	pointer-events: none;
+	cursor: default;
+}
 
 
 

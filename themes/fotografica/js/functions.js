@@ -550,6 +550,21 @@ function getHtmlPublicaciones(results){
 	return html_resultados;
 }
 
+function addLike( post_id ){
+	var data = {};
+	data['action'] = 'add_like';
+	data['post_id'] = post_id;
+
+	$.post(
+		ajax_url,
+		data,
+		function(response){
+			$('.js-num-likes').text(response);
+			$('.button--heart').addClass('active');
+		}
+	);
+}
+
 /*------------------------------------*\
 	#RESPONSIVE
 \*------------------------------------*/
