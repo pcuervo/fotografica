@@ -32,6 +32,8 @@
 									<h2 class="[ text-center uppercase ]">Colecciones</h2>
 									<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
 									<ul class="[ overflow-scroll ]">
+										<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/colecciones?filtro=nuevas-adquisiciones' ?>">Nuevas adquisiciones</a></li>
+										<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/colecciones?filtro=favoritos' ?>">Favoritos</a></li>
 										<?php
 											$args = array(
 											    'orderby'		=> 'name',

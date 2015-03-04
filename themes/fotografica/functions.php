@@ -151,11 +151,17 @@
 									var filter = $('.filter[data-value="<?php echo $coleccion; ?>"]');
 									addFilter( filter );
 							<?php
-								} else if ($filtro != ''){
+								} else if ($filtro == 'nuevas-adquisiciones'){
 							?>
 									var filter = $('.filter[data-value="nuevas-adquisiciones"]');
 									addFilter(filter);
 									advancedSearch('nuevas-adquisiciones', getFilteredResults(), 20, existing_ids);
+							<?php
+								} else if ($filtro == 'favoritos'){
+							?>
+									var filter = $('.filter[data-value="favoritos"]');
+									addFilter(filter);
+									advancedSearch('favoritos', getFilteredResults(), 20, existing_ids);
 							<?php
 								}
 							?>
@@ -1309,7 +1315,6 @@
 	add_action("wp_ajax_add_like", "add_like");
 	add_action("wp_ajax_nopriv_add_like", "add_like");
 
-
 	function update_featured_post( $post_id ){
 
         $terms = wp_get_post_terms( $post_id, 'category' );
@@ -1347,5 +1352,20 @@
 		foreach ($featured_posts as $key => $post) wp_remove_object_terms( $post->ID, 'destacado', 'category');
 
 	}// removeFeatured
+
+	function get_post_id_by_attachment_id( $attachment_id ){
+		global $wpdb;
+
+        $query = "
+    		SELECT post_id
+      		FROM wp_postmeta AS pm
+     		INNER JOIN wp_posts AS p ON pm.meta_value=p.ID 
+     		WHERE ID = ".$attachment_id."
+       		AND pm.meta_key = '_thumbnail_id'
+       		AND post_id IN ( SELECT ID FROM wp_posts WHERE post_type = 'fotografias' )";
+		$post_id_results = $wpdb->get_results( $query, OBJECT );
+
+		return $post_id_results;		
+	}// get_post_id_by_attachment_id
 
 
