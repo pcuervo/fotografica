@@ -311,6 +311,7 @@
 	add_action( 'admin_enqueue_scripts', function(){
 
 		// scripts
+		wp_enqueue_script( 'jquery-ui-datepicker');
 		wp_enqueue_script( 'admin-js', JSPATH.'admin.js', array('jquery'), '1.0', true );
 
 		// localize scripts
@@ -318,6 +319,7 @@
 
 		// styles
 		wp_enqueue_style( 'admin-css', CSSPATH.'admin.css' );
+		wp_enqueue_style('jquery-ui-datepicker-css', CSSPATH.'jquery-ui.css' );
 
 	});
 
@@ -1316,19 +1318,19 @@
 			if ( $term->slug == 'destacado' ) {
 				$is_destacado = true;
 				break;
-			} 
+			}
 		}
 
 		if( $is_destacado ){
 			removeFeatured( $post_id );
 		}
-		
+
 	}// update_featured_post
 	add_action('save_post', 'update_featured_post');
 
 	function removeFeatured( $excluded_post_id ){
 
-		$post_types = get_post_types( '', 'names' ); 
+		$post_types = get_post_types( '', 'names' );
 		$featured_posts_args = array(
 			'post_type' 	=> $post_types,
 		    'tax_query' 	=> array(

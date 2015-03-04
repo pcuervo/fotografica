@@ -32,5 +32,13 @@
 				dataType: 'json'
 			});
 		});
+
+		$('.js-datepicker').datepicker({
+			changeMonth: true,
+			changeYear: true,
+			yearRange: "-300:+0"
+		});
+
+
 	});
 })(jQuery);
