@@ -20,11 +20,6 @@
 
 		// scripts
 		wp_enqueue_script( 'plugins', JSPATH.'plugins.js', array('jquery'), '1.0', true );
-		wp_enqueue_script( 'cycle', JSPATH.'/vendor/cycle.js', array('plugins'), '1.0', true );
-		wp_enqueue_script( 'mlpushmenu', JSPATH.'/vendor/mlpushmenu.js', array('plugins'), '1.0', true );
-		wp_enqueue_script( 'classie', JSPATH.'/vendor/classie.js', array('plugins'), '1.0', true );
-		wp_enqueue_script( 'modernizr', JSPATH.'/vendor/modernizr.custom.js', array('plugins'), '1.0', true );
-		wp_enqueue_script( 'masonry', JSPATH.'/vendor/masonry.js', array('plugins'), '1.0', true );
 		wp_enqueue_script( 'functions', JSPATH.'functions.js', array('masonry'), '1.0', true );
 
 
@@ -1359,13 +1354,13 @@
         $query = "
     		SELECT post_id
       		FROM wp_postmeta AS pm
-     		INNER JOIN wp_posts AS p ON pm.meta_value=p.ID 
+     		INNER JOIN wp_posts AS p ON pm.meta_value=p.ID
      		WHERE ID = ".$attachment_id."
        		AND pm.meta_key = '_thumbnail_id'
        		AND post_id IN ( SELECT ID FROM wp_posts WHERE post_type = 'fotografias' )";
 		$post_id_results = $wpdb->get_results( $query, OBJECT );
 
-		return $post_id_results;		
+		return $post_id_results;
 	}// get_post_id_by_attachment_id
 
 

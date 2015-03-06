@@ -2,22 +2,26 @@
     #FORM RESET
 \*------------------------------------*/
 fieldset{
-	height: 30px;
+	//height: 30px;
 	padding: 0; border: none; margin: 0;
 }
-input, button[type='submit']{
+input, textarea, button[type='submit']{
 	border: none;
 }
 
 /*------------------------------------*\
     #FORM ELEMENTS
 \*------------------------------------*/
-input, button[type='submit']{
+input, textarea, button[type='submit']{
 	height: 30px;
 	padding: 4px;
 }
-input{
+input, textarea{
 	border: 1px solid @light-dark;
+}
+
+textarea{
+	height: 100px;
 }
 
 button[type='submit']{
@@ -76,13 +80,17 @@ input[type=button],input[type=reset],input[type=submit]{
 @media (min-width: @medium) {
 
 	fieldset{
-		height: 50px;
+		//height: 50px;
 	}
 
-	input, button[type='submit']{
+	input, textarea, button[type='submit']{
 		height: 50px;
 		padding: 10px !important;
 		font-size: 20px;
+	}
+
+	textarea{
+		height: 140px;
 	}
 
 }
