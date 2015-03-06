@@ -151,7 +151,7 @@
 				<?php
 					$termManuelAlvarez = get_term_by('slug', 'coleccion-manuel-alvarez-bravo', 'coleccion');
 					$termCCAC = get_term_by('slug', 'coleccion-centro-cultural-arte-contemporaneo', 'coleccion');
-					$termFundacionTelevisa = get_term_by('slug', 'fondo-fundacion-televisa', 'coleccion');
+					$termFundacionTelevisa = get_term_by('slug', 'coleccion-fundacion-televisa', 'coleccion');
 				?>
 					<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="coleccion" data-value="<?php echo $termManuelAlvarez->slug ?>" data-coleccion-term-id="<?php echo $termManuelAlvarez->term_id ?>"><?php echo $termManuelAlvarez->name ?><span data-modal="info-coleccion" data-coleccion-term-id="<?php echo $termManuelAlvarez->term_id ?>"><i class="fa fa-info-circle"></i></span></a>
 					<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="coleccion" data-value="<?php echo $termCCAC->slug ?>"><?php echo $termCCAC->name ?><span data-modal="info-coleccion" data-coleccion-term-id="<?php echo $termCCAC->term_id ?>"><i class="fa fa-info-circle"></i></span></a>
@@ -248,7 +248,7 @@
 				<form class="[ form ]" action="">
 					<fieldset class="[ columna xmall-12 medium-8 ][ center ]">
 						<div class="input-group">
-							<input type="text" placeholder="¿Qué quieres ver?">
+							<input type="text" placeholder="Buscar por título de fotografía">
 							<span class="input-group-addon">
 								<button type="submit"><i class="[ icon-search ]"></i></button>
 							</span>
@@ -264,7 +264,7 @@
 			</div><!-- .filter-favoritos -->
 		</div><!-- filters__content -->
 		<div class="[ filters__results ] [ padding--small text-center ]">
-			<p class="[ uppercase ] [ js-num-resultados ]"><span></span> resultados con los filtros:</p>
+			<p class="[ uppercase ] [ js-num-resultados ]"><span></span> resultados totales con los filtros:</p>
 		</div>
 	</section><!-- .filters -->
 	<section class="[ results ] [ row row--no-margins ] [ margin-bottom ]">

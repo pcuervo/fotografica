@@ -1,9 +1,6 @@
-<?php get_header(); ?>
+<?php
+	get_header();
 
-	<!-- /**************************************\ -->
-	<!-- #COLECCIONES -->
-	<!-- \**************************************/ -->
-	<?php
 	// ¿Hay algún filtro de colección?
 	global $coleccion, $post;
 
