@@ -20,11 +20,6 @@
 
 		// scripts
 		wp_enqueue_script( 'plugins', JSPATH.'plugins.js', array('jquery'), '1.0', true );
-		wp_enqueue_script( 'cycle', JSPATH.'/vendor/cycle.js', array('plugins'), '1.0', true );
-		wp_enqueue_script( 'mlpushmenu', JSPATH.'/vendor/mlpushmenu.js', array('plugins'), '1.0', true );
-		wp_enqueue_script( 'classie', JSPATH.'/vendor/classie.js', array('plugins'), '1.0', true );
-		wp_enqueue_script( 'modernizr', JSPATH.'/vendor/modernizr.custom.js', array('plugins'), '1.0', true );
-		wp_enqueue_script( 'masonry', JSPATH.'/vendor/masonry.js', array('plugins'), '1.0', true );
 		wp_enqueue_script( 'functions', JSPATH.'functions.js', array('masonry'), '1.0', true );
 
 
@@ -39,6 +34,11 @@
 	// FRONT END SCRIPTS FOOTER //////////////////////////////////////////////////////
 	function footerScripts(){
 		if( wp_script_is( 'functions', 'done' ) ) {
+
+			$postConservacionIDArray 	= get_post_ID_by_slug('conservacion', 'nuestro-trabajo');
+			$postConservacionID 		= $postConservacionIDArray[0]->ID;
+
+			//echo 'sss'.;
 
 			/*------------------------------------*\
 			    #HOME
@@ -265,6 +265,30 @@
 									addLike(post_id);
 								}
 							});
+						});
+					}(jQuery));
+				</script>
+
+
+
+
+			<?php }
+
+				if ( is_single('conservacion') ) { ?>
+				<!-- /**********************************\ -->
+					<!-- #SINGLE CONSERVACION -->
+				<!-- \**********************************/ -->
+				<script type="text/javascript">
+					(function( $ ) {
+						"use strict";
+						$(function(){
+
+							/*------------------------------------*\
+								#ON LOAD
+							\*------------------------------------*/
+							runFitVids('.fit-vids-wrapper');
+
+
 						});
 					}(jQuery));
 				</script>
@@ -646,7 +670,7 @@
 			case 'favoritos':
 				$advanced_search_results = advanced_search_favoritos($filters, $limit, $existing_ids);
 				break;
-		}// switch 
+		}// switch
 
 		echo json_encode($advanced_search_results , JSON_FORCE_OBJECT);
 		exit();
@@ -1470,16 +1494,20 @@
 	function get_post_id_by_attachment_id( $attachment_id ){
 		global $wpdb;
 
-        $query = "
-    		SELECT post_id
-      		FROM wp_postmeta AS pm
-     		INNER JOIN wp_posts AS p ON pm.meta_value=p.ID 
-     		WHERE ID = ".$attachment_id."
-       		AND pm.meta_key = '_thumbnail_id'
-       		AND post_id IN ( SELECT ID FROM wp_posts WHERE post_type = 'fotografias' )";
+		$query = "
+			SELECT post_id
+			FROM wp_postmeta AS pm
+			INNER JOIN wp_posts AS p ON pm.meta_value=p.ID
+			WHERE ID = ".$attachment_id."
+			AND pm.meta_key = '_thumbnail_id'
+			AND post_id IN ( SELECT ID FROM wp_posts WHERE post_type = 'fotografias' )";
 		$post_id_results = $wpdb->get_results( $query, OBJECT );
 
-		return $post_id_results;		
+		if ( empty($post_id_results) ){
+			return 0;
+		}
+
+		return $post_id_results;
 	}// get_post_id_by_attachment_id
 
 	function get_total_results(){
@@ -1498,7 +1526,7 @@
 				break;
 			default:
 				$num_results = 0;
-		}// switch 
+		}// switch
 
 		echo json_encode($num_results , JSON_FORCE_OBJECT);
 		exit();
@@ -1516,7 +1544,7 @@
 				INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
 				INNER JOIN wp_terms T ON T.term_id = TT.term_id
 				WHERE P.post_type = 'fotografias' AND P.post_status = 'publish'";
-			
+
 		} else {
 			$query = "
 	    		SELECT id, COUNT(id) AS total  FROM wp_posts P
@@ -1799,7 +1827,7 @@
 			}
 			$query .= ')';
 			$query .= " AND post_status = 'publish' GROUP BY id";
-			
+
 		}
 
 		$results = $wpdb->get_results( $query );
@@ -1846,6 +1874,47 @@
 		if ($term !== 0 && $term !== null) return;
 		wp_insert_term($decada, 'decada-de-nacimiento');
 	}// add_decade_term
+
+	/* Devuelve la url del video de acuerdo al host.
+	 * @param string $advisor_data
+	 * @return int $advisor_id or FALSE
+	 */
+	function get_video_src($url, $host){
+		if($url == '-')
+			return 0;
+		if($host == 'vimeo'){
+			$id = (int) substr(parse_url($url, PHP_URL_PATH), 1);
+			return '//player.vimeo.com/video/'.$id;
+		}
+
+		$id = explode('v=', $url)[1];
+		$ampersand_position = strpos($id, '&');
+		if( $ampersand_position > 0 )
+			$id = substr($id, $ampersand_position);
+
+		parse_str( parse_url( $url, PHP_URL_QUERY ), $url_array );
+		$id = $url_array['v'];
+		return '//www.youtube.com/embed/'.$id;
+	}// get_video_src
+
+
+	function get_post_ID_by_slug($page_slug, $post_type) {
+		global $wpdb;
+
+		$postQuery = "
+			SELECT ID FROM wp_posts
+			WHERE post_name ='".$page_slug."'
+			AND post_type ='".$post_type."'
+			AND post_status = 'publish'";
+
+		$postID = $wpdb->get_results($postQuery);
+
+		if ($postID) {
+			return $postID;
+		} else {
+			return null;
+		}
+	}
 
 
 

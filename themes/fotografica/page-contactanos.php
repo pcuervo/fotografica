@@ -1,9 +1,6 @@
-<?php get_header(); ?>
+<?php
+	get_header();
 
-	<!-- /**************************************\ -->
-	<!-- #COLECCIONES -->
-	<!-- \**************************************/ -->
-	<?php
 	// ¿Hay algún filtro de colección?
 	global $coleccion, $post;
 
@@ -128,18 +125,23 @@
 	</section>
 	<section class="[ margin-bottom--large ][ single-content ]">
 		<div class="[ wrapper ][ ]">
-			<?php the_content() ?>
-			<form class="[ form form--large ]" action="">
-				<fieldset class="[ columna xmall-12 medium-6 ][ center ]">
-					<div class="input-group">
-						<input type="text" placeholder="Tu nombre">
-						<span class="input-group-addon">
-							<button type="submit"><i class="[ icon-newsletter ]"></i></button>
-						</span>
-					</div>
+			<form class="[ form form--large ][ columna xmall-12 medium-6 ][ center ]" action="">
+				<fieldset class="[ margin-bottom ]">
+					<h3><label for="nombre">¿Cuál es tu nombre?</label></h3>
+					<input class="[ xmall-12 ]" type="text" name="nombre" placeholder="Tu nombre">
 				</fieldset>
+				<fieldset class="[ margin-bottom ]">
+					<h3><label for="nombre">¿Cuál es tu correo?</label></h3>
+					<input class="[ xmall-12 ]" type="text" name="correo" placeholder="Tu correo">
+				</fieldset>
+				<fieldset class="[ margin-bottom ]">
+					<h3><label for="nombre">¿Qué nos tienes que decir?</label></h3>
+					<textarea class="[ xmall-12 ]" name="mensaje" placeholder="Tu mensaje"></textarea>
+				</fieldset>
+				<div class="[ text-right ]">
+					<button class="[ button button--large ]" type="submit">Enviar</button>
+				</div><!-- text-right -->
 			</form>
 		</div><!-- wrapper -->
 	</section>
-
 <?php get_footer(); ?>

@@ -1,21 +1,155 @@
-<?php get_header();
+<?php
+	get_header();
 	the_post();
-	$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+
+	$sidebar_trabajo = get_post_meta($post->ID, '_sidebar_trabajo_meta', true);
+
 	$video_trabajo = get_post_meta($post->ID, '_video_trabajo_meta', true);
-?>
-	<section class="[ colecciones ][ bg-image ][ margin-bottom ]" style="background-image: url(<?php echo $bgColecciones[0]; ?>)">
-		<div class="[ opacity-gradient rectangle ]">
-			<h2 class="[ center-full ] [ title ]">
-				<?php the_title(); ?>
-			</h2>
+	$videoHost = NULL;
+	$video_src = '';
+	if (strpos($video_trabajo,'youtube') !== false) {
+		$videoHost = 'youtube';
+	}
+	if (strpos($video_trabajo,'vimeo') !== false) {
+		$videoHost = 'vimeo';
+	}
+	if( $videoHost ){
+		$video_src = get_video_src($video_trabajo, $videoHost);
+	}
+
+	$featuredImageID = get_post_thumbnail_id();
+
+	$featuredImagePostIDArray = 0;
+	if ( $featuredImageID != '' ){
+		$featuredImagePostIDArray 	= get_post_id_by_attachment_id($featuredImageID);
+	}
+
+	if ( $featuredImagePostIDArray !== 0 ){
+		$featuredImagePostID 		= $featuredImagePostIDArray[0]->post_id;
+		$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $featuredImagePostID ),'full' );
+		$coleccionColecciones 		= wp_get_post_terms( $featuredImagePostID, 'coleccion' );
+		$coleccionColeccionesName 	= $coleccionColecciones[0]->name;
+		$coleccionColeccionesSlug 	= $coleccionColecciones[0]->slug;
+
+		$authorColecciones 		= wp_get_post_terms( $featuredImagePostID, 'fotografo' );
+		if ( $authorColecciones ){
+			$authorColeccionesName 	= $authorColecciones[0]->name;
+			$authorColeccionesSlug 	= $authorColecciones[0]->slug;
+		} else {
+			$authorColeccionesName 	= 'autor no identificado';
+		}
+
+		$titleColecciones = get_the_title( $featuredImagePostID );
+		if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
+			$titleColecciones = NULL;
+		}
+
+		$seriesColecciones = 0;
+
+		$placeColecciones = wp_get_post_terms( $featuredImagePostID, 'lugar' );
+		if ( $placeColecciones ){
+			$placeColeccionesName 	= $placeColecciones[0]->name;
+		}
+
+		$circaColecciones = 0;
+
+		$dateColecciones = wp_get_post_terms( $featuredImagePostID, 'año' );
+		if ( $dateColecciones ){
+			$dateColeccionesName 	= $dateColecciones[0]->name;
+		} else {
+			$dateColeccionesName 	= 's/f';
+		}
+
+		$themesColecciones = wp_get_post_terms( $featuredImagePostID, 'tema' );
+		if ( ! $themesColecciones ){
+			$themesColeccionesName 	= '';
+		}
+
+		$permalinkColeccion = get_permalink( $featuredImagePostID );
+	?>
+		<section class="[ colecciones ][ bg-image ][ margin-bottom ]" style="background-image: url(<?php echo $bgColecciones[0]; ?>)">
+			<div class="[ opacity-gradient rectangle ]">
+				<h2 class="[ center-full ] [ title ]">
+					<?php the_title(); ?>
+				</h2>
+				<div class="[ media-info media-info--large ] [ xmall-12 ] [ shown--large ]">
+					<p class="[ text-center ]">
+
+
+					<!-- NOMBRE APELLIDO -->
+					<?php if ( $authorColeccionesName == 'Autor no identificado' ){ ?>
+						<span class="[ media--info__author ]"><?php echo $authorColeccionesName; ?></span>,
+					<?php } else { ?>
+						<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
+					<?php } ?>
+
+					<!-- TÍTULO -->
+					<?php if ( $titleColecciones ){ ?>
+						<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleColecciones; ?></a>,
+					<?php } ?>
+
+					<!-- DE LA SERIE -->
+					<?php if ( $seriesColecciones ){ ?>
+						de la serie <span class="[ media--info__series ]"><?php echo $seriesColecciones; ?></span>,
+					<?php } ?>
+
+					<!-- COLECCION -->
+					<br /> de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>,
+
+					<!-- LUGAR -->
+					<?php if ( $placeColecciones ){ ?>
+						<span class="[ media--info__place ]"><?php echo $placeColeccionesName; ?></span>,
+					<?php } ?>
+
+					<!-- CIRCA -->
+					<?php if ( $circaColecciones ){ ?>
+						<span class="[ media--info__circa ]">circa </span>
+					<?php } ?>
+
+					<!-- AÑO -->
+					<?php if ( $dateColecciones ){ ?>
+						<span class="[ media--info__date ]"><?php echo $dateColeccionesName; ?></span>
+					<?php } ?>
+					</p>
+
+					<!-- TAGS -->
+					<div class="[ media-info__tags ] [ text-center ]">
+						<?php
+							$themeCounter = 1;
+							if ( $themesColeccionesName ){
+								foreach ($themesColeccionesName as $themeColeccionesName) {
+									$themeColeccionesName = $themeColeccionesName->name; ?>
+									<a href="<?php echo site_url('$themeColeccionesName'); ?>" class="[ tag ]">#<?php echo $themeColeccionesName; ?></a>
+									<?php $themeCounter ++;
+									if ( $themeCounter == 3 ){
+										break;
+									}
+								}
+							}
+						?>
+					</div>
+				</div>
+			</div>
+		</section>
+	<?php } if ( ! empty($video_src) ){ ?>
+		<div class="[ margin-bottom-medium ][ fit-vids-wrapper ]">
+			<iframe src="https:<?php echo $video_src; ?>?color=1aa2dc&title=0&byline=0&portrait=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 		</div>
-	</section>
+	<?php } ?>
+
+
+
+	<?php ?>
+	<div class="[ margin-bottom--large ]"></div>
+	<h2 class="[ text-center color-dark ][ title ][ margin-bottom--large ]">
+		<?php the_title(); ?>
+	</h2>
 	<section class="[ margin-bottom--large ][ single-content ]">
 		<div class="[ wrapper ]">
 			<div class="[ row ]">
-				<div class="[ shown--large ][ columna medium-2 large-3 ]">
-					<p><a href="#"><?php echo $video_trabajo; ?></a></p>
-				</div>
+				<aside class="[ shown--large ][ columna medium-2 large-3 ][ text-right serif--italic ]">
+					<p><a href="<?php echo $sidebar_trabajo; ?>" target="_blank" ><?php echo $sidebar_trabajo; ?></a></p>
+				</aside>
 				<div class="[ columna small-12 medium-10 large-6 xxlarge-4 center ]">
 					<?php the_content(); ?>
 				</div>

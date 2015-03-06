@@ -11,6 +11,7 @@
 		add_meta_box( 'evento_fecha_inicial', 'Fecha inicial del evento', 'metabox_evento_fecha_inicial', 'carteleras', 'advanced', 'high' );
 		add_meta_box( 'evento_fecha_final', 'Fecha final del evento', 'metabox_evento_fecha_final', 'carteleras', 'advanced', 'high' );
 		add_meta_box( 'video_proyecto', 'Video del proyecto', 'metabox_video_proyecto', 'proyectos', 'advanced', 'high' );
+		add_meta_box( 'sidebar_trabajo', 'Sidebar de nuestro trabajo', 'metabox_sidebar_trabajo', 'nuestro-trabajo', 'advanced', 'high' );
 		add_meta_box( 'video_trabajo', 'Video de nuestro trabajo', 'metabox_video_trabajo', 'nuestro-trabajo', 'advanced', 'high' );
 		add_meta_box( 'fecha_nacimiento', 'Fecha de nacimieto', 'metabox_fecha_nacimiento', 'fotografos', 'advanced', 'high' );
 
@@ -73,6 +74,18 @@ echo <<<END
 END;
 	}
 
+	function metabox_sidebar_trabajo($post){
+		$sidebar_trabajo = get_post_meta($post->ID, '_sidebar_trabajo_meta', true);
+		wp_nonce_field(__FILE__, '_sidebar_trabajo_meta_nonce');
+
+echo <<<END
+
+	<label>Texto sidebar</label>
+	<textarea class="widefat" rows="8" id="sidebar" name="_sidebar_trabajo_meta" value="$sidebar_trabajo"></textarea>
+
+END;
+	}
+
 	function metabox_fecha_nacimiento($post){
 		$fecha_nacimiento = get_post_meta($post->ID, '_fecha_nacimiento_meta', true);
 		wp_nonce_field(__FILE__, '_fecha_nacimiento_nonce');
@@ -130,6 +143,10 @@ END;
 
 		if ( isset($_POST['_fecha_nacimiento_meta']) and check_admin_referer(__FILE__, '_fecha_nacimiento_nonce') ){
 			update_post_meta($post_id, '_fecha_nacimiento_meta', $_POST['_fecha_nacimiento_meta']);
+
+		if ( isset($_POST['_sidebar_trabajo_meta']) and check_admin_referer(__FILE__, '_sidebar_trabajo_meta_nonce') ){
+			//$timestamp = strtotime($_POST['_sidebar_trabajo_meta']);
+			update_post_meta($post_id, '_sidebar_trabajo_meta', $_POST['_sidebar_trabajo_meta']);
 		}
 
 
