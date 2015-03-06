@@ -351,30 +351,30 @@ var ajax_url = "http:\/\/localhost:8888\/fotografica\/wp-admin\/admin-ajax.php";
 								addFilter( this );
 								//existing_ids = getExistingIds();
 								clearGrid();
-								advancedSearch('fotografias', getFilteredResults(), 20, existing_ids);
+								advancedSearch('fotografias', getFilters(), 20, existing_ids);
 							});
 
 							$('.filters__results').on('click', '.filter', function(){
 								removeFilter( this );
 								clearGrid();
 								//existing_ids = getExistingIds();
-								advancedSearch('fotografias', getFilteredResults(), 20, existing_ids);
+								advancedSearch('fotografias', getFilters(), 20, existing_ids);
 							});
 
 							$('.js-cargar-mas').on('click', function(e){
 								e.preventDefault();
 								existing_ids = getExistingIds();
-								advancedSearch('fotografias', getFilteredResults(), 20, existing_ids);
+								advancedSearch('fotografias', getFilters(), 20, existing_ids);
 							});
 
 							$('.filter-buscar button').on('click', function(e){
 								e.preventDefault();
 								clearGrid();
 								//existing_ids = getExistingIds();
-								advancedSearch('fotografias', getFilteredResults(), 20, existing_ids);
+								advancedSearch('fotografias', getFilters(), 20, existing_ids);
 							});
 
-							advancedSearch('fotografias', getFilteredResults(), 15, existing_ids);
+							advancedSearch('fotografias', getFilters(), 15, existing_ids);
 						});
 					}(jQuery));
 				</script>

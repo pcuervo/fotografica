@@ -80,21 +80,29 @@
 								addFilter( this );
 								//existing_ids = getExistingIds();
 								clearGrid();
-								advancedSearch('<?php echo $postType ?>', getFilteredResults(), 20, existing_ids);
+								showTotalResults( '<?php echo $postType ?>', getFilters(false) );
+								advancedSearch('<?php echo $postType ?>', getFilters(false), 20, existing_ids);
 							});
 
 							$('.filters__results').on('click', '.filter', function(){
 								removeFilter( this );
 								//existing_ids = getExistingIds();
 								clearGrid();
-								advancedSearch('<?php echo $postType ?>', getFilteredResults(), 20, existing_ids);
+								showTotalResults( '<?php echo $postType ?>', getFilters(false) );
+								advancedSearch('<?php echo $postType ?>', getFilters(false), 20, existing_ids);
 							});
 
 							$('.js-cargar-mas').on('click', function(e){
 								e.preventDefault();
 								existing_ids = getExistingIds();
-								advancedSearch('<?php echo $postType ?>', getFilteredResults(), 20, existing_ids);
+								advancedSearch('<?php echo $postType ?>', getFilters(true), 20, existing_ids);
 							})
+
+							$('.filter-buscar button').on('click', function(e){
+								e.preventDefault();
+								clearGrid();
+								advancedSearch('<?php echo $postType ?>', getFilters(false), 20, existing_ids);
+							});
 
 							/**
 							 * If the postType is fotografos do not run masonry
@@ -105,7 +113,7 @@
 
 							var filter = $('.filter[data-value="hoy"]');
 							addFilter( filter );
-							advancedSearch('<?php echo $postType ?>', getFilteredResults(), 20, existing_ids);
+							advancedSearch('<?php echo $postType ?>', getFilters(false), 20, existing_ids);
 
 						});
 					}(jQuery));
@@ -155,17 +163,16 @@
 							?>
 									var filter = $('.filter[data-value="nuevas-adquisiciones"]');
 									addFilter(filter);
-									advancedSearch('nuevas-adquisiciones', getFilteredResults(), 20, existing_ids);
+									advancedSearch('nuevas-adquisiciones', getFilters(false), 20, existing_ids);
 							<?php
 								} else if ($filtro == 'favoritos'){
 							?>
 									var filter = $('.filter[data-value="favoritos"]');
 									addFilter(filter);
-									advancedSearch('favoritos', getFilteredResults(), 20, existing_ids);
+									advancedSearch('favoritos', getFilters(false), 20, existing_ids);
 							<?php
 								}
 							?>
-
 
 
 							/*------------------------------------*\
@@ -180,31 +187,31 @@
 								addFilter( this );
 								//existing_ids = getExistingIds();
 								clearGrid();
-								advancedSearch('fotografias', getFilteredResults(), 20, existing_ids);
+								showTotalResults( 'fotografias', getFilters(false) );
+								advancedSearch('fotografias', getFilters(false), 20, existing_ids);
 							});
 
 							$('.filters__results').on('click', '.filter', function(){
 								removeFilter( this );
 								clearGrid();
-								//existing_ids = getExistingIds();
-								advancedSearch('fotografias', getFilteredResults(), 20, existing_ids);
+								showTotalResults( 'fotografias', getFilters(false) );
+								advancedSearch('fotografias', getFilters(false), 20, existing_ids);
 							});
 
 							$('.js-cargar-mas').on('click', function(e){
 								e.preventDefault();
 								existing_ids = getExistingIds();
-								advancedSearch('fotografias', getFilteredResults(), 20, existing_ids);
+								advancedSearch('fotografias', getFilters(true), 20, existing_ids);
 							});
 
 							$('.filter-buscar button').on('click', function(e){
 								e.preventDefault();
 								clearGrid();
-								//existing_ids = getExistingIds();
-								advancedSearch('fotografias', getFilteredResults(), 20, existing_ids);
+								advancedSearch('fotografias', getFilters(false), 20, existing_ids);
 							});
 
 							<?php if ($filtro == '') { ?>
-								advancedSearch('fotografias', getFilteredResults(), 15, existing_ids);
+								advancedSearch('fotografias', getFilters(false), 15, existing_ids);
 							<?php } ?>
 
 							$('.filter--info span').on('click', function(event) {
@@ -613,13 +620,33 @@
 		$existing_ids = $_POST['existing_ids'];
 
 		$advanced_search_results = array();
-		if($post_type == 'fotografias') $advanced_search_results = advanced_search_colecciones($filters, $limit, $existing_ids);
-		if($post_type == 'fotografos') $advanced_search_results = advanced_search_fotografos($filters, $limit, $existing_ids);
-		if($post_type == 'carteleras') $advanced_search_results = advanced_search_carteleras($filters, $limit, $existing_ids);
-		if($post_type == 'proyectos') $advanced_search_results = advanced_search_proyectos($filters, $limit, $existing_ids);
-		if($post_type == 'exposiciones') $advanced_search_results = advanced_search_exposiciones($filters, $limit, $existing_ids);
-		if($post_type == 'publicaciones') $advanced_search_results = advanced_search_publicaciones($filters, $limit, $existing_ids);
-		if($post_type == 'nuevas-adquisiciones') $advanced_search_results = advanced_search_nuevas_adquisiciones($filters, $limit, $existing_ids);
+
+		switch ($post_type) {
+			case 'fotografias':
+				$advanced_search_results = advanced_search_colecciones($filters, $limit, $existing_ids);
+				break;
+			case 'fotografos':
+				$advanced_search_results = advanced_search_fotografos($filters, $limit, $existing_ids);
+				break;
+			case 'carteleras':
+				$advanced_search_results = advanced_search_carteleras($filters, $limit, $existing_ids);
+				break;
+			case 'proyectos':
+				$advanced_search_results = advanced_search_proyectos($filters, $limit, $existing_ids);
+				break;
+			case 'exposiciones':
+				$advanced_search_results = advanced_search_exposiciones($filters, $limit, $existing_ids);
+				break;
+			case 'publicaciones':
+				$advanced_search_results = advanced_search_publicaciones($filters, $limit, $existing_ids);
+				break;
+			case 'nuevas-adquisiciones':
+				$advanced_search_results = advanced_search_nuevas_adquisiciones($filters, $limit, $existing_ids);
+				break;
+			case 'favoritos':
+				$advanced_search_results = advanced_search_favoritos($filters, $limit, $existing_ids);
+				break;
+		}// switch 
 
 		echo json_encode($advanced_search_results , JSON_FORCE_OBJECT);
 		exit();
@@ -647,7 +674,6 @@
 			$posts_info = $wpdb->get_results( $query, OBJECT );
 		} else {
 
-			// SELECT P.id, P.post_title, T.name, T.slug FROM wp_posts P
 			$query = "
 	    		SELECT id, COUNT(id)  FROM wp_posts P
 				INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
@@ -764,9 +790,10 @@
 			if($is_busqueda) $query .= " AND post_title LIKE '%".$busqueda_term."%'";
 
 			$query = $query." AND P.post_status = 'publish' GROUP BY id HAVING COUNT(id) > ".$filter_type_count." ORDER BY RAND() LIMIT ".$limit;
-			//echo $query;
 			$posts_info = $wpdb->get_results( $query );
 		}
+
+		echo $query;
 
  		$info_colecciones = array();
  		foreach ($posts_info as $key => $post) {
@@ -784,7 +811,7 @@
 				$authorColeccionesName 	= $authorColecciones[0]->name;
 				$authorColeccionesSlug 	= $authorColecciones[0]->slug;
 			} else {
-				$authorColeccionesName 	= 'Autor Desconocido';
+				$authorColeccionesName 	= '';
 				$authorColeccionesSlug = '-';
 			}
 			// Año
@@ -855,6 +882,766 @@
 			$query .= " AND P.post_status = 'publish' AND P.post_content <> '' GROUP BY P.id ORDER BY RAND() LIMIT ".$limit;
 
 			$posts_info = $wpdb->get_results( $query, OBJECT );
+		} else {
+
+			// SELECT P.id, P.post_title, T.name, T.slug FROM wp_posts P
+			$query = "
+	    		SELECT id, COUNT(id)  FROM wp_posts P
+				INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
+				INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
+				INNER JOIN wp_terms T ON T.term_id = TT.term_id
+				WHERE P.post_type = 'fotografos'";
+
+			$filter_type_count = -1;
+			$taxonomies = array();
+			$is_coleccion = false;
+			$coleccion_terms = array();
+			$is_ano = false;
+			$ano_terms = array();
+			$is_pais = false;
+			$pais_terms = array();
+			$is_tema = false;
+			$tema_terms = array();
+			$is_apellido = false;
+			$apellido_terms = array();
+			$is_busqueda = false;
+			$busqueda_term = '';
+			foreach ($filtros as $key => $filtro) {
+				array_push($taxonomies, $filtro['type']);
+
+				if( $filtro['type'] == 'coleccion' ) {
+					$is_coleccion = true;
+					array_push($coleccion_terms, $filtro['value']);
+				}
+				if( $filtro['type'] == 'pais' ) {
+					$is_pais = true;
+					array_push($pais_terms, $filtro['value']);
+				}
+				if( $filtro['type'] == 'apellido' ) {
+					$is_apellido = true;
+					array_push($apellido_terms, $filtro['value']);
+				}
+				if( $filtro['type'] == 'tema' ) {
+					$is_tema = true;
+					array_push($tema_terms, $filtro['value']);
+				}
+				if( $filtro['type'] == 'buscar' ) {
+					$is_busqueda = true;
+					$busqueda_term = $filtro['value'];
+					array_pop($taxonomies);
+				}
+
+			}
+			$taxonomies = array_unique($taxonomies);
+			$taxonomies_in = implode("', '", $taxonomies);
+
+			// Add taxonomies to query
+			if( ! $is_busqueda || ( $is_coleccion || $is_ano || $is_pais || $is_tema || $is_apellido ) )
+				$query = $query." AND TT.taxonomy IN ('".$taxonomies_in."')";
+
+			// If the filters include terms, open condition
+			if($is_coleccion || $is_ano || $is_pais || $is_tema || $is_apellido ) $query = $query." AND ( ";
+
+			// Add filtering terms for colecciones
+			if($is_coleccion){
+				$filter_type_count++;
+				$coleccion_terms_in = implode("', '", $coleccion_terms);
+				$query = $query." T.slug IN ( SELECT slug FROM wp_terms WHERE slug IN ('".$coleccion_terms_in."') ) ";
+			}
+
+			// Add filtering terms for años
+			if($is_ano){
+				$filter_type_count++;
+				if($is_coleccion) $query = $query." OR";
+
+				$query = $query."  T.slug IN ( SELECT slug FROM wp_terms WHERE";
+				foreach ($ano_terms as $key => $ano) {
+					$initial_year = $ano;
+					$final_year = strval(intval($ano) + 9);
+					if($key == 0) {
+						$query .= " slug  BETWEEN '".$initial_year."' AND '".$final_year."'";
+						continue;
+					}
+					$query .= " OR slug BETWEEN '".$initial_year."' AND '".$final_year."'";
+				}
+				$query .= ")";
+			}
+
+			// Add filtering terms for años
+			if($is_pais){
+				$filter_type_count++;
+				$pais_terms_in = implode("', '", $pais_terms);
+				$query = $query." T.slug IN ( SELECT slug FROM wp_terms WHERE slug IN ('".$pais_terms_in."') ) ";
+			}
+			// Add filtering terms for temas
+			if($is_tema){
+				if($is_coleccion || $is_ano || $is_pais) $query = $query." OR";
+				$filter_type_count++;
+				$tema_terms_id = implode("', '", $tema_terms);
+				$query = $query." T.slug IN ( SELECT slug FROM wp_terms WHERE name IN ('".$tema_terms_id."') ) ";
+			}
+
+			// Add filtering terms for apellidos
+			if($is_apellido){
+				$filter_type_count++;
+				if($is_coleccion || $is_ano || $is_pais || $is_tema) $query = $query." OR";
+
+				$query .= "  T.slug IN ( SELECT slug FROM wp_terms T INNER JOIN wp_term_taxonomy TT ON TT.term_id = T.term_id WHERE (";
+
+				foreach ($apellido_terms as $key => $letter) {
+					if($key == 0) {
+						$query .= " slug LIKE '".$letter."%'";
+						continue;
+					}
+					$query .= " OR slug LIKE '".$letter."%'";
+				}
+				$query .= ") AND taxonomy = 'apellido' )";
+			}
+
+			// Close filtering terms if  they exist
+			if($is_coleccion || $is_ano || $is_pais || $is_tema || $is_apellido) $query = $query." )";
+
+			if($existing_ids != '0'){
+				$existing_ids_in = implode("', '", $existing_ids);
+				$query .= " AND id NOT IN ('".$existing_ids_in."')";
+			}
+
+			// Add filtering terms for busqueda
+			if($is_busqueda) $query .= " AND post_title LIKE '%".$busqueda_term."%'";
+
+			$query = $query." AND post_status = 'publish' AND post_content <> '' GROUP BY id HAVING COUNT(id) > ".$filter_type_count." ORDER BY RAND() LIMIT ".$limit;
+			$posts_info = $wpdb->get_results( $query );
+		}
+
+ 		$info_colecciones = array();
+ 		foreach ($posts_info as $key => $post) {
+ 			// Título
+			$fotografo = get_the_title( $post->id );
+			// URL fotografo
+			$url = get_permalink( $post->id );
+			// Se arma el objecto que se regresa
+			$info_colecciones[$key] = array(
+				'id'		=> $post->id,
+				'fotografo'	=> $fotografo,
+				'url'		=> $url,
+				);
+ 		}
+
+		return $info_colecciones;
+	} // advanced_search_fotografos
+
+	function advanced_search_carteleras($filtros = '', $limit, $existing_ids){
+		global $post;
+		global $wpdb;
+
+		$hoy = date('Y-m-d');
+		if ($filtros == ''){
+			$query = "
+	    		SELECT id FROM wp_posts P INNER JOIN wp_postmeta PM ON PM.post_id = P.id
+				WHERE post_type = 'carteleras'";
+
+			if($existing_ids != '0'){
+				$existing_ids_in = implode("', '", $existing_ids);
+				$query .= " AND id NOT IN ('".$existing_ids_in."')";
+			}
+			//$query .= " AND post_status = 'publish' AND meta_value = '".$hoy."' GROUP BY id ORDER BY RAND() LIMIT ".$limit;
+			$query .= " AND post_status = 'publish' GROUP BY id ORDER BY RAND() LIMIT ".$limit;
+
+			$posts_info = $wpdb->get_results( $query, OBJECT );
+		} else {
+
+			// SELECT P.id, P.post_title, T.name, T.slug FROM wp_posts P
+			$query = "
+	    		SELECT id FROM wp_posts P
+	    		INNER JOIN wp_postmeta PM ON PM.post_id = P.id
+				WHERE post_type = 'carteleras'
+				AND meta_key IN ('_evento_fecha_final_meta', '_evento_fecha_inicial_meta') AND (";
+
+			//$inicioHoy = strtotime("midnight", $hoy);
+			//$finHoy = strtotime("tomorrow", $inicioHoy) - 1;
+			foreach ($filtros as $key => $filtro) {
+				if($key != 0) $query .= ' OR';
+
+				if($filtro['value'] == 'anteriores') {
+					$query .= " meta_value < '".$hoy."'";
+				}
+				if($filtro['value'] == 'proximos') {
+					$query .= " meta_value > '".$hoy."'";
+				}
+				if($filtro['value'] == 'hoy') {
+					$query .= " meta_value = '".$hoy."'";
+				}
+			}
+			$query .= ')';
+
+			if($existing_ids != '0'){
+				$existing_ids_in = implode("', '", $existing_ids);
+				$query .= " AND id NOT IN ('".$existing_ids_in."')";
+			}
+			$query .= " AND post_status = 'publish' GROUP BY id ORDER BY RAND() LIMIT ".$limit;
+
+			$posts_info = $wpdb->get_results( $query );
+		}
+
+ 		$info_colecciones = array();
+ 		foreach ($posts_info as $key => $post) {
+ 			// Título
+			$titleColecciones = get_the_title( $post->id );
+			if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
+				$titleColecciones = 'Sin título';
+			}
+			// URL imagen
+			$thumb = wp_get_attachment_image_src( get_post_thumbnail_id( $post->id ), 'medium' );
+			$url = $thumb['0'];
+
+			$fec_ini = get_post_meta( $post->id, '_evento_fecha_inicial_meta', true );
+			$fec_fin = get_post_meta( $post->id, '_evento_fecha_final_meta', true );
+
+			//if($fec_ini !== '') $fec_ini = date('d/m/Y', $fec_ini);
+			//if($fec_fin !== '') $fec_fin = date('d/m/Y', $fec_fin);
+
+			// Se arma el objecto que se regresa
+			$info_colecciones[$key] = array(
+				'id'		=> $post->id,
+				'titulo'	=> $titleColecciones,
+				'img_url'	=> $url,
+				'fec_ini'	=> $fec_ini,
+				'fec_fin'	=> $fec_fin,
+				'permalink'	=> get_permalink( $post->id ),
+				);
+ 		}
+
+		return $info_colecciones;
+	} // advanced_search_carteleras
+
+	function advanced_search_proyectos($filtros = '', $limit, $existing_ids){
+		global $post;
+		global $wpdb;
+
+		$query = "
+    		SELECT id FROM wp_posts P
+			INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
+			INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
+			WHERE post_type = 'proyectos'";
+
+		if($existing_ids != '0'){
+			$existing_ids_in = implode("', '", $existing_ids);
+			$query .= " AND id NOT IN ('".$existing_ids_in."')";
+		}
+		$query .= "
+			AND id NOT IN
+				(SELECT id FROM wp_posts P INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
+				INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
+				WHERE taxonomy = 'archivo-proyecto')
+			AND post_status = 'publish'
+			ORDER BY RAND()
+			LIMIT ".$limit;
+		$posts_info = $wpdb->get_results( $query, OBJECT );
+
+
+ 		$info_colecciones = array();
+ 		foreach ($posts_info as $key => $post) {
+ 			// Título
+			$titleColecciones = get_the_title( $post->id );
+			if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
+				$titleColecciones = 'Sin título';
+			}
+			// URL imagen
+			$thumb = wp_get_attachment_image_src( get_post_thumbnail_id( $post->id ), 'medium' );
+			$url = $thumb['0'];
+
+
+			// Se arma el objecto que se regresa
+			$info_colecciones[$key] = array(
+				'id'		=> $post->id,
+				'titulo'	=> $titleColecciones,
+				'img_url'	=> $url,
+				'permalink'	=> get_permalink( $post->id )
+				);
+ 		}
+
+		return $info_colecciones;
+	} // advanced_search_proyectos
+
+	function advanced_search_exposiciones($filtros = '', $limit, $existing_ids){
+		global $post;
+		global $wpdb;
+
+		$query = "
+    		SELECT id FROM wp_posts
+			WHERE post_type = 'exposiciones'";
+
+		if($existing_ids != '0'){
+			$existing_ids_in = implode("', '", $existing_ids);
+			$query .= " AND id NOT IN ('".$existing_ids_in."')";
+		}
+		$query .= " AND post_status = 'publish' ORDER BY RAND() LIMIT ".$limit;
+		$posts_info = $wpdb->get_results( $query, OBJECT );
+
+
+ 		$info_exposiciones = array();
+ 		foreach ($posts_info as $key => $post) {
+ 			// Título
+			$titleColecciones = get_the_title( $post->id );
+			if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
+				$titleColecciones = 'Sin título';
+			}
+			// URL imagen
+			$thumb = wp_get_attachment_image_src( get_post_thumbnail_id( $post->id ), 'medium' );
+			$url = $thumb['0'];
+
+
+			// Se arma el objecto que se regresa
+			$info_exposiciones[$key] = array(
+				'id'		=> $post->id,
+				'titulo'	=> $titleColecciones,
+				'img_url'	=> $url,
+				'permalink'	=> get_permalink( $post->id )
+				);
+ 		}
+
+		return $info_exposiciones;
+	} // advanced_search_exposiciones
+
+	function advanced_search_publicaciones($filtros = '', $limit, $existing_ids){
+		global $post;
+		global $wpdb;
+
+		$query = "
+    		SELECT id FROM wp_posts
+			WHERE post_type = 'publicaciones'";
+
+		if($existing_ids != '0'){
+			$existing_ids_in = implode("', '", $existing_ids);
+			$query .= " AND id NOT IN ('".$existing_ids_in."')";
+		}
+		$query .= " AND post_status = 'publish' ORDER BY RAND() LIMIT ".$limit;
+		$posts_info = $wpdb->get_results( $query, OBJECT );
+
+ 		$info_publicaciones = array();
+ 		foreach ($posts_info as $key => $post) {
+ 			// Título
+			$titleColecciones = get_the_title( $post->id );
+			if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
+				$titleColecciones = 'Sin título';
+			}
+			// URL imagen
+			$thumb = wp_get_attachment_image_src( get_post_thumbnail_id( $post->id ), 'medium' );
+			$url = $thumb['0'];
+
+
+			// Se arma el objecto que se regresa
+			$info_publicaciones[$key] = array(
+				'id'		=> $post->id,
+				'titulo'	=> $titleColecciones,
+				'img_url'	=> $url,
+				'permalink'	=> get_permalink( $post->id )
+				);
+ 		}
+
+		return $info_publicaciones;
+	} // advanced_search_publicaciones
+
+	function advanced_search_nuevas_adquisiciones($filtros = '', $limit, $existing_ids){
+		global $post;
+		global $wpdb;
+
+		$query = "
+    		SELECT id FROM wp_posts
+			WHERE post_type = 'fotografias'";
+
+		if($existing_ids != '0'){
+			$existing_ids_in = implode("', '", $existing_ids);
+			$query .= " AND id NOT IN ('".$existing_ids_in."')";
+		}
+		$query .= " AND post_status = 'publish' ORDER BY post_date LIMIT ".$limit;
+		$posts_info = $wpdb->get_results( $query, OBJECT );
+
+ 		$info_nuevas_adquisiciones = array();
+ 		foreach ($posts_info as $key => $post) {
+ 			// Título
+			$titleColecciones = get_the_title( $post->id );
+			if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
+				$titleColecciones = 'Sin título';
+			}
+			// URL imagen
+			$thumb = wp_get_attachment_image_src( get_post_thumbnail_id( $post->id ), 'medium' );
+			$url = $thumb['0'];
+			// Autor
+			$authorColecciones = wp_get_post_terms( $post->id, 'fotografo' );
+			if ( $authorColecciones ){
+				$authorColeccionesName 	= $authorColecciones[0]->name;
+				$authorColeccionesSlug 	= $authorColecciones[0]->slug;
+			} else {
+				$authorColeccionesName 	= 'Sin autor';
+				$authorColeccionesSlug = '-';
+			}
+			// Año
+			$anoFotos = wp_get_post_terms( $post->id, 'año' );
+			if ( $anoFotos ){
+				$anoFotosName 	= $anoFotos[0]->name;
+				$anoFotosSlug 	= $anoFotos[0]->slug;
+			} else {
+				$anoFotosName 	= 'Sin fecha';
+			}
+			// Lugar
+			$lugar = wp_get_post_terms( $post->id, 'lugar' );
+			if ( $lugar ){
+				$lugarName 	= $lugar[0]->name;
+				$lugarSlug 	= $lugar[0]->slug;
+			} else {
+				$lugarName 	= 'Sin lugar';
+			}
+			// Coleccion
+			$coleccionName 	= 'Sin coleccion';
+			$coleccion = wp_get_post_terms( $post->id, 'coleccion' );
+			if ( $coleccion ){
+				$coleccionName 	= $coleccion[0]->name;
+				$coleccionSlug 	= $coleccion[0]->slug;
+			}
+
+			// Se arma el objecto que se regresa
+			$info_nuevas_adquisiciones[$key] = array(
+				'id'		=> $post->id,
+				'permalink'	=> get_permalink( $post->id ),
+				'titulo'	=> $titleColecciones,
+				'img_url'	=> $url,
+				'autor'		=> $authorColeccionesName,
+				'url_autor'	=> $authorColeccionesSlug,
+				'ano'		=> $anoFotosName,
+				'lugar'		=> $lugarName,
+				'coleccion'	=> $coleccionName,
+				);
+ 		}
+
+		return $info_nuevas_adquisiciones;
+	} // advanced_search_nuevas_adquisiciones
+
+	function advanced_search_favoritos($filtros = '', $limit, $existing_ids){
+		global $post;
+		global $wpdb;
+
+		$query = "
+    		SELECT P.ID FROM wp_posts P
+			INNER JOIN wp_postmeta PM ON PM.post_id = P.ID
+			WHERE meta_key = 'num_likes'";
+
+		if($existing_ids != '0'){
+			$existing_ids_in = implode("', '", $existing_ids);
+			$query .= " AND id NOT IN ('".$existing_ids_in."')";
+		}
+		$query .= " AND post_status = 'publish' ORDER BY meta_value DESC LIMIT ".$limit;
+		$posts_info = $wpdb->get_results( $query, OBJECT );
+
+ 		$info_favoritos = array();
+ 		foreach ($posts_info as $key => $post) {
+ 			// Título
+			$titleColecciones = get_the_title( $post->ID );
+			if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
+				$titleColecciones = 'Sin título';
+			}
+			// URL imagen
+			$thumb = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'medium' );
+			$url = $thumb['0'];
+			// Autor
+			$authorColecciones = wp_get_post_terms( $post->ID, 'fotografo' );
+			if ( $authorColecciones ){
+				$authorColeccionesName 	= $authorColecciones[0]->name;
+				$authorColeccionesSlug 	= $authorColecciones[0]->slug;
+			} else {
+				$authorColeccionesName 	= 'Sin autor';
+				$authorColeccionesSlug = '-';
+			}
+			// Año
+			$anoFotos = wp_get_post_terms( $post->ID, 'año' );
+			if ( $anoFotos ){
+				$anoFotosName 	= $anoFotos[0]->name;
+				$anoFotosSlug 	= $anoFotos[0]->slug;
+			} else {
+				$anoFotosName 	= 'Sin fecha';
+			}
+			// Lugar
+			$lugar = wp_get_post_terms( $post->ID, 'lugar' );
+			if ( $lugar ){
+				$lugarName 	= $lugar[0]->name;
+				$lugarSlug 	= $lugar[0]->slug;
+			} else {
+				$lugarName 	= 'Sin lugar';
+			}
+			// Coleccion
+			$coleccionName 	= 'Sin coleccion';
+			$coleccion = wp_get_post_terms( $post->ID, 'coleccion' );
+			if ( $coleccion ){
+				$coleccionName 	= $coleccion[0]->name;
+				$coleccionSlug 	= $coleccion[0]->slug;
+			}
+
+			// Se arma el objecto que se regresa
+			$info_favoritos[$key] = array(
+				'id'		=> $post->ID,
+				'permalink'	=> get_permalink( $post->ID ),
+				'titulo'	=> $titleColecciones,
+				'img_url'	=> $url,
+				'autor'		=> $authorColeccionesName,
+				'url_autor'	=> $authorColeccionesSlug,
+				'ano'		=> $anoFotosName,
+				'lugar'		=> $lugarName,
+				'coleccion'	=> $coleccionName,
+				);
+ 		}
+
+		return $info_favoritos;
+	} // advanced_search_favoritos
+
+	function get_descripcion_coleccion(){
+		$term_id_coleccion = $_POST['id_coleccion'];
+		$descripcion = term_description( $term_id_coleccion, 'coleccion' );
+
+		echo json_encode($descripcion , JSON_FORCE_OBJECT);
+		exit();
+	} // get_descripcion_coleccion
+	add_action("wp_ajax_get_descripcion_coleccion", "get_descripcion_coleccion");
+	add_action("wp_ajax_nopriv_get_descripcion_coleccion", "get_descripcion_coleccion");
+
+	function add_like(){
+		$post_id = $_POST['post_id'];
+		$key = 'num_likes';
+
+		$num_likes_meta = get_post_meta( $post_id, $key, TRUE );
+
+		if($num_likes_meta == '0') {
+			add_post_meta($post_id, $key, 0, TRUE);
+			$num_likes = 0;
+		} else {
+			$num_likes = intval($num_likes_meta) + 1;
+			update_post_meta($post_id, $key, $num_likes);
+		}
+
+		echo json_encode($num_likes, JSON_FORCE_OBJECT);
+		exit();
+	}
+	add_action("wp_ajax_add_like", "add_like");
+	add_action("wp_ajax_nopriv_add_like", "add_like");
+
+	function update_featured_post( $post_id ){
+
+        $terms = wp_get_post_terms( $post_id, 'category' );
+		$is_destacado = false;
+		foreach ($terms as $key => $term) {
+			if ( $term->slug == 'destacado' ) {
+				$is_destacado = true;
+				break;
+			}
+		}
+
+		if( $is_destacado ){
+			removeFeatured( $post_id );
+		}
+
+	}// update_featured_post
+	add_action('save_post', 'update_featured_post');
+
+	function removeFeatured( $excluded_post_id ){
+
+		$post_types = get_post_types( '', 'names' );
+		$featured_posts_args = array(
+			'post_type' 	=> $post_types,
+		    'tax_query' 	=> array(
+					        array(
+					        	'taxonomy'	=> 'category',
+					        	'field'		=> 'slug',
+					        	'terms'		=> array('destacado')
+					        )
+					    ),
+		    'post__not_in'	=> array( $excluded_post_id )
+	    );
+		$featured_posts = get_posts( $featured_posts_args );
+
+		foreach ($featured_posts as $key => $post) wp_remove_object_terms( $post->ID, 'destacado', 'category');
+
+	}// removeFeatured
+
+	function get_post_id_by_attachment_id( $attachment_id ){
+		global $wpdb;
+
+        $query = "
+    		SELECT post_id
+      		FROM wp_postmeta AS pm
+     		INNER JOIN wp_posts AS p ON pm.meta_value=p.ID 
+     		WHERE ID = ".$attachment_id."
+       		AND pm.meta_key = '_thumbnail_id'
+       		AND post_id IN ( SELECT ID FROM wp_posts WHERE post_type = 'fotografias' )";
+		$post_id_results = $wpdb->get_results( $query, OBJECT );
+
+		return $post_id_results;		
+	}// get_post_id_by_attachment_id
+
+	function get_total_results(){
+		$filters = $_POST['filters'];
+		$post_type = $_POST['post_type'];
+
+		switch ($post_type) {
+			case 'fotografias':
+				$num_results = get_num_results_colecciones($filters);
+				break;
+			case 'fotografos':
+				$num_results = get_num_results_fotografos($filters);
+				break;
+			case 'carteleras':
+				$num_results = get_num_results_carteleras($filters);
+				break;
+			default:
+				$num_results = 0;
+		}// switch 
+
+		echo json_encode($num_results , JSON_FORCE_OBJECT);
+		exit();
+	}// get_total_results
+	add_action("wp_ajax_get_total_results", "get_total_results");
+	add_action("wp_ajax_nopriv_get_total_results", "get_total_results");
+
+	function get_num_results_colecciones($filtros){
+		global $wpdb;
+
+		if ($filtros == ''){
+			$query = "
+	    		SELECT P.id AS total FROM wp_posts P
+				INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
+				INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
+				INNER JOIN wp_terms T ON T.term_id = TT.term_id
+				WHERE P.post_type = 'fotografias' AND P.post_status = 'publish'";
+			
+		} else {
+			$query = "
+	    		SELECT id, COUNT(id) AS total  FROM wp_posts P
+				INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
+				INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
+				INNER JOIN wp_terms T ON T.term_id = TT.term_id
+				WHERE P.post_type = 'fotografias'";
+
+			$filter_type_count = -1;
+			$taxonomies = array();
+			$is_coleccion = false;
+			$coleccion_terms = array();
+			$is_ano = false;
+			$ano_terms = array();
+			$is_fotografo = false;
+			$fotografo_terms = array();
+			$is_tema = false;
+			$tema_terms = array();
+			$is_busqueda = false;
+			$busqueda_term = '';
+			foreach ($filtros as $key => $filtro) {
+				array_push($taxonomies, $filtro['type']);
+
+				if( $filtro['type'] == 'coleccion' ) {
+					$is_coleccion = true;
+					array_push($coleccion_terms, $filtro['value']);
+				}
+				if( $filtro['type'] == 'año' ) {
+					$is_ano = true;
+					array_push($ano_terms, $filtro['value']);
+				}
+				if( $filtro['type'] == 'fotografo' ) {
+					$is_fotografo = true;
+					array_push($fotografo_terms, $filtro['value']);
+				}
+				if( $filtro['type'] == 'tema' ) {
+					$is_tema = true;
+					array_push($tema_terms, '#'.$filtro['value']);
+				}
+				if( $filtro['type'] == 'buscar' ) {
+					$is_busqueda = true;
+					$busqueda_term = $filtro['value'];
+					array_pop($taxonomies);
+				}
+			}
+			$taxonomies = array_unique($taxonomies);
+			$taxonomies_in = implode("', '", $taxonomies);
+
+
+			// Add taxonomies to query
+			if( ! $is_busqueda || ( $is_coleccion || $is_ano || $is_fotografo || $is_tema) )
+				$query = $query." AND TT.taxonomy IN ('".$taxonomies_in."')";
+
+			// If the filters include terms, open condition
+			if($is_coleccion || $is_ano || $is_fotografo || $is_tema) $query = $query." AND ( ";
+
+			// Add filtering terms for colecciones
+			if($is_coleccion){
+				$filter_type_count++;
+				$coleccion_terms_in = implode("', '", $coleccion_terms);
+				$query = $query." T.slug IN ( SELECT slug FROM wp_terms WHERE slug IN ('".$coleccion_terms_in."') ) ";
+			}
+
+			// Add filtering terms for años
+			if($is_ano){
+				$filter_type_count++;
+				if($is_coleccion) $query = $query." OR";
+
+				$query = $query."  T.slug IN ( SELECT slug FROM wp_terms WHERE";
+				foreach ($ano_terms as $key => $ano) {
+					$initial_year = $ano;
+					$final_year = strval(intval($ano) + 10);
+					if($key == 0) {
+						$query .= " slug  BETWEEN '".$initial_year."' AND '".$final_year."'";
+						continue;
+					}
+					$query .= " OR slug BETWEEN '".$initial_year."' AND '".$final_year."'";
+				}
+				$query .= ")";
+			}
+
+			// Add filtering terms for años
+			if($is_fotografo){
+				$filter_type_count++;
+				if($is_coleccion || $is_ano) $query = $query." OR";
+
+				$query .= "  T.slug IN ( SELECT slug FROM wp_terms T INNER JOIN wp_term_taxonomy TT ON TT.term_id = T.term_id WHERE (";
+
+				foreach ($fotografo_terms as $key => $letter) {
+					if($key == 0) {
+						$query .= " slug LIKE '".$letter."%'";
+						continue;
+					}
+					$query .= " OR slug LIKE '".$letter."%'";
+				}
+				$query .= ") AND taxonomy = 'fotografo' )";
+			}
+
+			// Add filtering terms for colecciones
+			if($is_tema){
+				if($is_coleccion || $is_ano || $is_fotografo) $query = $query." OR";
+				$filter_type_count++;
+				$tema_terms_id = implode("', '", $tema_terms);
+				$query = $query." T.slug IN ( SELECT slug FROM wp_terms WHERE name IN ('".$tema_terms_id."') ) ";
+			}
+
+			// Close filtering terms if  they exist
+			if($is_coleccion || $is_ano || $is_fotografo || $is_tema) $query = $query." )";
+
+			// Add filtering terms for busqueda
+			if($is_busqueda) $query .= " AND post_title LIKE '%".$busqueda_term."%'";
+
+			$query = $query." AND P.post_status = 'publish' GROUP BY id HAVING COUNT(id) > ".$filter_type_count;
+		}
+		$results = $wpdb->get_results( $query );
+		$total_results = $wpdb->num_rows;
+
+		return $total_results;
+	}// get_num_results_colecciones
+
+	function get_num_results_fotografos($filtros){
+		global $post;
+		global $wpdb;
+
+		if ($filtros == ''){
+			$query = "
+	    		SELECT P.id FROM wp_posts P
+				INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
+				INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
+				INNER JOIN wp_terms T ON T.term_id = TT.term_id
+				WHERE P.post_type = 'fotografos' AND P.post_status = 'publish' AND P.post_content <> '' GROUP BY P.id";
 		} else {
 
 			// SELECT P.id, P.post_title, T.name, T.slug FROM wp_posts P
@@ -964,34 +1751,16 @@
 			// Close filtering terms if  they exist
 			if($is_coleccion || $is_ano || $is_pais || $is_tema || $is_apellido) $query = $query." )";
 
-			if($existing_ids != '0'){
-				$existing_ids_in = implode("', '", $existing_ids);
-				$query .= " AND id NOT IN ('".$existing_ids_in."')";
-			}
-
-			$query = $query." AND post_status = 'publish' AND post_content <> '' GROUP BY id HAVING COUNT(id) > ".$filter_type_count." ORDER BY RAND() LIMIT ".$limit;
-			// echo $query;
-			$posts_info = $wpdb->get_results( $query );
+			$query = $query." AND post_status = 'publish' AND post_content <> '' GROUP BY id HAVING COUNT(id) > ".$filter_type_count;
 		}
 
- 		$info_colecciones = array();
- 		foreach ($posts_info as $key => $post) {
- 			// Título
-			$fotografo = get_the_title( $post->id );
-			// URL fotografo
-			$url = get_permalink( $post->id );
-			// Se arma el objecto que se regresa
-			$info_colecciones[$key] = array(
-				'id'		=> $post->id,
-				'fotografo'	=> $fotografo,
-				'url'		=> $url,
-				);
- 		}
+		$results = $wpdb->get_results( $query );
+		$total_results = $wpdb->num_rows;
 
-		return $info_colecciones;
-	} // advanced_search_fotografos
+		return $total_results;
+	}// get_num_results_fotografos
 
-	function advanced_search_carteleras($filtros = '', $limit, $existing_ids){
+	function get_num_results_carteleras($filtros){
 		global $post;
 		global $wpdb;
 
@@ -1000,26 +1769,15 @@
 			$query = "
 	    		SELECT id FROM wp_posts P INNER JOIN wp_postmeta PM ON PM.post_id = P.id
 				WHERE post_type = 'carteleras'";
+			$query .= " AND post_status = 'publish' GROUP BY id";
 
-			if($existing_ids != '0'){
-				$existing_ids_in = implode("', '", $existing_ids);
-				$query .= " AND id NOT IN ('".$existing_ids_in."')";
-			}
-			//$query .= " AND post_status = 'publish' AND meta_value = '".$hoy."' GROUP BY id ORDER BY RAND() LIMIT ".$limit;
-			$query .= " AND post_status = 'publish' GROUP BY id ORDER BY RAND() LIMIT ".$limit;
-
-			$posts_info = $wpdb->get_results( $query, OBJECT );
 		} else {
-
-			// SELECT P.id, P.post_title, T.name, T.slug FROM wp_posts P
 			$query = "
 	    		SELECT id FROM wp_posts P
 	    		INNER JOIN wp_postmeta PM ON PM.post_id = P.id
 				WHERE post_type = 'carteleras'
 				AND meta_key IN ('_evento_fecha_final_meta', '_evento_fecha_inicial_meta') AND (";
 
-			//$inicioHoy = strtotime("midnight", $hoy);
-			//$finHoy = strtotime("tomorrow", $inicioHoy) - 1;
 			foreach ($filtros as $key => $filtro) {
 				if($key != 0) $query .= ' OR';
 
@@ -1034,338 +1792,15 @@
 				}
 			}
 			$query .= ')';
-
-			if($existing_ids != '0'){
-				$existing_ids_in = implode("', '", $existing_ids);
-				$query .= " AND id NOT IN ('".$existing_ids_in."')";
-			}
-			$query .= " AND post_status = 'publish' GROUP BY id ORDER BY RAND() LIMIT ".$limit;
-
-			$posts_info = $wpdb->get_results( $query );
+			$query .= " AND post_status = 'publish' GROUP BY id";
+			
 		}
 
-		//echo $query;
- 		$info_colecciones = array();
- 		foreach ($posts_info as $key => $post) {
- 			// Título
-			$titleColecciones = get_the_title( $post->id );
-			if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
-				$titleColecciones = 'Sin título';
-			}
-			// URL imagen
-			$thumb = wp_get_attachment_image_src( get_post_thumbnail_id( $post->id ), 'medium' );
-			$url = $thumb['0'];
+		$results = $wpdb->get_results( $query );
+		$total_results = $wpdb->num_rows;
 
-			$fec_ini = get_post_meta( $post->id, '_evento_fecha_inicial_meta', true );
-			$fec_fin = get_post_meta( $post->id, '_evento_fecha_final_meta', true );
+		return $total_results;
+	} // get_num_results_carteleras
 
-			//if($fec_ini !== '') $fec_ini = date('d/m/Y', $fec_ini);
-			//if($fec_fin !== '') $fec_fin = date('d/m/Y', $fec_fin);
-
-			// Se arma el objecto que se regresa
-			$info_colecciones[$key] = array(
-				'id'		=> $post->id,
-				'titulo'	=> $titleColecciones,
-				'img_url'	=> $url,
-				'fec_ini'	=> $fec_ini,
-				'fec_fin'	=> $fec_fin,
-				'permalink'	=> get_permalink( $post->id ),
-				);
- 		}
-
-		return $info_colecciones;
-	} // advanced_search_carteleras
-
-	function advanced_search_proyectos($filtros = '', $limit, $existing_ids){
-		global $post;
-		global $wpdb;
-
-		$query = "
-    		SELECT id FROM wp_posts P
-			INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
-			INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
-			WHERE post_type = 'proyectos'";
-
-		if($existing_ids != '0'){
-			$existing_ids_in = implode("', '", $existing_ids);
-			$query .= " AND id NOT IN ('".$existing_ids_in."')";
-		}
-		$query .= "
-			AND id NOT IN
-				(SELECT id FROM wp_posts P INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
-				INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
-				WHERE taxonomy = 'archivo-proyecto')
-			AND post_status = 'publish'
-			ORDER BY RAND()
-			LIMIT ".$limit;
-		$posts_info = $wpdb->get_results( $query, OBJECT );
-
-		// echo $query;
-
- 		$info_colecciones = array();
- 		foreach ($posts_info as $key => $post) {
- 			// Título
-			$titleColecciones = get_the_title( $post->id );
-			if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
-				$titleColecciones = 'Sin título';
-			}
-			// URL imagen
-			$thumb = wp_get_attachment_image_src( get_post_thumbnail_id( $post->id ), 'medium' );
-			$url = $thumb['0'];
-
-
-			// Se arma el objecto que se regresa
-			$info_colecciones[$key] = array(
-				'id'		=> $post->id,
-				'titulo'	=> $titleColecciones,
-				'img_url'	=> $url,
-				'permalink'	=> get_permalink( $post->id )
-				);
- 		}
-
-		return $info_colecciones;
-	} // advanced_search_proyectos
-
-	function advanced_search_exposiciones($filtros = '', $limit, $existing_ids){
-		global $post;
-		global $wpdb;
-
-		$query = "
-    		SELECT id FROM wp_posts
-			WHERE post_type = 'exposiciones'";
-
-		if($existing_ids != '0'){
-			$existing_ids_in = implode("', '", $existing_ids);
-			$query .= " AND id NOT IN ('".$existing_ids_in."')";
-		}
-		$query .= " AND post_status = 'publish' ORDER BY RAND() LIMIT ".$limit;
-		$posts_info = $wpdb->get_results( $query, OBJECT );
-
-		//echo $query;
-
- 		$info_exposiciones = array();
- 		foreach ($posts_info as $key => $post) {
- 			// Título
-			$titleColecciones = get_the_title( $post->id );
-			if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
-				$titleColecciones = 'Sin título';
-			}
-			// URL imagen
-			$thumb = wp_get_attachment_image_src( get_post_thumbnail_id( $post->id ), 'medium' );
-			$url = $thumb['0'];
-
-
-			// Se arma el objecto que se regresa
-			$info_exposiciones[$key] = array(
-				'id'		=> $post->id,
-				'titulo'	=> $titleColecciones,
-				'img_url'	=> $url,
-				'permalink'	=> get_permalink( $post->id )
-				);
- 		}
-
-		return $info_exposiciones;
-	} // advanced_search_exposiciones
-
-	function advanced_search_publicaciones($filtros = '', $limit, $existing_ids){
-		global $post;
-		global $wpdb;
-
-		$query = "
-    		SELECT id FROM wp_posts
-			WHERE post_type = 'publicaciones'";
-
-		if($existing_ids != '0'){
-			$existing_ids_in = implode("', '", $existing_ids);
-			$query .= " AND id NOT IN ('".$existing_ids_in."')";
-		}
-		$query .= " AND post_status = 'publish' ORDER BY RAND() LIMIT ".$limit;
-		$posts_info = $wpdb->get_results( $query, OBJECT );
-
-		//echo $query;
-
- 		$info_publicaciones = array();
- 		foreach ($posts_info as $key => $post) {
- 			// Título
-			$titleColecciones = get_the_title( $post->id );
-			if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
-				$titleColecciones = 'Sin título';
-			}
-			// URL imagen
-			$thumb = wp_get_attachment_image_src( get_post_thumbnail_id( $post->id ), 'medium' );
-			$url = $thumb['0'];
-
-
-			// Se arma el objecto que se regresa
-			$info_publicaciones[$key] = array(
-				'id'		=> $post->id,
-				'titulo'	=> $titleColecciones,
-				'img_url'	=> $url,
-				'permalink'	=> get_permalink( $post->id )
-				);
- 		}
-
-		return $info_publicaciones;
-	} // advanced_search_publicaciones
-
-	function advanced_search_nuevas_adquisiciones($filtros = '', $limit, $existing_ids){
-		global $post;
-		global $wpdb;
-
-		$query = "
-    		SELECT id FROM wp_posts
-			WHERE post_type = 'fotografias'";
-
-		if($existing_ids != '0'){
-			$existing_ids_in = implode("', '", $existing_ids);
-			$query .= " AND id NOT IN ('".$existing_ids_in."')";
-		}
-		$query .= " AND post_status = 'publish' ORDER BY post_date LIMIT ".$limit;
-		$posts_info = $wpdb->get_results( $query, OBJECT );
-
-		//echo $query;
-
- 		$info_nuevas_adquisiciones = array();
- 		foreach ($posts_info as $key => $post) {
- 			// Título
-			$titleColecciones = get_the_title( $post->id );
-			if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
-				$titleColecciones = 'Sin título';
-			}
-			// URL imagen
-			$thumb = wp_get_attachment_image_src( get_post_thumbnail_id( $post->id ), 'medium' );
-			$url = $thumb['0'];
-			// Autor
-			$authorColecciones = wp_get_post_terms( $post->id, 'fotografo' );
-			if ( $authorColecciones ){
-				$authorColeccionesName 	= $authorColecciones[0]->name;
-				$authorColeccionesSlug 	= $authorColecciones[0]->slug;
-			} else {
-				$authorColeccionesName 	= 'Sin autor';
-				$authorColeccionesSlug = '-';
-			}
-			// Año
-			$anoFotos = wp_get_post_terms( $post->id, 'año' );
-			if ( $anoFotos ){
-				$anoFotosName 	= $anoFotos[0]->name;
-				$anoFotosSlug 	= $anoFotos[0]->slug;
-			} else {
-				$anoFotosName 	= 'Sin fecha';
-			}
-			// Lugar
-			$lugar = wp_get_post_terms( $post->id, 'lugar' );
-			if ( $lugar ){
-				$lugarName 	= $lugar[0]->name;
-				$lugarSlug 	= $lugar[0]->slug;
-			} else {
-				$lugarName 	= 'Sin lugar';
-			}
-			// Coleccion
-			$coleccionName 	= 'Sin coleccion';
-			$coleccion = wp_get_post_terms( $post->id, 'coleccion' );
-			if ( $coleccion ){
-				$coleccionName 	= $coleccion[0]->name;
-				$coleccionSlug 	= $coleccion[0]->slug;
-			}
-
-			// Se arma el objecto que se regresa
-			$info_nuevas_adquisiciones[$key] = array(
-				'id'		=> $post->id,
-				'permalink'	=> get_permalink( $post->id ),
-				'titulo'	=> $titleColecciones,
-				'img_url'	=> $url,
-				'autor'		=> $authorColeccionesName,
-				'url_autor'	=> $authorColeccionesSlug,
-				'ano'		=> $anoFotosName,
-				'lugar'		=> $lugarName,
-				'coleccion'	=> $coleccionName,
-				);
- 		}
-
-		return $info_nuevas_adquisiciones;
-	} // advanced_search_nuevas_adquisiciones
-
-	function get_descripcion_coleccion(){
-		$term_id_coleccion = $_POST['id_coleccion'];
-		$descripcion = term_description( $term_id_coleccion, 'coleccion' );
-
-		echo json_encode($descripcion , JSON_FORCE_OBJECT);
-		exit();
-	} // get_descripcion_coleccion
-	add_action("wp_ajax_get_descripcion_coleccion", "get_descripcion_coleccion");
-	add_action("wp_ajax_nopriv_get_descripcion_coleccion", "get_descripcion_coleccion");
-
-	function add_like(){
-		$post_id = $_POST['post_id'];
-		$key = 'num_likes';
-
-		$num_likes_meta = get_post_meta( $post_id, $key, TRUE );
-
-		if($num_likes_meta == '0') {
-			add_post_meta($post_id, $key, 0, TRUE);
-			$num_likes = 0;
-		} else {
-			$num_likes = intval($num_likes_meta) + 1;
-			update_post_meta($post_id, $key, $num_likes);
-		}
-
-		echo json_encode($num_likes, JSON_FORCE_OBJECT);
-		exit();
-	}
-	add_action("wp_ajax_add_like", "add_like");
-	add_action("wp_ajax_nopriv_add_like", "add_like");
-
-	function update_featured_post( $post_id ){
-
-        $terms = wp_get_post_terms( $post_id, 'category' );
-		$is_destacado = false;
-		foreach ($terms as $key => $term) {
-			if ( $term->slug == 'destacado' ) {
-				$is_destacado = true;
-				break;
-			}
-		}
-
-		if( $is_destacado ){
-			removeFeatured( $post_id );
-		}
-
-	}// update_featured_post
-	add_action('save_post', 'update_featured_post');
-
-	function removeFeatured( $excluded_post_id ){
-
-		$post_types = get_post_types( '', 'names' );
-		$featured_posts_args = array(
-			'post_type' 	=> $post_types,
-		    'tax_query' 	=> array(
-					        array(
-					        	'taxonomy'	=> 'category',
-					        	'field'		=> 'slug',
-					        	'terms'		=> array('destacado')
-					        )
-					    ),
-		    'post__not_in'	=> array( $excluded_post_id )
-	    );
-		$featured_posts = get_posts( $featured_posts_args );
-
-		foreach ($featured_posts as $key => $post) wp_remove_object_terms( $post->ID, 'destacado', 'category');
-
-	}// removeFeatured
-
-	function get_post_id_by_attachment_id( $attachment_id ){
-		global $wpdb;
-
-        $query = "
-    		SELECT post_id
-      		FROM wp_postmeta AS pm
-     		INNER JOIN wp_posts AS p ON pm.meta_value=p.ID 
-     		WHERE ID = ".$attachment_id."
-       		AND pm.meta_key = '_thumbnail_id'
-       		AND post_id IN ( SELECT ID FROM wp_posts WHERE post_type = 'fotografias' )";
-		$post_id_results = $wpdb->get_results( $query, OBJECT );
-
-		return $post_id_results;		
-	}// get_post_id_by_attachment_id
 
 

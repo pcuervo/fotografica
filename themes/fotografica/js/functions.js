@@ -158,8 +158,6 @@ function showFilters(element){
 function toggleFiltersNav(){
 	var filtersLenght = $('.filters__results .filter').length;
 
-	console.log(filtersLenght);
-
 	if( filtersLenght == 0 ){
 		$('.filters__results').hide();
 	}
@@ -227,7 +225,7 @@ function removeFilter(element){
 
 }
 
-function getFilteredResults(){
+function getFilters(is_cargando_mas){
 	var activos = $('.filters__results .filter--active');
 	var search_filters = [];
 	$.each(activos, function(i, val){
@@ -236,7 +234,7 @@ function getFilteredResults(){
 		var filter_value = $(val).data('value');
 		current_filter['type'] = filter_type;
 		current_filter['value'] = filter_value;
-		clearGrid();
+		if( ! is_cargando_mas ) clearGrid();
 		search_filters.push(current_filter);
 	});
 
@@ -250,7 +248,7 @@ function getFilteredResults(){
 	}
 
 	return search_filters;
-}// getFilteredResults
+}// getFilters
 
 function clearGrid(){
 	$('.results').empty();
@@ -303,7 +301,6 @@ function openLightbox(){
  * @param element
 **/
 function openModal(element){
-	console.log('openModal');
 	var aAbrir = element.data('modal');
 	console.log(aAbrir);
 	aAbrir = $('#js-'+aAbrir+'.modal-wrapper' );
@@ -327,11 +324,10 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 	user_data['limit'] = limit;
 	user_data['existing_ids'] = existing_ids;
 
-	//console.log(post_type);
 	user_data['filters'] = '';
-	//console.log(filters);
 	if(filters.length > 0)
 		user_data['filters'] = filters;
+
 	$.post(
 		ajax_url,
 		user_data,
@@ -339,7 +335,8 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 
 			var json_posts = $.parseJSON(response);
 			var html_resultados;
-			var num_posts = 0;
+			var num_posts = -1;
+
 			$.each(json_posts, function(i, val){
 
 				switch(post_type){
@@ -379,25 +376,24 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 				runMasonry('.results', '.result' );
 			}
 
-
-			/**
-			 * If there are no results show a message staying the fact.
-			**/
-			if ( num_posts == 0 ){
-				var emptyMessage = '<div class="[ wrapper ]"><h2 class="[ padding ][ margin-bottom ][ text-center ][ bg-highlight color-claro ]">Tu búsqueda no generó ningún resultado, elimina alguno de los filtros de arriba hasta obtener resultados.</h2></div>';
-				$(emptyMessage).appendTo('.results');
-				setTimeout(function() {
-					destroyMasonry('.results');
-				}, 50);
-			}
-
-
 			// Hide "cargar mas" when there are no more posts to load
 			num_posts = parseInt(num_posts) + 1;
 			if(parseInt(limit) > parseInt(num_posts))
 				$('.js-cargar-mas').hide();
 			else
 				$('.js-cargar-mas').show();
+
+			/**
+			 * If there are no results show a message staying the fact.
+			**/
+			console.log(num_posts);
+			if ( num_posts < 0 ){
+				var emptyMessage = '<div class="[ wrapper ]"><h2 class="[ padding ][ margin-bottom ][ text-center ][ bg-highlight color-claro ]">Tu búsqueda no generó ningún resultado, elimina alguno de los filtros de arriba hasta obtener resultados.</h2></div>';
+				$(emptyMessage).appendTo('.results');
+				setTimeout(function() {
+					destroyMasonry('.results');
+				}, 50);
+			}
 
 		}// response
 	)
@@ -430,11 +426,6 @@ function getExistingIds(){
 }// getExistingIds
 
 function getHtmlColecciones(results){
-	if(results.url_autor != '-')
-		var html_autor = '<a href="'+results.url_autor+'" class="[ media--info__author ]">'+results.autor+'</a>';
-	else
-		var html_autor = '<p class="[ media--info__author ]">'+results.autor+'</p>';
-
 	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
 			<a class="[ block ]" href="'+results.permalink+'"> \
@@ -444,11 +435,9 @@ function getHtmlColecciones(results){
 					<p class="[ text-center ]">';
 						if ( results.autor ){
 							//console.log('autor: '+results.autor);
-							if ( results.autor == 'Autor no identificado' ){
-								html_resultados = html_resultados+'<span class="[ media--info__author ]">'+results.autor+'</span>, ';
-							} else {
+							if ( results.autor != 'Autor no identificado' ){
 								html_resultados = html_resultados+'<a href="'+results.url_autor+'" class="[ media--info__author ]">'+results.autor+'</a>, ';
-							}
+							} 
 						}
 						if ( results.titulo ){
 							//console.log('titulo: '+results.titulo);
@@ -564,6 +553,24 @@ function addLike( post_id ){
 		function(response){
 			$('.js-num-likes').text(response);
 			$('.button--heart').addClass('active');
+		}
+	);
+}
+
+function showTotalResults( post_type, filters ){
+	var data = {};
+	data['action'] = 'get_total_results';
+	data['filters'] = (filters.length > 0) ? filters : '';
+	data['post_type'] = post_type;
+
+	$.post(
+		ajax_url,
+		data,
+		function(response){
+			console.log(response);
+			var json_response = $.parseJSON(response);
+			
+			$('.js-num-resultados span').text(json_response);
 		}
 	);
 }

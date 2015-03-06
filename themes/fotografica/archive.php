@@ -153,6 +153,7 @@
 							<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="decada">Década</a>
 							<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="tema">Tema</a>
 							<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="apellido">Apellido</a>
+							<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="buscar">Buscar</a>
 						<?php } ?>
 						<!--  /********************************\ -->
 							<!-- #EVENTOS / CARTELERA -->
@@ -266,6 +267,16 @@
 							}
 						?>
 					</div><!-- .filter-apellido -->
+					<div class="[ filter-buscar ]">
+						<form class="[ margin-bottom--small ]" action="">
+							<fieldset class="[ columna xmall-12 medium-8 ] [ center ]">
+								<input class="[ columna xmall-10 medium-11 ]" type="text" placeholder="Buscar por nombre de fotógrafo">
+								<button class="" type="submit">
+									<i class="[ icon-search "></i>
+								</button>
+							</fieldset>
+						</form>
+					</div><!-- .filter-buscar -->
 				<?php } ?>
 				<!--  /********************************\ -->
 					<!-- #EVENTOS / CARTELERA -->
@@ -279,7 +290,7 @@
 				<?php } ?>
 			</div><!-- filters__content -->
 			<div class="[ filters__results ] [ padding--small text-center ]">
-				<p class="[ uppercase ] [ js-num-resultados ]"><span></span> resultados con los filtros:</p>
+				<p class="[ uppercase ] [ js-num-resultados ]"><span></span> resultados totales con los filtros:</p>
 			</div>
 		</section><!-- .filters -->
 	<?php } ?>
