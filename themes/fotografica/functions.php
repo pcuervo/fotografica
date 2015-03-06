@@ -35,6 +35,11 @@
 	function footerScripts(){
 		if( wp_script_is( 'functions', 'done' ) ) {
 
+			$postConservacionIDArray 	= get_post_ID_by_slug('conservacion', 'nuestro-trabajo');
+			$postConservacionID 		= $postConservacionIDArray[0]->ID;
+
+			//echo 'sss'.;
+
 			/*------------------------------------*\
 			    #HOME
 			\*------------------------------------*/
@@ -260,6 +265,30 @@
 									addLike(post_id);
 								}
 							});
+						});
+					}(jQuery));
+				</script>
+
+
+
+
+			<?php }
+
+				if ( is_single('conservacion') ) { ?>
+				<!-- /**********************************\ -->
+					<!-- #SINGLE CONSERVACION -->
+				<!-- \**********************************/ -->
+				<script type="text/javascript">
+					(function( $ ) {
+						"use strict";
+						$(function(){
+
+							/*------------------------------------*\
+								#ON LOAD
+							\*------------------------------------*/
+							runFitVids('.fit-vids-wrapper');
+
+
 						});
 					}(jQuery));
 				</script>
@@ -1459,7 +1488,7 @@
 	function get_post_id_by_attachment_id( $attachment_id ){
 		global $wpdb;
 
-	$query = "
+		$query = "
 			SELECT post_id
 			FROM wp_postmeta AS pm
 			INNER JOIN wp_posts AS p ON pm.meta_value=p.ID
@@ -1467,6 +1496,10 @@
 			AND pm.meta_key = '_thumbnail_id'
 			AND post_id IN ( SELECT ID FROM wp_posts WHERE post_type = 'fotografias' )";
 		$post_id_results = $wpdb->get_results( $query, OBJECT );
+
+		if ( empty($post_id_results) ){
+			return 0;
+		}
 
 		return $post_id_results;
 	}// get_post_id_by_attachment_id
@@ -1796,6 +1829,47 @@
 
 		return $total_results;
 	} // get_num_results_carteleras
+
+	/* Devuelve la url del video de acuerdo al host.
+	 * @param string $advisor_data
+	 * @return int $advisor_id or FALSE
+	 */
+	function get_video_src($url, $host){
+		if($url == '-')
+			return 0;
+		if($host == 'vimeo'){
+			$id = (int) substr(parse_url($url, PHP_URL_PATH), 1);
+			return '//player.vimeo.com/video/'.$id;
+		}
+
+		$id = explode('v=', $url)[1];
+		$ampersand_position = strpos($id, '&');
+		if( $ampersand_position > 0 )
+			$id = substr($id, $ampersand_position);
+
+		parse_str( parse_url( $url, PHP_URL_QUERY ), $url_array );
+		$id = $url_array['v'];
+		return '//www.youtube.com/embed/'.$id;
+	}// get_video_src
+
+
+	function get_post_ID_by_slug($page_slug, $post_type) {
+		global $wpdb;
+
+		$postQuery = "
+			SELECT ID FROM wp_posts
+			WHERE post_name ='".$page_slug."'
+			AND post_type ='".$post_type."'
+			AND post_status = 'publish'";
+
+		$postID = $wpdb->get_results($postQuery);
+
+		if ($postID) {
+			return $postID;
+		} else {
+			return null;
+		}
+	}
 
 
 

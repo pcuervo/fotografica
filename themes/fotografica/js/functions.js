@@ -125,6 +125,10 @@ function setHeightMinusElement(element, wrapper, title){
 
 }
 
+function runFitVids(selector){
+	$(selector).fitVids();
+}
+
 
 
 /*------------------------------------*\
@@ -437,7 +441,7 @@ function getHtmlColecciones(results){
 							//console.log('autor: '+results.autor);
 							if ( results.autor != 'Autor no identificado' ){
 								html_resultados = html_resultados+'<a href="'+results.url_autor+'" class="[ media--info__author ]">'+results.autor+'</a>, ';
-							} 
+							}
 						}
 						if ( results.titulo ){
 							//console.log('titulo: '+results.titulo);
@@ -569,7 +573,7 @@ function showTotalResults( post_type, filters ){
 		function(response){
 			console.log(response);
 			var json_response = $.parseJSON(response);
-			
+
 			$('.js-num-resultados span').text(json_response);
 		}
 	);
