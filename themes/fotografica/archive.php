@@ -40,7 +40,7 @@
 				$authorColeccionesName 	= $authorColecciones[0]->name;
 				$authorColeccionesSlug 	= $authorColecciones[0]->slug;
 			}  else {
-				$authorColeccionesName 	= 'autor no identificado';
+				$authorColeccionesName 	= 'Autor no identificado';
 			}
 
 			$titleColecciones = get_the_title( $post->ID );
@@ -80,9 +80,7 @@
 				<p class="[ text-center ]">
 
 				<!-- NOMBRE APELLIDO -->
-				<?php if ( $authorColeccionesName == 'Autor no identificado' ){ ?>
-					<span class="[ media--info__author ]"><?php echo $authorColeccionesName; ?></span>,
-				<?php } else { ?>
+				<?php if ( $authorColeccionesName != 'Autor no identificado' ){ ?>
 					<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
 				<?php } ?>
 
@@ -201,34 +199,10 @@
 					</div><!-- .filter-pais -->
 					<div class="[ filter-decada ]">
 						<?php
-							$args = array(
-								'orderby'		=> 'name',
-								'order'         => 'ASC',
-								'hide_empty'    => true,
-							);
-							$terms = get_terms('año', $args);
-							$decadas = array();
-							foreach ($terms as $key => $term) {
-								if (strpos($term->name,'/') !== false) {
-									$decada = 'sin fecha';
-								} else if (strpos($term->name,'-') !== false) {
-									$rango_fechas = explode('-', $term->name);
-									$ano_inicial = substr(trim($rango_fechas[0]), 0, -1);
-									$ano_inicial = $ano_inicial.'0';
-									$ano_final = substr(trim($rango_fechas[1]), 0, -1);
-									$ano_final = $ano_final.'0';
-									array_push($decadas, $ano_inicial);
-									array_push($decadas, $ano_final);
-								} else {
-									$decada = substr($term->name, 0, -1);
-									$decada = $decada.'0';
-									array_push($decadas, $decada);
-								}
-							}
-							$decadas = array_unique($decadas);
+							$decadas = get_decadas_nacimiento();
 							foreach ($decadas as $decada) {
 						?>
-								<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="año" data-value="<?php echo $decada ?>"><?php echo $decada ?></a>
+								<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="decada-de-nacimiento" data-value="<?php echo $decada ?>"><?php echo $decada ?></a>
 						<?php
 							}
 						?>

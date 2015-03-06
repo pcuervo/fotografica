@@ -793,7 +793,7 @@
 			$posts_info = $wpdb->get_results( $query );
 		}
 
-		echo $query;
+		//echo $query;
 
  		$info_colecciones = array();
  		foreach ($posts_info as $key => $post) {
@@ -896,8 +896,8 @@
 			$taxonomies = array();
 			$is_coleccion = false;
 			$coleccion_terms = array();
-			$is_ano = false;
-			$ano_terms = array();
+			$is_decada = false;
+			$decada_terms = array();
 			$is_pais = false;
 			$pais_terms = array();
 			$is_tema = false;
@@ -916,6 +916,10 @@
 				if( $filtro['type'] == 'pais' ) {
 					$is_pais = true;
 					array_push($pais_terms, $filtro['value']);
+				}
+				if( $filtro['type'] == 'decada-de-nacimiento' ) {
+					$is_decada = true;
+					array_push($decada_terms, $filtro['value']);
 				}
 				if( $filtro['type'] == 'apellido' ) {
 					$is_apellido = true;
@@ -936,11 +940,11 @@
 			$taxonomies_in = implode("', '", $taxonomies);
 
 			// Add taxonomies to query
-			if( ! $is_busqueda || ( $is_coleccion || $is_ano || $is_pais || $is_tema || $is_apellido ) )
+			if( ! $is_busqueda || ( $is_coleccion || $is_decada || $is_pais || $is_tema || $is_apellido ) )
 				$query = $query." AND TT.taxonomy IN ('".$taxonomies_in."')";
 
 			// If the filters include terms, open condition
-			if($is_coleccion || $is_ano || $is_pais || $is_tema || $is_apellido ) $query = $query." AND ( ";
+			if($is_coleccion || $is_decada || $is_pais || $is_tema || $is_apellido ) $query = $query." AND ( ";
 
 			// Add filtering terms for colecciones
 			if($is_coleccion){
@@ -950,14 +954,14 @@
 			}
 
 			// Add filtering terms for años
-			if($is_ano){
+			if($is_decada){
 				$filter_type_count++;
 				if($is_coleccion) $query = $query." OR";
 
 				$query = $query."  T.slug IN ( SELECT slug FROM wp_terms WHERE";
-				foreach ($ano_terms as $key => $ano) {
-					$initial_year = $ano;
-					$final_year = strval(intval($ano) + 9);
+				foreach ($decada_terms as $key => $decada) {
+					$initial_year = $decada;
+					$final_year = strval(intval($decada) + 9);
 					if($key == 0) {
 						$query .= " slug  BETWEEN '".$initial_year."' AND '".$final_year."'";
 						continue;
@@ -975,7 +979,7 @@
 			}
 			// Add filtering terms for temas
 			if($is_tema){
-				if($is_coleccion || $is_ano || $is_pais) $query = $query." OR";
+				if($is_coleccion || $is_decada || $is_pais) $query = $query." OR";
 				$filter_type_count++;
 				$tema_terms_id = implode("', '", $tema_terms);
 				$query = $query." T.slug IN ( SELECT slug FROM wp_terms WHERE name IN ('".$tema_terms_id."') ) ";
@@ -984,7 +988,7 @@
 			// Add filtering terms for apellidos
 			if($is_apellido){
 				$filter_type_count++;
-				if($is_coleccion || $is_ano || $is_pais || $is_tema) $query = $query." OR";
+				if($is_coleccion || $is_decada || $is_pais || $is_tema) $query = $query." OR";
 
 				$query .= "  T.slug IN ( SELECT slug FROM wp_terms T INNER JOIN wp_term_taxonomy TT ON TT.term_id = T.term_id WHERE (";
 
@@ -999,7 +1003,7 @@
 			}
 
 			// Close filtering terms if  they exist
-			if($is_coleccion || $is_ano || $is_pais || $is_tema || $is_apellido) $query = $query." )";
+			if($is_coleccion || $is_decada || $is_pais || $is_tema || $is_apellido) $query = $query." )";
 
 			if($existing_ids != '0'){
 				$existing_ids_in = implode("', '", $existing_ids);
@@ -1026,6 +1030,8 @@
 				'url'		=> $url,
 				);
  		}
+
+ 		//echo $query;
 
 		return $info_colecciones;
 	} // advanced_search_fotografos
@@ -1801,6 +1807,45 @@
 
 		return $total_results;
 	} // get_num_results_carteleras
+
+	function get_decadas_nacimiento(){
+		global $wpdb;
+		$decadas = array();
+
+		$query = "
+	    		SELECT meta_value 
+	    		FROM wp_postmeta 
+				WHERE meta_key = '_fecha_nacimiento_meta' ";
+		$results = $wpdb->get_results( $query );
+		foreach ($results as $fecha) {
+			$decada = get_decada_por_fecha( $fecha->meta_value );
+			array_push($decadas, $decada);
+		}
+		return array_unique($decadas);
+	}// get_decadas_nacimiento
+
+	function get_decada_por_fecha( $fecha ){
+		$rango_fechas = explode('-', $fecha); 
+		$ano_inicial = substr(trim($rango_fechas[0]), 0, -1);
+		$decada = $ano_inicial.'0';
+
+		return $decada;
+	}// get_decada_por_fecha
+
+	function add_decade_to_photographer( $post_id ){
+		$fecha = get_post_meta( $post_id, '_fecha_nacimiento_meta', TRUE );
+		$decada = get_decada_por_fecha( $fecha );
+
+		add_decade_term( $decada );
+		wp_set_object_terms( $post_id, $decada, 'decada-de-nacimiento', FALSE );
+	}
+	add_action('save_post', 'add_decade_to_photographer');
+
+	function add_decade_term( $decada ){
+		$term = term_exists($decada, 'decada-de-nacimiento');
+		if ($term !== 0 && $term !== null) return;
+		wp_insert_term($decada, 'decada-de-nacimiento');
+	}// add_decade_term
 
 
 

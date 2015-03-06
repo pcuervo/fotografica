@@ -34,9 +34,10 @@
 		});
 
 		$('.js-datepicker').datepicker({
-			changeMonth: true,
-			changeYear: true,
-			yearRange: "-300:+0"
+			changeMonth: 	true,
+			changeYear: 	true,
+			yearRange: 		"-300:+0",
+			dateFormat: 	'yy-mm-dd'
 		});
 
 

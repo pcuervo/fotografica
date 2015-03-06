@@ -6,10 +6,11 @@
 	<?php
 	// ¿Hay algún filtro de colección?
 	global $coleccion;
-	$coleccion = "";
-	if(isset($_GET['coleccion'])) $coleccion = $_GET['coleccion'];
-	if(isset($_GET['filtro'])) $filtro = $_GET['filtro'];
-	else $filtro = '';
+	$coleccion = (isset($_GET['coleccion'])) ? $_GET['coleccion'] : '';
+	$filtro = (isset($_GET['filtro'])) ? $_GET['filtro'] : '';
+	
+	//if(isset($_GET['coleccion'])) $coleccion = $_GET['coleccion'];
+	//if(isset($_GET['filtro'])) $filtro = $_GET['filtro'];
 
 	$bgColecciones = '';
 	$coleccionColecciones = '';
@@ -39,7 +40,7 @@
 				$authorColeccionesName 	= $authorColecciones[0]->name;
 				$authorColeccionesSlug 	= $authorColecciones[0]->slug;
 			} else {
-				$authorColeccionesName 	= 'autor no identificado';
+				$authorColeccionesName 	= 'Autor no identificado';
 			}
 
 			$titleColecciones = get_the_title( $post->ID );
@@ -80,9 +81,7 @@
 
 
 				<!-- NOMBRE APELLIDO -->
-				<?php if ( $authorColeccionesName == 'Autor no identificado' ){ ?>
-					<span class="[ media--info__author ]"><?php echo $authorColeccionesName; ?></span>,
-				<?php } else { ?>
+				<?php if ( $authorColeccionesName != 'Autor no identificado' ){ ?>
 					<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
 				<?php } ?>
 
