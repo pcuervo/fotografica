@@ -156,7 +156,7 @@
 				?>
 					<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="coleccion" data-value="<?php echo $termManuelAlvarez->slug ?>" data-coleccion-term-id="<?php echo $termManuelAlvarez->term_id ?>"><?php echo $termManuelAlvarez->name ?><span data-modal="info-coleccion" data-coleccion-term-id="<?php echo $termManuelAlvarez->term_id ?>"><i class="fa fa-info-circle"></i></span></a>
 					<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="coleccion" data-value="<?php echo $termCCAC->slug ?>"><?php echo $termCCAC->name ?><span data-modal="info-coleccion" data-coleccion-term-id="<?php echo $termCCAC->term_id ?>"><i class="fa fa-info-circle"></i></span></a>
-					<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="coleccion" data-value="<?php echo $termFundacionTelevisa->slug ?>"><?php echo $termFundacionTelevisa->name ?><span data-modal="info-coleccion" data-coleccion-term-id="<?php echo $termFundacionTelevisa->term_id ?>"><i class="fa fa-info-circle"></i></span></a>
+					<p><?php echo $termFundacionTelevisa->name ?><span data-modal="info-coleccion" data-coleccion-term-id="<?php echo $termFundacionTelevisa->term_id ?>"><i class="fa fa-info-circle"></i></span></p>
 					<div class="[ clear ][ margin-bottom ]"></div>
 				<?php
 					$args = array(
