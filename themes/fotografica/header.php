@@ -15,6 +15,24 @@
 	</head>
 
 	<body <?php body_class(); ?>>
+		<script>
+		  window.fbAsyncInit = function() {
+		    FB.init({
+		      appId      : '852965808078237',
+		      xfbml      : true,
+		      version    : 'v2.2'
+		    });
+		  };
+
+		  (function(d, s, id){
+		     var js, fjs = d.getElementsByTagName(s)[0];
+		     if (d.getElementById(id)) {return;}
+		     js = d.createElement(s); js.id = id;
+		     js.src = "//connect.facebook.net/en_US/sdk.js";
+		     fjs.parentNode.insertBefore(js, fjs);
+		   }(document, 'script', 'facebook-jssdk'));
+		</script>
+
 		<!--[if lt IE 9]>
 			<p class="chromeframe">Estás usando una versión <strong>vieja</strong> de tu explorador. Por favor <a href="http://browsehappy.com/" target="_blank"> actualiza tu explorador</a> para tener una experiencia completa.</p>
 		<![endif]-->
@@ -61,7 +79,7 @@
 										<?php
 														foreach ($term_children as $key => $child) {
 															$child_term = get_term_by('id', $child, 'coleccion');
-															echo '<li><a class="[ text-center uppercase ]" href="#">'.$child_term->name.'</a></li>';
+															echo '<li><a class="[ text-center uppercase ]" href="'.site_url().'/colecciones?coleccion='.$child_term->slug.'">'.$child_term->name.'</a></li>';
 														}
 										?>
 														</ul>
