@@ -126,30 +126,28 @@ END;
 
 
 		if ( isset($_POST['_evento_fecha_inicial_meta']) and check_admin_referer(__FILE__, '_evento_fecha_inicial_meta_nonce') ){
-			//$timestamp = strtotime($_POST['_evento_fecha_inicial_meta']);
 			update_post_meta($post_id, '_evento_fecha_inicial_meta', $_POST['_evento_fecha_inicial_meta']);
 		}
 
 		if ( isset($_POST['_evento_fecha_final_meta']) and check_admin_referer(__FILE__, '_evento_fecha_final_meta_nonce') ){
-			//$timestamp = strtotime($_POST['_evento_fecha_final_meta']);
 			update_post_meta($post_id, '_evento_fecha_final_meta', $_POST['_evento_fecha_final_meta']);
 		}
 
 		if ( isset($_POST['_evento_video_proyecto_meta']) and check_admin_referer(__FILE__, '_evento_video_proyecto_meta_nonce') ){
-			//$timestamp = strtotime($_POST['_evento_video_proyecto_meta']);
 			update_post_meta($post_id, '_evento_video_proyecto_meta', $_POST['_evento_video_proyecto_meta']);
 		}
 
 		if ( isset($_POST['_video_trabajo_meta']) and check_admin_referer(__FILE__, '_video_trabajo_meta_nonce') ){
-			//$timestamp = strtotime($_POST['_video_trabajo_meta']);
 			update_post_meta($post_id, '_video_trabajo_meta', $_POST['_video_trabajo_meta']);
 		}
 
-		if ( isset($_POST['_sidebar_trabajo_meta']) and check_admin_referer(__FILE__, '_sidebar_trabajo_meta_nonce') ){
-			//$timestamp = strtotime($_POST['_sidebar_trabajo_meta']);
-			update_post_meta($post_id, '_sidebar_trabajo_meta', $_POST['_sidebar_trabajo_meta']);
+		if ( isset($_POST['_fecha_nacimiento_meta']) and check_admin_referer(__FILE__, '_fecha_nacimiento_nonce') ){
+			update_post_meta($post_id, '_fecha_nacimiento_meta', $_POST['_fecha_nacimiento_meta']);
 		}
 
+		if ( isset($_POST['_sidebar_trabajo_meta']) and check_admin_referer(__FILE__, '_sidebar_trabajo_meta_nonce') ){
+			update_post_meta($post_id, '_sidebar_trabajo_meta', $_POST['_sidebar_trabajo_meta']);
+		}
 
 	});
 

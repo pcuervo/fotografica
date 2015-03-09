@@ -6,10 +6,11 @@
 	<?php
 	// ¿Hay algún filtro de colección?
 	global $coleccion;
-	$coleccion = "";
-	if(isset($_GET['coleccion'])) $coleccion = $_GET['coleccion'];
-	if(isset($_GET['filtro'])) $filtro = $_GET['filtro'];
-	else $filtro = '';
+	$coleccion = (isset($_GET['coleccion'])) ? $_GET['coleccion'] : '';
+	$filtro = (isset($_GET['filtro'])) ? $_GET['filtro'] : '';
+
+	//if(isset($_GET['coleccion'])) $coleccion = $_GET['coleccion'];
+	//if(isset($_GET['filtro'])) $filtro = $_GET['filtro'];
 
 	$bgColecciones = '';
 	$coleccionColecciones = '';

@@ -241,7 +241,7 @@
 							$authorColeccionesName 	= $authorColecciones[0]->name;
 							$authorColeccionesSlug 	= $authorColecciones[0]->slug;
 						} else {
-							$authorColeccionesName 	= 'autor no identificado';
+							$authorColeccionesName 	= 'Autor no identificado';
 						}
 
 						$titleColecciones = get_the_title( $post->ID );
@@ -279,9 +279,7 @@
 									<p class="[ text-center ]">
 
 										<!-- NOMBRE APELLIDO -->
-										<?php if ( $authorColeccionesName == 'Autor no identificado' ){ ?>
-											<span class="[ media--info__author ]"><?php echo $authorColeccionesName; ?></span>,
-										<?php } else { ?>
+										<?php if ( $authorColeccionesName != 'Autor no identificado' ){ ?>
 											<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
 										<?php } ?>
 
