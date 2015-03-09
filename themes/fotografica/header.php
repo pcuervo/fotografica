@@ -137,9 +137,9 @@
 											</h1>
 										</div>
 										<div class="[ columna xmall-2 ][ text-right ]">
-											<a class="[ inline-block ][ menu__item menu__item-large ]" href="http://www.fundaciontelevisa.org/" target="_blank">
+											<!-- <a class="[ inline-block ][ menu__item menu__item-large ]" href="http://www.fundaciontelevisa.org/" target="_blank">
 												<i class="[ icon-logo-fundacion-televisa ]"></i>
-											</a>
+											</a> -->
 										</div>
 									</nav>
 								</div><!-- [ hidden-large ] -->
@@ -159,16 +159,16 @@
 										</div>
 										<div class="[ columna xmall-4 ][ ][ text-right ]">
 											<a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="#">
+												<i class="[ icon-search ][ bg-highlight color-claro ]"></i>
+											</a>
+											<a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="https://twitter.com/FotograficaMx">
 												<i class="[ icon-twitter ]"></i>
 											</a>
-											<a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="#">
+											<a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="https://www.facebook.com/FOTOGRAFICA.FundacionTelevisa">
 												<i class="[ icon-facebook ]"></i>
 											</a>
-											<a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="#">
+											<a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="http://i.instagram.com/fotograficamx/">
 												<i class="[ icon-instagram ]"></i>
-											</a>
-											<a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="#">
-												<i class="[ icon-search ]"></i>
 											</a>
 											<a class="[ inline-block align-middle ][ menu__item menu__item-large ]" href="http://www.fundaciontelevisa.org/" target="_blank">
 												<i class="[ icon-logo-fundacion-televisa ]"></i>

@@ -816,9 +816,7 @@
 			$query = $query." AND P.post_status = 'publish' GROUP BY id HAVING COUNT(id) > ".$filter_type_count." ORDER BY RAND() LIMIT ".$limit;
 			$posts_info = $wpdb->get_results( $query );
 		}
-
 		//echo $query;
-
  		$info_colecciones = array();
  		foreach ($posts_info as $key => $post) {
  			// Título
@@ -1841,8 +1839,8 @@
 		$decadas = array();
 
 		$query = "
-	    		SELECT meta_value 
-	    		FROM wp_postmeta 
+	    		SELECT meta_value
+	    		FROM wp_postmeta
 				WHERE meta_key = '_fecha_nacimiento_meta' ";
 		$results = $wpdb->get_results( $query );
 		foreach ($results as $fecha) {
@@ -1853,7 +1851,7 @@
 	}// get_decadas_nacimiento
 
 	function get_decada_por_fecha( $fecha ){
-		$rango_fechas = explode('-', $fecha); 
+		$rango_fechas = explode('-', $fecha);
 		$ano_inicial = substr(trim($rango_fechas[0]), 0, -1);
 		$decada = $ano_inicial.'0';
 
@@ -1915,6 +1913,3 @@
 			return null;
 		}
 	}
-
-
-

@@ -453,14 +453,12 @@ function getHtmlColecciones(results){
 							//console.log('autor: '+results.autor);
 							html_resultados = html_resultados+'de la serie <span class="[ media--info__series ]">'+results.serie+'</span>, ';
 						}
-						if ( results.coleccion ){
-							//console.log('coleccion: '+results.coleccion);
-
-							html_resultados = html_resultados+'<br /> de la colección <a href="#" class="[ media--info__colection ]">'+results.coleccion+'</a>, ';
-						}
 						if ( results.ano ){
 							//console.log('ano: '+results.ano);
-							html_resultados = html_resultados+'<span class="[ media--info__date ][ shown--large--inline ]">'+results.ano+'</span>';
+							html_resultados = html_resultados+'<span class="[ media--info__date ][ shown--large--inline ]">'+results.ano+'</span>, ';
+						}
+						if ( results.coleccion ){
+							html_resultados = html_resultados+'<br /> de la colección <a href="#" class="[ media--info__colection ]">'+results.coleccion+'</a>';
 						}
 					html_resultados = html_resultados+'</p> \
 				</div> \
