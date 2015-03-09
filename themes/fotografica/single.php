@@ -64,16 +64,13 @@
 			<p class="[ text-center ]">
 
 				<!--  /********************************\ -->
-					<!-- #COLECCIONES -->
+					<!-- #FOTOGRAFÍAS -->
 				<!--  \**********************************/ -->
-				<?php if ( $postType == 'colecciones' ){ ?>
-
-					<!-- COLECCION -->
-					De la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>,
+				<?php if ( $postType == 'fotografias' ){ ?>
 
 					<!-- NOMBRE APELLIDO -->
-					<?php if ( $authorColeccionesName == 'sin autor' ){ ?>
-						<span><?php echo $authorColeccionesName; ?></span>,
+					<?php if ( $authorColeccionesName == 'Autor no identificado' ){ ?>
+						<span class="[ media--info__author ]"><?php echo $authorColeccionesName; ?></span>,
 					<?php } else { ?>
 						<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
 					<?php } ?>
@@ -81,8 +78,6 @@
 					<!-- TÍTULO -->
 					<?php if ( $titleColecciones ){ ?>
 						<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleColecciones; ?></a>,
-					<?php } else { ?>
-						<span class="[ media--info__name ]">sin título</span>,
 					<?php } ?>
 
 					<!-- DE LA SERIE -->
@@ -97,13 +92,18 @@
 
 					<!-- CIRCA -->
 					<?php if ( $circaColecciones ){ ?>
-						<span class="[ media--info__circa ]">circa</span>
+						<span class="[ media--info__circa ]">circa </span>
 					<?php } ?>
 
 					<!-- AÑO -->
 					<?php if ( $dateColecciones ){ ?>
-						<span class="[ media--info__date ]"><?php echo $dateColeccionesName; ?></span>
+						<span class="[ media--info__date ]"><?php echo $dateColeccionesName; ?></span>,
 					<?php } ?>
+
+					<!-- COLECCION -->
+					<br />
+					de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>
+
 				<?php } ?>
 
 
@@ -130,8 +130,8 @@
 				<div class="[ button button--dark button__share button--facebook ] [ columna xmall-4 ]">
 					<i class="[ xmall-3 inline-block align-middle ] fa fa-facebook-square"></i><span class="[ xmall-2 ]">&nbsp;</span><span class="[ xmall-7 inline-block align-middle ]">399</span>
 				</div>
-				<?php 
-					$num_likes_meta = get_post_meta( $post->ID, 'num_likes', TRUE ); 
+				<?php
+					$num_likes_meta = get_post_meta( $post->ID, 'num_likes', TRUE );
 				?>
 				<div class="[ button button--dark button__share button--heart ] [ columna xmall-4 ]" data-post-id="<?php echo $post->ID ?>">
 					<i class="[ xmall-3 inline-block align-middle ] fa fa-heart"></i><span class="[ xmall-2 ]">&nbsp;</span><span class="[ xmall-7 inline-block align-middle ][ js-num-likes ]"><?php echo ($num_likes_meta == '') ? 0 : $num_likes_meta; ?></span>
@@ -272,10 +272,10 @@
 
 						$permalinkColeccion = get_permalink( $post->ID );
 					?>
-						<article class="[ relacionadas ] [ bg-image ] [ span xmall-12 medium-6 ]" style="background-image: url(<?php echo $bgColecciones[0]; ?>)">
+						<article class="[ relacionadas ][ bg-image ][ span xmall-12 medium-6 ]" style="background-image: url(<?php echo $bgColecciones[0]; ?>)">
 							<div class="[ opacity-gradient <?php echo ( $counter == 1 ) ? '[ square square-absolute ]' : '[ rectangle rectangle-absolute ]' ?> ]">
 								<a class="[ block ][ media-link ]" href="<?php echo $permalinkColeccion; ?>"></a>
-								<div class="[ media-info media-info--small ] [ xmall-12 ]">
+								<div class="[ media-info media-info--small ][ xmall-12 ]">
 									<p class="[ text-center ]">
 
 										<!-- NOMBRE APELLIDO -->

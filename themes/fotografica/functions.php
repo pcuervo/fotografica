@@ -25,6 +25,7 @@
 
 		// localize scripts
 		wp_localize_script( 'functions', 'ajax_url', admin_url('admin-ajax.php') );
+		wp_localize_script( 'functions', 'post_type', get_post_type() );
 
 		// styles
 		wp_enqueue_style( 'styles', get_stylesheet_uri() );
@@ -107,7 +108,7 @@
 							/**
 							 * If the postType is fotografos do not run masonry
 							**/
-							<?php if ( $postType !== 'fotografos'){ ?>
+							<?php if ( $postType != 'fotografos'){ ?>
 								runMasonry('.results', '.result' );
 							<?php } ?>
 

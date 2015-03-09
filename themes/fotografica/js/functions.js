@@ -256,7 +256,9 @@ function getFilters(is_cargando_mas){
 
 function clearGrid(){
 	$('.results').empty();
-	runMasonry('.results', '.result' );
+	if ( post_type !== 'fotografos' ){
+		runMasonry('.results', '.result' );
+	}
 }// clearGrid
 
 function fixedHeader(){
@@ -374,8 +376,9 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 			});
 
 			/**
-			 * If the postType is fotografos do not run masonry
+			 * If the postType is 'fotografos' do not run masonry
 			**/
+			console.log(post_type);
 			if ( post_type !== 'fotografos' ){
 				runMasonry('.results', '.result' );
 			}
@@ -494,17 +497,14 @@ function getHtmlCarteleras(results){
 }
 
 function getHtmlProyectos(results){
-	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
-		<div class="[ relative ]"> \
-			<a class="[ block ]" href="'+results.permalink+'"> \
-				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
-				<span class="[ opacity-gradient--full ]"></span> \
-				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
-					<p class="[ text-center ]"> \
-						<a href="'+results.permalink+'" class="[ media--info__name ]">'+results.titulo+'</a> \
-					</p> \
-				</div> \
-			</a> \
+	var html_resultados = '<article class="[ result ][ bg-image ][ span xmall-12 medium-6 ]" data-id="'+results.id+'" style="background-image: url('+results.img_url+')"> \
+		<div class="[ opacity-gradient ][ square square-absolute ]"> \
+			<a class="[ block ][ media-link ]" href="'+results.permalink+'"></a> \
+			<div class="[ media-info media-info--small ][ xmall-12 ]"> \
+				<p class="[ text-center ]"> \
+					<a href="'+results.permalink+'" class="[ media--info__name ]">'+results.titulo+'</a> \
+				</p> \
+			</div> \
 		</div> \
 	</article>';
 	return html_resultados;
