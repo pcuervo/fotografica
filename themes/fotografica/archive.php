@@ -71,7 +71,7 @@
 
 			$permalinkColeccion = get_permalink( $post->ID );
 	endwhile; endif; wp_reset_query(); ?>
-	<section class="[ colecciones ] [ bg-image ]" style="background-image: url(<?php echo $bgArchive[0]; ?>)">
+	<section class="[ colecciones ] [ bg-image ] <?php if ( $postType == 'proyectos' OR $postType == 'exposiciones' ){ echo '[ margin-bottom--small ]'; } ?> " style="background-image: url(<?php echo $bgArchive[0]; ?>)">
 		<div class="[ opacity-gradient rectangle ]">
 			<h2 class="[ center-full ] [ title ]">
 				<?php echo $postType; ?> <br />
@@ -79,40 +79,43 @@
 			<div class="[ media-info media-info--large ] [ xmall-12 ] [ shown--medium ]">
 				<p class="[ text-center ]">
 
-				<!-- NOMBRE APELLIDO -->
-				<?php if ( $authorColeccionesName == 'Autor no identificado' ){ ?>
-					<span class="[ media--info__author ]"><?php echo $authorColeccionesName; ?></span>,
-				<?php } else { ?>
-					<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
-				<?php } ?>
 
-				<!-- TÍTULO -->
-				<?php if ( $titleColecciones ){ ?>
-					<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleColecciones; ?></a>,
-				<?php } ?>
+					<!-- NOMBRE APELLIDO -->
+					<?php if ( $authorColeccionesName == 'Autor no identificado' ){ ?>
+						<span class="[ media--info__author ]"><?php echo $authorColeccionesName; ?></span>,
+					<?php } else { ?>
+						<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
+					<?php } ?>
 
-				<!-- DE LA SERIE -->
-				<?php if ( $seriesColecciones ){ ?>
-					de la serie <span class="[ media--info__series ]"><?php echo $seriesColecciones; ?></span>,
-				<?php } ?>
+					<!-- TÍTULO -->
+					<?php if ( $titleColecciones ){ ?>
+						<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleColecciones; ?></a>,
+					<?php } ?>
 
-				<!-- COLECCION -->
-				<br /> de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>,
+					<!-- DE LA SERIE -->
+					<?php if ( $seriesColecciones ){ ?>
+						de la serie <span class="[ media--info__series ]"><?php echo $seriesColecciones; ?></span>,
+					<?php } ?>
 
-				<!-- LUGAR -->
-				<?php if ( $placeColecciones ){ ?>
-					<span class="[ media--info__place ]"><?php echo $placeColeccionesName; ?></span>,
-				<?php } ?>
+					<!-- LUGAR -->
+					<?php if ( $placeColecciones ){ ?>
+						<span class="[ media--info__place ]"><?php echo $placeColeccionesName; ?></span>,
+					<?php } ?>
 
-				<!-- CIRCA -->
-				<?php if ( $circaColecciones ){ ?>
-					<span class="[ media--info__circa ]">circa </span>
-				<?php } ?>
+					<!-- CIRCA -->
+					<?php if ( $circaColecciones ){ ?>
+						<span class="[ media--info__circa ]">circa </span>
+					<?php } ?>
 
-				<!-- AÑO -->
-				<?php if ( $dateColecciones ){ ?>
-					<span class="[ media--info__date ]"><?php echo $dateColeccionesName; ?></span>
-				<?php } ?>
+					<!-- AÑO -->
+					<?php if ( $dateColecciones ){ ?>
+						<span class="[ media--info__date ]"><?php echo $dateColeccionesName; ?></span>,
+					<?php } ?>
+
+					<!-- COLECCION -->
+					<br />
+					de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>
+
 				</p>
 
 				<!-- TAGS -->

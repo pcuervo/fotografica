@@ -817,8 +817,6 @@
 			$posts_info = $wpdb->get_results( $query );
 		}
 
-		echo $query;
-
  		$info_colecciones = array();
  		foreach ($posts_info as $key => $post) {
  			// Título
@@ -1870,6 +1868,3 @@
 			return null;
 		}
 	}
-
-
-

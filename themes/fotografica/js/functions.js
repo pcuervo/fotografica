@@ -337,6 +337,8 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 		user_data,
 		function(response){
 
+			console.log(response);
+
 			var json_posts = $.parseJSON(response);
 			var html_resultados;
 			var num_posts = -1;
@@ -453,14 +455,12 @@ function getHtmlColecciones(results){
 							//console.log('autor: '+results.autor);
 							html_resultados = html_resultados+'de la serie <span class="[ media--info__series ]">'+results.serie+'</span>, ';
 						}
-						if ( results.coleccion ){
-							//console.log('coleccion: '+results.coleccion);
-
-							html_resultados = html_resultados+'<br /> de la colección <a href="#" class="[ media--info__colection ]">'+results.coleccion+'</a>, ';
-						}
 						if ( results.ano ){
 							//console.log('ano: '+results.ano);
-							html_resultados = html_resultados+'<span class="[ media--info__date ][ shown--large--inline ]">'+results.ano+'</span>';
+							html_resultados = html_resultados+'<span class="[ media--info__date ][ shown--large--inline ]">'+results.ano+'</span>, ';
+						}
+						if ( results.coleccion ){
+							html_resultados = html_resultados+'<br /> de la colección <a href="#" class="[ media--info__colection ]">'+results.coleccion+'</a>';
 						}
 					html_resultados = html_resultados+'</p> \
 				</div> \

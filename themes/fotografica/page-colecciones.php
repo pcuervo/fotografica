@@ -25,50 +25,49 @@
 		'orderby' 			=> 'rand'
 	);
 	$queryFotografias = new WP_Query( $args );
-	if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post(); ?>
-		<?php
+	if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post();
 
-			$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+		$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
 
-			$coleccionColecciones 		= wp_get_post_terms( $post->ID, 'coleccion' );
-			$coleccionColeccionesName 	= $coleccionColecciones[0]->name;
-			$coleccionColeccionesSlug 	= $coleccionColecciones[0]->slug;
+		$coleccionColecciones 		= wp_get_post_terms( $post->ID, 'coleccion' );
+		$coleccionColeccionesName 	= $coleccionColecciones[0]->name;
+		$coleccionColeccionesSlug 	= $coleccionColecciones[0]->slug;
 
-			$authorColecciones 		= wp_get_post_terms( $post->ID, 'fotografo' );
-			if ( $authorColecciones ){
-				$authorColeccionesName 	= $authorColecciones[0]->name;
-				$authorColeccionesSlug 	= $authorColecciones[0]->slug;
-			} else {
-				$authorColeccionesName 	= 'autor no identificado';
-			}
+		$authorColecciones 		= wp_get_post_terms( $post->ID, 'fotografo' );
+		if ( $authorColecciones ){
+			$authorColeccionesName 	= $authorColecciones[0]->name;
+			$authorColeccionesSlug 	= $authorColecciones[0]->slug;
+		} else {
+			$authorColeccionesName 	= 'autor no identificado';
+		}
 
-			$titleColecciones = get_the_title( $post->ID );
-			if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
-				$titleColecciones = NULL;
-			}
+		$titleColecciones = get_the_title( $post->ID );
+		if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
+			$titleColecciones = NULL;
+		}
 
-			$seriesColecciones = 0;
+		$seriesColecciones = 0;
 
-			$placeColecciones = wp_get_post_terms( $post->ID, 'lugar' );
-			if ( $placeColecciones ){
-				$placeColeccionesName 	= $placeColecciones[0]->name;
-			}
+		$placeColecciones = wp_get_post_terms( $post->ID, 'lugar' );
+		if ( $placeColecciones ){
+			$placeColeccionesName 	= $placeColecciones[0]->name;
+		}
 
-			$circaColecciones = 0;
+		$circaColecciones = 0;
 
-			$dateColecciones = wp_get_post_terms( $post->ID, 'año' );
-			if ( $dateColecciones ){
-				$dateColeccionesName 	= $dateColecciones[0]->name;
-			} else {
-				$dateColeccionesName 	= 's/f';
-			}
+		$dateColecciones = wp_get_post_terms( $post->ID, 'año' );
+		if ( $dateColecciones ){
+			$dateColeccionesName 	= $dateColecciones[0]->name;
+		} else {
+			$dateColeccionesName 	= 's/f';
+		}
 
-			$themesColecciones = wp_get_post_terms( $post->ID, 'tema' );
-			if ( ! $themesColecciones ){
-				$themesColeccionesName 	= '';
-			}
+		$themesColecciones = wp_get_post_terms( $post->ID, 'tema' );
+		if ( ! $themesColecciones ){
+			$themesColeccionesName 	= '';
+		}
 
-			$permalinkColeccion = get_permalink( $post->ID );
+		$permalinkColeccion = get_permalink( $post->ID );
 	endwhile; endif; wp_reset_query(); ?>
 	<section class="[ colecciones ] [ bg-image ]" style="background-image: url(<?php echo $bgColecciones[0]; ?>)">
 		<div class="[ opacity-gradient rectangle ]">
@@ -78,41 +77,42 @@
 			<div class="[ media-info media-info--large ] [ xmall-12 ] [ shown--large ]">
 				<p class="[ text-center ]">
 
+					<!-- NOMBRE APELLIDO -->
+					<?php if ( $authorColeccionesName == 'Autor no identificado' ){ ?>
+						<span class="[ media--info__author ]"><?php echo $authorColeccionesName; ?></span>,
+					<?php } else { ?>
+						<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
+					<?php } ?>
 
-				<!-- NOMBRE APELLIDO -->
-				<?php if ( $authorColeccionesName == 'Autor no identificado' ){ ?>
-					<span class="[ media--info__author ]"><?php echo $authorColeccionesName; ?></span>,
-				<?php } else { ?>
-					<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
-				<?php } ?>
+					<!-- TÍTULO -->
+					<?php if ( $titleColecciones ){ ?>
+						<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleColecciones; ?></a>,
+					<?php } ?>
 
-				<!-- TÍTULO -->
-				<?php if ( $titleColecciones ){ ?>
-					<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleColecciones; ?></a>,
-				<?php } ?>
+					<!-- DE LA SERIE -->
+					<?php if ( $seriesColecciones ){ ?>
+						de la serie <span class="[ media--info__series ]"><?php echo $seriesColecciones; ?></span>,
+					<?php } ?>
 
-				<!-- DE LA SERIE -->
-				<?php if ( $seriesColecciones ){ ?>
-					de la serie <span class="[ media--info__series ]"><?php echo $seriesColecciones; ?></span>,
-				<?php } ?>
+					<!-- LUGAR -->
+					<?php if ( $placeColecciones ){ ?>
+						<span class="[ media--info__place ]"><?php echo $placeColeccionesName; ?></span>,
+					<?php } ?>
 
-				<!-- COLECCION -->
-				<br /> de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>,
+					<!-- CIRCA -->
+					<?php if ( $circaColecciones ){ ?>
+						<span class="[ media--info__circa ]">circa </span>
+					<?php } ?>
 
-				<!-- LUGAR -->
-				<?php if ( $placeColecciones ){ ?>
-					<span class="[ media--info__place ]"><?php echo $placeColeccionesName; ?></span>,
-				<?php } ?>
+					<!-- AÑO -->
+					<?php if ( $dateColecciones ){ ?>
+						<span class="[ media--info__date ]"><?php echo $dateColeccionesName; ?></span>,
+					<?php } ?>
 
-				<!-- CIRCA -->
-				<?php if ( $circaColecciones ){ ?>
-					<span class="[ media--info__circa ]">circa </span>
-				<?php } ?>
+					<!-- COLECCION -->
+					<br />
+					de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>
 
-				<!-- AÑO -->
-				<?php if ( $dateColecciones ){ ?>
-					<span class="[ media--info__date ]"><?php echo $dateColeccionesName; ?></span>
-				<?php } ?>
 				</p>
 
 				<!-- TAGS -->
