@@ -274,9 +274,9 @@
 		</section><!-- .filters -->
 	<?php } ?>
 	<!-- /** -->
-	<!-- * If the post type is "fotógrafos" add wrapper and center it so the reuslts do not use the full width -->
+	<!-- * If the post type is different from "fotografias" add wrapper and center it so the results do not use the full width -->
 	<!-- **/ -->
-	<section class="[ results ] [ row row--no-margins ] [ margin-bottom ] <?php echo ($postType == 'fotógrafos' ? '[ text-center ][ wrapper ][ center ]' : ''); ?>">
+	<section class="[ results ] [ row row--no-margins ] [ margin-bottom ] <?php echo ($postType !== 'fotografias' ? '[ text-center ][ wrapper ][ center ]' : ''); ?>">
 	</section><!-- .results -->
 	<div class="[ loader ] [ center ] ">
 		<div></div>
