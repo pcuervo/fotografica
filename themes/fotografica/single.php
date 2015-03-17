@@ -2,11 +2,18 @@
 	the_post();
 	the_post_thumbnail('full', array('class' => '[ margin-bottom ] [ full-height ]'));
 
+
 	/*------------------------------------*\
 	    #GET THE POST TYPE
 	\*------------------------------------*/
 	$postType = get_post_type();
 
+
+
+
+	/*------------------------------------*\
+	    #DATOS
+	\*------------------------------------*/
 	$taxonomia = '';
 	if ( $postType == 'fotografias' ){
 		$taxonomia = 'coleccion';
@@ -33,6 +40,8 @@
 	if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
 		$titleColecciones = NULL;
 	}
+
+	$slugPost = $post->post_name;
 
 	$seriesColecciones = 0;
 
@@ -107,18 +116,26 @@
 				<?php } ?>
 
 
+
+
+
 				<!--  /********************************\ -->
 					<!-- #PROYECTOS -->
 				<!--  \**********************************/ -->
-				<?php if ( $postType == 'proyectos' ){ ?>
+				<?php if ( $postType === 'proyectos' ){ ?>
 					<span class="[ media--info__name]"> <?php the_title( ); ?></span>
 				<?php } ?>
+
+
+
+				<!--  /********************************\ -->
+					<!-- #FOTÓGRAFOS -->
+				<!--  \**********************************/ -->
+				<?php if ( $postType === 'fotografos' ){ ?>
+					<h2 class="[ title ][ text-center ]"> <?php the_title( ); ?></h2>
+				<?php } ?>
+
 			</p>
-		</div>
-		<div class="[ filters__results ] [ padding--small text-center ]">
-			<a class="[ filter--active ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">Manuel Álvarez Bravo</a>
-			<a class="[ filter--active ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">#méxico</a>
-			<a class="[ filter--active ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]">1960</a>
 		</div>
 	</section>
 	<section class="[ share ] [ margin-bottom--large ]">
@@ -140,36 +157,85 @@
 		</div><!-- .wrapper -->
 	</section><!-- .share -->
 	<section class="[ margin-bottom--large ][ single-content ]">
-		<div class="[ wrapper ][ ]">
-			<?php
-			if ( $postType == 'carteleras' ){
-				$fecha_inicial = get_post_meta( $post->ID, '_evento_fecha_inicial_meta', true);
-				$fecha_final = get_post_meta( $post->ID, '_evento_fecha_final_meta', true);
-			?>
-				<p><?php echo 'Del '.$fecha_inicial.' al '.$fecha_final ?></p>
-				<div class="[ form-group ] [ margin-bottom ]">
-	                <a class="[ addthisevent ] [ btn btn-primary btn-go ]" href="#" title="Add to Calendar" data-track="ga('send', 'event', 'solicitudes', 'click', 'ate-calendar');">
-	                    <span>Agregar a mi calendario</span>
-	                    <span class="_start"><?php echo $fecha_inicial ?></span>
-	                    <span class="_end"><?php echo $fecha_final ?></span>
-	                    <span class="_zonecode">12</span>
-	                    <span class="_summary"><?php echo $post->post_title; ?></span>
-	                    <span class="_organizer">Organizer</span>
-	                    <span class="_organizer_email">Organizer e-mail</span>
-	                    <span class="_all_day_event">true</span>
-	                    <span class="_date_format">DD/MM/YYYY</span>
-	                </a>
-	            </div><!-- form-group -->
-			<?php } ?>
-			<?php the_content(); ?>
+		<div class="[ wrapper ]">
+			<div class="[ row ]">
+				<aside class="[ shown--large ][ columna medium-2 large-3 ][ text-right serif--italic ]">
+					<?php
+						if ( $postType == 'carteleras' ){
+							$fecha_inicial = get_post_meta( $post->ID, '_evento_fecha_inicial_meta', true);
+							$fecha_final = get_post_meta( $post->ID, '_evento_fecha_final_meta', true);
+						?>
+							<p><?php echo 'Del '.$fecha_inicial.' al '.$fecha_final ?></p>
+							<div class="[ form-group ] [ margin-bottom ]">
+								<a class="[ addthisevent ] [ btn btn-primary btn-go ]" href="#" title="Add to Calendar" data-track="ga('send', 'event', 'solicitudes', 'click', 'ate-calendar');">
+									<span>Agregar a mi calendario</span>
+									<span class="_start"><?php echo $fecha_inicial ?></span>
+									<span class="_end"><?php echo $fecha_final ?></span>
+									<span class="_zonecode">12</span>
+									<span class="_summary"><?php echo $post->post_title; ?></span>
+									<span class="_organizer">Organizer</span>
+									<span class="_organizer_email">Organizer e-mail</span>
+									<span class="_all_day_event">true</span>
+									<span class="_date_format">DD/MM/YYYY</span>
+								</a>
+							</div><!-- form-group -->
+						<?php } ?>
+				</aside>
+				<div class="[ columna small-12 medium-10 large-6 xxlarge-4 center ]">
+					<?php the_content(); ?>
+				</div>
+			</div>
 		</div><!-- .wrapper -->
 	</section>
-	<?php
-	// db563839239
-	if( $post_type != 'fotografos') { ?>
+
+
+	<?php if( $post_type === 'fotografos') { ?>
+		<section>
+			<h2 class="[ title ] [ text-center ]">Trabajo</h2>
+			<div class="[ wrapper ]">
+				<article class="[ results ] [ row row--no-margins ] [ margin-bottom ]">
+					<?php
+						$trabajoArgs = array(
+							'post_type' => 'fotografias',
+							'numberposts' => -1,
+							'tax_query'   => array(
+								array(
+									'field'    => 'slug',
+									'taxonomy' => 'fotografo',
+									'terms'    => $slugPost
+								),
+							)
+						);
+						$trabajoQuery = new WP_Query( $trabajoArgs );
+
+						if( $trabajoQuery->have_posts() ) : while( $trabajoQuery->have_posts() ) : $trabajoQuery->the_post(); ?>
+
+							<article class="[ result ] [ columna xmall-6 small-ls-12 medium-4 large-3 ] [ margin-bottom-small ]" data-id="2379">
+								<div class="[ relative ]">
+									<a class="[ block ]" href="http://localhost:8888/fotografica/fotografias/sin-titulo/">
+										<img src="http://localhost:8888/fotografica/wp-content/uploads/2013/10/084_079_000-298x300.jpg" class="[ image-responsive ]">
+										<span class="[ opacity-gradient--full ]"></span>
+									</a>
+									<div class="[ media-info media-info--small ] [ xmall-12 ]">
+										<a class="[ block ]" href="http://localhost:8888/fotografica/fotografias/sin-titulo/"></a>
+										<p class="[ text-center ]">
+											<a class="[ block ]" href="http://localhost:8888/fotografica/fotografias/sin-titulo/"></a>
+											<a href="gertrude-duby-blom" class="[ media--info__author ]">Gertrude Duby Blom</a>,
+											<span class="[ media--info__date ][ shown--large--inline ]">1984</span>,
+											<br> de la colección <a href="#" class="[ media--info__colection ]">Colección Centro Cultural Arte Contemporáneo</a>
+										</p>
+									</div>
+								</div>
+							</article>
+					<?php endwhile; endif; ?>
+				</article>
+			</div>
+		</section>
+	<?php }
+
+	if( $post_type !== 'fotografos') { ?>
 		<section class="[ margin-bottom ]">
 			<h2 class="[ title ] [ text-center ]">Te puede interesar</h2>
-
 			<div class="[ wrapper ]">
 				<div class="[ row ]">
 					<?php
@@ -193,7 +259,6 @@
 						}
 						$random_term = rand(0, count($terms)-1);
 					}
-
 
 					$counter = 1;
 					$bgColecciones = '';
@@ -230,7 +295,6 @@
 					if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post();
 
 						$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
-
 
 						$coleccionColecciones 		= wp_get_post_terms( $post->ID, 'coleccion' );
 						$coleccionColeccionesName 	= $coleccionColecciones[0]->name;
@@ -293,9 +357,6 @@
 											de la serie <span class="[ media--info__series ]"><?php echo $seriesColecciones; ?></span>,
 										<?php } ?>
 
-										<!-- COLECCION -->
-										<br /> de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>,
-
 										<!-- CIRCA -->
 										<?php if ( $circaColecciones ){ ?>
 											<span class="[ media--info__circa ]">circa </span>
@@ -303,8 +364,11 @@
 
 										<!-- AÑO -->
 										<?php if ( $dateColecciones ){ ?>
-											<span class="[ media--info__date ]"><?php echo $dateColeccionesName; ?></span>
+											<span class="[ media--info__date ]"><?php echo $dateColeccionesName; ?></span>,
 										<?php } ?>
+
+										<!-- COLECCION -->
+										<br /> de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>
 									</p>
 								</div>
 							</div>

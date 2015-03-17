@@ -8,6 +8,9 @@
 	if( $postType == 'fotografos' ){
 		$postType = 'fotógrafos';
 	}
+	if( $postType == 'carteleras' ){
+		$postType = 'cartelera';
+	}
 
 	/*------------------------------------*\
 	    #ARCHIVE HERO
@@ -136,6 +139,19 @@
 		</div>
 	</section>
 
+
+	<?php
+
+		/*------------------------------------*\
+		    #Revert $posttype variable value
+		\*------------------------------------*/
+
+		if( $postType == 'carteleras' ){
+			$postType = 'cartelera';
+		}
+	?>
+
+
 	<!-- /** -->
 	<!-- * If the post type is "proyectos" or "exposiciones" the do not display filters at all -->
 	<!-- **/ -->
@@ -161,6 +177,12 @@
 						<!--  \**********************************/ -->
 						<?php if ( $postType == 'eventos' OR $postType == 'carteleras' ){ ?>
 							<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="fecha">Fecha</a>
+						<?php } ?>
+						<!--  /********************************\ -->
+							<!-- #PUBLICACIONES -->
+						<!--  \**********************************/ -->
+						<?php if ( $postType == 'publicaciones' ){ ?>
+							<a class="[ tab-filter ][ text-center ][ columna xmall-4 medium-2 ]" href="#" data-filter="publicaciones">Tipo</a>
 						<?php } ?>
 					</div><!-- row -->
 				</div><!-- wrapper -->
@@ -257,6 +279,11 @@
 						</form>
 					</div><!-- .filter-buscar -->
 				<?php } ?>
+
+
+
+
+
 				<!--  /********************************\ -->
 					<!-- #EVENTOS / CARTELERA -->
 				<!--  \**********************************/ -->
@@ -265,6 +292,16 @@
 						<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ] " data-type="eventos" data-value="anteriores">Eventos anteriores</a>
 						<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="eventos" data-value="hoy">Hoy</a>
 						<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="eventos" data-value="proximos">Próximos eventos</a>
+					</div><!-- .filter-fecha -->
+				<?php } ?>
+
+				<!--  /********************************\ -->
+					<!-- #PUBLICACIONES -->
+				<!--  \**********************************/ -->
+				<?php if ( $postType == 'publicaciones' ){ ?>
+					<div class="[ filter-publicaciones ]">
+						<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ] " data-type="tipo" data-value="nuestras-publicaciones">Nuestra publicaciones</a>
+						<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="tipo" data-value="coediciones">Coediciones</a>
 					</div><!-- .filter-fecha -->
 				<?php } ?>
 			</div><!-- filters__content -->

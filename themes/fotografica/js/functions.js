@@ -171,6 +171,19 @@ function toggleFiltersNav(){
 	}
 }
 
+/**
+ * Toggle iframe in the footer
+**/
+function toggleiFrame(){
+
+	console.log('toggleiFrame');
+	console.log($('.iframe-fundacion-televisa'));
+
+	$('.iframe-fundacion-televisa').toggle();
+
+
+}
+
 
 function addFilter(element){
 
@@ -477,7 +490,7 @@ function getHtmlFotografos(results){
 }
 
 function getHtmlCarteleras(results){
-	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
+	var html_resultados = '<article class="[ result ][ columna xmall-6 small-ls-12 medium-4 large-3 ][ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
 			<a class="[ block ]" href="'+results.permalink+'"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
@@ -485,11 +498,11 @@ function getHtmlCarteleras(results){
 				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
 					<p class="[ text-center ]"> \
 						<a href="'+results.permalink+'" class="[ media--info__name ]">'+results.titulo+'</a> \
-					</p> \
-					<p class="[ text-center ]"> \
-						del '+results.fec_ini+' al '+results.fec_fin+' \
-					</p> \
-				</div> \
+					</p>';
+					if ( results.fec_ini ){
+						html_resultados = html_resultados+'<p class="[ text-center ]">del '+results.fec_ini+' al '+results.fec_fin+'</p> ';
+					}
+				html_resultados = html_resultados+'</p> \
 			</a> \
 		</div> \
 	</article>';
@@ -511,7 +524,7 @@ function getHtmlProyectos(results){
 }// getHtmlProyectos
 
 function getHtmlExposiciones(results){
-	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
+	var html_resultados = '<article class="[ result ][ columna xmall-6 small-ls-12 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
 			<a class="[ block ]" href="'+results.permalink+'"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
@@ -528,7 +541,7 @@ function getHtmlExposiciones(results){
 }
 
 function getHtmlPublicaciones(results){
-	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
+	var html_resultados = '<article class="[ result ][ columna xmall-6 small-ls-12 medium-4 large-3 ][ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
 			<a class="[ block ]" href="'+results.permalink+'"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \

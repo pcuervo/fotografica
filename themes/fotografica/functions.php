@@ -323,6 +323,11 @@
 							fixedHeader();
 						});
 
+						$('.js-toggle-iframe').on('click', function(){
+							console.log('click');
+							toggleiFrame();
+						});
+
 
 
 
