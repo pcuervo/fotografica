@@ -451,34 +451,34 @@ function getHtmlColecciones(results){
 			<a class="[ block ]" href="'+results.permalink+'"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
 				<span class="[ opacity-gradient--full ]"></span> \
-				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
-					<p class="[ text-center ]">';
-						if ( results.autor ){
-							//console.log('autor: '+results.autor);
-							if ( results.autor != 'Autor no identificado' ){
-								html_resultados = html_resultados+'<a href="'+results.url_autor+'" class="[ media--info__author ]">'+results.autor+'</a>, ';
-							}
-						}
-						if ( results.titulo ){
-							//console.log('titulo: '+results.titulo);
-							if ( results.titulo !== 'Sin título' ){
-								html_resultados = html_resultados+'<a href="#" class="[ media--info__name ]">'+results.titulo+'</a>, ';
-							}
-						}
-						if ( results.serie ){
-							//console.log('autor: '+results.autor);
-							html_resultados = html_resultados+'de la serie <span class="[ media--info__series ]">'+results.serie+'</span>, ';
-						}
-						if ( results.ano ){
-							//console.log('ano: '+results.ano);
-							html_resultados = html_resultados+'<span class="[ media--info__date ][ shown--large--inline ]">'+results.ano+'</span>, ';
-						}
-						if ( results.coleccion ){
-							html_resultados = html_resultados+'<br /> de la colección <a href="#" class="[ media--info__colection ]">'+results.coleccion+'</a>';
-						}
-					html_resultados = html_resultados+'</p> \
-				</div> \
 			</a> \
+			<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
+				<p class="[ text-center ]">';
+					if ( results.autor ){
+						//console.log('autor: '+results.autor);
+						if ( results.autor != 'Autor no identificado' ){
+							html_resultados = html_resultados+'<a href="'+results.url_autor+'" class="[ media--info__author ]">'+results.autor+'</a>, ';
+						}
+					}
+					if ( results.titulo ){
+						//console.log('titulo: '+results.titulo);
+						if ( results.titulo !== 'Sin título' ){
+							html_resultados = html_resultados+'<a href="#" class="[ media--info__name ]">'+results.titulo+'</a>, ';
+						}
+					}
+					if ( results.serie ){
+						//console.log('autor: '+results.autor);
+						html_resultados = html_resultados+'de la serie <span class="[ media--info__series ]">'+results.serie+'</span>, ';
+					}
+					if ( results.ano ){
+						//console.log('ano: '+results.ano);
+						html_resultados = html_resultados+'<span class="[ media--info__date ][ shown--large--inline ]">'+results.ano+'</span>, ';
+					}
+					if ( results.coleccion ){
+						html_resultados = html_resultados+'<br /> de la colección <a href="#" class="[ media--info__colection ]">'+results.coleccion+'</a>';
+					}
+				html_resultados = html_resultados+'</p> \
+			</div> \
 		</div> \
 	</article>';
 	return html_resultados;

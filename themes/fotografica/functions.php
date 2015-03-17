@@ -39,39 +39,40 @@
 			$postConservacionIDArray 	= get_post_ID_by_slug('conservacion', 'nuestro-trabajo');
 			$postConservacionID 		= $postConservacionIDArray[0]->ID;
 
-			//echo 'sss'.;
+			$post 						= get_post();
+			echo '<pre>';
+				print_r($post);
+			echo '</pre>';
 
-			/*------------------------------------*\
-			    #HOME
-			\*------------------------------------*/
-			if ( is_home() ) { ?>
-				<script type="text/javascript">
-					(function( $ ) {
-						"use strict";
-						$(function(){
-
-						});
-					}(jQuery));
-				</script>
-
-
-
-			<!-- /**********************************\ -->
-				<!-- #ARCHIVE -->
-			<!-- \**********************************/ -->
-			<?php
-			} elseif ( is_archive() ) {
-				$postType = get_post_type();
+			$postType 					= get_post_type( get_post() );
+			echo 'jsjsjsjs';
+			echo $postType;
 			?>
-				<script type="text/javascript">
-					(function( $ ) {
-						"use strict";
-						$(function(){
+
+			<script type="text/javascript">
+				(function( $ ) {
+					"use strict";
+					$(function(){
+
+						/*------------------------------------*\
+							#HOME
+						\*------------------------------------*/
+						<?php if ( is_home() ) { ?>
+
+
+
+
+						/*------------------------------------*\
+							#ARCHIVE
+						\*------------------------------------*/
+						<?php } elseif ( is_archive() ) { ?>
+
 							var existing_ids = 0;
 
-							/*------------------------------------*\
-								#Triggered events
-							\*------------------------------------*/
+
+							/**
+							 * Triggered events
+							**/
 
 							$('.tab-filter').on('click', function(){
 								showFilters( this );
@@ -108,7 +109,7 @@
 							/**
 							 * If the postType is fotografos do not run masonry
 							**/
-							<?php if ( $postType != 'fotografos'){ ?>
+							<?php if ( $postType !== 'fotografos'){ ?>
 								runMasonry('.results', '.result' );
 							<?php } ?>
 
@@ -116,38 +117,27 @@
 							addFilter( filter );
 							advancedSearch('<?php echo $postType ?>', getFilters(false), 20, existing_ids);
 
-						});
-					}(jQuery));
-				</script>
 
 
 
-			<!-- /**********************************\ -->
-				<!-- #POST TYPE -->
-			<!-- \**********************************/ -->
-			<?php } elseif ( get_post_type() == 'post-type') { ?>
-				<script type="text/javascript">
-					(function( $ ) {
-						"use strict";
-						$(function(){
 
-						});
-					}(jQuery));
-				</script>
+						/*------------------------------------*\
+							#POST TYPE
+						\*------------------------------------*/
+						<?php } elseif ( get_post_type() == 'post-type') { ?>
 
 
 
-			<!-- /**********************************\ -->
-				<!-- #PAGE COLECCIONES -->
-			<!-- \**********************************/ -->
-			<?php } elseif ( is_page() == 'colecciones') { ?>
-				<script type="text/javascript">
-					(function( $ ) {
-						"use strict";
-						$(function(){
-							/*------------------------------------*\
-								#ON LOAD
-							\*------------------------------------*/
+
+
+						/*------------------------------------*\
+							#PAGE COLECCIONES
+						\*------------------------------------*/
+						<?php } elseif ( is_page() == 'colecciones') { ?>
+
+							/**
+							 * On load
+							**/
 
 							runMasonry('.results', '.result' );
 
@@ -175,10 +165,9 @@
 								}
 							?>
 
-
-							/*------------------------------------*\
-								#Triggered events
-							\*------------------------------------*/
+							/**
+							 * Triggered events
+							**/
 
 							$('.tab-filter').on('click', function(){
 								showFilters( this );
@@ -226,35 +215,37 @@
 								closeModal( $(this) );
 							});
 
-						});
-					}(jQuery));
-				</script>
+
+
+
+						/*------------------------------------*\
+							#PAGE
+						\*------------------------------------*/
+						<?php } elseif( is_page('page') ) { ?>
 
 
 
 
-			<!-- /**********************************\ -->
-			<!-- #PAGE -->
-			<!-- \**********************************/ -->
-			<?php } elseif( is_page('page') ) { ?>
-				<script type="text/javascript">
-					(function( $ ) {
-						"use strict";
-						$(function(){
 
-						});
-					}(jQuery));
-				</script>
+						/*------------------------------------*\
+							#SINGLE
+						\*------------------------------------*/
+						<?php } elseif ( is_single() ) { ?>
+
+							console.log('fotografos');
+							/**
+							 * On load
+							**/
+							<?php if ( $postType === 'fotografos'){ ?>
+								console.log( 'if' );
+								runMasonry('.results', '.result' );
+							<?php } ?>
 
 
-			<!-- /**********************************\ -->
-				<!-- #SINGLE -->
-			<!-- \**********************************/ -->
-			<?php } elseif ( is_single() ) { ?>
-				<script type="text/javascript">
-					(function( $ ) {
-						"use strict";
-						$(function(){
+							/**
+							 * Triggered events
+							**/
+
 							$('.single-content').on('click','.single-content-image', function(){
 								openLightbox(this);
 							});
@@ -266,58 +257,41 @@
 									addLike(post_id);
 								}
 							});
-						});
-					}(jQuery));
-				</script>
 
 
 
 
-			<?php }
+						/*------------------------------------*\
+							#SINGLE CONSERVACION
+						\*------------------------------------*/
+						<?php }
 
-				if ( is_single('conservacion') ) { ?>
-				<!-- /**********************************\ -->
-					<!-- #SINGLE CONSERVACION -->
-				<!-- \**********************************/ -->
-				<script type="text/javascript">
-					(function( $ ) {
-						"use strict";
-						$(function(){
+							if ( is_single('conservacion') ) { ?>
 
-							/*------------------------------------*\
-								#ON LOAD
-							\*------------------------------------*/
+							/**
+							 * On load
+							**/
 							runFitVids('.fit-vids-wrapper');
 
-
-						});
-					}(jQuery));
-				</script>
-			<?php } ?>
+						<?php } ?>
 
 
 
 
 
-			<!-- /**********************************\ -->
-			<!-- #GLOBAL -->
-			<!-- \**********************************/ -->
-			<script type="text/javascript">
-				(function( $ ) {
-					"use strict";
-					$(function(){
 						/*------------------------------------*\
-							#ON LOAD
+							#GLOBAL
 						\*------------------------------------*/
+
+						/**
+						 * On load
+						**/
 						setHeightMinusElement('.overflow-scroll', '.mp-level', 'h2');
 
 
-
-
-
-						/*------------------------------------*\
-							#Triggered events
-						\*------------------------------------*/
+						/**
+						 * Triggered events
+						**/
 
 						$('.content-wrapper').scroll(function(){
 							fixedHeader();
@@ -331,16 +305,17 @@
 
 
 
-
-						/*------------------------------------*\
-							#RESPONSIVE
-						\*------------------------------------*/
+						/**
+						 * Responsive
+						**/
 						$(window).resize(function(){
 
 						});
+
 					});
 				}(jQuery));
 			</script>
+
 		<?php }
 		}
 	add_action( 'wp_footer', 'footerScripts', 21 );

@@ -132,7 +132,7 @@
 					<!-- #FOTÓGRAFOS -->
 				<!--  \**********************************/ -->
 				<?php if ( $postType === 'fotografos' ){ ?>
-					<h2 class="[ title ][ text-center ]"> <?php the_title( ); ?></h2>
+					<h2 class="[ title ][ text-center ]"> <?php the_title(); ?></h2>
 				<?php } ?>
 
 			</p>
@@ -189,45 +189,113 @@
 	</section>
 
 
-	<?php if( $post_type === 'fotografos') { ?>
+	<?php if( $post_type === 'fotografos' ) { ?>
 		<section>
-			<h2 class="[ title ] [ text-center ]">Trabajo</h2>
+			<h2 class="[ title ][ text-center ]">Trabajo</h2>
 			<div class="[ wrapper ]">
-				<article class="[ results ] [ row row--no-margins ] [ margin-bottom ]">
+				<article class="[ results ][ row row--no-margins ][ margin-bottom ]">
 					<?php
 						$trabajoArgs = array(
-							'post_type' => 'fotografias',
-							'numberposts' => -1,
-							'tax_query'   => array(
+							'post_type'      => 'fotografias',
+							'posts_per_page' => -1,
+							'tax_query'      => array(
 								array(
 									'field'    => 'slug',
 									'taxonomy' => 'fotografo',
 									'terms'    => $slugPost
 								),
-							)
+							),
+							//'post__not_in'		=> array($post->ID)
 						);
 						$trabajoQuery = new WP_Query( $trabajoArgs );
+						if( $trabajoQuery->have_posts() ) : while( $trabajoQuery->have_posts() ) : $trabajoQuery->the_post();
 
-						if( $trabajoQuery->have_posts() ) : while( $trabajoQuery->have_posts() ) : $trabajoQuery->the_post(); ?>
+							$coleccionTrabajo 		= wp_get_post_terms( $post->ID, 'coleccion' );
+							$coleccionTrabajoName 	= $coleccionTrabajo[0]->name;
+							$coleccionTrabajoSlug 	= $coleccionTrabajo[0]->slug;
 
-							<article class="[ result ] [ columna xmall-6 small-ls-12 medium-4 large-3 ] [ margin-bottom-small ]" data-id="2379">
-								<div class="[ relative ]">
+							$authorTrabajo 		= wp_get_post_terms( $post->ID, 'fotografo' );
+							if ( $authorTrabajo ){
+								$authorTrabajoName 	= $authorTrabajo[0]->name;
+								$authorTrabajoSlug 	= $authorTrabajo[0]->slug;
+							} else {
+								$authorTrabajoName 	= 'Autor no identificado';
+							}
+
+							$titleTrabajo = get_the_title( $post->ID );
+
+							if ( strpos($titleTrabajo, 'Sin título') !== false OR $titleTrabajo == '' OR strpos($titleTrabajo, '&nbsp') !== false ){
+								$titleTrabajo = NULL;
+							}
+
+
+							$seriesTrabajo = 0;
+
+							$placeTrabajo = wp_get_post_terms( $post->ID, 'lugar' );
+							if ( $placeTrabajo ){
+								$placeTrabajoName 	= $placeTrabajo[0]->name;
+							}
+
+							$circaTrabajo = 0;
+
+							$dateTrabajo = wp_get_post_terms( $post->ID, 'año' );
+							if ( $dateTrabajo ){
+								$dateTrabajoName 	= $dateTrabajo[0]->name;
+							} else {
+								$dateTrabajoName 	= 's/f';
+							}
+
+							$themesTrabajo = wp_get_post_terms( $post->ID, 'tema' );
+							if ( ! $themesTrabajo ){
+								$themesTrabajoName 	= '';
+							}
+
+							$permalinkTrabajo = get_permalink( $post->ID );
+
+
+						?>
+						<div class="[ result ] [ columna xmall-6 small-ls-12 medium-4 large-3 ] [ margin-bottom-small ]" data-id="2379">
+							<div class="[ relative ]">
+								<a class="[ block ]" href="<?php the_permalink(); ?>">
+									<?php the_post_thumbnail('medium', array('class' => '[ image-responsive ]') ); ?>
+									<span class="[ opacity-gradient--full ]"></span>
+								</a>
+								<div class="[ media-info media-info--small ] [ xmall-12 ]">
 									<a class="[ block ]" href="http://localhost:8888/fotografica/fotografias/sin-titulo/">
-										<img src="http://localhost:8888/fotografica/wp-content/uploads/2013/10/084_079_000-298x300.jpg" class="[ image-responsive ]">
-										<span class="[ opacity-gradient--full ]"></span>
-									</a>
-									<div class="[ media-info media-info--small ] [ xmall-12 ]">
-										<a class="[ block ]" href="http://localhost:8888/fotografica/fotografias/sin-titulo/"></a>
-										<p class="[ text-center ]">
-											<a class="[ block ]" href="http://localhost:8888/fotografica/fotografias/sin-titulo/"></a>
-											<a href="gertrude-duby-blom" class="[ media--info__author ]">Gertrude Duby Blom</a>,
-											<span class="[ media--info__date ][ shown--large--inline ]">1984</span>,
-											<br> de la colección <a href="#" class="[ media--info__colection ]">Colección Centro Cultural Arte Contemporáneo</a>
-										</p>
-									</div>
+									<p class="[ text-center ]">
+										<!-- NOMBRE APELLIDO -->
+										<?php if ( $authorTrabajoName != 'Autor no identificado' ){ ?>
+											<a href="<?php echo site_url( $authorTrabajoSlug ); ?>" class="[ media--info__author ]"><?php echo $authorTrabajoName;?></a>,
+										<?php } ?>
+
+										<!-- TÍTULO -->
+										<?php if ( $titleTrabajo ){ ?>
+											<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleTrabajo; ?></a>,
+										<?php } ?>
+
+										<!-- DE LA SERIE -->
+										<?php if ( $seriesTrabajo ){ ?>
+											de la serie <span class="[ media--info__series ]"><?php echo $seriesTrabajo; ?></span>
+										<?php } ?>
+
+										<!-- CIRCA -->
+										<?php if ( $circaTrabajo ){ ?>
+											<span class="[ media--info__circa ]">circa </span>,
+										<?php } ?>
+
+										<!-- AÑO -->
+										<?php if ( $dateTrabajo ){ ?>
+											<span class="[ media--info__date ]"><?php echo $dateTrabajoName; ?></span>,
+										<?php } ?>
+
+										<!-- COLECCION -->
+										<br />
+										de la colección <a href="<?php echo site_url( $coleccionTrabajoSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionTrabajoName; ?></a>
+									</p>
 								</div>
-							</article>
-					<?php endwhile; endif; ?>
+							</div>
+						</div>
+					<?php endwhile; endif; wp_reset_postdata(); ?>
 				</article>
 			</div>
 		</section>
@@ -379,7 +447,6 @@
 		</section><!-- .results -->
 	<?php } ?>
 	<div class="[ lightbox ] [ cycle-slideshow ]">
-
 		<?php
 			$attachedMediaArgs = array(
 				'post_type' => 'attachment',
