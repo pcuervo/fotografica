@@ -1,6 +1,10 @@
 <?php get_header();
-	the_post();
-	the_post_thumbnail('full', array('class' => '[ margin-bottom ] [ full-height ]'));
+	the_post(); ?>
+	<div class="[ full-height ][ margin-bottom ]">
+		<?php the_post_thumbnail('full'); ?>
+	</div>
+
+	<?php
 
 
 	/*------------------------------------*\
@@ -140,7 +144,7 @@
 	</section>
 	<section class="[ share ] [ margin-bottom--large ]">
 		<div class="[ wrapper ][ clearfix ]">
-			<div class="[ clearfix ][ columna medium-4 center ]">
+			<div class="[ clearfix ][ columna medium-8 large-4 center ]">
 				<div class="[ button button--dark button__share button--twitter ] [ columna xmall-4 ]">
 					<i class="[ xmall-3 inline-block align-middle ] fa fa-twitter"></i><span class="[ xmall-2 ]">&nbsp;</span><span class="[ xmall-7 inline-block align-middle ]">54</span>
 				</div>
@@ -205,7 +209,7 @@
 									'terms'    => $slugPost
 								),
 							),
-							//'post__not_in'		=> array($post->ID)
+							'post__not_in'		=> array($post->ID)
 						);
 						$trabajoQuery = new WP_Query( $trabajoArgs );
 						if( $trabajoQuery->have_posts() ) : while( $trabajoQuery->have_posts() ) : $trabajoQuery->the_post();
