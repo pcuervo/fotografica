@@ -171,6 +171,19 @@ function toggleFiltersNav(){
 	}
 }
 
+/**
+ * Toggle iframe in the footer
+**/
+function toggleiFrame(){
+
+	console.log('toggleiFrame');
+	console.log($('.iframe-fundacion-televisa'));
+
+	$('.iframe-fundacion-televisa').toggle();
+
+
+}
+
 
 function addFilter(element){
 
@@ -256,7 +269,9 @@ function getFilters(is_cargando_mas){
 
 function clearGrid(){
 	$('.results').empty();
-	runMasonry('.results', '.result' );
+	if ( post_type !== 'fotografos' && post_type !== 'proyectos' ){
+		runMasonry('.results', '.result' );
+	}
 }// clearGrid
 
 function fixedHeader(){
@@ -374,9 +389,10 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 			});
 
 			/**
-			 * If the postType is fotografos do not run masonry
+			 * If the postType is 'fotografos' or "proyectos" do not run masonry
 			**/
-			if ( post_type !== 'fotografos' ){
+			//console.log(post_type);
+			if ( post_type !== 'fotografos' && post_type !== 'proyectos' ){
 				runMasonry('.results', '.result' );
 			}
 
@@ -430,39 +446,36 @@ function getExistingIds(){
 }// getExistingIds
 
 function getHtmlColecciones(results){
-	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
+	var html_resultados = '<article class="[ result ] [ columna xmall-6 small-ls-12 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
 			<a class="[ block ]" href="'+results.permalink+'"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
 				<span class="[ opacity-gradient--full ]"></span> \
-				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
-					<p class="[ text-center ]">';
-						if ( results.autor ){
-							//console.log('autor: '+results.autor);
-							if ( results.autor != 'Autor no identificado' ){
-								html_resultados = html_resultados+'<a href="'+results.url_autor+'" class="[ media--info__author ]">'+results.autor+'</a>, ';
-							}
-						}
-						if ( results.titulo ){
-							//console.log('titulo: '+results.titulo);
-							if ( results.titulo !== 'Sin título' ){
-								html_resultados = html_resultados+'<a href="#" class="[ media--info__name ]">'+results.titulo+'</a>, ';
-							}
-						}
-						if ( results.serie ){
-							//console.log('autor: '+results.autor);
-							html_resultados = html_resultados+'de la serie <span class="[ media--info__series ]">'+results.serie+'</span>, ';
-						}
-						if ( results.ano ){
-							//console.log('ano: '+results.ano);
-							html_resultados = html_resultados+'<span class="[ media--info__date ][ shown--large--inline ]">'+results.ano+'</span>, ';
-						}
-						if ( results.coleccion ){
-							html_resultados = html_resultados+'<br /> de la colección <a href="#" class="[ media--info__colection ]">'+results.coleccion+'</a>';
-						}
-					html_resultados = html_resultados+'</p> \
-				</div> \
 			</a> \
+			<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
+				<p class="[ text-center ]">';
+					// console.log('autor: '+results.autor);
+					// console.log('titulo: '+results.titulo);
+					// console.log('autor: '+results.serie);
+					// console.log('ano: '+results.ano);
+					if ( results.autor ){
+						if ( results.autor != 'Autor no identificado' ){
+							html_resultados = html_resultados+'<a href="'+results.url_autor+'" class="[ media--info__author ]">'+results.autor+'</a>, ';
+						}
+					}
+					if ( results.titulo ){
+						if ( results.titulo !== 'Sin título' || results.titulo !== 'Sin t\u00edtulo' ){
+							html_resultados = html_resultados+'<a href="#" class="[ media--info__name ]">'+results.titulo+'</a>, ';
+						}
+					}
+					if ( typeof results.serie !== 'undefined' ){
+						html_resultados = html_resultados+'de la serie <span class="[ media--info__series ]">'+results.serie+'</span>, ';
+					}
+					if ( results.coleccion ){
+						html_resultados = html_resultados+'<br /> de la colección <a href="#" class="[ media--info__colection ]">'+results.coleccion+'</a>';
+					}
+				html_resultados = html_resultados+'</p> \
+			</div> \
 		</div> \
 	</article>';
 	return html_resultados;
@@ -474,7 +487,7 @@ function getHtmlFotografos(results){
 }
 
 function getHtmlCarteleras(results){
-	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
+	var html_resultados = '<article class="[ result ][ columna xmall-6 small-ls-12 medium-4 large-3 ][ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
 			<a class="[ block ]" href="'+results.permalink+'"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
@@ -482,11 +495,11 @@ function getHtmlCarteleras(results){
 				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
 					<p class="[ text-center ]"> \
 						<a href="'+results.permalink+'" class="[ media--info__name ]">'+results.titulo+'</a> \
-					</p> \
-					<p class="[ text-center ]"> \
-						del '+results.fec_ini+' al '+results.fec_fin+' \
-					</p> \
-				</div> \
+					</p>';
+					if ( results.fec_ini ){
+						html_resultados = html_resultados+'<p class="[ text-center ]">del '+results.fec_ini+' al '+results.fec_fin+'</p> ';
+					}
+				html_resultados = html_resultados+'</p> \
 			</a> \
 		</div> \
 	</article>';
@@ -494,24 +507,21 @@ function getHtmlCarteleras(results){
 }
 
 function getHtmlProyectos(results){
-	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
-		<div class="[ relative ]"> \
-			<a class="[ block ]" href="'+results.permalink+'"> \
-				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
-				<span class="[ opacity-gradient--full ]"></span> \
-				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
-					<p class="[ text-center ]"> \
-						<a href="'+results.permalink+'" class="[ media--info__name ]">'+results.titulo+'</a> \
-					</p> \
-				</div> \
-			</a> \
+	var html_resultados = '<article class="[ result ][ bg-image ][ columna columna-margin xmall-12 medium-6 ]" data-id="'+results.id+'" style="background-image: url('+results.img_url+')"> \
+		<div class="[ opacity-gradient ][ square square-absolute ]"> \
+			<a class="[ block ][ media-link ]" href="'+results.permalink+'"></a> \
+			<div class="[ media-info media-info--small ][ xmall-12 ]"> \
+				<p class="[ text-center ]"> \
+					<a href="'+results.permalink+'" class="[ media--info__name ]">'+results.titulo+'</a> \
+				</p> \
+			</div> \
 		</div> \
 	</article>';
 	return html_resultados;
 }// getHtmlProyectos
 
 function getHtmlExposiciones(results){
-	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
+	var html_resultados = '<article class="[ result ][ columna xmall-6 small-ls-12 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
 			<a class="[ block ]" href="'+results.permalink+'"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
@@ -528,7 +538,7 @@ function getHtmlExposiciones(results){
 }
 
 function getHtmlPublicaciones(results){
-	var html_resultados = '<article class="[ result ] [ columna xmall-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
+	var html_resultados = '<article class="[ result ][ columna xmall-6 small-ls-12 medium-4 large-3 ][ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
 			<a class="[ block ]" href="'+results.permalink+'"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \

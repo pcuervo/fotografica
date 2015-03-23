@@ -19,8 +19,13 @@
 									<p class="[ text-center ]"><small>Todos los derechos reservados Fundación Televisa</small></p>
 									<p class="[ text-center ]"><small><a href="<?php echo site_url('aviso-de-privacidad'); ?>">Aviso de privacidad</a></small></p>
 								</article>
+								<article class="[ text-center ][ margin-bottom--large ]">
+									<a href="#" class="[ inline-block ][ button button--xmall button--dark ][ js-toggle-iframe ]">
+										Información de Fundación Televisa
+									</a>
+								</article>
 							</footer>
-							<section>
+							<section class="[ iframe-fundacion-televisa ][ text-center ]">
 								<iframe src="http://www.fundaciontelevisa.org/footer/" frameborder="0" height="468px" width="100%"></iframe>
 							</section>
 						</section>

@@ -1,5 +1,6 @@
 <?php
 	get_header();
+
 	/*------------------------------------*\
 	    #GET THE POST TYPE
 	\*------------------------------------*/
@@ -9,9 +10,13 @@
 	$url_video_proyecto = get_post_meta($post->ID, '_evento_video_proyecto_meta', true);
 
 	if($terms[0]->slug == 'individual'){
-		the_post();
-		the_post_thumbnail('full', array('class' => '[ margin-bottom ] [ full-height ]'));
 
+		the_post(); ?>
+		<div class="[ full-height ][ margin-bottom ]">
+			<?php the_post_thumbnail('full'); ?>
+		</div>
+
+		<?php
 		$taxonomia = '';
 		if ( $postType == 'fotografias' ){
 			$taxonomia = 'coleccion';
@@ -65,7 +70,7 @@
 
 		<section class="[ share ] [ margin-bottom--large ]">
 			<div class="[ wrapper ][ clearfix ]">
-				<div class="[ clearfix ][ columna medium-4 center ]">
+				<div class="[ clearfix ][ columna medium-8 large-4 center ]">
 					<div class="[ button button--dark button__share ] [ columna xmall-4 ]">
 						<i class="[ xmall-3 inline-block align-middle ] fa fa-twitter"></i><span class="[ xmall-2 ]">&nbsp;</span><span class="[ xmall-7 inline-block align-middle ]">54</span>
 					</div>
@@ -80,10 +85,16 @@
 		</section><!-- .share -->
 		<section class="[ margin-bottom--large ][ single-content ]">
 			<div class="[ wrapper ][ ]">
-				<?php the_content(); ?>
-				<?php if ( $url_video_proyecto != '' ) { ?>
-					<div class="[ url-video ]]"><?php echo $url_video_proyecto ?></div>
-				<?php } ?>
+				<div class="[ row ]">
+					<aside class="[ shown--large ][ columna medium-2 large-3 ][ text-right serif--italic ]">
+						<?php if ( $url_video_proyecto != '' ) { ?>
+							<div class="[ url-video ]]"><?php echo $url_video_proyecto ?></div>
+						<?php } ?>
+					</aside>
+					<div class="[ columna small-12 medium-10 large-6 xxlarge-4 center ]">
+						<?php the_content(); ?>
+					</div>
+				</div>
 			</div><!-- .wrapper -->
 		</section>
 

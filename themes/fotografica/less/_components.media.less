@@ -22,10 +22,14 @@
  * Relative to screen size
 **/
 .full-height{
-	display: block;
+	max-height: calc( ~'100vh - 60px' );
+	position: relative;
+}
+
+.full-height img{
 	width: auto; max-width: 100%; height: auto; max-height: calc( ~'100vh - 60px' );
-	margin-right: auto;
-	margin-left: auto;
+	display: block;
+	.center;
 }
 
 .media-link{
@@ -139,14 +143,10 @@
 	 * Relative to screen size
 	**/
 	.square{
-		padding-bottom: calc( ~'100vh - 80px' );
+		padding-bottom: calc( ~'100vh - 60px' );
 	}
 	.rectangle{
 		padding-bottom: calc( ~'50vh - 80px' );
-	}
-
-	.full-height{
-		width: auto; height: calc( ~'100vh - 80px' );
 	}
 
 }
@@ -158,6 +158,26 @@
     #LARGE
 \*------------------------------------*/
 @media (min-width: @large) {
+
+	/*------------------------------------*\
+		#IMAGES
+	\*------------------------------------*/
+
+	/**
+	 * Relative to screen size
+	**/
+	.square{
+		padding-bottom: calc( ~'100vh - 80px' );
+	}
+	.full-height{
+		width: auto; height: calc( ~'100vh - 80px' );
+	}
+	.full-height img{
+		max-height: calc( ~'100vh - 80px' );
+		.center-full;
+	}
+
+
 
 	/*------------------------------------*\
 	#MEDIA

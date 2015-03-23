@@ -93,9 +93,6 @@
 						de la serie <span class="[ media--info__series ]"><?php echo $seriesColecciones; ?></span>,
 					<?php } ?>
 
-					<!-- COLECCION -->
-					<br /> de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>,
-
 					<!-- LUGAR -->
 					<?php if ( $placeColecciones ){ ?>
 						<span class="[ media--info__place ]"><?php echo $placeColeccionesName; ?></span>,
@@ -111,6 +108,9 @@
 						<span class="[ media--info__date ]"><?php echo $dateColeccionesName; ?></span>
 					<?php } ?>
 					</p>
+
+					<!-- COLECCION -->
+					<br /> de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>
 
 					<!-- TAGS -->
 					<div class="[ media-info__tags ] [ text-center ]">

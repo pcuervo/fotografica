@@ -48,13 +48,13 @@ module.exports = function(grunt) {
 						report: 'min'
 					},
 					files: {
-							"style.css": "less/master.less"
+						"style.css": "less/master.less"
 					}
 				}
 			},
 			watch: {
 				css: {
-					files: ["less/*.less", ],
+					files: ["less/*.less"],
 					tasks: ["less"]
 				},
 				js: {
