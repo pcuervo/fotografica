@@ -236,23 +236,22 @@
 
 							<?php global $current_link ?>
 							fbEnsureInit(showNumberShares('<?php echo $current_link ?>'));
-							<?php 
+							<?php
 								$tweets = json_decode(file_get_contents('http://cdn.api.twitter.com/1/urls/count.json?url='.$current_link));
 							?>
 							$('.js-tweet-count').text('<?php echo $tweets->count ?>');
-							
+
 							<?php if ( $postType === 'proyectos'){ ?>
 								//console.log( 'proyectos' );
 
 								// multiple elements
 								var posts = document.querySelectorAll('.final-tiles-gallery');
 								imagesLoaded( posts, function() {
-									console.log(posts);
-									console.log('all right');
 
-									//$('.final-tiles-gallery').finalTilesGallery();
+									$('.final-tiles-gallery').finalTilesGallery();
 
 								});
+
 							<?php } ?>
 
 							/**
@@ -1182,7 +1181,7 @@
 				$titleColecciones = 'Sin título';
 			}
 			// URL imagen
-			$thumb = wp_get_attachment_image_src( get_post_thumbnail_id( $post->id ), 'medium' );
+			$thumb = wp_get_attachment_image_src( get_post_thumbnail_id( $post->id ), 'large' );
 			$url = $thumb['0'];
 
 
