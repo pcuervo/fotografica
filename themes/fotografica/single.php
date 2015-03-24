@@ -46,6 +46,9 @@
 		$authorColeccionesName 	= 'sin autor';
 	}
 
+	$detalleColecciones = get_post_meta( $post->ID, '_detalles_fotografia_meta', TRUE );
+
+
 	$titleColecciones = get_the_title( $post->ID );
 	if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
 		$titleColecciones = NULL;
@@ -88,10 +91,13 @@
 				<?php if ( $postType == 'fotografias' ){ ?>
 
 					<!-- NOMBRE APELLIDO -->
-					<?php if ( $authorColeccionesName == 'Autor no identificado' ){ ?>
-						<span class="[ media--info__author ]"><?php echo $authorColeccionesName; ?></span>,
-					<?php } else { ?>
+					<?php if ( $authorColeccionesName !== 'Autor no identificado' ){ ?>
 						<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
+					<?php } ?>
+
+					<!-- DETALLE -->
+					<?php if ( $detalleColecciones ){ ?>
+						<span class="[ media--info__name ]"><?php echo $detalleColecciones;?></span>,
 					<?php } ?>
 
 					<!-- TÍTULO -->

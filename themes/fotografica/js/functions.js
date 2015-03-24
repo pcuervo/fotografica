@@ -437,6 +437,21 @@ function getDescripcionColeccion(id_coleccion){
 	);
 }// getDescripcionColeccion
 
+function postAjaxForm(form){
+	var coleccion_data = {};
+	coleccion_data['action'] = 'get_descripcion_coleccion';
+	coleccion_data['id_coleccion'] = id_coleccion;
+
+	$.post(
+		ajax_url,
+		coleccion_data,
+		function(response){
+			var html_descripcion_coleccion = $.parseJSON(response);
+			$('#js-info-coleccion .modal-body').html(html_descripcion_coleccion);
+		}
+	);
+}// getDescripcionColeccion
+
 function getExistingIds(){
 	var results = $('body').find('.result');
 	var ids = [];

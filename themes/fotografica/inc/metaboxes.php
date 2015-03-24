@@ -14,6 +14,7 @@
 		add_meta_box( 'sidebar_trabajo', 'Sidebar de nuestro trabajo', 'metabox_sidebar_trabajo', 'nuestro-trabajo', 'advanced', 'high' );
 		add_meta_box( 'video_trabajo', 'Video de nuestro trabajo', 'metabox_video_trabajo', 'nuestro-trabajo', 'advanced', 'high' );
 		add_meta_box( 'fecha_nacimiento', 'Fecha de nacimieto', 'metabox_fecha_nacimiento', 'fotografos', 'advanced', 'high' );
+		add_meta_box( 'detalles_fotografia', 'Detalles', 'metabox_detalles_fotografia', 'fotografias', 'advanced', 'high' );
 
 	});
 
@@ -98,6 +99,18 @@ echo <<<END
 END;
 	}// metabox_video_proyecto
 
+	function metabox_detalles_fotografia($post){
+		$detalles_fotografia = get_post_meta($post->ID, '_detalles_fotografia_meta', true);
+		wp_nonce_field(__FILE__, '_detalles_fotografia_nonce');
+
+echo <<<END
+
+	<label>Detalles de la fotografía</label>
+	<input type="text" class="widefat" id="detalles" name="_detalles_fotografia_meta" value="$detalles_fotografia" />
+
+END;
+	}// metabox_video_proyecto
+
 	function name_meta_callback($post){
 		// $name = get_post_meta($post->ID, '_name_meta', true);
 		// wp_nonce_field(__FILE__, '_name_meta_nonce');
@@ -141,8 +154,8 @@ END;
 			update_post_meta($post_id, '_video_trabajo_meta', $_POST['_video_trabajo_meta']);
 		}
 
-		if ( isset($_POST['_fecha_nacimiento_meta']) and check_admin_referer(__FILE__, '_fecha_nacimiento_nonce') ){
-			update_post_meta($post_id, '_fecha_nacimiento_meta', $_POST['_fecha_nacimiento_meta']);
+		if ( isset($_POST['_detalles_fotografia_meta']) and check_admin_referer(__FILE__, '_detalles_fotografia_nonce') ){
+			update_post_meta($post_id, '_detalles_fotografia_meta', $_POST['_detalles_fotografia_meta']);
 		}
 
 		if ( isset($_POST['_sidebar_trabajo_meta']) and check_admin_referer(__FILE__, '_sidebar_trabajo_meta_nonce') ){

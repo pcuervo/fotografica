@@ -226,12 +226,11 @@
 						\*------------------------------------*/
 						<?php } elseif ( is_single() ) { ?>
 
-							console.log('fotografos');
 							/**
 							 * On load
 							**/
 							<?php if ( $postType === 'fotografos'){ ?>
-								console.log( 'if' );
+								//console.log( 'fotografos' );
 								runMasonry('.results', '.result' );
 							<?php } ?>
 
@@ -242,9 +241,19 @@
 							?>
 							$('.js-tweet-count').text('<?php echo $tweets->count ?>');
 							
+							<?php if ( $postType === 'proyectos'){ ?>
+								//console.log( 'proyectos' );
 
+								// multiple elements
+								var posts = document.querySelectorAll('.final-tiles-gallery');
+								imagesLoaded( posts, function() {
+									console.log(posts);
+									console.log('all right');
 
+									//$('.final-tiles-gallery').finalTilesGallery();
 
+								});
+							<?php } ?>
 
 							/**
 							 * Triggered events
@@ -1932,3 +1941,5 @@
 			return null;
 		}
 	}
+
+	require_once('inc/gallery-parse.php');
