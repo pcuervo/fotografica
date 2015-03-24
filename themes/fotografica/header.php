@@ -12,17 +12,32 @@
 		<script src="//use.typekit.net/wqp7onq.js"></script>
 		<script>try{Typekit.load();}catch(e){}</script>
 		<?php wp_head(); ?>
+		<script>
+		    (function(f,b){
+		        var c;
+		        f.hj=f.hj||function(){(f.hj.q=f.hj.q||[]).push(arguments)};
+		        f._hjSettings={hjid:23204, hjsv:3};
+		        c=b.createElement("script");c.async=1;
+		        c.src="//static.hotjar.com/c/hotjar-23204.js?sv=3";
+		        b.getElementsByTagName("head")[0].appendChild(c); 
+		    })(window,document);
+		</script>
+
 	</head>
 
 	<body <?php body_class(); ?>>
 		<script>
-		  window.fbAsyncInit = function() {
-		    FB.init({
-		      appId      : '852965808078237',
-		      xfbml      : true,
-		      version    : 'v2.2'
-		    });
-		  };
+			var fbApiInit = false; 
+			var testId = '853048764736608';
+			var prodId = '852965808078237';
+			window.fbAsyncInit = function() {
+				FB.init({
+					appId      : prodId,
+					xfbml      : true,
+					version    : 'v2.2'
+				});
+				fbApiInit = true; 
+			};
 
 		  (function(d, s, id){
 		     var js, fjs = d.getElementsByTagName(s)[0];
@@ -50,7 +65,6 @@
 									<h2 class="[ text-center uppercase ]">Colecciones</h2>
 									<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
 									<ul class="[ overflow-scroll ]">
-										<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/colecciones?filtro=nuevas-adquisiciones' ?>">Nuevas adquisiciones</a></li>
 										<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/colecciones?filtro=favoritos' ?>">Favoritos</a></li>
 										<?php
 											$args = array(

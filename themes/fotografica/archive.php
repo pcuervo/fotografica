@@ -269,7 +269,7 @@
 						<form class="[ form ]" action="">
 							<fieldset class="[ columna xmall-12 medium-8 ][ center ]">
 								<div class="input-group">
-									<input type="text" placeholder="Buscar por título de fotografía">
+									<input type="text" placeholder="Buscar por nombre fotógrafo">
 									<span class="input-group-addon">
 										<button type="submit"><i class="[ icon-search ]"></i></button>
 									</span>

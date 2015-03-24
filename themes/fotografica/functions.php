@@ -138,12 +138,12 @@
 							<?php
 								global $coleccion;
 								global $filtro;
-								if($coleccion != '') {
+								if($coleccion != '' && $coleccion != 'adquisiciones-recientes') {
 							?>
 									var filter = $('.filter[data-value="<?php echo $coleccion; ?>"]');
 									addFilter( filter );
 							<?php
-								} else if ($filtro == 'nuevas-adquisiciones'){
+								} else if ($coleccion == 'adquisiciones-recientes'){
 							?>
 									var filter = $('.filter[data-value="nuevas-adquisiciones"]');
 									addFilter(filter);
@@ -224,15 +224,6 @@
 						/*------------------------------------*\
 							#PAGE
 						\*------------------------------------*/
-						<?php } elseif( is_page('page') ) { ?>
-
-
-
-
-
-						/*------------------------------------*\
-							#SINGLE
-						\*------------------------------------*/
 						<?php } elseif ( is_single() ) { ?>
 
 							/**
@@ -242,6 +233,13 @@
 								//console.log( 'fotografos' );
 								runMasonry('.results', '.result' );
 							<?php } ?>
+
+							<?php global $current_link ?>
+							fbEnsureInit(showNumberShares('<?php echo $current_link ?>'));
+							<?php
+								$tweets = json_decode(file_get_contents('http://cdn.api.twitter.com/1/urls/count.json?url='.$current_link));
+							?>
+							$('.js-tweet-count').text('<?php echo $tweets->count ?>');
 
 							<?php if ( $postType === 'proyectos'){ ?>
 								//console.log( 'proyectos' );
@@ -255,7 +253,6 @@
 								});
 
 							<?php } ?>
-
 
 							/**
 							 * Triggered events
@@ -273,6 +270,11 @@
 								}
 							});
 
+							$('.button--facebook').on('click', function(){
+								console.log('sharing is caring...');
+								shareOnFacebook('<?php echo $current_link ?>');
+							});
+
 
 
 
@@ -288,6 +290,14 @@
 							**/
 							runFitVids('.fit-vids-wrapper');
 
+							<?php } ?>
+
+						<?php if( is_page('contactanos') ) { ?>
+							$('.js-contact button').on('click', function(e){
+								e.preventDefault();
+								var data = $('.js-contact').serialize()
+								saveContact(data);
+							});
 						<?php } ?>
 
 
@@ -1528,6 +1538,27 @@
 	add_action("wp_ajax_get_total_results", "get_total_results");
 	add_action("wp_ajax_nopriv_get_total_results", "get_total_results");
 
+	function save_contact(){
+		$nombre = $_POST['nombre'];
+		$correo = $_POST['correo'];
+		$mensaje = $_POST['mensaje'];
+
+		$contact_post = array(
+		  'post_title' 		=> $nombre,
+		  'post_content' 	=> 'Nombre: '.$nombre."\r\n".'Email: '.$correo."\r\n".'Mensaje: '.$mensaje,
+		  'post_status'   	=> 'draft',
+		  'post_type'   	=> 'contacto',
+		);
+
+		// Insert the post into the database
+		wp_insert_post( $contact_post );
+
+		echo json_encode($nombre , JSON_FORCE_OBJECT);
+		exit();
+	}// save_contact
+	add_action("wp_ajax_save_contact", "save_contact");
+	add_action("wp_ajax_nopriv_save_contact", "save_contact");
+
 	function get_num_results_colecciones($filtros){
 		global $wpdb;
 
@@ -1909,6 +1940,5 @@
 			return null;
 		}
 	}
-
 
 	require_once('inc/gallery-parse.php');
