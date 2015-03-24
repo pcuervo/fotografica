@@ -413,4 +413,35 @@
 		);
 		register_post_type( 'noticias', $args );
 
+		// CONTACTO
+		$labels = array(
+			'name'          => 'Contacto',
+			'singular_name' => 'Contacto',
+			'add_new'       => 'Nuevo Contacto',
+			'add_new_item'  => 'Nuevo Contacto',
+			'edit_item'     => 'Editar Contacto',
+			'new_item'      => 'Nuevo Contacto',
+			'all_items'     => 'Todas',
+			'view_item'     => 'Ver Contacto',
+			'search_items'  => 'Buscar Contacto',
+			'not_found'     => 'No se encontro',
+			'menu_name'     => 'Contactos'
+		);
+		$args = array(
+			'labels'             => $labels,
+			'public'             => true,
+			'publicly_queryable' => true,
+			'show_ui'            => true,
+			'show_in_menu'       => true,
+			'query_var'          => true,
+			'rewrite'            => array( 'slug' => 'contacto' ),
+			'capability_type'    => 'post',
+			'has_archive'        => true,
+			'hierarchical'       => false,
+			'taxonomies'         => array( 'post_tag', 'category' ),
+			'menu_position'      => 6,
+			'supports'           => array( 'title', 'editor', 'thumbnail' )
+		);
+		register_post_type( 'contacto', $args );
+
 	});

@@ -4,12 +4,14 @@
 							<footer class="[ wrapper ]">
 								<article class="[ margin-bottom ]">
 									<h2 class="[ title ] [ text-center ]">Newsletter <br /><span class="[ sub-title ] [ block xmall-12 ] [ text-center ]">Suscríbete</span></h2>
-									<form class="[ form form--large ]" action="">
+									<form class="[ form form--large ]" action="http://fotografica.us10.list-manage1.com/subscribe/post" method="POST">
 										<fieldset class="[ columna xmall-12 medium-6 ][ center ]">
 											<div class="input-group">
-												<input type="text" placeholder="tu@correo.com">
+												<input type="hidden" name="u" value="0511c8319e03329d800c3ac07">
+												<input type="hidden" name="id" value="dd4085bde0">
+												<input type="text" placeholder="tu@correo.com" name="MERGE0" id="MERGE0">
 												<span class="input-group-addon">
-													<button type="submit"><i class="[ icon-newsletter ]"></i></button>
+													<button type="submit" name="submit"><i class="[ icon-newsletter ]"></i></button>
 												</span>
 											</div>
 										</fieldset>

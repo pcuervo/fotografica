@@ -351,7 +351,7 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 		ajax_url,
 		user_data,
 		function(response){
-			console.log(response);
+			//console.log(response);
 			var json_posts = $.parseJSON(response);
 			var html_resultados;
 			var num_posts = -1;
@@ -406,7 +406,7 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 			/**
 			 * If there are no results show a message staying the fact.
 			**/
-			console.log(num_posts);
+			//console.log(num_posts);
 			if ( num_posts < 0 ){
 				var emptyMessage = '<div class="[ wrapper ]"><h2 class="[ padding ][ margin-bottom ][ text-center ][ bg-highlight color-claro ]">Tu búsqueda no generó ningún resultado, elimina alguno de los filtros de arriba hasta obtener resultados.</h2></div>';
 				$(emptyMessage).appendTo('.results');
@@ -586,6 +586,86 @@ function showTotalResults( post_type, filters ){
 		}
 	);
 }
+
+function saveContact(data){
+	$.post(
+		ajax_url,
+		data,
+		function(response){
+			console.log(response);
+			$('.js-contact').empty();
+			$('.js-contact').append('<p>Gracias por contactarnos '+response+'</p>');
+		}
+	);
+}
+
+
+
+/*------------------------------------*\
+	# FACEBOOK AND TWITTER FUNCTIONS
+\*------------------------------------*/
+
+function showNumberTweets(url){
+	$.get(
+		'http://urls.api.twitter.com/1/urls/count.json?url='+url,
+		function( response ){
+			console.log(response);
+		}
+	);
+}// showNumberTweets
+
+function showNumberShares(url){
+	try {
+		FB.api(
+			"/",
+			{
+				"id": url,
+				"access_token": "853048764736608|MaIMwoVY0SKEWJFYfZ7Ga4_NCrk"
+			},
+			function (response) {
+				console.log(response);
+				if (response && !response.error) {
+					var share_count = response.share.share_count;
+					$('.js-share-count').text(share_count);
+				} else {
+					showNumberShares(url);
+				}
+			}
+		);
+	} catch(err){
+		console.log(err);
+	}
+}// showNumberShares
+
+function shareOnFacebook(url){
+	FB.ui(
+		{
+			method: 'share',
+			href: url,
+		},
+		function(response) {
+			if (response && !response.error_code) {
+				console.log(response);
+			} else {
+				console.log(response.error_code);
+			}
+		}
+	);
+}// shareOnFacebook
+
+function fbEnsureInit(callback) {
+    if(!window.fbApiInit) {
+    	console.log('no ha cargado FB...');
+        setTimeout(function() {fbEnsureInit(callback);}, 50);
+    } else {
+    	console.log('ya cargó FB...');
+        if(callback) {
+            callback();
+        }
+    }
+}// fbEnsureInit
+
+
 
 /*------------------------------------*\
 	#RESPONSIVE

@@ -1,5 +1,6 @@
 <?php
 	get_header();
+	the_post();
 
 	// ¿Hay algún filtro de colección?
 	global $coleccion, $post;
@@ -125,7 +126,7 @@
 	</section>
 	<section class="[ margin-bottom--large ][ single-content ]">
 		<div class="[ wrapper ][ ]">
-			<form class="[ form form--large ][ columna xmall-12 medium-6 ][ center ]" action="">
+			<form class="[ form form--large ][ columna xmall-12 medium-6 ][ center ][ js-contact ]" action="">
 				<fieldset class="[ margin-bottom ]">
 					<h3><label for="nombre">¿Cuál es tu nombre?</label></h3>
 					<input class="[ xmall-12 ]" type="text" name="nombre" placeholder="Tu nombre">
@@ -138,6 +139,7 @@
 					<h3><label for="nombre">¿Qué nos tienes que decir?</label></h3>
 					<textarea class="[ xmall-12 ]" name="mensaje" placeholder="Tu mensaje"></textarea>
 				</fieldset>
+				<input type="hidden" name="action" value="save_contact">
 				<div class="[ text-right ]">
 					<button class="[ button button--large ]" type="submit">Enviar</button>
 				</div><!-- text-right -->

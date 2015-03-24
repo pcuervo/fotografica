@@ -27,13 +27,17 @@
 
 	<body <?php body_class(); ?>>
 		<script>
-		  window.fbAsyncInit = function() {
-		    FB.init({
-		      appId      : '853048764736608',
-		      xfbml      : true,
-		      version    : 'v2.2'
-		    });
-		  };
+			var fbApiInit = false; 
+			var testId = '853048764736608';
+			var prodId = '852965808078237';
+			window.fbAsyncInit = function() {
+				FB.init({
+					appId      : prodId,
+					xfbml      : true,
+					version    : 'v2.2'
+				});
+				fbApiInit = true; 
+			};
 
 		  (function(d, s, id){
 		     var js, fjs = d.getElementsByTagName(s)[0];
@@ -61,7 +65,6 @@
 									<h2 class="[ text-center uppercase ]">Colecciones</h2>
 									<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
 									<ul class="[ overflow-scroll ]">
-										<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/colecciones?filtro=nuevas-adquisiciones' ?>">Nuevas adquisiciones</a></li>
 										<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/colecciones?filtro=favoritos' ?>">Favoritos</a></li>
 										<?php
 											$args = array(
