@@ -1942,4 +1942,20 @@
 		}
 	}
 
+	function set_detalle_meta(){
+		global $wpdb;
+
+		$postQuery = "
+			SELECT ID FROM wp_posts
+			WHERE post_type = 'fotografias'";
+
+		$results = $wpdb->get_results($postQuery);
+
+		foreach ($results as $result) {
+			update_post_meta($result->ID, '_detalles_fotografia_meta', '');
+		}
+	}
+	//add_action('init', 'set_detalle_meta');
+
+
 	require_once('inc/gallery-parse.php');

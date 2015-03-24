@@ -640,8 +640,10 @@ function showNumberShares(url){
 			function (response) {
 				console.log(response);
 				if (response && !response.error) {
-					var share_count = response.share.share_count;
-					$('.js-share-count').text(share_count);
+					if(typeof response.share !== 'undefined'){
+						var share_count = response.share.share_count;
+						$('.js-share-count').text(share_count);
+					}
 				} else {
 					showNumberShares(url);
 				}

@@ -172,6 +172,10 @@
 											</h1>
 										</div>
 										<div class="[ columna xmall-4 ][ ][ text-right ]">
+											<form id="forma_busqeda" class="forma_busqeda" method="get" action="<?php echo site_url(); ?>" >
+												<input type="text" name="s" id="s" value="¿Qué estás buscando?" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;">
+												<input type="submit">
+											</form><!-- forma_busqeda -->
 											<a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="#">
 												<i class="[ icon-search ][ bg-highlight color-claro ]"></i>
 											</a>
