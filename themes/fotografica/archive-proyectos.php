@@ -5,12 +5,6 @@
 	    #GET THE POST TYPE
 	\*------------------------------------*/
 	$postType = get_post_type();
-	if( $postType == 'fotografos' ){
-		$postType = 'fotógrafos';
-	}
-	if( $postType == 'carteleras' ){
-		$postType = 'cartelera';
-	}
 
 	/*------------------------------------*\
 	    #ARCHIVE HERO
@@ -24,56 +18,81 @@
 	$circaColecciones = 0;
 	$dateColecciones = '';
 	$args = array(
-		'post_type' 		=> 'fotografias',
+		'post_type' 		=> 'proyectos',
 		'posts_per_page' 	=> 1,
 		'orderby' 			=> 'rand'
 	);
-	$queryFotografias = new WP_Query( $args );
-	if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post();
+	$queryProyectos = new WP_Query( $args );
+	if ( $queryProyectos->have_posts() ) : while ( $queryProyectos->have_posts() ) : $queryProyectos->the_post();
 
-		$bgArchive = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+		$bgProyectos = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
 
-		$coleccionColecciones 		= wp_get_post_terms( $post->ID, 'coleccion' );
-		$coleccionColeccionesName 	= $coleccionColecciones[0]->name;
-		$coleccionColeccionesSlug 	= $coleccionColecciones[0]->slug;
+		echo '<pre>';
+			print_r($bgProyectos);
+		echo '</pre>';
 
-		$authorColecciones 		= wp_get_post_terms( $post->ID, 'fotografo' );
+		$attachments = get_posts( array(
+			'post_type' => 'attachment',
+			'posts_per_page' => -1,
+			'post_parent' => $post->ID
+		) );
+		if ( $attachments ) {
+			foreach ( $attachments as $attachment ) {
 
-		if ( $authorColecciones ){
-			$authorColeccionesName 	= $authorColecciones[0]->name;
-			$authorColeccionesSlug 	= $authorColecciones[0]->slug;
-		}  else {
-			$authorColeccionesName 	= 'Autor no identificado';
+				$attachmentID = get_post_id_by_attachment_id( get_post_id_by_attachment_id( $attachment->ID) );
+				echo '<pre>';
+					print_r($attachmentID);
+				echo '</pre>';
+
+			}
 		}
 
-		$titleColecciones = get_the_title( $post->ID );
-		if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
-			$titleColecciones = NULL;
-		}
+	endwhile; endif; wp_reset_query();
 
-		$seriesColecciones = 0;
+	// $bgArchive = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
 
-		$placeColecciones = wp_get_post_terms( $post->ID, 'lugar' );
-		if ( $placeColecciones ){
-			$placeColeccionesName 	= $placeColecciones[0]->name;
-		}
+	// $coleccionColecciones 		= wp_get_post_terms( $post->ID, 'coleccion' );
+	// $coleccionColeccionesName 	= $coleccionColecciones[0]->name;
+	// $coleccionColeccionesSlug 	= $coleccionColecciones[0]->slug;
 
-		$circaColecciones = 0;
+	// $authorColecciones 		= wp_get_post_terms( $post->ID, 'fotografo' );
 
-		$dateColecciones = wp_get_post_terms( $post->ID, 'año' );
-		if ( $dateColecciones ){
-			$dateColeccionesName 	= $dateColecciones[0]->name;
-		} else {
-			$dateColeccionesName 	= 's/f';
-		}
+	// if ( $authorColecciones ){
+	// 	$authorColeccionesName 	= $authorColecciones[0]->name;
+	// 	$authorColeccionesSlug 	= $authorColecciones[0]->slug;
+	// }  else {
+	// 	$authorColeccionesName 	= 'Autor no identificado';
+	// }
 
-		$themesColecciones = wp_get_post_terms( $post->ID, 'tema' );
-		if ( ! $themesColecciones ){
-			$themesColeccionesName 	= '';
-		}
+	// $titleColecciones = get_the_title( $post->ID );
+	// if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
+	// 	$titleColecciones = NULL;
+	// }
 
-		$permalinkColeccion = get_permalink( $post->ID );
-	endwhile; endif; wp_reset_query(); ?>
+	// $seriesColecciones = 0;
+
+	// $placeColecciones = wp_get_post_terms( $post->ID, 'lugar' );
+	// if ( $placeColecciones ){
+	// 	$placeColeccionesName 	= $placeColecciones[0]->name;
+	// }
+
+	// $circaColecciones = 0;
+
+	// $dateColecciones = wp_get_post_terms( $post->ID, 'año' );
+	// if ( $dateColecciones ){
+	// 	$dateColeccionesName 	= $dateColecciones[0]->name;
+	// } else {
+	// 	$dateColeccionesName 	= 's/f';
+	// }
+
+	// $themesColecciones = wp_get_post_terms( $post->ID, 'tema' );
+	// if ( ! $themesColecciones ){
+	// 	$themesColeccionesName 	= '';
+	// }
+
+	// $permalinkColeccion = get_permalink( $post->ID );
+
+?>
 	<section class="[ colecciones ] [ bg-image ] <?php if ( $postType == 'proyectos' OR $postType == 'exposiciones' ){ echo '[ margin-bottom--small ]'; } ?> " style="background-image: url(<?php echo $bgArchive[0]; ?>)">
 		<div class="[ opacity-gradient rectangle ]">
 			<h2 class="[ center-full ] [ title ]">

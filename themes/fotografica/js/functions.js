@@ -471,6 +471,7 @@ function getHtmlColecciones(results){
 				<p class="[ text-center ]">';
 					// console.log('autor: '+results.autor);
 					// console.log('titulo: '+results.titulo);
+					console.log('serie: '+results.serie);
 					// console.log('autor: '+results.serie);
 					// console.log('ano: '+results.ano);
 					if ( results.autor ){
@@ -483,7 +484,7 @@ function getHtmlColecciones(results){
 							html_resultados = html_resultados+'<a href="#" class="[ media--info__name ]">'+results.titulo+'</a>, ';
 						}
 					}
-					if ( typeof results.serie !== 'undefined' ){
+					if ( typeof results.serie !== 'undefined' && results.serie !== 'undefined' && results.serie !== '' ){
 						html_resultados = html_resultados+'de la serie <span class="[ media--info__series ]">'+results.serie+'</span>, ';
 					}
 					if ( results.coleccion ){

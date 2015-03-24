@@ -249,15 +249,10 @@
 								// multiple elements
 								var posts = document.querySelectorAll('.final-tiles-gallery');
 								imagesLoaded( posts, function() {
-									console.log(posts);
-									console.log('all right');
 
-									//$('.final-tiles-gallery').finalTilesGallery();
+									$('.final-tiles-gallery').finalTilesGallery();
 
 								});
-
-
-
 
 							<?php } ?>
 
@@ -1176,7 +1171,7 @@
 				$titleColecciones = 'Sin título';
 			}
 			// URL imagen
-			$thumb = wp_get_attachment_image_src( get_post_thumbnail_id( $post->id ), 'medium' );
+			$thumb = wp_get_attachment_image_src( get_post_thumbnail_id( $post->id ), 'large' );
 			$url = $thumb['0'];
 
 
