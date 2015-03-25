@@ -158,6 +158,8 @@
 	if ( $queryFeatured->have_posts() ) : while ( $queryFeatured->have_posts() ) : $queryFeatured->the_post();
 		$bgFeatured = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
 
+		$postTypeFeatured = get_post_type( $post->ID );
+
 		$coleccionFeatured 		= wp_get_post_terms( $post->ID, 'coleccion' );
 		$coleccionFeaturedName 	= $coleccionFeatured[0]->name;
 		$coleccionFeaturedSlug 	= $coleccionFeatured[0]->slug;
@@ -167,7 +169,7 @@
 			$authorFeaturedName 	= $authorFeatured[0]->name;
 			$authorFeaturedSlug 	= $authorFeatured[0]->slug;
 		} else {
-			$authorFeaturedName 	= 'sin autor';
+			$authorFeaturedName 	= 'Autor no identificado';
 		}
 
 		$titleFeatured = get_the_title( $post->ID );
@@ -206,8 +208,6 @@
 
 					<!-- NOMBRE APELLIDO -->
 					<?php if ( $authorFeaturedName !== 'Autor no identificado' ){ ?>
-						<span class="[ media--info__author ]"><?php echo $authorFeaturedName; ?></span>,
-					<?php } else { ?>
 						<a href="<?php echo site_url( $authorFeaturedSlug ); ?>" class="[ media--info__author ]"><?php echo $authorFeaturedName;?></a>,
 					<?php } ?>
 

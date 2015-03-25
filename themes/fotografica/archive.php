@@ -125,7 +125,7 @@
 						if ( $themesColeccionesName ){
 							foreach ($themesColeccionesName as $themeColeccionesName) {
 								$themeColeccionesName = $themeColeccionesName->name; ?>
-								<a href="<?php echo site_url('$themeColeccionesName'); ?>" class="[ tag ]">#<?php echo $themeColeccionesName; ?></a>
+								<a href="<?php echo site_url('$themeColeccionesName'); ?>" class="[ tag ]" target="_blank">#<?php echo $themeColeccionesName; ?></a>
 								<?php $themeCounter ++;
 								if ( $themeCounter == 3 ){
 									break;
@@ -269,7 +269,7 @@
 						<form class="[ form ]" action="">
 							<fieldset class="[ columna xmall-12 medium-8 ][ center ]">
 								<div class="input-group">
-									<input type="text" placeholder="Buscar por nombre fotógrafo">
+									<input type="text" placeholder="Buscar por nombre de fotógrafo">
 									<span class="input-group-addon">
 										<button type="submit"><i class="[ icon-search ]"></i></button>
 									</span>

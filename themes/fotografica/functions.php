@@ -100,6 +100,14 @@
 							});
 
 							/**
+							 * If the postType is "publicaciones" show filters opened
+							**/
+							<?php if ( $postType == 'publicaciones' ){ ?>
+								$('.tab-filter').click(); 
+								console.log('clicking');
+							<?php } ?>
+
+							/**
 							 * If the postType is "fotografos" or "proyecto" do not run masonry
 							**/
 							<?php if ( $postType !== 'fotografos' AND $postType !== 'proyectos' ){ ?>
@@ -288,9 +296,9 @@
 							/**
 							 * On load
 							**/
-							runFitVids('.fit-vids-wrapper');
+							runFitVids('.fit-vids-wrapper');							
 
-							<?php } ?>
+						<?php } ?>
 
 						<?php if( is_page('contactanos') ) { ?>
 							$('.js-contact button').on('click', function(e){
