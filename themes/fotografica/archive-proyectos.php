@@ -2,98 +2,117 @@
 	get_header();
 
 	/*------------------------------------*\
-	    #GET THE POST TYPE
+		#GET THE POST TYPE
 	\*------------------------------------*/
 	$postType = get_post_type();
 
 	/*------------------------------------*\
-	    #ARCHIVE HERO
+		#ARCHIVE HERO
 	\*------------------------------------*/
 	$bgArchive = '';
-	$coleccionColecciones = '';
-	$authorColecciones = '';
-	$titleColecciones = '';
-	$seriesColecciones = '';
-	$placeColecciones = '';
-	$circaColecciones = 0;
-	$dateColecciones = '';
+	$coleccionProyectos = '';
+	$authorProyectos = '';
+	$titleProyectos = '';
+	$seriesProyectos = '';
+	$placeProyectos = '';
+	$circaProyectos = 0;
+	$dateProyectos = '';
 	$args = array(
 		'post_type' 		=> 'proyectos',
 		'posts_per_page' 	=> 1,
-		'orderby' 			=> 'rand'
+		'orderby' 			=> 'rand',
+		'tax_query' 		=> array(
+			array(
+				'field' 	=> 'slug',
+				'taxonomy' 	=> 'tipo-de-proyecto',
+				'terms' 	=> 'individual'
+			),
+		)
 	);
 	$queryProyectos = new WP_Query( $args );
 	if ( $queryProyectos->have_posts() ) : while ( $queryProyectos->have_posts() ) : $queryProyectos->the_post();
+		$pattern = get_shortcode_regex();
+		if( preg_match_all( '/'. $pattern .'/s', $post->post_content, $matches ) && array_key_exists( 2, $matches ) && in_array( 'gallery', $matches[2] ) ):
 
-		$bgProyectos = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+			$keys = array_keys( $matches[2], 'gallery' );
 
-		echo '<pre>';
-			print_r($bgProyectos);
-		echo '</pre>';
+			foreach( $keys as $key ):
+				$atts = shortcode_parse_atts( $matches[3][$key] );
+				if( array_key_exists( 'ids', $atts ) ):
 
-		$attachments = get_posts( array(
-			'post_type' => 'attachment',
-			'posts_per_page' => -1,
-			'post_parent' => $post->ID
-		) );
-		if ( $attachments ) {
-			foreach ( $attachments as $attachment ) {
+					$images = new WP_Query(
+						array(
+							'post_type' => 'attachment',
+							'post_status' => 'inherit',
+							'post__in' => explode( ',', $atts['ids'] ),
+							'orderby' => 'post__in'
+						)
+					);
 
-				$attachmentID = get_post_id_by_attachment_id( get_post_id_by_attachment_id( $attachment->ID) );
-				echo '<pre>';
-					print_r($attachmentID);
-				echo '</pre>';
+					if( $images->have_posts() ):
+						// loop over returned images
 
-			}
-		}
+						$attachmentID 	=  $images->posts[0]->ID;
+						//echo '$attachmentID '.$attachmentID.'<br />';
+						$postID 		= get_post_id_by_attachment_id($attachmentID);
 
+						//echo '$postID '.$postID.'<br />';
+						$post 			= get_post( $postID->post_id );
+
+						$bgArchive = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+
+						$coleccionProyectos 		= wp_get_post_terms( $post->ID, 'coleccion' );
+						if ( $coleccionProyectos ){
+							$coleccionProyectosName 	= $coleccionProyectos[0]->name;
+							$coleccionProyectosSlug 	= $coleccionProyectos[0]->slug;
+						}
+
+						$authorProyectos 		= wp_get_post_terms( $post->ID, 'fotografo' );
+
+						if ( $authorProyectos ){
+							$authorProyectosName 	= $authorProyectos[0]->name;
+							$authorProyectosSlug 	= $authorProyectos[0]->slug;
+						} else {
+							$authorProyectosName 	= 'Autor no identificado';
+						}
+
+						$titleProyectos = get_the_title( $post->ID );
+						if ( strpos($titleProyectos, 'Sin título') !== false OR $titleProyectos == '' OR strpos($titleProyectos, '&nbsp') !== false ){
+							$titleProyectos = NULL;
+						}
+
+						$seriesProyectos = 0;
+
+						$placeProyectos = wp_get_post_terms( $post->ID, 'lugar' );
+						if ( $placeProyectos ){
+							$placeProyectosName 	= $placeProyectos[0]->name;
+						}
+
+						$circaProyectos = 0;
+
+						$dateProyectos = wp_get_post_terms( $post->ID, 'año' );
+						if ( $dateProyectos ){
+							$dateProyectosName 	= $dateProyectos[0]->name;
+						} else {
+							$dateProyectosName 	= 's/f';
+						}
+
+						$themesProyectos = wp_get_post_terms( $post->ID, 'tema' );
+						if ( ! $themesProyectos ){
+							$themesProyectosName 	= '';
+						}
+
+						$permalinkColeccion = get_permalink( $post->ID );
+
+					endif;
+					wp_reset_query();
+				endif;
+			endforeach;
+		endif;
 	endwhile; endif; wp_reset_query();
-
-	// $bgArchive = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
-
-	// $coleccionColecciones 		= wp_get_post_terms( $post->ID, 'coleccion' );
-	// $coleccionColeccionesName 	= $coleccionColecciones[0]->name;
-	// $coleccionColeccionesSlug 	= $coleccionColecciones[0]->slug;
-
-	// $authorColecciones 		= wp_get_post_terms( $post->ID, 'fotografo' );
-
-	// if ( $authorColecciones ){
-	// 	$authorColeccionesName 	= $authorColecciones[0]->name;
-	// 	$authorColeccionesSlug 	= $authorColecciones[0]->slug;
-	// }  else {
-	// 	$authorColeccionesName 	= 'Autor no identificado';
-	// }
-
-	// $titleColecciones = get_the_title( $post->ID );
-	// if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
-	// 	$titleColecciones = NULL;
-	// }
-
-	// $seriesColecciones = 0;
-
-	// $placeColecciones = wp_get_post_terms( $post->ID, 'lugar' );
-	// if ( $placeColecciones ){
-	// 	$placeColeccionesName 	= $placeColecciones[0]->name;
-	// }
-
-	// $circaColecciones = 0;
-
-	// $dateColecciones = wp_get_post_terms( $post->ID, 'año' );
-	// if ( $dateColecciones ){
-	// 	$dateColeccionesName 	= $dateColecciones[0]->name;
-	// } else {
-	// 	$dateColeccionesName 	= 's/f';
-	// }
-
-	// $themesColecciones = wp_get_post_terms( $post->ID, 'tema' );
-	// if ( ! $themesColecciones ){
-	// 	$themesColeccionesName 	= '';
-	// }
-
-	// $permalinkColeccion = get_permalink( $post->ID );
-
 ?>
-	<section class="[ colecciones ] [ bg-image ] <?php if ( $postType == 'proyectos' OR $postType == 'exposiciones' ){ echo '[ margin-bottom--small ]'; } ?> " style="background-image: url(<?php echo $bgArchive[0]; ?>)">
+
+	<section class="[ proyectos ] [ bg-image ][ margin-bottom--small ]" style="background-image: url(<?php echo $bgArchive[0]; ?>)">
 		<div class="[ opacity-gradient rectangle ]">
 			<h2 class="[ center-full ] [ title ]">
 				<?php echo $postType; ?> <br />
@@ -101,50 +120,52 @@
 			<div class="[ media-info media-info--large ] [ xmall-12 ] [ shown--medium ]">
 				<p class="[ text-center ]">
 
-					<!-- NOMBRE APELLIDO -->
-					<?php if ( $authorColeccionesName !== 'Autor no identificado' ){ ?>
-						<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
-					<?php } ?>
+				<!-- NOMBRE APELLIDO -->
+				<?php if ( $authorProyectosName == 'Autor no identificado' ){ ?>
+					<span class="[ media--info__author ]"><?php echo $authorProyectosName; ?></span>,
+				<?php } else { ?>
+					<a href="<?php echo site_url( $authorProyectosSlug ); ?>" class="[ media--info__author ]"><?php echo $authorProyectosName;?></a>,
+				<?php } ?>
 
-					<!-- TÍTULO -->
-					<?php if ( $titleColecciones ){ ?>
-						<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleColecciones; ?></a>,
-					<?php } ?>
+				<!-- TÍTULO -->
+				<?php if ( $titleProyectos ){ ?>
+					<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleProyectos; ?></a>,
+				<?php } ?>
 
-					<!-- DE LA SERIE -->
-					<?php if ( $seriesColecciones ){ ?>
-						de la serie <span class="[ media--info__series ]"><?php echo $seriesColecciones; ?></span>,
-					<?php } ?>
+				<!-- DE LA SERIE -->
+				<?php if ( $seriesProyectos ){ ?>
+					de la serie <span class="[ media--info__series ]"><?php echo $seriesProyectos; ?></span>,
+				<?php } ?>
 
-					<!-- LUGAR -->
-					<?php if ( $placeColecciones ){ ?>
-						<span class="[ media--info__place ]"><?php echo $placeColeccionesName; ?></span>,
-					<?php } ?>
+				<!-- COLECCION -->
+				<?php if ( $coleccionProyectos ){ ?>
+					<br /> de la colección <a href="<?php echo site_url( $coleccionProyectosSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionProyectosName; ?></a>,
+				<?php } ?>
 
-					<!-- CIRCA -->
-					<?php if ( $circaColecciones ){ ?>
-						<span class="[ media--info__circa ]">circa </span>
-					<?php } ?>
+				<!-- LUGAR -->
+				<?php if ( $placeProyectos ){ ?>
+					<span class="[ media--info__place ]"><?php echo $placeProyectosName; ?></span>,
+				<?php } ?>
 
-					<!-- AÑO -->
-					<?php if ( $dateColecciones ){ ?>
-						<span class="[ media--info__date ]"><?php echo $dateColeccionesName; ?></span>,
-					<?php } ?>
+				<!-- CIRCA -->
+				<?php if ( $circaProyectos ){ ?>
+					<span class="[ media--info__circa ]">circa </span>
+				<?php } ?>
 
-					<!-- COLECCION -->
-					<br />
-					de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>
-
+				<!-- AÑO -->
+				<?php if ( $dateProyectos ){ ?>
+					<span class="[ media--info__date ][ shown--medium shown--medium--inline ]"><?php echo $dateProyectosName; ?></span>
+				<?php } ?>
 				</p>
 
 				<!-- TAGS -->
 				<div class="[ media-info__tags ] [ text-center ]">
 					<?php
 						$themeCounter = 1;
-						if ( $themesColeccionesName ){
-							foreach ($themesColeccionesName as $themeColeccionesName) {
-								$themeColeccionesName = $themeColeccionesName->name; ?>
-								<a href="<?php echo site_url('$themeColeccionesName'); ?>" class="[ tag ]">#<?php echo $themeColeccionesName; ?></a>
+						if ( $themesProyectosName ){
+							foreach ($themesProyectosName as $themeProyectosName) {
+								$themeProyectosName = $themeProyectosName->name; ?>
+								<a href="<?php echo site_url('$themeProyectosName'); ?>" class="[ tag ]">#<?php echo $themeProyectosName; ?></a>
 								<?php $themeCounter ++;
 								if ( $themeCounter == 3 ){
 									break;
@@ -156,182 +177,7 @@
 			</div>
 		</div>
 	</section>
-
-
-	<?php
-
-		/*------------------------------------*\
-		    #Revert $posttype variable value
-		\*------------------------------------*/
-
-		if( $postType == 'carteleras' ){
-			$postType = 'cartelera';
-		}
-	?>
-
-
-	<!-- /** -->
-	<!-- * If the post type is "proyectos" or "exposiciones" the do not display filters at all -->
-	<!-- **/ -->
-	<?php if ( $postType !== 'proyectos' AND $postType !== 'exposiciones' ){ ?>
-
-		<section class="[ filters ] [ margin-bottom--small ]">
-			<div class="[ filters__tabs ] [ clearfix ]">
-				<div class="[ wrapper ]">
-					<div class="[ row ]">
-						<!--  /********************************\ -->
-							<!-- #FOTOGRAFOS -->
-						<!--  \**********************************/ -->
-						<?php if ( $postType == 'fotógrafos' ){ ?>
-							<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="apellido">Apellido</a>
-							<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="pais">País</a>
-							<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="decada">Década</a>
-							<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="tema">Tema</a>
-							<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="colecciones">Colecciones</a>
-							<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="buscar">Buscar</a>
-						<?php } ?>
-						<!--  /********************************\ -->
-							<!-- #EVENTOS / CARTELERA -->
-						<!--  \**********************************/ -->
-						<?php if ( $postType == 'eventos' OR $postType == 'carteleras' ){ ?>
-							<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="fecha">Fecha</a>
-						<?php } ?>
-						<!--  /********************************\ -->
-							<!-- #PUBLICACIONES -->
-						<!--  \**********************************/ -->
-						<?php if ( $postType == 'publicaciones' ){ ?>
-							<a class="[ tab-filter ][ text-center ][ columna xmall-4 medium-2 ]" href="#" data-filter="publicaciones">Tipo</a>
-						<?php } ?>
-					</div><!-- row -->
-				</div><!-- wrapper -->
-			</div><!-- filters__tabs -->
-			<div class="[ filters__content ] [ text-center ]">
-				<!--  /********************************\ -->
-					<!-- FOTÓGRAFOS -->
-				<!--  \**********************************/ -->
-				<?php if ( $postType == 'fotógrafos' ){ ?>
-					<div class="[ filter-colecciones ]">
-						<?php
-							$args = array(
-								'orderby'		=> 'name',
-								'order'         => 'ASC',
-								'hide_empty'    => true
-							);
-							$terms = get_terms('coleccion', $args);
-							foreach ($terms as $key => $term) {
-						?>
-								<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="coleccion" data-value="<?php echo $term->slug ?>"><?php echo $term->name ?><span><i class="fa fa-info-circle"></i></span></a>
-						<?php
-							}
-						?>
-					</div><!-- .filter-colecciones -->
-					<div class="[ filter-pais ]">
-						<?php
-							$args = array(
-								'orderby'		=> 'name',
-								'order' 		=> 'ASC',
-								'hide_empty' 	=> true,
-							);
-							$terms = get_terms('pais', $args);
-							foreach ($terms as $key => $term) {
-						?>
-								<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="pais" data-value="<?php echo $term->slug ?>"><?php echo $term->name ?></a>
-						<?php
-							}
-						?>
-					</div><!-- .filter-pais -->
-					<div class="[ filter-decada ]">
-						<?php
-							$decadas = get_decadas_nacimiento();
-							foreach ($decadas as $decada) {
-						?>
-								<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="decada-de-nacimiento" data-value="<?php echo $decada ?>"><?php echo $decada ?></a>
-						<?php
-							}
-						?>
-					</div><!-- .filter-decada -->
-					<div class="[ filter-tema ]">
-						<?php
-							$args = array(
-								'orderby'		=> 'name',
-								'order' 		=> 'ASC',
-								'hide_empty' 	=> true,
-							);
-							$terms = get_terms('tema', $args);
-							foreach ($terms as $key => $term) {
-						?>
-								<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="tema" data-value="<?php echo $term->name ?>"><?php echo $term->name ?></a>
-						<?php
-							}
-						?>
-					</div><!-- .filter-tema -->
-					<div class="[ filter-apellido ]">
-						<?php
-							$query = "
-								SELECT DISTINCT LEFT(name, 1) as letter FROM wp_posts P
-								INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
-								INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
-								INNER JOIN wp_terms T ON T.term_id = TT.term_id
-								WHERE P.post_type = 'fotografos'
-								AND taxonomy = 'apellido'
-								ORDER BY letter";
-							$first_letters = $wpdb->get_results( $query );
-
-							foreach ($first_letters as $letter) {
-						?>
-							<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="apellido" data-value="<?php echo $letter->letter ?>"><?php echo $letter->letter ?></a>
-						<?php
-							}
-						?>
-					</div><!-- .filter-apellido -->
-					<div class="[ filter-buscar ]">
-						<form class="[ form ]" action="">
-							<fieldset class="[ columna xmall-12 medium-8 ][ center ]">
-								<div class="input-group">
-									<input type="text" placeholder="Buscar por título de fotografía">
-									<span class="input-group-addon">
-										<button type="submit"><i class="[ icon-search ]"></i></button>
-									</span>
-								</div>
-							</fieldset>
-						</form>
-					</div><!-- .filter-buscar -->
-				<?php } ?>
-
-
-
-
-
-				<!--  /********************************\ -->
-					<!-- #EVENTOS / CARTELERA -->
-				<!--  \**********************************/ -->
-				<?php if ( $postType == 'eventos' || $postType == 'carteleras' ){ ?>
-					<div class="[ filter-fecha ]">
-						<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ] " data-type="eventos" data-value="anteriores">Eventos anteriores</a>
-						<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="eventos" data-value="hoy">Hoy</a>
-						<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="eventos" data-value="proximos">Próximos eventos</a>
-					</div><!-- .filter-fecha -->
-				<?php } ?>
-
-				<!--  /********************************\ -->
-					<!-- #PUBLICACIONES -->
-				<!--  \**********************************/ -->
-				<?php if ( $postType == 'publicaciones' ){ ?>
-					<div class="[ filter-publicaciones ]">
-						<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ] " data-type="tipo" data-value="nuestras-publicaciones">Nuestra publicaciones</a>
-						<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="tipo" data-value="coediciones">Coediciones</a>
-					</div><!-- .filter-fecha -->
-				<?php } ?>
-			</div><!-- filters__content -->
-			<div class="[ filters__results ] [ padding--small text-center ]">
-				<p class="[ uppercase ] [ js-num-resultados ]"><span></span> resultados totales con los filtros:</p>
-			</div>
-		</section><!-- .filters -->
-	<?php } ?>
-	<!-- /** -->
-	<!-- * If the post type is different from "fotografias" add wrapper and center it so the results do not use the full width -->
-	<!-- **/ -->
-	<section class="[ results ] [ row row--no-margins ] [ margin-bottom ] <?php echo ($postType !== 'fotografias' ? '[ text-center ][ wrapper ][ center ]' : ''); ?>">
+	<section class="[ results ][ row row--no-margins ][ margin-bottom ][ text-center ][ wrapper ][ center ]">
 	</section><!-- .results -->
 	<div class="[ loader ] [ center ] ">
 		<div></div>

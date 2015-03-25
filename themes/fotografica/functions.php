@@ -1503,16 +1503,16 @@
 			FROM wp_postmeta AS pm
 			INNER JOIN wp_posts AS p ON pm.meta_value=p.ID
 			WHERE ID = ".$attachment_id."
-			AND pm.meta_key = '_thumbnail_id'
-			AND post_id IN ( SELECT ID FROM wp_posts WHERE post_type = 'fotografias' )";
+			AND pm.meta_key = '_thumbnail_id' ORDER BY RAND() LIMIT 1";
 		$post_id_results = $wpdb->get_results( $query, OBJECT );
 
 		if ( empty($post_id_results) ){
 			return 0;
 		}
 
-		return $post_id_results;
+		return $post_id_results[0];
 	}// get_post_id_by_attachment_id
+
 
 	function get_total_results(){
 		$filters = $_POST['filters'];
