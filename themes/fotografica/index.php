@@ -71,9 +71,7 @@
 				<p class="[ text-center ]">
 
 					<!-- NOMBRE APELLIDO -->
-					<?php if ( $authorColeccionesName == 'Autor no identificado' ){ ?>
-						<span class="[ media--info__author ]"><?php echo $authorColeccionesName; ?></span>,
-					<?php } else { ?>
+					<?php if ( $authorColeccionesName && $authorColeccionesName !== 'Autor no identificado' ){ ?>
 						<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
 					<?php } ?>
 
@@ -143,9 +141,8 @@
 	$placeFeatured = '';
 	$circaFeatured = 0;
 	$dateFeatured = '';
-	$post_types = get_post_types( '', 'names' );
 	$args = array(
-		'post_type' => $post_types,
+		'post_type' => 'any',
 		'tax_query' => array(
 			array(
 				'taxonomy'	=> 'category',
@@ -156,6 +153,7 @@
 	);
 	$queryFeatured = new WP_Query( $args );
 	if ( $queryFeatured->have_posts() ) : while ( $queryFeatured->have_posts() ) : $queryFeatured->the_post();
+
 		$bgFeatured = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
 
 		$coleccionFeatured 		= wp_get_post_terms( $post->ID, 'coleccion' );
@@ -205,9 +203,7 @@
 				<p class="[ text-center ]">
 
 					<!-- NOMBRE APELLIDO -->
-					<?php if ( $authorFeaturedName !== 'Autor no identificado' ){ ?>
-						<span class="[ media--info__author ]"><?php echo $authorFeaturedName; ?></span>,
-					<?php } else { ?>
+					<?php if ( $authorColeccionesName && $authorColeccionesName == 'Autor no identificado' ){ ?>
 						<a href="<?php echo site_url( $authorFeaturedSlug ); ?>" class="[ media--info__author ]"><?php echo $authorFeaturedName;?></a>,
 					<?php } ?>
 
@@ -237,9 +233,10 @@
 					<?php } ?>
 
 					<!-- COLECCION -->
-					<br />
-					de la colección <a href="<?php echo site_url( $coleccionFeaturedSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>
-
+					<?php if ( $coleccionFeatured ){ ?>
+						<br />
+						de la colección <a href="<?php echo site_url( $coleccionFeaturedSlugSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>
+					<?php } ?>
 				</p>
 			</div>
 		</div>
