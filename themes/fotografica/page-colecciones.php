@@ -39,7 +39,7 @@
 			$authorColeccionesName 	= $authorColecciones[0]->name;
 			$authorColeccionesSlug 	= $authorColecciones[0]->slug;
 		} else {
-			$authorColeccionesName 	= 'autor no identificado';
+			$authorColeccionesName 	= 'Autor no identificado';
 		}
 
 		$titleColecciones = get_the_title( $post->ID );
@@ -121,7 +121,7 @@
 						if ( $themesColeccionesName ){
 							foreach ($themesColeccionesName as $themeColeccionesName) {
 								$themeColeccionesName = $themeColeccionesName->name; ?>
-								<a href="<?php echo site_url('$themeColeccionesName'); ?>" class="[ tag ]">#<?php echo $themeColeccionesName; ?></a>
+								<a href="<?php echo site_url('$themeColeccionesName'); ?>" target="_blank" class="[ tag ]">#<?php echo $themeColeccionesName; ?></a>
 								<?php $themeCounter ++;
 								if ( $themeCounter == 3 ){
 									break;

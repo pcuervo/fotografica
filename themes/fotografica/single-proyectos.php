@@ -210,7 +210,7 @@
 					De la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>,
 
 					<!-- NOMBRE APELLIDO -->
-					<?php if ( $authorColeccionesName == 'sin autor' ){ ?>
+					<?php if ( $authorColeccionesName !== 'Autor no identificado' ){ ?>
 						<span><?php echo $authorColeccionesName; ?></span>,
 					<?php } else { ?>
 						<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
