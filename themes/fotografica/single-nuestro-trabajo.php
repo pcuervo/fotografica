@@ -2,6 +2,13 @@
 	get_header();
 	the_post();
 
+	// Get number of shares current page
+	global $current_link;
+	$current_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+	$num_shares_url = "http://api.facebook.com/restserver.php?method=links.getStats&urls=".$current_link;
+	$fb_stats = file_get_contents('http://api.facebook.com/restserver.php?method=links.getStats&urls=http://pcuervo.com/fotografica/fotografias/sin-titulo-17/');
+
+
 	$sidebar_trabajo = get_post_meta($post->ID, '_sidebar_trabajo_meta', true);
 
 	$video_trabajo = get_post_meta($post->ID, '_video_trabajo_meta', true);

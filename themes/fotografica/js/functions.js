@@ -630,27 +630,31 @@ function showNumberTweets(url){
 }// showNumberTweets
 
 function showNumberShares(url){
-	try {
-		FB.api(
-			"/",
-			{
-				"id": url,
-				"access_token": "853048764736608|MaIMwoVY0SKEWJFYfZ7Ga4_NCrk"
-			},
-			function (response) {
-				console.log(response);
-				if (response && !response.error) {
-					if(typeof response.share !== 'undefined'){
-						var share_count = response.share.share_count;
-						$('.js-share-count').text(share_count);
+	console.log(url);
+	console.log('url');
+	if( !window.fbApiInit ) {
+		try {
+			FB.api(
+				"/",
+				{
+					"id": url,
+					"access_token": "853048764736608|MaIMwoVY0SKEWJFYfZ7Ga4_NCrk"
+				},
+				function (response) {
+					console.log(response);
+					if (response && !response.error) {
+						if(typeof response.share !== 'undefined'){
+							var share_count = response.share.share_count;
+							$('.js-share-count').text(share_count);
+						}
+					} else {
+						showNumberShares(url);
 					}
-				} else {
-					showNumberShares(url);
 				}
-			}
-		);
-	} catch(err){
-		console.log(err);
+			);
+		} catch(err){
+			console.log(err);
+		}
 	}
 }// showNumberShares
 
@@ -671,14 +675,13 @@ function shareOnFacebook(url){
 }// shareOnFacebook
 
 function fbEnsureInit(callback) {
-    if(!window.fbApiInit) {
+    if( !window.fbApiInit ) {
     	console.log('no ha cargado FB...');
         setTimeout(function() {fbEnsureInit(callback);}, 50);
     } else {
     	console.log('ya cargó FB...');
-        if(callback) {
-            callback();
-        }
+    	console.log('callback');
+        callback;
     }
 }// fbEnsureInit
 
