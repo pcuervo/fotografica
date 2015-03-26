@@ -1,8 +1,5 @@
 <?php
-	$secciones = get_secciones_orden_home();
-	// echo '<pre>';
-	// var_dump($secciones);
-	// echo '</pre>';
+	$secciones = get_secciones_orden_home( 'ASC' );
 ?>
 
 	<!-- <div class="wrap editar-contacto-container"> -->
