@@ -7,7 +7,7 @@
 	$postType = get_post_type();
 
 	/*------------------------------------*\
-		#ARCHIVE HERO
+		#PROYECTOS HERO
 	\*------------------------------------*/
 	$bgArchive = '';
 	$coleccionProyectos = '';
