@@ -1964,5 +1964,73 @@
 	}
 	//add_action('init', 'set_detalle_meta');
 
+	function create_table_orden_home(){
+		global $wpdb;
+		$table_name = "wp_orden_home";
+		if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
+		    // Crear tabla
+			$sql_create_table = "CREATE TABLE wp_orden_home (
+					orden_home_id bigint(20) UNSIGNED NOT NULL auto_increment,
+					seccion varchar(30) NOT NULL,
+					posicion integer NOT NULL,
+					PRIMARY KEY  (orden_home_id)
+		     	)";
+			$wpdb->query( $sql_create_table );	
+
+			// Rellenar tabla
+			$sql_insert = "
+				INSERT INTO wp_orden_home 
+					(seccion, posicion)
+				VALUES
+					('colecciones', 1),
+					('destacado', 2),
+					('proyectos', 3),
+					('publicaciones', 4),
+					('exposiciones', 5)";
+			$wpdb->query( $sql_insert );
+		}
+	}// create_table_orden_home
+	add_action('init', 'create_table_orden_home');
+
+	function get_secciones_orden_home(){
+		global $wpdb;
+		$query = "
+				SELECT * FROM wp_orden_home 
+				ORDER BY posicion";
+		$orden_secciones_home = $wpdb->get_results( $query, OBJECT );
+
+		return $orden_secciones_home;
+	}// get_secciones_orden_home
+
+	function save_secciones_orden_home() {
+
+		if ( isset( $_POST['posicion_1'] )  ) {
+			$posicion_1 =  $_POST['posicion_1'];
+			$posicion_2 =  $_POST['posicion_2'];
+			$posicion_3 =  $_POST['posicion_3'];
+			$posicion_4 =  $_POST['posicion_4'];
+			$posicion_5 =  $_POST['posicion_5'];
+
+			update_orden_home( 1, $posicion_1 );
+			update_orden_home( 2, $posicion_2 );
+			update_orden_home( 3, $posicion_3 );
+			update_orden_home( 4, $posicion_4 );
+			update_orden_home( 5, $posicion_5 );
+		} // end if
+
+	} // end my_theme_send_email
+	add_action( 'init', 'save_secciones_orden_home' );
+
+	function update_orden_home($posicion, $seccion){
+		global $wpdb;
+		$wpdb->update( 
+			'wp_orden_home', 
+			array( 'posicion' => $posicion ), 
+			array( 'seccion' => $seccion ), 
+			array( '%d' ), 
+			array( '%s' ) 
+		);
+	}// update_orden_home
+
 
 	require_once('inc/gallery-parse.php');
