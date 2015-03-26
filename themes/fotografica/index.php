@@ -494,8 +494,6 @@
 					<!-- TÍTULO -->
 					<?php if ( $titleExposiciones ){ ?>
 						<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleExposiciones; ?></a>
-					<?php } else { ?>
-						<span class="[ media--info__name ]">sin título</span>
 					<?php } ?>
 
 				</p>

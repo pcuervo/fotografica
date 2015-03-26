@@ -117,21 +117,20 @@ END;
 		$lugar_y_fecha_exposicion = get_post_meta($post->ID, '_lugar_y_fecha_exposicion_meta', true);
 		$links_exposicion = get_post_meta($post->ID, '_links_exposicion_meta', true);
 
-		$wp_editor_settings = array('textarea_name'=>'_links_exposicion_meta');
-		wp_editor( htmlspecialchars_decode($links_exposicion), '_links_exposicion', $wp_editor_settings );
-
 		wp_nonce_field(__FILE__, '_video_exposicion_meta_nonce');
-		wp_nonce_field(__FILE__, '_lugar_y_fecha_exposicion_meta_nonce');
-		//wp_nonce_field(__FILE__, '_links_exposicion_meta_nonce');
+
+		$lugar_y_fecha_exposicion_editor_settings = array('textarea_name'=>'_lugar_y_fecha_exposicion_meta');
+		wp_editor( htmlspecialchars_decode($links_exposicion), '_links_exposicion', $lugar_y_fecha_exposicion_editor_settings );
+
+		$links_exposicion_editor_settings = array('textarea_name'=>'_links_exposicion_meta');
+		wp_editor( htmlspecialchars_decode($links_exposicion), '_links_exposicion', $links_exposicion_editor_settings );
 
 echo <<<END
 
+	<br /><br />
 	<label>Video URL</label>
 	<input type="text" class="widefat" id="video_exposicion" name="_video_exposicion_meta" value="$video_exposicion"></textarea>
 	<br /><br />
-	<label>Lugar y fecha</label>
-	<textarea class="widefat" rows="5" id="lugar_y_fecha_exposicion" name="_lugar_y_fecha_exposicion_meta" value="$lugar_y_fecha_exposicion"></textarea>
-
 
 
 END;
@@ -193,10 +192,13 @@ END;
 		}
 
 		if ( isset($_POST['_links_exposicion_meta']) ){
-
 			$data = htmlspecialchars($_POST['_links_exposicion_meta']);
 			update_post_meta($post_id, '_links_exposicion_meta', $data );
+		}
 
+		if ( isset($_POST['_lugar_y_fecha_exposicion_meta']) ){
+			$data = htmlspecialchars($_POST['_lugar_y_fecha_exposicion_meta']);
+			update_post_meta($post_id, '_lugar_y_fecha_exposicion_meta', $data );
 		}
 
 		if ( isset($_POST['_sidebar_trabajo_meta']) and check_admin_referer(__FILE__, '_sidebar_trabajo_meta_nonce') ){
