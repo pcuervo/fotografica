@@ -73,6 +73,7 @@
 		}
 
 		$permalinkColeccion = get_permalink( $post->ID );
+
 	endwhile; endif; wp_reset_query(); ?>
 	<section class="[ colecciones ] [ bg-image ] <?php if ( $postType == 'proyectos' OR $postType == 'exposiciones' ){ echo '[ margin-bottom--small ]'; } ?> " style="background-image: url(<?php echo $bgArchive[0]; ?>)">
 		<div class="[ opacity-gradient rectangle ]">

@@ -103,7 +103,7 @@
 							 * If the postType is "publicaciones" show filters opened
 							**/
 							<?php if ( $postType == 'publicaciones' ){ ?>
-								$('.tab-filter').click(); 
+								$('.tab-filter').click();
 								console.log('clicking');
 							<?php } ?>
 
@@ -230,7 +230,7 @@
 
 
 						/*------------------------------------*\
-							#PAGE
+							#SINGLE
 						\*------------------------------------*/
 						<?php } elseif ( is_single() ) { ?>
 
@@ -240,6 +240,10 @@
 							<?php if ( $postType === 'fotografos'){ ?>
 								//console.log( 'fotografos' );
 								runMasonry('.results', '.result' );
+							<?php } ?>
+
+							<?php if ( $postType === 'exposiciones'){ ?>
+								runFitVids('.fit-vids-wrapper');
 							<?php } ?>
 
 							<?php global $current_link ?>
@@ -296,7 +300,7 @@
 							/**
 							 * On load
 							**/
-							runFitVids('.fit-vids-wrapper');							
+							runFitVids('.fit-vids-wrapper');
 
 						<?php } ?>
 
@@ -441,6 +445,7 @@
 	require_once('inc/post-types.php');
 	require_once('inc/metaboxes.php');
 	require_once('inc/taxonomies.php');
+	require_once('inc/page-form.php');
 	require_once('inc/pages.php');
 	require_once('inc/users.php');
 
@@ -519,8 +524,6 @@
 		return $content;
 	}
 	add_filter( 'the_content', 'attachment_image_link_remove_filter' );
-
-
 
 
 // MANAGE DASHBOARD MENUS //////////////////////////////////////////////////////
@@ -1975,11 +1978,11 @@
 					posicion integer NOT NULL,
 					PRIMARY KEY  (orden_home_id)
 		     	)";
-			$wpdb->query( $sql_create_table );	
+			$wpdb->query( $sql_create_table );
 
 			// Rellenar tabla
 			$sql_insert = "
-				INSERT INTO wp_orden_home 
+				INSERT INTO wp_orden_home
 					(seccion, posicion)
 				VALUES
 					('colecciones', 1),
@@ -2023,12 +2026,12 @@
 
 	function update_orden_home($posicion, $seccion){
 		global $wpdb;
-		$wpdb->update( 
-			'wp_orden_home', 
-			array( 'posicion' => $posicion ), 
-			array( 'seccion' => $seccion ), 
-			array( '%d' ), 
-			array( '%s' ) 
+		$wpdb->update(
+			'wp_orden_home',
+			array( 'posicion' => $posicion ),
+			array( 'seccion' => $seccion ),
+			array( '%d' ),
+			array( '%s' )
 		);
 	}// update_orden_home
 
@@ -2117,7 +2120,7 @@
 			}
 
 			$permalinkColeccion = get_permalink( $post->ID );
-		endwhile; endif; wp_reset_query(); 
+		endwhile; endif; wp_reset_query();
 
 		$html = '
 			<section class="[ colecciones ] [ bg-image ]" style="background-image: url('.$bgColecciones[0].')">
@@ -2141,15 +2144,15 @@
 
 							if ( $placeColecciones ){
 								$html .= '<span class="[ media--info__place ]">'.$placeColeccionesName.'</span>,';
-							} 
+							}
 
-							if ( $circaColecciones ){ 
+							if ( $circaColecciones ){
 								$html .= '<span class="[ media--info__circa ]">circa </span>';
-							} 
+							}
 
-							if ( $dateColecciones ){ 
+							if ( $dateColecciones ){
 								$html .= '<span class="[ media--info__date ]">'.$dateColeccionesName.'</span>,';
-							} 
+							}
 
 							$html .= '<br /> de la colección <a href="'.site_url( $coleccionColeccionesSlug ).'" class="[ media--info__colection ]">'.$coleccionColeccionesName.'</a>';
 						$html .= '</p>
@@ -2157,7 +2160,7 @@
 								$themeCounter = 1;
 								if ( $themesColeccionesName ){
 									foreach ($themesColeccionesName as $themeColeccionesName) {
-										$themeColeccionesName = $themeColeccionesName->name; 
+										$themeColeccionesName = $themeColeccionesName->name;
 										$html .= '<a href="'.site_url('$themeColeccionesName').' " class="[ tag ]">#'.$themeColeccionesName.'</a>';
 										$themeCounter ++;
 										if ( $themeCounter == 3 ){
@@ -2165,7 +2168,7 @@
 										}
 									}
 								}
-							
+
 						$html .= '</div>
 					</div>
 				</div>
@@ -2207,15 +2210,15 @@
 				<div class="[ media-info media-info--large ] [ xmall-12 ]">
 					<p class="[ text-center ]">';
 
-					if ( $titleProyectos ){ 
+					if ( $titleProyectos ){
 						$html .= '<a href="'.$permalinkProyectos.'" class="[ media--info__name ]">'.$titleProyectos.'</a>';
-					} 
+					}
 
 					$html .= '<div class="[ media-info__tags ] [ text-center ]">';
 					$themeCounter = 1;
 					if ( $themesProyectosName ){
 						foreach ($themesProyectosName as $themeProyectosName) {
-							$themeProyectosName = $themeProyectosName->name; 
+							$themeProyectosName = $themeProyectosName->name;
 							$html .= '<a href="'.site_url('$themeProyectosName').'" class="[ tag ]">#'.$themeColeccionesName.'</a>';
 							$themeCounter ++;
 							if ( $themeCounter == 3 ){
@@ -2270,7 +2273,7 @@
 
 						if ( $titlePublicaciones ){
 							$html .= '<a href="'.$permalinkPublicacion.'" class="[ media--info__name ]">'.$titlePublicaciones.'</a>';
-						} 
+						}
 
 						$html .= '</p>
 
@@ -2302,8 +2305,7 @@
 		$bgExposiciones = '';
 		$args = array(
 			'post_type' 		=> 'exposiciones',
-			'posts_per_page' 	=> 1,
-			'orderby' 			=> 'rand'
+			'posts_per_page' 	=> 1
 		);
 		$queryExposiciones = new WP_Query( $args );
 		if ( $queryExposiciones->have_posts() ) : while ( $queryExposiciones->have_posts() ) : $queryExposiciones->the_post(); ?>
@@ -2314,6 +2316,14 @@
 				if ( strpos($titleExposiciones, 'Sin título') !== false OR $titleExposiciones == '' OR strpos($titleExposiciones, '&nbsp') !== false ){
 					$titleExposiciones = NULL;
 				}
+
+				$lugarYFechaExposiciones = get_post_meta($post->ID, '_lugar_y_fecha_exposicion_meta', true );
+
+				$themesExposiciones = wp_get_post_terms( $post->ID, 'tema' );
+				if ( ! $themesExposiciones ){
+					$themesExposicionesName 	= '';
+				}
+
 				$permalinkExposiciones = get_permalink( $post->ID );
 		endwhile; endif; wp_reset_query();
 
@@ -2324,12 +2334,16 @@
 					Exposiciones
 				</a>
 				<div class="[ media-info media-info--large ] [ xmall-12 ]">
-					<p class="[ text-center ]">';
+					<p class="[ text-center ][ ellipsis ]">';
 
 						if ( $titleExposiciones ){
 							$html .= '<a href="'.$permalinkExposiciones.'" class="[ media--info__name ]">'.$titleExposiciones.'</a>';
 						}
-					$html .= '			
+
+						if ( $lugarYFechaExposiciones ){
+							$html .= '<br /><span class="[ media--info__place ]">'.$lugarYFechaExposiciones.'</span>';
+						}
+					$html .= '
 					</p>
 				</div>
 			</div>

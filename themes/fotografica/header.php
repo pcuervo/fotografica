@@ -19,7 +19,7 @@
 		        f._hjSettings={hjid:23204, hjsv:3};
 		        c=b.createElement("script");c.async=1;
 		        c.src="//static.hotjar.com/c/hotjar-23204.js?sv=3";
-		        b.getElementsByTagName("head")[0].appendChild(c); 
+		        b.getElementsByTagName("head")[0].appendChild(c);
 		    })(window,document);
 		</script>
 
@@ -27,7 +27,7 @@
 
 	<body <?php body_class(); ?>>
 		<script>
-			var fbApiInit = false; 
+			var fbApiInit = false;
 			var testId = '853048764736608';
 			var prodId = '852965808078237';
 			window.fbAsyncInit = function() {
@@ -36,7 +36,7 @@
 					xfbml      : true,
 					version    : 'v2.2'
 				});
-				fbApiInit = true; 
+				fbApiInit = true;
 			};
 
 		  (function(d, s, id){
@@ -173,10 +173,10 @@
 											</h1>
 										</div>
 										<div class="[ columna xmall-4 ][ ][ text-right ]">
-											<form id="forma_busqeda" class="forma_busqeda" method="get" action="<?php echo site_url(); ?>" >
+											<!--<form id="forma_busqeda" class="forma_busqeda" method="get" action="<?php echo site_url(); ?>" >
 												<input type="text" name="s" id="s" value="¿Qué estás buscando?" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;">
 												<input type="submit">
-											</form><!-- forma_busqeda -->
+											</form> forma_busqeda -->
 											<a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="#">
 												<i class="[ icon-search ][ bg-highlight color-claro ]"></i>
 											</a>
