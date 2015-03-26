@@ -1992,11 +1992,11 @@
 	}// create_table_orden_home
 	add_action('init', 'create_table_orden_home');
 
-	function get_secciones_orden_home(){
+	function get_secciones_orden_home( $order ){
 		global $wpdb;
 		$query = "
 				SELECT * FROM wp_orden_home 
-				ORDER BY posicion";
+				ORDER BY posicion ".$order;
 		$orden_secciones_home = $wpdb->get_results( $query, OBJECT );
 
 		return $orden_secciones_home;
@@ -2031,6 +2031,399 @@
 			array( '%s' ) 
 		);
 	}// update_orden_home
+
+	function get_html_seccion( $seccion ){
+
+		switch( $seccion ){
+			case 'colecciones':
+				return get_html_home_colecciones();
+				break;
+			case 'proyectos':
+				return get_html_home_proyectos();
+				break;
+			case 'publicaciones':
+				return get_html_home_publicaciones();
+				break;
+			case 'exposiciones':
+				return get_html_home_exposiciones();
+				break;
+			case 'adquisiciones recientes':
+				return get_html_home_adquisiciones_recientes();
+				break;
+			return 1;
+		}// switch
+	}// get_html_seccion
+
+	function get_html_home_colecciones(){
+		global $post;
+
+		$bgColecciones = '';
+		$coleccionColecciones = '';
+		$authorColecciones = '';
+		$titleColecciones = '';
+		$seriesColecciones = '';
+		$placeColecciones = '';
+		$circaColecciones = 0;
+		$dateColecciones = '';
+		$args = array(
+			'post_type' 		=> 'fotografias',
+			'posts_per_page' 	=> 1,
+			'orderby' 			=> 'rand'
+		);
+		$queryFotografias = new WP_Query( $args );
+		if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post();
+
+			$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+
+			$coleccionColecciones 		= wp_get_post_terms( $post->ID, 'coleccion' );
+			$coleccionColeccionesName 	= $coleccionColecciones[0]->name;
+			$coleccionColeccionesSlug 	= $coleccionColecciones[0]->slug;
+
+			$authorColecciones 		= wp_get_post_terms( $post->ID, 'fotografo' );
+			if ( $authorColecciones ){
+				$authorColeccionesName 	= $authorColecciones[0]->name;
+				$authorColeccionesSlug 	= $authorColecciones[0]->slug;
+			} else {
+				$authorColeccionesName 	= 'sin autor';
+			}
+
+			$titleColecciones = get_the_title( $post->ID );
+			if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
+				$titleColecciones = NULL;
+			}
+
+			$seriesColecciones = 0;
+
+			$placeColecciones = wp_get_post_terms( $post->ID, 'lugar' );
+			if ( $placeColecciones ){
+				$placeColeccionesName 	= $placeColecciones[0]->name;
+			}
+
+			$circaColecciones = 0;
+
+			$dateColecciones = wp_get_post_terms( $post->ID, 'año' );
+			if ( $dateColecciones ){
+				$dateColeccionesName 	= $dateColecciones[0]->name;
+			} else {
+				$dateColeccionesName 	= 's/f';
+			}
+
+			$themesColecciones = wp_get_post_terms( $post->ID, 'tema' );
+			if ( ! $themesColecciones ){
+				$themesColeccionesName 	= '';
+			}
+
+			$permalinkColeccion = get_permalink( $post->ID );
+		endwhile; endif; wp_reset_query(); 
+
+		$html = '
+			<section class="[ colecciones ] [ bg-image ]" style="background-image: url('.$bgColecciones[0].')">
+				<div class="[ opacity-gradient square ]">
+					<a href="'.site_url('colecciones').'" class="[ button button--hollow button--large ] [ center-full ]">
+						Colecciones
+					</a>
+					<div class="[ media-info media-info--large ] [ xmall-12 ]">
+						<p class="[ text-center ]">';
+							if ( $authorColeccionesName && $authorColeccionesName !== "Autor no identificado" ){
+								$html .= '<a href="'.site_url( $authorColeccionesSlug ).'" class="[ media--info__author ]">'.$authorColeccionesName.'</a>,';
+							}
+
+							if ( $titleColecciones ){
+								$html .= '<a href="'.$permalinkColeccion.'" class="[ media--info__name ]">'.$titleColecciones.'</a>,';
+							}
+
+							if ( $seriesColecciones ){
+								$html .= ' de la serie <span class="[ media--info__series ]">'.$seriesColecciones.'</span>,';
+							}
+
+							if ( $placeColecciones ){
+								$html .= '<span class="[ media--info__place ]">'.$placeColeccionesName.'</span>,';
+							} 
+
+							if ( $circaColecciones ){ 
+								$html .= '<span class="[ media--info__circa ]">circa </span>';
+							} 
+
+							if ( $dateColecciones ){ 
+								$html .= '<span class="[ media--info__date ]">'.$dateColeccionesName.'</span>,';
+							} 
+
+							$html .= '<br /> de la colección <a href="'.site_url( $coleccionColeccionesSlug ).'" class="[ media--info__colection ]">'.$coleccionColeccionesName.'</a>';
+						$html .= '</p>
+						<div class="[ media-info__tags ] [ text-center ]">';
+								$themeCounter = 1;
+								if ( $themesColeccionesName ){
+									foreach ($themesColeccionesName as $themeColeccionesName) {
+										$themeColeccionesName = $themeColeccionesName->name; 
+										$html .= '<a href="'.site_url('$themeColeccionesName').' " class="[ tag ]">#'.$themeColeccionesName.'</a>';
+										$themeCounter ++;
+										if ( $themeCounter == 3 ){
+											break;
+										}
+									}
+								}
+							
+						$html .= '</div>
+					</div>
+				</div>
+			</section>';
+		return $html;
+	} // get_html_home_colecciones
+
+	function get_html_home_proyectos(){
+		global $post;
+
+		$bgProyectos = '';
+		$proyectosArgs = array(
+			'posts_per_page' 	=> 1,
+			'orderby' 			=> 'rand',
+			'post_type' 		=> 'proyectos'
+		);
+		$queryProyectos = new WP_Query( $proyectosArgs );
+		if ( $queryProyectos->have_posts() ) : while ( $queryProyectos->have_posts() ) : $queryProyectos->the_post();
+			$bgProyectos = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+
+			$titleProyectos = get_the_title( $post->ID );
+			$permalinkProyectos = get_permalink( $post->ID );
+			if ( strpos($titleProyectos, 'Sin título') !== false OR $titleProyectos == '' OR strpos($titleProyectos, '&nbsp') !== false ){
+				$titleProyectos = NULL;
+			}
+
+			$themesProyectos = wp_get_post_terms( $post->ID, 'tema' );
+			if ( ! $themesProyectos ){
+				$themesProyectosName 	= '';
+			}
+		endwhile; endif; wp_reset_query();
+
+		$html = '
+		<section class="[ colecciones ] [ bg-image ]" style="background-image: url('.$bgProyectos[0].')">
+			<div class="[ opacity-gradient square ]">
+				<a href="'.site_url('proyecto').'" class="[ button button--hollow button--large ] [ center-full ]">
+					Proyectos
+				</a>
+				<div class="[ media-info media-info--large ] [ xmall-12 ]">
+					<p class="[ text-center ]">';
+
+					if ( $titleProyectos ){ 
+						$html .= '<a href="'.$permalinkProyectos.'" class="[ media--info__name ]">'.$titleProyectos.'</a>';
+					} 
+
+					$html .= '<div class="[ media-info__tags ] [ text-center ]">';
+					$themeCounter = 1;
+					if ( $themesProyectosName ){
+						foreach ($themesProyectosName as $themeProyectosName) {
+							$themeProyectosName = $themeProyectosName->name; 
+							$html .= '<a href="'.site_url('$themeProyectosName').'" class="[ tag ]">#'.$themeColeccionesName.'</a>';
+							$themeCounter ++;
+							if ( $themeCounter == 3 ){
+								break;
+							}
+						}
+					}
+					$html .= '
+					</div>
+				</div>
+			</div>
+		</section>';
+
+		return $html;
+	} // get_html_home_proyectos
+
+	function get_html_home_publicaciones(){
+		global $post;
+
+		$bgPublicaciones = '';
+		$titlePublicaciones = '';
+		$args = array(
+			'post_type' 		=> 'publicaciones',
+			'posts_per_page' 	=> 1,
+			'orderby' 			=> 'rand'
+		);
+		$queryPublicaciones = new WP_Query( $args );
+		if ( $queryPublicaciones->have_posts() ) : while ( $queryPublicaciones->have_posts() ) : $queryPublicaciones->the_post();
+			$bgPublicaciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+
+			$titlePublicaciones = get_the_title( $post->ID );
+			if ( strpos($titlePublicaciones, 'Sin título') !== false OR $titlePublicaciones == '' OR strpos($titlePublicaciones, '&nbsp') !== false ){
+				$titlePublicaciones = NULL;
+			}
+
+			$themesPublicaciones = wp_get_post_terms( $post->ID, 'tema' );
+			if ( ! $themesPublicaciones ){
+				$themesPublicacionesName 	= '';
+			}
+
+			$permalinkPublicacion = get_permalink( $post->ID );
+		endwhile; endif; wp_reset_query();
+
+		$html = '
+			<section class="[ publicaciones ] [ bg-image ]" style="background-image: url('.$bgPublicaciones[0].')">
+				<div class="[ opacity-gradient square ]">
+					<a href="'.site_url('publicaciones').'" class="[ button button--hollow button--large ] [ center-full ]">
+						Publicaciones
+					</a>
+					<div class="[ media-info media-info--large ] [ xmall-12 ]">
+						<p class="[ text-center ]">';
+
+						if ( $titlePublicaciones ){
+							$html .= '<a href="'.$permalinkPublicacion.'" class="[ media--info__name ]">'.$titlePublicaciones.'</a>';
+						} 
+
+						$html .= '</p>
+
+						<div class="[ media-info__tags ] [ text-center ]">';
+
+						$themeCounter = 1;
+						if ( $themesPublicacionesName ){
+							foreach ($themesPublicacionesName as $themePublicacionesName) {
+								$themePublicacionesName = $themePublicacionesName->name;
+								$html .= '<a href="'.site_url('$themePublicacionesName').'" class="[ tag ]">#'.$themePublicacionesName.'</a>';
+								$themeCounter ++;
+								if ( $themeCounter == 3 ){
+									break;
+								}
+							}
+						}
+						$html .= '
+						</div>
+					</div>
+				</div>
+			</section>';
+
+		return $html;
+	} // get_html_home_publicaciones
+
+	function get_html_home_exposiciones(){
+		global $post;
+
+		$bgExposiciones = '';
+		$args = array(
+			'post_type' 		=> 'exposiciones',
+			'posts_per_page' 	=> 1,
+			'orderby' 			=> 'rand'
+		);
+		$queryExposiciones = new WP_Query( $args );
+		if ( $queryExposiciones->have_posts() ) : while ( $queryExposiciones->have_posts() ) : $queryExposiciones->the_post(); ?>
+			<?php
+				$bgExposiciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+
+				$titleExposiciones = get_the_title( $post->ID );
+				if ( strpos($titleExposiciones, 'Sin título') !== false OR $titleExposiciones == '' OR strpos($titleExposiciones, '&nbsp') !== false ){
+					$titleExposiciones = NULL;
+				}
+				$permalinkExposiciones = get_permalink( $post->ID );
+		endwhile; endif; wp_reset_query();
+
+		$html = '
+		<section class="[ colecciones ] [ bg-image ]" style="background-image: url('.$bgExposiciones[0].')">
+			<div class="[ opacity-gradient square ]">
+				<a href="'.site_url('exposiciones').'" class="[ button button--hollow button--large ] [ center-full ]">
+					Exposiciones
+				</a>
+				<div class="[ media-info media-info--large ] [ xmall-12 ]">
+					<p class="[ text-center ]">';
+
+						if ( $titleExposiciones ){
+							$html .= '<a href="'.$permalinkExposiciones.'" class="[ media--info__name ]">'.$titleExposiciones.'</a>';
+						}
+					$html .= '			
+					</p>
+				</div>
+			</div>
+		</section>';
+
+		return $html;
+	} // get_html_home_exposiciones
+
+	function get_html_home_adquisiciones_recientes(){
+		global $post;
+
+		$bgRecientes = '';
+		$coleccionRecientes = '';
+		$authorRecientes = '';
+		$titleRecientes = '';
+		$seriesRecientes = '';
+		$placeRecientes = '';
+		$circaRecientes = 0;
+		$dateRecientes = '';
+		$args = array(
+			'post_type' 		=> 'fotografias',
+			'tax_query'   => array(
+				array(
+					'field'    => 'slug',
+					'taxonomy' => 'colecciones',
+					'terms'    => 'adquisiciones-recientes'
+				),
+			),
+			'posts_per_page' 	=> 1,
+			'orderby' 			=> 'rand'
+		);
+		$queryRecientes = new WP_Query( $args );
+		if ( $queryRecientes->have_posts() ) : while ( $queryRecientes->have_posts() ) : $queryRecientes->the_post();
+
+			$bgRecientes = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+
+			$coleccionRecientes 		= wp_get_post_terms( $post->ID, 'coleccion' );
+			$coleccionRecientesName 	= $coleccionRecientes[0]->name;
+			$coleccionRecientesSlug 	= $coleccionRecientes[0]->slug;
+
+			$authorRecientes 		= wp_get_post_terms( $post->ID, 'fotografo' );
+			if ( $authorRecientes ){
+				$authorRecientesName 	= $authorRecientes[0]->name;
+				$authorRecientesSlug 	= $authorRecientes[0]->slug;
+			} else {
+				$authorRecientesName 	= 'sin autor';
+			}
+
+			$titleRecientes = get_the_title( $post->ID );
+			if ( strpos($titleRecientes, 'Sin título') !== false OR $titleRecientes == '' OR strpos($titleRecientes, '&nbsp') !== false ){
+				$titleRecientes = NULL;
+			}
+
+			$seriesRecientes = 0;
+
+			$placeRecientes = wp_get_post_terms( $post->ID, 'lugar' );
+			if ( $placeRecientes ){
+				$placeRecientesName 	= $placeRecientes[0]->name;
+			}
+
+			$circaRecientes = 0;
+
+			$dateRecientes = wp_get_post_terms( $post->ID, 'año' );
+			if ( $dateRecientes ){
+				$dateRecientesName 	= $dateRecientes[0]->name;
+			} else {
+				$dateRecientesName 	= 's/f';
+			}
+
+			$themesRecientes = wp_get_post_terms( $post->ID, 'tema' );
+			if ( ! $themesRecientes ){
+				$themesRecientesName 	= '';
+			}
+
+			$permalinkColeccion = get_permalink( $post->ID );
+
+			$html = '
+				<section class="[ colecciones ] [ bg-image ]" style="background-image: url('.$bgRecientes[0].')">
+					<div class="[ opacity-gradient square ]">
+						<a href="'.site_url().'/colecciones/?filtro=nuevas-adquisiciones" class="[ button button--hollow button--large ] [ center-full ]">
+							Adquisiciones recientes
+						</a>
+						<div class="[ media-info media-info--large ] [ xmall-12 ]">
+							<p class="[ text-center ]"><a href="#" class="[ media-info__author ]">Gerardo Suter</a>, <a href="#" class="[ media-info__name ]">El trapo negro</a>, <span class="[ media--info__place ]">Egipto</span>, <span class="[ media--info__date ]">1986</span>, de la colección <a href="#" class="[ media--info__colection ]">Manuél Álvarez Bravo</a></p>
+							<div class="[ media-info__tags ] [ text-center ]">
+								<a href="#" class="[ tag ]">#méxico</a>
+								<a href="#" class="[ tag ]">#norte</a>
+								<a href="#" class="[ tag ]">#transporte</a>
+							</div>
+						</div>
+					</div>
+				</section>';
+
+		endwhile; endif; wp_reset_query();
+
+		return $html;
+	} // get_html_home_adquisiciones_recientes
 
 
 	require_once('inc/gallery-parse.php');
