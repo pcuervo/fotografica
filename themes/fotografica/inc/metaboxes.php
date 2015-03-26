@@ -15,7 +15,9 @@
 		add_meta_box( 'video_trabajo', 'Video de nuestro trabajo', 'metabox_video_trabajo', 'nuestro-trabajo', 'advanced', 'high' );
 		add_meta_box( 'fecha_nacimiento', 'Fecha de nacimieto', 'metabox_fecha_nacimiento', 'fotografos', 'advanced', 'high' );
 		add_meta_box( 'detalles_fotografia', 'Detalles', 'metabox_detalles_fotografia', 'fotografias', 'advanced', 'high' );
-		add_meta_box( 'info_exposicion', 'Información', 'metabox_info_exposicion', 'exposiciones', 'advanced', 'high' );
+		add_meta_box( 'video_exposicion', 'URL Video', 'metabox_video_exposicion', 'exposiciones', 'advanced', 'high' );
+		add_meta_box( 'lugar_y_fecha_exposicion', 'Lugar y fecha', 'metabox_lugar_y_fecha_exposicion', 'exposiciones', 'advanced', 'high' );
+		add_meta_box( 'links_exposicion', 'Links', 'metabox_links_exposicion', 'exposiciones', 'advanced', 'high' );
 
 	});
 
@@ -112,29 +114,35 @@ echo <<<END
 END;
 	}// metabox_detalles_fotografia
 
-	function metabox_info_exposicion($post){
+	function metabox_video_exposicion($post){
 		$video_exposicion = get_post_meta($post->ID, '_video_exposicion_meta', true);
-		$lugar_y_fecha_exposicion = get_post_meta($post->ID, '_lugar_y_fecha_exposicion_meta', true);
-		$links_exposicion = get_post_meta($post->ID, '_links_exposicion_meta', true);
 
 		wp_nonce_field(__FILE__, '_video_exposicion_meta_nonce');
 
+echo <<<END
+
+	<label>Video URL</label>
+	<input type="text" class="widefat" id="video_exposicion" name="_video_exposicion_meta" value="$video_exposicion"></textarea>
+
+
+END;
+	}// metabox_video_exposicion
+
+	function metabox_lugar_y_fecha_exposicion($post){
+		$lugar_y_fecha_exposicion = get_post_meta($post->ID, '_lugar_y_fecha_exposicion_meta', true);
+
 		$lugar_y_fecha_exposicion_editor_settings = array('textarea_name'=>'_lugar_y_fecha_exposicion_meta');
-		wp_editor( htmlspecialchars_decode($links_exposicion), '_links_exposicion', $lugar_y_fecha_exposicion_editor_settings );
+		wp_editor( htmlspecialchars_decode($lugar_y_fecha_exposicion), '_lugar_y_fecha_exposicion', $lugar_y_fecha_exposicion_editor_settings );
+
+	}// metabox_lugar_y_fecha_exposicion
+
+	function metabox_links_exposicion($post){
+		$links_exposicion = get_post_meta($post->ID, '_links_exposicion_meta', true);
 
 		$links_exposicion_editor_settings = array('textarea_name'=>'_links_exposicion_meta');
 		wp_editor( htmlspecialchars_decode($links_exposicion), '_links_exposicion', $links_exposicion_editor_settings );
 
-echo <<<END
-
-	<br /><br />
-	<label>Video URL</label>
-	<input type="text" class="widefat" id="video_exposicion" name="_video_exposicion_meta" value="$video_exposicion"></textarea>
-	<br /><br />
-
-
-END;
-	}// metabox_info_exposicion
+	}// metabox_links_exposicion
 
 	function name_meta_callback($post){
 		// $name = get_post_meta($post->ID, '_name_meta', true);
@@ -187,18 +195,14 @@ END;
 			update_post_meta($post_id, '_video_exposicion_meta', $_POST['_video_exposicion_meta']);
 		}
 
-		if ( isset($_POST['_lugar_y_fecha_exposicion_meta']) and check_admin_referer(__FILE__, '_lugar_y_fecha_exposicion_meta_nonce') ){
-			update_post_meta($post_id, '_lugar_y_fecha_exposicion_meta', $_POST['_lugar_y_fecha_exposicion_meta']);
+		if ( isset($_POST['_lugar_y_fecha_exposicion_meta']) ){
+			$data = htmlspecialchars($_POST['_lugar_y_fecha_exposicion_meta']);
+			update_post_meta($post_id, '_lugar_y_fecha_exposicion_meta', $data );
 		}
 
 		if ( isset($_POST['_links_exposicion_meta']) ){
 			$data = htmlspecialchars($_POST['_links_exposicion_meta']);
 			update_post_meta($post_id, '_links_exposicion_meta', $data );
-		}
-
-		if ( isset($_POST['_lugar_y_fecha_exposicion_meta']) ){
-			$data = htmlspecialchars($_POST['_lugar_y_fecha_exposicion_meta']);
-			update_post_meta($post_id, '_lugar_y_fecha_exposicion_meta', $data );
 		}
 
 		if ( isset($_POST['_sidebar_trabajo_meta']) and check_admin_referer(__FILE__, '_sidebar_trabajo_meta_nonce') ){
