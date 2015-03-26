@@ -1992,11 +1992,11 @@
 	}// create_table_orden_home
 	add_action('init', 'create_table_orden_home');
 
-	function get_secciones_orden_home( $order ){
+	function get_secciones_orden_home(){
 		global $wpdb;
 		$query = "
 				SELECT * FROM wp_orden_home 
-				ORDER BY posicion ".$order;
+				ORDER BY posicion";
 		$orden_secciones_home = $wpdb->get_results( $query, OBJECT );
 
 		return $orden_secciones_home;
@@ -2047,8 +2047,11 @@
 			case 'exposiciones':
 				return get_html_home_exposiciones();
 				break;
-			case 'adquisiciones recientes':
+			case 'nuevas adquisiciones':
 				return get_html_home_adquisiciones_recientes();
+				break;
+			case 'destacado':
+				return get_html_home_destacado();
 				break;
 			return 1;
 		}// switch
@@ -2336,7 +2339,7 @@
 	} // get_html_home_exposiciones
 
 	function get_html_home_adquisiciones_recientes(){
-		global $post;
+		global $post, $wpdb;
 
 		$bgRecientes = '';
 		$coleccionRecientes = '';
@@ -2346,84 +2349,235 @@
 		$placeRecientes = '';
 		$circaRecientes = 0;
 		$dateRecientes = '';
-		$args = array(
-			'post_type' 		=> 'fotografias',
-			'tax_query'   => array(
-				array(
-					'field'    => 'slug',
-					'taxonomy' => 'colecciones',
-					'terms'    => 'adquisiciones-recientes'
-				),
-			),
-			'posts_per_page' 	=> 1,
-			'orderby' 			=> 'rand'
-		);
-		$queryRecientes = new WP_Query( $args );
-		if ( $queryRecientes->have_posts() ) : while ( $queryRecientes->have_posts() ) : $queryRecientes->the_post();
 
-			$bgRecientes = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+		$query = "
+			SELECT id FROM wp_posts
+			WHERE post_type = 'fotografias' 
+			AND post_status = 'publish' 
+			ORDER BY post_date LIMIT 1";
+		$posts_info = $wpdb->get_results( $query, OBJECT );
 
-			$coleccionRecientes 		= wp_get_post_terms( $post->ID, 'coleccion' );
-			$coleccionRecientesName 	= $coleccionRecientes[0]->name;
-			$coleccionRecientesSlug 	= $coleccionRecientes[0]->slug;
+		$bgRecientes = wp_get_attachment_image_src( get_post_thumbnail_id( $posts_info[0]->id ),'full' );
 
-			$authorRecientes 		= wp_get_post_terms( $post->ID, 'fotografo' );
-			if ( $authorRecientes ){
-				$authorRecientesName 	= $authorRecientes[0]->name;
-				$authorRecientesSlug 	= $authorRecientes[0]->slug;
-			} else {
-				$authorRecientesName 	= 'sin autor';
-			}
+		$coleccionRecientes 		= wp_get_post_terms( $posts_info[0]->id, 'coleccion' );
+		$coleccionRecientesName 	= $coleccionRecientes[0]->name;
+		$coleccionRecientesSlug 	= $coleccionRecientes[0]->slug;
 
-			$titleRecientes = get_the_title( $post->ID );
-			if ( strpos($titleRecientes, 'Sin título') !== false OR $titleRecientes == '' OR strpos($titleRecientes, '&nbsp') !== false ){
-				$titleRecientes = NULL;
-			}
+		$authorRecientes 		= wp_get_post_terms( $posts_info[0]->id, 'fotografo' );
+		if ( $authorRecientes ){
+			$authorRecientesName 	= $authorRecientes[0]->name;
+			$authorRecientesSlug 	= $authorRecientes[0]->slug;
+		} else {
+			$authorRecientesName 	= 'sin autor';
+		}
 
-			$seriesRecientes = 0;
+		$titleRecientes = get_the_title( $posts_info[0]->id );
+		if ( strpos($titleRecientes, 'Sin título') !== false OR $titleRecientes == '' OR strpos($titleRecientes, '&nbsp') !== false ){
+			$titleRecientes = NULL;
+		}
 
-			$placeRecientes = wp_get_post_terms( $post->ID, 'lugar' );
-			if ( $placeRecientes ){
-				$placeRecientesName 	= $placeRecientes[0]->name;
-			}
+		$seriesRecientes = 0;
 
-			$circaRecientes = 0;
+		$placeRecientes = wp_get_post_terms( $posts_info[0]->id, 'lugar' );
+		if ( $placeRecientes ){
+			$placeRecientesName 	= $placeRecientes[0]->name;
+		}
 
-			$dateRecientes = wp_get_post_terms( $post->ID, 'año' );
-			if ( $dateRecientes ){
-				$dateRecientesName 	= $dateRecientes[0]->name;
-			} else {
-				$dateRecientesName 	= 's/f';
-			}
+		$circaRecientes = 0;
 
-			$themesRecientes = wp_get_post_terms( $post->ID, 'tema' );
-			if ( ! $themesRecientes ){
-				$themesRecientesName 	= '';
-			}
+		$dateRecientes = wp_get_post_terms( $posts_info[0]->id, 'año' );
+		if ( $dateRecientes ){
+			$dateRecientesName 	= $dateRecientes[0]->name;
+		} else {
+			$dateRecientesName 	= 's/f';
+		}
 
-			$permalinkColeccion = get_permalink( $post->ID );
+		$themesRecientes = wp_get_post_terms( $posts_info[0]->id, 'tema' );
+		if ( ! $themesRecientes ){
+			$themesRecientesName 	= '';
+		}
 
-			$html = '
-				<section class="[ colecciones ] [ bg-image ]" style="background-image: url('.$bgRecientes[0].')">
-					<div class="[ opacity-gradient square ]">
-						<a href="'.site_url().'/colecciones/?filtro=nuevas-adquisiciones" class="[ button button--hollow button--large ] [ center-full ]">
-							Adquisiciones recientes
-						</a>
-						<div class="[ media-info media-info--large ] [ xmall-12 ]">
-							<p class="[ text-center ]"><a href="#" class="[ media-info__author ]">Gerardo Suter</a>, <a href="#" class="[ media-info__name ]">El trapo negro</a>, <span class="[ media--info__place ]">Egipto</span>, <span class="[ media--info__date ]">1986</span>, de la colección <a href="#" class="[ media--info__colection ]">Manuél Álvarez Bravo</a></p>
-							<div class="[ media-info__tags ] [ text-center ]">
-								<a href="#" class="[ tag ]">#méxico</a>
-								<a href="#" class="[ tag ]">#norte</a>
-								<a href="#" class="[ tag ]">#transporte</a>
-							</div>
-						</div>
+		$permalinkRecientes = get_permalink( $posts_info[0]->id );
+
+		$html = '
+			<section class="[ nuevas-adquisiciones ] [ bg-image ]" style="background-image: url('.$bgRecientes[0].')">
+				<div class="[ opacity-gradient square ]">
+					<a href="'.site_url().'/colecciones/?coleccion=adquisiciones-recientes" class="[ button button--hollow button--large ] [ center-full ]">
+						Adquisiciones recientes
+					</a>
+					<div class="[ media-info media-info--large ] [ xmall-12 ]">
+
+						<p class="[ text-center ]">';
+							if ( $authorRecientesName && $authorRecientesName !== "Autor no identificado" ){
+								$html .= '<a href="'.site_url( $permalinkRecientes ).'" class="[ media--info__author ]">'.$authorRecientesName.'</a>,';
+							}
+
+							if ( $titleRecientes ){
+								$html .= '<a href="'.$permalinkRecientes.'" class="[ media--info__name ]">'.$titleRecientes.'</a>,';
+							}
+
+							if ( $seriesRecientes ){
+								$html .= ' de la serie <span class="[ media--info__series ]">'.$seriesRecientes.'</span>,';
+							}
+
+							if ( $placeRecientes ){
+								$html .= '<span class="[ media--info__place ]">'.$placeRecientesName.'</span>,';
+							} 
+
+							if ( $circaRecientes ){ 
+								$html .= '<span class="[ media--info__circa ]">circa </span>';
+							} 
+
+							if ( $dateRecientes ){ 
+								$html .= '<span class="[ media--info__date ]">'.$dateRecientesName.'</span>,';
+							} 
+
+							$html .= '<br /> de la colección <a href="'.site_url( $coleccionRecientesSlug ).'" class="[ media--info__colection ]">'.$coleccionRecientesName.'</a>';
+						$html .= '</p>
+
+						
 					</div>
-				</section>';
-
-		endwhile; endif; wp_reset_query();
+				</div>
+			</section>';
 
 		return $html;
 	} // get_html_home_adquisiciones_recientes
+
+	function get_html_home_destacado(){
+		global $post;
+
+		$bgFeatured = '';
+		$coleccionFeatured = '';
+		$authorFeatured = '';
+		$titleFeatured = '';
+		$seriesFeatured = '';
+		$placeFeatured = '';
+		$circaFeatured = 0;
+		$dateFeatured = '';
+		$args = array(
+			'post_type' 	=> 'any',
+			'show_posts'	=> 1,
+			'tax_query' 	=> 
+				array(
+					array(
+						'taxonomy'	=> 'category',
+						'field'		=> 'slug',
+						'terms'		=> array('destacado')
+					)
+				)
+		);
+		$queryFeatured = new WP_Query( $args );
+		if ( $queryFeatured->have_posts() ) : while ( $queryFeatured->have_posts() ) : $queryFeatured->the_post();
+
+			$postType = get_post_type( $post->ID );
+
+			if( $postType == 'fotografos' ){
+				$slugPost = $post->post_name;
+				$fotografoArgs = array(
+					'post_type'      => 'fotografias',
+					'posts_per_page' => -1,
+					'tax_query'      => array(
+						array(
+							'field'    => 'slug',
+							'taxonomy' => 'fotografo',
+							'terms'    => $slugPost
+						),
+					),
+					'post__not_in'		=> array($post->ID)
+				);
+				$fotografoQuery = new WP_Query( $fotografoArgs );
+				if( $fotografoQuery->have_posts() ) : while( $fotografoQuery->have_posts() ) : $fotografoQuery->the_post();
+					$bgFeatured = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+				endwhile; endif; wp_reset_postdata();
+			} else {
+				$bgFeatured = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+			}
+
+			$postTypeFeatured = get_post_type( $post->ID );
+
+			$coleccionFeatured 		= wp_get_post_terms( $post->ID, 'coleccion' );
+			if ( ! empty( $coleccionFeatured ) ){ 
+				$coleccionFeaturedName 	= $coleccionFeatured[0]->name;
+				$coleccionFeaturedSlug 	= $coleccionFeatured[0]->slug;
+			}
+
+			$authorFeatured 			= wp_get_post_terms( $post->ID, 'fotografo' );
+			if ( $authorFeatured ){
+				$authorFeaturedName 	= $authorFeatured[0]->name;
+				$authorFeaturedSlug 	= $authorFeatured[0]->slug;
+			} 
+
+			$titleFeatured = get_the_title( $post->ID );
+			if ( strpos($titleFeatured, 'Sin título') !== false OR $titleFeatured == '' OR strpos($titleFeatured, '&nbsp') !== false ){
+				$titleFeatured = NULL;
+			}
+
+			$placeFeatured = wp_get_post_terms( $post->ID, 'lugar' );
+			$placeFeaturedName = '';
+			if ( $placeFeatured ){
+				$placeFeaturedName 	= $placeFeatured[0]->name;
+			}
+
+			$dateFeatured = wp_get_post_terms( $post->ID, 'año' );
+			if ( $dateFeatured ){
+				$dateFeaturedName 	= $dateFeatured[0]->name;
+			} else {
+				$dateFeaturedName 	= 's/f';
+			}
+
+			$themesFeatured = wp_get_post_terms( $post->ID, 'tema' );
+			if ( ! $themesFeatured ){
+				$themesFeaturedName 	= '';
+			}
+
+			$permalinkFeatured = get_permalink( $post->ID );
+		endwhile; endif; wp_reset_query();
+
+		$url_photo = empty( $bgFeatured ) ? '#' : $bgFeatured[0];
+
+		$html = '
+			<section class="[ colecciones ] [ bg-image ]" style="background-image: url('.$url_photo.' )">
+				<div class="[ opacity-gradient square ]">
+					<a href="'.site_url('colecciones').'" class="[ button button--hollow button--large ] [ center-full ]">
+						Destacado
+					</a>
+					<div class="[ media-info media-info--large ] [ xmall-12 ]">
+						<p class="[ text-center ]">';
+
+							if ( $authorFeatured ){ 
+								$html .= '<a href="'.site_url( $authorFeaturedSlug ).'" class="[ media--info__author ]">'.$authorFeaturedName.'</a>,';
+							} 
+
+							if ( $titleFeatured ){ 
+								$html .= '<a href="'.$permalinkFeatured.'" class="[ media--info__name ]">'.$titleFeatured.'</a>,';
+							} 
+
+							if ( $seriesFeatured ){ 
+								$html .= 'de la serie <span class="[ media--info__series ]">'.$seriesFeatured.'</span>,';
+							} 
+
+							if ( $placeFeatured ){ 
+								$html .= '<span class="[ media--info__place ]">'.$placeFeaturedName.'</span>,';
+							} 
+
+							if ( $circaFeatured ){ 
+								$html .= '<span class="[ media--info__circa ]">circa </span>';
+							} 
+
+							if ( $dateFeatured ){ 
+								$html .= '<span class="[ media--info__date ]">'.$dateFeaturedName.'</span>,';
+							} 
+
+							if ( $coleccionFeatured ){ 
+								$html .= '<br />de la colección <a href="'.site_url( $coleccionFeaturedSlug ).'" class="[ media--info__colection ]"> '.$coleccionFeaturedName.'</a>';
+							} 
+						$html .= '</p>
+					</div>
+				</div>
+			</section>';
+
+		return $html;
+	} // get_html_home_destacado
 
 
 	require_once('inc/gallery-parse.php');

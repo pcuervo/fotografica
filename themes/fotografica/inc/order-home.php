@@ -1,5 +1,5 @@
 <?php
-	$secciones = get_secciones_orden_home( 'ASC' );
+	$secciones = get_secciones_orden_home();
 ?>
 
 	<!-- <div class="wrap editar-contacto-container"> -->
