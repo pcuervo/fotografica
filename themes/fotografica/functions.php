@@ -103,7 +103,7 @@
 							 * If the postType is "publicaciones" show filters opened
 							**/
 							<?php if ( $postType == 'publicaciones' ){ ?>
-								$('.tab-filter').click(); 
+								$('.tab-filter').click();
 								console.log('clicking');
 							<?php } ?>
 
@@ -296,7 +296,7 @@
 							/**
 							 * On load
 							**/
-							runFitVids('.fit-vids-wrapper');							
+							runFitVids('.fit-vids-wrapper');
 
 						<?php } ?>
 
@@ -441,6 +441,7 @@
 	require_once('inc/post-types.php');
 	require_once('inc/metaboxes.php');
 	require_once('inc/taxonomies.php');
+	require_once('inc/page-form.php');
 	require_once('inc/pages.php');
 	require_once('inc/users.php');
 

@@ -19,100 +19,45 @@
 	$dateExposiciones = '';
 	$args = array(
 		'post_type' 		=> 'exposiciones',
-		'posts_per_page' 	=> 1,
-		'orderby' 			=> 'rand',
-		'tax_query' 		=> array(
-			array(
-				'field' 	=> 'slug',
-				'taxonomy' 	=> 'tipo-de-proyecto',
-				'terms' 	=> 'individual'
-			),
-		)
+		'posts_per_page' 	=> 1
 	);
 	$queryExposiciones = new WP_Query( $args );
 	if ( $queryExposiciones->have_posts() ) : while ( $queryExposiciones->have_posts() ) : $queryExposiciones->the_post();
-		$pattern = get_shortcode_regex();
-		if( preg_match_all( '/'. $pattern .'/s', $post->post_content, $matches ) && array_key_exists( 2, $matches ) && in_array( 'gallery', $matches[2] ) ):
 
-			$keys = array_keys( $matches[2], 'gallery' );
+		$bgArchive = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
 
-			foreach( $keys as $key ):
-				$atts = shortcode_parse_atts( $matches[3][$key] );
-				if( array_key_exists( 'ids', $atts ) ):
+		$titleExposiciones = get_the_title( $post->ID );
+		if ( strpos($titleExposiciones, 'Sin título') !== false OR $titleExposiciones == '' OR strpos($titleExposiciones, '&nbsp') !== false ){
+			$titleExposiciones = NULL;
+		}
 
-					$images = new WP_Query(
-						array(
-							'post_type' => 'attachment',
-							'post_status' => 'inherit',
-							'post__in' => explode( ',', $atts['ids'] ),
-							'orderby' => 'post__in'
-						)
-					);
+		$seriesExposiciones = 0;
 
-					if( $images->have_posts() ):
-						// loop over returned images
+		$placeExposiciones = wp_get_post_terms( $post->ID, 'lugar' );
+		if ( $placeExposiciones ){
+			$placeExposicionesName 	= $placeExposiciones[0]->name;
+		}
 
-						$attachmentID 	=  $images->posts[0]->ID;
-						//echo '$attachmentID '.$attachmentID.'<br />';
-						$postID 		= get_post_id_by_attachment_id($attachmentID);
+		$circaExposiciones = 0;
 
-						//echo '$postID '.$postID.'<br />';
-						$post 			= get_post( $postID->post_id );
+		$dateExposiciones = wp_get_post_terms( $post->ID, 'año' );
+		if ( $dateExposiciones ){
+			$dateExposicionesName 	= $dateExposiciones[0]->name;
+		} else {
+			$dateExposicionesName 	= 's/f';
+		}
 
-						$bgArchive = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+		$themesExposiciones = wp_get_post_terms( $post->ID, 'tema' );
+		if ( ! $themesExposiciones ){
+			$themesExposicionesName 	= '';
+		}
 
-						$coleccionExposiciones 		= wp_get_post_terms( $post->ID, 'coleccion' );
-						if ( $coleccionExposiciones ){
-							$coleccionExposicionesName 	= $coleccionExposiciones[0]->name;
-							$coleccionExposicionesSlug 	= $coleccionExposiciones[0]->slug;
-						}
+		$permalinkColeccion = get_permalink( $post->ID );
 
-						$authorExposiciones 		= wp_get_post_terms( $post->ID, 'fotografo' );
-
-						if ( $authorExposiciones ){
-							$authorExposicionesName 	= $authorExposiciones[0]->name;
-							$authorExposicionesSlug 	= $authorExposiciones[0]->slug;
-						} else {
-							$authorExposicionesName 	= 'Autor no identificado';
-						}
-
-						$titleExposiciones = get_the_title( $post->ID );
-						if ( strpos($titleExposiciones, 'Sin título') !== false OR $titleExposiciones == '' OR strpos($titleExposiciones, '&nbsp') !== false ){
-							$titleExposiciones = NULL;
-						}
-
-						$seriesExposiciones = 0;
-
-						$placeExposiciones = wp_get_post_terms( $post->ID, 'lugar' );
-						if ( $placeExposiciones ){
-							$placeExposicionesName 	= $placeExposiciones[0]->name;
-						}
-
-						$circaExposiciones = 0;
-
-						$dateExposiciones = wp_get_post_terms( $post->ID, 'año' );
-						if ( $dateExposiciones ){
-							$dateExposicionesName 	= $dateExposiciones[0]->name;
-						} else {
-							$dateExposicionesName 	= 's/f';
-						}
-
-						$themesExposiciones = wp_get_post_terms( $post->ID, 'tema' );
-						if ( ! $themesExposiciones ){
-							$themesExposicionesName 	= '';
-						}
-
-						$permalinkColeccion = get_permalink( $post->ID );
-
-					endif;
-					wp_reset_query();
-				endif;
-			endforeach;
-		endif;
 	endwhile; endif; wp_reset_query();
 ?>
 
-	<section class="[ colecciones ] [ bg-image ] <?php if ( $postType == 'Exposiciones' OR $postType == 'exposiciones' ){ echo '[ margin-bottom--small ]'; } ?> " style="background-image: url(<?php echo $bgArchive[0]; ?>)">
+	<section class="[ exposiciones ][ bg-image ][ margin-bottom--small ] " style="background-image: url(<?php echo $bgArchive[0]; ?>)">
 		<div class="[ opacity-gradient rectangle ]">
 			<h2 class="[ center-full ] [ title ]">
 				<?php echo $postType; ?> <br />
@@ -120,58 +65,33 @@
 			<div class="[ media-info media-info--large ] [ xmall-12 ] [ shown--medium ]">
 				<p class="[ text-center ]">
 
-					<!-- NOMBRE APELLIDO -->
-					<?php if ( $authorColeccionesName !== 'Autor no identificado' ){ ?>
-						<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
-					<?php } ?>
-
 					<!-- TÍTULO -->
-					<?php if ( $titleColecciones ){ ?>
-						<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleColecciones; ?></a>,
+					<?php if ( $titleExposiciones ){ ?>
+						<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleExposiciones; ?></a>,
 					<?php } ?>
 
 					<!-- DE LA SERIE -->
-					<?php if ( $seriesColecciones ){ ?>
-						de la serie <span class="[ media--info__series ]"><?php echo $seriesColecciones; ?></span>,
+					<?php if ( $seriesExposiciones ){ ?>
+						de la serie <span class="[ media--info__series ]"><?php echo $seriesExposiciones; ?></span>,
 					<?php } ?>
 
 					<!-- LUGAR -->
-					<?php if ( $placeColecciones ){ ?>
-						<span class="[ media--info__place ]"><?php echo $placeColeccionesName; ?></span>,
+					<?php if ( $placeExposiciones ){ ?>
+						<span class="[ media--info__place ]"><?php echo $placeExposicionesName; ?></span>,
 					<?php } ?>
 
 					<!-- CIRCA -->
-					<?php if ( $circaColecciones ){ ?>
+					<?php if ( $circaExposiciones ){ ?>
 						<span class="[ media--info__circa ]">circa </span>
 					<?php } ?>
 
 					<!-- AÑO -->
-					<?php if ( $dateColecciones ){ ?>
-						<span class="[ media--info__date ]"><?php echo $dateColeccionesName; ?></span>,
+					<?php if ( $dateExposiciones ){ ?>
+						<span class="[ media--info__date ]"><?php echo $dateExposicionesName; ?></span>,
 					<?php } ?>
-
-					<!-- COLECCION -->
-					<br />
-					de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>
 
 				</p>
 
-				<!-- TAGS -->
-				<div class="[ media-info__tags ] [ text-center ]">
-					<?php
-						$themeCounter = 1;
-						if ( $themesColeccionesName ){
-							foreach ($themesColeccionesName as $themeColeccionesName) {
-								$themeColeccionesName = $themeColeccionesName->name; ?>
-								<a href="<?php echo site_url('$themeColeccionesName'); ?>" class="[ tag ]">#<?php echo $themeColeccionesName; ?></a>
-								<?php $themeCounter ++;
-								if ( $themeCounter == 3 ){
-									break;
-								}
-							}
-						}
-					?>
-				</div>
 			</div>
 		</div>
 	</section>
