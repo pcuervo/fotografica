@@ -95,6 +95,10 @@
 
 							$('.filter-buscar button').on('click', function(e){
 								e.preventDefault();
+								var filter_value = $('.filter-buscar input').val();
+								$('.filter-buscar input').val('');
+								removeSearchFilters();
+								addSearchFilter( filter_value );
 								clearGrid();
 								advancedSearch('<?php echo $postType ?>', getFilters(false), 20, existing_ids);
 							});
@@ -146,6 +150,7 @@
 							<?php
 								global $coleccion;
 								global $filtro;
+
 								if($coleccion != '' && $coleccion != 'adquisiciones-recientes') {
 							?>
 									var filter = $('.filter[data-value="<?php echo $coleccion; ?>"]');
@@ -207,6 +212,10 @@
 
 							$('.filter-buscar button').on('click', function(e){
 								e.preventDefault();
+								var filter_value = $('.filter-buscar input').val();
+								$('.filter-buscar input').val('');
+								removeSearchFilters();
+								addSearchFilter( filter_value );
 								clearGrid();
 								advancedSearch('fotografias', getFilters(false), 20, existing_ids);
 							});
@@ -237,6 +246,7 @@
 							/**
 							 * On load
 							**/
+							<?php global $current_link; ?>
 							<?php if ( $postType === 'fotografos'){ ?>
 								//console.log( 'fotografos' );
 								runMasonry('.results', '.result' );
@@ -246,8 +256,6 @@
 								runFitVids('.fit-vids-wrapper');
 							<?php } ?>
 
-							<?php global $current_link ?>
-							fbEnsureInit(showNumberShares('<?php echo $current_link ?>'));
 							<?php
 								$tweets = json_decode(file_get_contents('http://cdn.api.twitter.com/1/urls/count.json?url='.$current_link));
 							?>
@@ -287,6 +295,13 @@
 								shareOnFacebook('<?php echo $current_link ?>');
 							});
 
+							var scrolled = false;
+							$('.content-wrapper').scroll(function(){
+								if( ! scrolled ){
+									showNumberShares('<?php echo $current_link ?>');
+									scrolled = true;
+								}
+							});
 
 
 
@@ -1164,7 +1179,7 @@
 		global $wpdb;
 
 		$query = "
-			SELECT id FROM wp_posts P
+			SELECT DISTINCT id FROM wp_posts P
 			INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
 			INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
 			WHERE post_type = 'proyectos'";

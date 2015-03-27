@@ -226,6 +226,12 @@ function addFilter(element){
 	toggleFiltersNav();
 }
 
+function addSearchFilter( searchValue ){
+	var htmlSearchFilter = '<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ] filter--active" data-type="buscar" data-value="'+searchValue+'">'+searchValue+'</a>'
+	$('.filters__results').append(htmlSearchFilter);
+	toggleFiltersNav();
+}// addSearchFilter
+
 function removeFilter(element){
 	//Get its content so we can deactivate it
 	// in .filters__content
@@ -239,6 +245,11 @@ function removeFilter(element){
 
 	toggleFiltersNav();
 
+}
+
+function removeSearchFilters(){
+	$('*[data-type="buscar"]').remove();
+	toggleFiltersNav();
 }
 
 function getFilters(is_cargando_mas){
@@ -468,11 +479,6 @@ function getHtmlColecciones(results){
 			</a> \
 			<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
 				<p class="[ text-center ]">';
-					// console.log('autor: '+results.autor);
-					// console.log('titulo: '+results.titulo);
-					console.log('serie: '+results.serie);
-					// console.log('autor: '+results.serie);
-					// console.log('ano: '+results.ano);
 					if ( results.autor ){
 						if ( results.autor != 'Autor no identificado' ){
 							html_resultados = html_resultados+'<a href="'+results.url_autor+'" class="[ media--info__author ]">'+results.autor+'</a>, ';
@@ -594,7 +600,6 @@ function showTotalResults( post_type, filters ){
 		ajax_url,
 		data,
 		function(response){
-			console.log(response);
 			var json_response = $.parseJSON(response);
 
 			$('.js-num-resultados span').text(json_response);
@@ -631,30 +636,30 @@ function showNumberTweets(url){
 
 function showNumberShares(url){
 	console.log(url);
-	console.log('url');
 	if( !window.fbApiInit ) {
-		try {
-			FB.api(
-				"/",
-				{
-					"id": url,
-					"access_token": "853048764736608|MaIMwoVY0SKEWJFYfZ7Ga4_NCrk"
-				},
-				function (response) {
-					console.log(response);
-					if (response && !response.error) {
-						if(typeof response.share !== 'undefined'){
-							var share_count = response.share.share_count;
-							$('.js-share-count').text(share_count);
-						}
-					} else {
-						showNumberShares(url);
+		
+	}
+	try {
+		FB.api(
+			"/",
+			{
+				"id": url,
+				"access_token": "853048764736608|MaIMwoVY0SKEWJFYfZ7Ga4_NCrk"
+			},
+			function (response) {
+				console.log(response);
+				if (response && !response.error) {
+					if(typeof response.share !== 'undefined'){
+						var share_count = response.share.share_count;
+						$('.js-share-count').text(share_count);
 					}
+				} else {
+					showNumberShares(url);
 				}
-			);
-		} catch(err){
-			console.log(err);
-		}
+			}
+		);
+	} catch(err){
+		console.log(err);
 	}
 }// showNumberShares
 
