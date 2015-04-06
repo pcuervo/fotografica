@@ -109,7 +109,7 @@
 			$content = $post->post_content;
 
 			if( has_shortcode( $content, 'gallery' ) ) {
-				content_gallery_filter($content);
+				get_galleries_from_content($content);
 			}
 		?>
 		<div class="[ lightbox ] [ slideshow ]">

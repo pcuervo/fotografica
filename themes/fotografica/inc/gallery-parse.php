@@ -121,16 +121,17 @@ function sga_contentfilter($content = '') {
 	return $content;
 }
 
-function content_gallery_filter($content = '') {
+function get_galleries_from_content($content = '') {
 	echo 'ora';
-	echo strpos($content,'[gallery');
 	global $sga_gallery_types,$post,$sga_options,$sga_gallery_params;
 	$post_id = $post->ID;
 	$gallid = $post->ID;
 
 	if (!(strpos($content,'[gallery')===FALSE)) {
 		$howmany = preg_match_all('/\[gallery(\s+columns="[^"]*")?(\s+link="[^"]*")?\s+ids="([^"]*)"\]/',$content,$arrmatches);
-		//echo "Post ID: $post_id - res: $res - Matches:".print_r($arrmatches,true);exit;
+		echo "Post ID: $post_id - res: $res - Matches:".print_r($arrmatches,true);exit;
+
+		echo $howmany;
 
 		if (!($gallery_type=get_post_meta($post_id, 'gallery_type', true))) { // Post/page's specific setting may override site-wide
 			sga_get_options();
