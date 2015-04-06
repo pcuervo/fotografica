@@ -67,6 +67,20 @@
 									<ul class="[ overflow-scroll ]">
 										<?php
 											$args = array(
+												'tax_query' => array(
+													array(
+														'taxonomy' => 'coleccion',
+														'field' => 'slug',
+														'terms' => 'coleccion-centro-cultural-arte-contemporaneo'
+													)
+												)
+											);
+
+											$postslist = get_posts( $args );
+
+											var_dump($postslist);
+
+											$args = array(
 											    'orderby'		=> 'name',
 											    'order'         => 'ASC',
 											    'hide_empty'    => true,
