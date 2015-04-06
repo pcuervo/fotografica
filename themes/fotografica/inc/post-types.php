@@ -288,37 +288,6 @@
 		);
 		register_post_type( 'notas-prensa', $args );
 
-		// EVENTOS
-		$labels = array(
-			'name'          => 'Eventos',
-			'singular_name' => 'Evento',
-			'add_new'       => 'Nuevo Evento',
-			'add_new_item'  => 'Nuevo Evento',
-			'edit_item'     => 'Editar Evento',
-			'new_item'      => 'Nuevo Evento',
-			'all_items'     => 'Todas',
-			'view_item'     => 'Ver Evento',
-			'search_items'  => 'Buscar Evento',
-			'not_found'     => 'No se encontro',
-			'menu_name'     => 'Eventos'
-		);
-		$args = array(
-			'labels'             => $labels,
-			'public'             => true,
-			'publicly_queryable' => true,
-			'show_ui'            => true,
-			'show_in_menu'       => true,
-			'query_var'          => true,
-			'rewrite'            => array( 'slug' => 'evento' ),
-			'capability_type'    => 'post',
-			'has_archive'        => true,
-			'hierarchical'       => false,
-			'taxonomies'         => array( 'post_tag', 'category' ),
-			'menu_position'      => 6,
-			'supports'           => array( 'title', 'editor', 'thumbnail' )
-		);
-		register_post_type( 'eventos', $args );
-
 		// CARTELERA
 		$labels = array(
 			'name'          => 'Cartelera',

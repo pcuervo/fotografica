@@ -78,7 +78,7 @@
 	perspective: @string;
 }
 
-.preserve( @string: preserve-3d){
+.preserve( @string: preserve-3d ){
 	-webkit-transform-style: @string;
 	transform-style: @string;
 }
@@ -116,6 +116,15 @@
 
 .center() {
 	margin-left: auto !important; margin-right: auto !important; float: none !important;
+}
+
+.opacity(@amount: 5){
+	@ieamount:@amount*100;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=@{ieamount})";
+	filter:~"alpha(opacity=(@{ieamount}))";
+	-moz-opacity: @amount;
+	-khtml-opacity: @amount;
+	opacity: @amount;
 }
 
 .opacity-gradient() {

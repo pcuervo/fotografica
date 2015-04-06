@@ -15,9 +15,12 @@
 		add_meta_box( 'video_trabajo', 'Video de nuestro trabajo', 'metabox_video_trabajo', 'nuestro-trabajo', 'advanced', 'high' );
 		add_meta_box( 'fecha_nacimiento', 'Fecha de nacimieto', 'metabox_fecha_nacimiento', 'fotografos', 'advanced', 'high' );
 		add_meta_box( 'detalles_fotografia', 'Detalles', 'metabox_detalles_fotografia', 'fotografias', 'advanced', 'high' );
-		add_meta_box( 'video_exposicion', 'URL Video', 'metabox_video_exposicion', 'exposiciones', 'advanced', 'high' );
+		add_meta_box( 'video_exposicion', 'Exposición URL Video', 'metabox_video_exposicion', 'exposiciones', 'advanced', 'high' );
 		add_meta_box( 'lugar_y_fecha_exposicion', 'Lugar y fecha', 'metabox_lugar_y_fecha_exposicion', 'exposiciones', 'advanced', 'high' );
 		add_meta_box( 'links_exposicion', 'Links', 'metabox_links_exposicion', 'exposiciones', 'advanced', 'high' );
+		add_meta_box( 'video_publicacion', 'Publicación URL Video', 'metabox_video_publicacion', 'publicaciones', 'advanced', 'high' );
+		add_meta_box( 'info_publicacion', 'Información publicación', 'metabox_info_publicacion', 'publicaciones', 'advanced', 'high' );
+
 
 	});
 
@@ -144,6 +147,26 @@ END;
 
 	}// metabox_links_exposicion
 
+	function metabox_video_publicacion($post){
+		$video_publicacion = get_post_meta($post->ID, '_video_publicacion_meta', true);
+		wp_nonce_field(__FILE__, '_video_publicacion_meta_nonce');
+
+echo <<<END
+
+	<label>URL de video:</label>
+	<input type="text" class="widefat" id="video_publicacion" name="_video_publicacion_meta" value="$video_publicacion" />
+
+END;
+	}
+
+	function metabox_info_publicacion($post){
+		$info_publicacion = get_post_meta($post->ID, '_info_publicacion_meta', true);
+
+		$info_publicacion_editor_settings = array('textarea_name'=>'_info_publicacion_meta');
+		wp_editor( htmlspecialchars_decode($info_publicacion), '_info_publicacion', $info_publicacion_editor_settings );
+
+	}// metabox_links_exposicion
+
 	function name_meta_callback($post){
 		// $name = get_post_meta($post->ID, '_name_meta', true);
 		// wp_nonce_field(__FILE__, '_name_meta_nonce');
@@ -187,6 +210,10 @@ END;
 			update_post_meta($post_id, '_video_trabajo_meta', $_POST['_video_trabajo_meta']);
 		}
 
+		if ( isset($_POST['_sidebar_trabajo_meta']) and check_admin_referer(__FILE__, '_sidebar_trabajo_meta_nonce') ){
+			update_post_meta($post_id, '_sidebar_trabajo_meta', $_POST['_sidebar_trabajo_meta']);
+		}
+
 		if ( isset($_POST['_detalles_fotografia_meta']) and check_admin_referer(__FILE__, '_detalles_fotografia_meta_nonce') ){
 			update_post_meta($post_id, '_detalles_fotografia_meta', $_POST['_detalles_fotografia_meta']);
 		}
@@ -205,8 +232,13 @@ END;
 			update_post_meta($post_id, '_links_exposicion_meta', $data );
 		}
 
-		if ( isset($_POST['_sidebar_trabajo_meta']) and check_admin_referer(__FILE__, '_sidebar_trabajo_meta_nonce') ){
-			update_post_meta($post_id, '_sidebar_trabajo_meta', $_POST['_sidebar_trabajo_meta']);
+		if ( isset($_POST['_video_publicacion_meta']) and check_admin_referer(__FILE__, '_video_publicacion_meta_nonce') ){
+			update_post_meta($post_id, '_video_publicacion_meta', $_POST['_video_publicacion_meta']);
+		}
+
+		if ( isset($_POST['_info_publicacion_meta']) ){
+			$data = htmlspecialchars($_POST['_info_publicacion_meta']);
+			update_post_meta($post_id, '_info_publicacion_meta', $data );
 		}
 
 	});

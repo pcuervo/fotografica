@@ -5,9 +5,8 @@
 
 .final-tiles-gallery {
 	position: relative;
-	width: 200%;
-	position: relative; left: -50%;
 }
+
 .final-tiles-gallery .tile img.item {
 	-moz-transition: -moz-transform 0.2s, opacity 0.2s linear;
 	-o-transition: -o-transform 0.2s, opacity 0.2s linear;
@@ -341,7 +340,10 @@
 \*------------------------------------*/
 @media (min-width: @medium) {
 
-
+	.final-tiles-gallery {
+		width: 200%;
+		position: relative; left: -50%;
+	}
 
 }
 

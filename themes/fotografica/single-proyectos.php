@@ -105,7 +105,14 @@
 			</div><!-- .wrapper -->
 		</section>
 
-		<div class="[ lightbox ] [ cycle-slideshow ]">
+		<?php
+			$content = $post->post_content;
+
+			if( has_shortcode( $content, 'gallery' ) ) {
+				get_galleries_from_content($content);
+			}
+		?>
+		<div class="[ lightbox ] [ slideshow ]">
 
 			<?php
 				$attachedMediaArgs = array(
@@ -115,23 +122,19 @@
 					'post_status' => null,
 					'post_parent' => $post->ID
 				);
-				//$attachedMedia = get_embedded_media('imsage', $attachedMediaArgs);
-				// echo '<pre>';
-				// 	print_r($attachedMedia);
-				// echo '</pre>';
 
 			?>
 			<div class="[ image-single ]">
-				<div class="[ wrapper ]">
-					<img class="[ image-responsive ]" src="<?php echo THEMEPATH; ?>images/test-9.jpg" alt="">
+				<div class="[ full-height ]">
+					<img class="" src="<?php echo THEMEPATH; ?>images/test-9.jpg" alt="">
 					<p class="[ image-caption ] [ text-center ]">Retrato de Gerardo Murillo “Dr. atl”, Ciudad de México, ca. 1956</p>
-				</div><!-- wrapper -->
+				</div><!-- full-height -->
 			</div>
 			<div class="[ image-single ]">
-				<div class="[ wrapper ]">
-					<img class="[ image-responsive ]" src="<?php echo THEMEPATH; ?>images/test-7.jpg" alt="">
+				<div class="[ full-height ]">
+					<img class="[  ]" src="<?php echo THEMEPATH; ?>images/test-7.jpg" alt="">
 					<p class="[ image-caption ] [ text-center ]">Retrato de Gerardo Murillo “Dr. atl”, Ciudad de México, ca. 1956</p>
-				</div><!-- wrapper -->
+				</div><!-- full-height -->
 			</div>
 		</div><!-- .lightbox -->
 	<?php

@@ -252,7 +252,7 @@
 								runMasonry('.results', '.result' );
 							<?php } ?>
 
-							<?php if ( $postType === 'exposiciones'){ ?>
+							<?php if ( $postType === 'exposiciones' OR $postType === 'publicaciones' ){ ?>
 								runFitVids('.fit-vids-wrapper');
 							<?php } ?>
 
@@ -262,14 +262,11 @@
 							$('.js-tweet-count').text('<?php echo $tweets->count ?>');
 
 							<?php if ( $postType === 'proyectos'){ ?>
-								//console.log( 'proyectos' );
 
-								// multiple elements
-								var posts = document.querySelectorAll('.final-tiles-gallery');
-								imagesLoaded( posts, function() {
-
-									$('.final-tiles-gallery').finalTilesGallery();
-
+								$('.final-tiles-gallery').each(function(index) {
+									$(this).finalTilesGallery({
+										gridSize: 24
+									});
 								});
 
 							<?php } ?>
@@ -278,8 +275,10 @@
 							 * Triggered events
 							**/
 
-							$('.single-content').on('click','.single-content-image', function(){
-								openLightbox(this);
+							$('.single-content').on('click','.tile-inner', function(e){
+								e.preventDefault();
+								var imagenID = $(this).data('id');
+								openLightbox(imagenID);
 							});
 
 							$('.button--heart').on('click', function(e){
@@ -353,6 +352,8 @@
 							console.log('click');
 							toggleiFrame();
 						});
+
+						new UISearch( document.getElementById( 'sb-search' ) );
 
 
 
@@ -2013,7 +2014,7 @@
 	function get_secciones_orden_home(){
 		global $wpdb;
 		$query = "
-				SELECT * FROM wp_orden_home 
+				SELECT * FROM wp_orden_home
 				ORDER BY posicion";
 		$orden_secciones_home = $wpdb->get_results( $query, OBJECT );
 
@@ -2381,8 +2382,8 @@
 
 		$query = "
 			SELECT id FROM wp_posts
-			WHERE post_type = 'fotografias' 
-			AND post_status = 'publish' 
+			WHERE post_type = 'fotografias'
+			AND post_status = 'publish'
 			ORDER BY post_date LIMIT 1";
 		$posts_info = $wpdb->get_results( $query, OBJECT );
 
@@ -2451,20 +2452,20 @@
 
 							if ( $placeRecientes ){
 								$html .= '<span class="[ media--info__place ]">'.$placeRecientesName.'</span>,';
-							} 
+							}
 
-							if ( $circaRecientes ){ 
+							if ( $circaRecientes ){
 								$html .= '<span class="[ media--info__circa ]">circa </span>';
-							} 
+							}
 
-							if ( $dateRecientes ){ 
+							if ( $dateRecientes ){
 								$html .= '<span class="[ media--info__date ]">'.$dateRecientesName.'</span>,';
-							} 
+							}
 
 							$html .= '<br /> de la colección <a href="'.site_url( $coleccionRecientesSlug ).'" class="[ media--info__colection ]">'.$coleccionRecientesName.'</a>';
 						$html .= '</p>
 
-						
+
 					</div>
 				</div>
 			</section>';
@@ -2486,7 +2487,7 @@
 		$args = array(
 			'post_type' 	=> 'any',
 			'show_posts'	=> 1,
-			'tax_query' 	=> 
+			'tax_query' 	=>
 				array(
 					array(
 						'taxonomy'	=> 'category',
@@ -2525,7 +2526,7 @@
 			$postTypeFeatured = get_post_type( $post->ID );
 
 			$coleccionFeatured 		= wp_get_post_terms( $post->ID, 'coleccion' );
-			if ( ! empty( $coleccionFeatured ) ){ 
+			if ( ! empty( $coleccionFeatured ) ){
 				$coleccionFeaturedName 	= $coleccionFeatured[0]->name;
 				$coleccionFeaturedSlug 	= $coleccionFeatured[0]->slug;
 			}
@@ -2534,7 +2535,7 @@
 			if ( $authorFeatured ){
 				$authorFeaturedName 	= $authorFeatured[0]->name;
 				$authorFeaturedSlug 	= $authorFeatured[0]->slug;
-			} 
+			}
 
 			$titleFeatured = get_the_title( $post->ID );
 			if ( strpos($titleFeatured, 'Sin título') !== false OR $titleFeatured == '' OR strpos($titleFeatured, '&nbsp') !== false ){
@@ -2573,33 +2574,33 @@
 					<div class="[ media-info media-info--large ] [ xmall-12 ]">
 						<p class="[ text-center ]">';
 
-							if ( $authorFeatured ){ 
+							if ( $authorFeatured ){
 								$html .= '<a href="'.site_url( $authorFeaturedSlug ).'" class="[ media--info__author ]">'.$authorFeaturedName.'</a>,';
-							} 
+							}
 
-							if ( $titleFeatured ){ 
+							if ( $titleFeatured ){
 								$html .= '<a href="'.$permalinkFeatured.'" class="[ media--info__name ]">'.$titleFeatured.'</a>,';
-							} 
+							}
 
-							if ( $seriesFeatured ){ 
+							if ( $seriesFeatured ){
 								$html .= 'de la serie <span class="[ media--info__series ]">'.$seriesFeatured.'</span>,';
-							} 
+							}
 
-							if ( $placeFeatured ){ 
+							if ( $placeFeatured ){
 								$html .= '<span class="[ media--info__place ]">'.$placeFeaturedName.'</span>,';
-							} 
+							}
 
-							if ( $circaFeatured ){ 
+							if ( $circaFeatured ){
 								$html .= '<span class="[ media--info__circa ]">circa </span>';
-							} 
+							}
 
-							if ( $dateFeatured ){ 
+							if ( $dateFeatured ){
 								$html .= '<span class="[ media--info__date ]">'.$dateFeaturedName.'</span>,';
-							} 
+							}
 
-							if ( $coleccionFeatured ){ 
+							if ( $coleccionFeatured ){
 								$html .= '<br />de la colección <a href="'.site_url( $coleccionFeaturedSlug ).'" class="[ media--info__colection ]"> '.$coleccionFeaturedName.'</a>';
-							} 
+							}
 						$html .= '</p>
 					</div>
 				</div>

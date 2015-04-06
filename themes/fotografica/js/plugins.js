@@ -124,545 +124,163 @@ $this.wrap('<div class="fluid-width-video-wrapper"></div>').parent('.fluid-width
 
 
 //credits James Padolsey http://james.padolsey.com/
-var qualifyURL = function (url) {
-    var img = document.createElement('img');
-    img.src = url; // set string url
-    url = img.src; // get qualified url
-    img.src = null; // no server request
-    return url;
-};
 
-(function ($, window, document, undefined) {
+var qualifyURL=function(t){var e=document.createElement("img");return e.src=t,t=e.src,e.src=null,t};!function(t,e,s){function n(e,i){this.element=e,this.$element=t(e),this.settings=t.extend({},h,i),this.settings.gridSize||(this.settings.gridSize=5),this._defaults=h,this._name=a,this.tiles=[],this._loadedImages=0,this.edges=[],this.currentWidth=0,this.currentImageSizeFactor=1,this.ajaxComplete=!1,this.isLoading=!1,this.currentPage=1,this.init()}t.fn.visible=function(i){if(!t(this).offset())return!0;var s=t(this),n=t(e),a=n.scrollTop(),h=a+n.height(),r=s.offset().top,d=r+s.height(),o=i===!0?d:r,g=i===!0?r:d;return h>=g&&o>=a};var a="finalTilesGallery",h={margin:10,minTileWidth:200,ignoreImageAttributes:!0,imageSizeFactor:[[4e3,.9],[1024,.8],[800,.7],[600,.6],[480,.5],[320,.3]],gridSize:50,allowEnlargement:!0,autoLoadURL:null,autoLoadOffset:50,onComplete:function(){},onUpdate:function(){},debug:!1};t.extend(n.prototype,{print:function(t){this.settings.debug&&console.log(t)},setCurrentImageSizeFactor:function(){this.currentImageSizeFactor=1;for(var i=t(e).width(),s=0;s<this.settings.imageSizeFactor.length;s++)this.settings.imageSizeFactor[s][0]>=i&&(this.currentImageSizeFactor=this.settings.imageSizeFactor[s][1]);this.currentImageSizeFactor||(this.currentImageSizeFactor=1),this.print("current image size factor: "+this.currentImageSizeFactor+" ("+i+")")},init:function(){var i=this;this.$element.find(".ftg-items").css({position:"relative"}),this.tiles=this.$element.find(".tile").not(".ftg-hidden"),this.tiles.css({transition:"all .3s"}),this.currentWidth=this.$element.width(),this.print("this.currentWidth: "+this.currentWidth);var n=0;this.setCurrentImageSizeFactor(),t(e).resize(function(){n=setTimeout(function(){i.currentWidth!=i.$element.width()&&(clearTimeout(n),i.print("this.currentWidth",this.currentWidth),i.currentWidth=i.$element.width(),i.setCurrentImageSizeFactor(),i.refresh())},500)}),i.settings.autoLoadURL&&t(e).scroll(function(){i.ajaxComplete||i.isLoading||t(e).scrollTop()>=t(s).height()-t(e).height()-i.settings.autoLoadOffset&&(i.isLoading=!0,t.get(i.settings.autoLoadURL,{page:++i.currentPage},function(e){0==t.trim(e).length?i.ajaxComplete=!0:(i.$element.find(".ftg-items").append(e),i.tiles=i.$element.find(".tile"),i.loadImage())}))}),this.setupFilters(),this.edges.push({left:0,top:0,width:this.currentWidth,index:0}),this.loadImage()},setupFilters:function(){var e=this;e.$element.find(".ftg-filters a").click(function(i){i.preventDefault(),e.$element.find(".ftg-filters a").removeClass("selected"),t(this).addClass("selected");var s=t(this).attr("href").replace("#ftg-set-","");"ftgall"==s?e.$element.find(".tile").removeClass("ftg-hidden"):e.$element.find(".tile").not(".ftg-set-"+s).addClass("ftg-hidden").end().filter(".ftg-set-"+s).removeClass("ftg-hidden"),e.refresh()})},printEdges:function(){for(this.$element.find(".edge").remove(),i=0;i<this.edges.length;i++){var e=t("<div class='edge' />");e.append("top: "+this.edges[i].top+"<br>"),e.append("left: "+this.edges[i].left+"<br>"),e.append("width: "+this.edges[i].width+"<br>"),e.css({left:this.edges[i].left,top:this.edges[i].top,marginTop:-25,marginLeft:20}),this.$element.append(e)}},printEdge:function(e){var i=t("<div class='edge enlarged-"+e.enlarged+"' />");i.append("<b>"+e.index+" "+e["case"]+"</b><br>"),i.append("t: "+Math.round(e.top)+" l: "+e.left+"<br>"),i.append("width: "+e.width+"<br>"),i.append("idx: "+e.tileIndex+"<br>"),i.css({left:e.left,top:e.top,marginTop:-25,marginLeft:20}),this.$element.append(i)},refresh:function(){this.$element.find(".edge").remove(),this.edges=[{left:0,top:0,width:this.currentWidth}],this.tiles.removeClass("ftg-loaded ftg-enlarged"),this.tiles=this.$element.find(".tile").not(".ftg-hidden"),this._loadedImages=0,this.loadImage()},loadImage:function(){function t(){if(e.add(e._loadedImages),++e._loadedImages<e.tiles.length)e.loadImage();else{var t=e.lowerEdgeTop();e.print("lower edge top: "+t),e.$element.find(".ftg-items").height(t),e.isLoading=!1,e.settings.onComplete()}}var e=this,i=this.tiles.eq(this._loadedImages);i.children("iframe").length&&i.children("iframe").addClass("item");var s=i.find(".item");switch(s.get(0).tagName.toLowerCase()){case"img":var n=new Image;n.onload=function(){var a=e.currentImageSizeFactor;i.data("ftg-ignore-size-factor")&&(a=1),s.attr("src",this.src),s.data("width",n.width*a),s.data("height",n.height*a),s.data("owidth",n.width),s.data("oheight",n.height),t()},n.onerror=function(){e.print("error loading image: "+n.src),t()},n.src=s.data("src"),i.data("ftg-type","image");break;case"iframe":s.data("width",s.attr("width")),s.data("height",s.attr("height")),s.data("owidth",s.attr("width")),s.data("oheight",s.attr("height")),i.data("ftg-type","iframe"),t();break;default:s.data("width",s.data("width")),s.data("height",s.data("height")),s.data("owidth",s.data("width")),s.data("oheight",s.data("height")),i.data("ftg-type","generic"),t()}},higherEdge:function(){for(var t=1e5,e=0,i=0;i<this.edges.length;i++)this.edges[i].top<t&&(e=i,t=this.edges[i].top);return this.edges[e]},lowerEdgeTop:function(){for(var t=0,e=0;e<this.edges.length;e++)this.edges[e].top>t&&(t=this.edges[e].top);return t},alignEdge:function(t){for(var e=0;e<this.edges.length;e++)if(this.edges[e].left+this.edges[e].width+this.settings.margin==t.left&&(this.print("found edge on left",e),t.top==this.edges[e].top))return this.print("edges can be aligned [1]"),{side:"left",edge:this.edges[e]};for(var e=0;e<this.edges.length;e++)if(this.edges[e].left-this.settings.margin==t.left+t.width&&(this.print("found edge on right",e),t.top==this.edges[e].top))return this.print("edges can be aligned [2]"),{side:"right",edge:this.edges[e]};return null},removeEdge:function(t){for(var e=[],i=0;i<this.edges.length;i++)this.edges[i]!=t&&e.push(this.edges[i]);this.edges=e},add:function(t){var e=this.tiles.eq(t),i=e.find(".item"),s=i.data("width"),n=i.data("height"),a=this.higherEdge();if(this.print(a),a.tileIndex=t,this.print(t+" ["+e.data("ftg-type")+"] ("+s+"x"+n+")"),a.top>0&&(a.top+=this.settings.margin),e.css({left:a.left,top:a.top,position:"absolute"}),a.enlarged=!1,a.width<s+this.settings.margin){a["case"]="Te",this.print("Te",a.width);var h=a.width,r=n/s*h;h+a.left-this.settings.margin==this.currentWidth&&(this.print("END"),h-=this.settings.margin,r=n/s*h),s=h,n=r}else if(a.width>s)if(this.print("tE"),a.width-s>=this.settings.minTileWidth){a["case"]="tE",this.print("tE1",a.width,a.left,this.currentWidth);var d={left:a.left+s+this.settings.margin,top:a.top-(a.top>0?this.settings.margin:0),width:a.width-s-this.settings.margin,marginLeft:!0,"case":"NEW",index:a.index+1};this.edges.push(d)}else{a["case"]="tE2",this.print("tE2"),this.print("enlargement",a.width,a.left,this.currentWidth);var h=(a.left+a.width==this.currentWidth?0:this.settings.margin,a.width),r=this.settings.allowEnlargement?n/s*h:n;this.settings.allowEnlargement?(e.addClass("ftg-enlarged"),a.enlarged=!0):e.find(".item").css({width:s,height:n}),s=h,n=r}a.top+=n;var o=a.top%this.settings.gridSize;a.top-=o,n-=o,a.left=a.left,a.width=s;var g=!0,l=this.alignEdge(a,t);l&&("left"==l.side?(this.removeEdge(a),l.edge.width+=s+this.settings.margin,n-=a.top-l.edge.top,a.top-=n,g=!1):(this.removeEdge(l.edge),a.width+=this.settings.margin+l.edge.width,g=!1),e.height(n)),this.$element.find(".ftg-items").height()<a.top&&this.$element.find(".ftg-items").height(a.top),this.settings.debug&&g&&this.printEdge(a),"iframe"==e.data("ftg-type")&&e.find("iframe").height(n),this.print(s+"x"+n),this.print("----"),e.css({width:s,height:n});var f=s/i.data("width"),c=i.data("height")*f-n;i.css({top:0-c/2}),e.addClass("ftg-loaded")}}),t.fn[a]=function(e){return this.each(function(){t.data(this,"plugin_"+a)||t.data(this,"plugin_"+a,new n(this,e))}),this},t(function(){t(".ftg-social a").click(function(i){i.preventDefault();var n=t(this).data("social"),a=t(this).parents(".tile").first(),h=a.data("big");h||(h=a.find(".item").attr("src"));var r=t.trim(a.find(".caption").text());if(r.length||(r=s.title),"facebook"==n){var d="https://www.facebook.com/dialog/feed?app_id=1447224948871585&link="+encodeURIComponent(location.href)+"&display=popup&name="+encodeURIComponent(s.title)+"&caption=&description="+encodeURIComponent(r)+"&picture="+encodeURIComponent(qualifyURL(h))+"&ref=share&actions={%22name%22:%22View%20the%20gallery%22,%20%22link%22:%22"+encodeURIComponent(location.href)+"%22}&redirect_uri=http://final-tiles-gallery.com/facebook_redirect.html",o=e.open(d,"ftgw","location=1,status=1,scrollbars=1,width=600,height=400");o.moveTo(screen.width/2-300,screen.height/2-200)}if("twitter"==n){var o=e.open("https://twitter.com/intent/tweet?url="+encodeURI(location.href.split("#")[0])+"&text="+encodeURI(r),"ftgw","location=1,status=1,scrollbars=1,width=600,height=400");o.moveTo(screen.width/2-300,screen.height/2-200)}if("pinterest"==n){var d="http://pinterest.com/pin/create/button/?url="+encodeURIComponent(location.href)+"&description="+encodeURI(r);d+="&media="+encodeURIComponent(qualifyURL(h));var o=e.open(d,"ftgw","location=1,status=1,scrollbars=1,width=600,height=400");o.moveTo(screen.width/2-300,screen.height/2-200)}if("google-plus"==n){var d="https://plus.google.com/share?url="+encodeURI(location.href),o=e.open(d,"ftgw","location=1,status=1,scrollbars=1,width=600,height=400");o.moveTo(screen.width/2-300,screen.height/2-200)}})})}(jQuery,window,document);
 
-    $.fn.visible = function (partial) {
 
-        if (!$(this).offset())
-            return true;
+/*!
+ * classie - class helper functions
+ * from bonzo https://github.com/ded/bonzo
+ *
+ * classie.has( elem, 'my-class' ) -> true/false
+ * classie.add( elem, 'my-new-class' )
+ * classie.remove( elem, 'my-unwanted-class' )
+ * classie.toggle( elem, 'my-class' )
+ */
 
-        var $t = $(this),
-            $w = $(window),
-            viewTop = $w.scrollTop(),
-            viewBottom = viewTop + $w.height(),
-            _top = $t.offset().top,
-            _bottom = _top + $t.height(),
-            compareTop = partial === true ? _bottom : _top,
-            compareBottom = partial === true ? _top : _bottom;
+/*jshint browser: true, strict: true, undef: true */
+/*global define: false */
 
-        return ((compareBottom <= viewBottom) && (compareTop >= viewTop));
+!function(s){"use strict";function e(s){return new RegExp("(^|\\s+)"+s+"(\\s+|$)")}function n(s,e){var n=a(s,e)?c:t;n(s,e)}var a,t,c;"classList"in document.documentElement?(a=function(s,e){return s.classList.contains(e)},t=function(s,e){s.classList.add(e)},c=function(s,e){s.classList.remove(e)}):(a=function(s,n){return e(n).test(s.className)},t=function(s,e){a(s,e)||(s.className=s.className+" "+e)},c=function(s,n){s.className=s.className.replace(e(n)," ")});var i={hasClass:a,addClass:t,removeClass:c,toggleClass:n,has:a,add:t,remove:c,toggle:n};"function"==typeof define&&define.amd?define(i):s.classie=i}(window);
 
-    };
+/* Modernizr 2.6.2 (Custom Build) | MIT & BSD
+ * Build: http://modernizr.com/download/#-shiv-cssclasses-load
+ */
+;window.Modernizr=function(a,b,c){function u(a){j.cssText=a}function v(a,b){return u(prefixes.join(a+";")+(b||""))}function w(a,b){return typeof a===b}function x(a,b){return!!~(""+a).indexOf(b)}function y(a,b,d){for(var e in a){var f=b[a[e]];if(f!==c)return d===!1?a[e]:w(f,"function")?f.bind(d||b):f}return!1}var d="2.6.2",e={},f=!0,g=b.documentElement,h="modernizr",i=b.createElement(h),j=i.style,k,l={}.toString,m={},n={},o={},p=[],q=p.slice,r,s={}.hasOwnProperty,t;!w(s,"undefined")&&!w(s.call,"undefined")?t=function(a,b){return s.call(a,b)}:t=function(a,b){return b in a&&w(a.constructor.prototype[b],"undefined")},Function.prototype.bind||(Function.prototype.bind=function(b){var c=this;if(typeof c!="function")throw new TypeError;var d=q.call(arguments,1),e=function(){if(this instanceof e){var a=function(){};a.prototype=c.prototype;var f=new a,g=c.apply(f,d.concat(q.call(arguments)));return Object(g)===g?g:f}return c.apply(b,d.concat(q.call(arguments)))};return e});for(var z in m)t(m,z)&&(r=z.toLowerCase(),e[r]=m[z](),p.push((e[r]?"":"no-")+r));return e.addTest=function(a,b){if(typeof a=="object")for(var d in a)t(a,d)&&e.addTest(d,a[d]);else{a=a.toLowerCase();if(e[a]!==c)return e;b=typeof b=="function"?b():b,typeof f!="undefined"&&f&&(g.className+=" "+(b?"":"no-")+a),e[a]=b}return e},u(""),i=k=null,function(a,b){function k(a,b){var c=a.createElement("p"),d=a.getElementsByTagName("head")[0]||a.documentElement;return c.innerHTML="x<style>"+b+"</style>",d.insertBefore(c.lastChild,d.firstChild)}function l(){var a=r.elements;return typeof a=="string"?a.split(" "):a}function m(a){var b=i[a[g]];return b||(b={},h++,a[g]=h,i[h]=b),b}function n(a,c,f){c||(c=b);if(j)return c.createElement(a);f||(f=m(c));var g;return f.cache[a]?g=f.cache[a].cloneNode():e.test(a)?g=(f.cache[a]=f.createElem(a)).cloneNode():g=f.createElem(a),g.canHaveChildren&&!d.test(a)?f.frag.appendChild(g):g}function o(a,c){a||(a=b);if(j)return a.createDocumentFragment();c=c||m(a);var d=c.frag.cloneNode(),e=0,f=l(),g=f.length;for(;e<g;e++)d.createElement(f[e]);return d}function p(a,b){b.cache||(b.cache={},b.createElem=a.createElement,b.createFrag=a.createDocumentFragment,b.frag=b.createFrag()),a.createElement=function(c){return r.shivMethods?n(c,a,b):b.createElem(c)},a.createDocumentFragment=Function("h,f","return function(){var n=f.cloneNode(),c=n.createElement;h.shivMethods&&("+l().join().replace(/\w+/g,function(a){return b.createElem(a),b.frag.createElement(a),'c("'+a+'")'})+");return n}")(r,b.frag)}function q(a){a||(a=b);var c=m(a);return r.shivCSS&&!f&&!c.hasCSS&&(c.hasCSS=!!k(a,"article,aside,figcaption,figure,footer,header,hgroup,nav,section{display:block}mark{background:#FF0;color:#000}")),j||p(a,c),a}var c=a.html5||{},d=/^<|^(?:button|map|select|textarea|object|iframe|option|optgroup)$/i,e=/^(?:a|b|code|div|fieldset|h1|h2|h3|h4|h5|h6|i|label|li|ol|p|q|span|strong|style|table|tbody|td|th|tr|ul)$/i,f,g="_html5shiv",h=0,i={},j;(function(){try{var a=b.createElement("a");a.innerHTML="<xyz></xyz>",f="hidden"in a,j=a.childNodes.length==1||function(){b.createElement("a");var a=b.createDocumentFragment();return typeof a.cloneNode=="undefined"||typeof a.createDocumentFragment=="undefined"||typeof a.createElement=="undefined"}()}catch(c){f=!0,j=!0}})();var r={elements:c.elements||"abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video",shivCSS:c.shivCSS!==!1,supportsUnknownElements:j,shivMethods:c.shivMethods!==!1,type:"default",shivDocument:q,createElement:n,createDocumentFragment:o};a.html5=r,q(b)}(this,b),e._version=d,g.className=g.className.replace(/(^|\s)no-js(\s|$)/,"$1$2")+(f?" js "+p.join(" "):""),e}(this,this.document),function(a,b,c){function d(a){return"[object Function]"==o.call(a)}function e(a){return"string"==typeof a}function f(){}function g(a){return!a||"loaded"==a||"complete"==a||"uninitialized"==a}function h(){var a=p.shift();q=1,a?a.t?m(function(){("c"==a.t?B.injectCss:B.injectJs)(a.s,0,a.a,a.x,a.e,1)},0):(a(),h()):q=0}function i(a,c,d,e,f,i,j){function k(b){if(!o&&g(l.readyState)&&(u.r=o=1,!q&&h(),l.onload=l.onreadystatechange=null,b)){"img"!=a&&m(function(){t.removeChild(l)},50);for(var d in y[c])y[c].hasOwnProperty(d)&&y[c][d].onload()}}var j=j||B.errorTimeout,l=b.createElement(a),o=0,r=0,u={t:d,s:c,e:f,a:i,x:j};1===y[c]&&(r=1,y[c]=[]),"object"==a?l.data=c:(l.src=c,l.type=a),l.width=l.height="0",l.onerror=l.onload=l.onreadystatechange=function(){k.call(this,r)},p.splice(e,0,u),"img"!=a&&(r||2===y[c]?(t.insertBefore(l,s?null:n),m(k,j)):y[c].push(l))}function j(a,b,c,d,f){return q=0,b=b||"j",e(a)?i("c"==b?v:u,a,b,this.i++,c,d,f):(p.splice(this.i++,0,a),1==p.length&&h()),this}function k(){var a=B;return a.loader={load:j,i:0},a}var l=b.documentElement,m=a.setTimeout,n=b.getElementsByTagName("script")[0],o={}.toString,p=[],q=0,r="MozAppearance"in l.style,s=r&&!!b.createRange().compareNode,t=s?l:n.parentNode,l=a.opera&&"[object Opera]"==o.call(a.opera),l=!!b.attachEvent&&!l,u=r?"object":l?"script":"img",v=l?"script":u,w=Array.isArray||function(a){return"[object Array]"==o.call(a)},x=[],y={},z={timeout:function(a,b){return b.length&&(a.timeout=b[0]),a}},A,B;B=function(a){function b(a){var a=a.split("!"),b=x.length,c=a.pop(),d=a.length,c={url:c,origUrl:c,prefixes:a},e,f,g;for(f=0;f<d;f++)g=a[f].split("="),(e=z[g.shift()])&&(c=e(c,g));for(f=0;f<b;f++)c=x[f](c);return c}function g(a,e,f,g,h){var i=b(a),j=i.autoCallback;i.url.split(".").pop().split("?").shift(),i.bypass||(e&&(e=d(e)?e:e[a]||e[g]||e[a.split("/").pop().split("?")[0]]),i.instead?i.instead(a,e,f,g,h):(y[i.url]?i.noexec=!0:y[i.url]=1,f.load(i.url,i.forceCSS||!i.forceJS&&"css"==i.url.split(".").pop().split("?").shift()?"c":c,i.noexec,i.attrs,i.timeout),(d(e)||d(j))&&f.load(function(){k(),e&&e(i.origUrl,h,g),j&&j(i.origUrl,h,g),y[i.url]=2})))}function h(a,b){function c(a,c){if(a){if(e(a))c||(j=function(){var a=[].slice.call(arguments);k.apply(this,a),l()}),g(a,j,b,0,h);else if(Object(a)===a)for(n in m=function(){var b=0,c;for(c in a)a.hasOwnProperty(c)&&b++;return b}(),a)a.hasOwnProperty(n)&&(!c&&!--m&&(d(j)?j=function(){var a=[].slice.call(arguments);k.apply(this,a),l()}:j[n]=function(a){return function(){var b=[].slice.call(arguments);a&&a.apply(this,b),l()}}(k[n])),g(a[n],j,b,n,h))}else!c&&l()}var h=!!a.test,i=a.load||a.both,j=a.callback||f,k=j,l=a.complete||f,m,n;c(h?a.yep:a.nope,!!i),i&&c(i)}var i,j,l=this.yepnope.loader;if(e(a))g(a,0,l,0);else if(w(a))for(i=0;i<a.length;i++)j=a[i],e(j)?g(j,0,l,0):w(j)?B(j):Object(j)===j&&h(j,l);else Object(a)===a&&h(a,l)},B.addPrefix=function(a,b){z[a]=b},B.addFilter=function(a){x.push(a)},B.errorTimeout=1e4,null==b.readyState&&b.addEventListener&&(b.readyState="loading",b.addEventListener("DOMContentLoaded",A=function(){b.removeEventListener("DOMContentLoaded",A,0),b.readyState="complete"},0)),a.yepnope=k(),a.yepnope.executeStack=h,a.yepnope.injectJs=function(a,c,d,e,i,j){var k=b.createElement("script"),l,o,e=e||B.errorTimeout;k.src=a;for(o in d)k.setAttribute(o,d[o]);c=j?h:c||f,k.onreadystatechange=k.onload=function(){!l&&g(k.readyState)&&(l=1,c(),k.onload=k.onreadystatechange=null)},m(function(){l||(l=1,c(1))},e),i?k.onload():n.parentNode.insertBefore(k,n)},a.yepnope.injectCss=function(a,c,d,e,g,i){var e=b.createElement("link"),j,c=i?h:c||f;e.href=a,e.rel="stylesheet",e.type="text/css";for(j in d)e.setAttribute(j,d[j]);g||(n.parentNode.insertBefore(e,n),m(c,0))}}(this,document),Modernizr.load=function(){yepnope.apply(window,[].slice.call(arguments,0))};
 
-    var pluginName = "finalTilesGallery",
-        defaults = {
-            margin: 10,
-            minTileWidth: 200,
-            ignoreImageAttributes: true,
-            imageSizeFactor: [
-                [4000, .9],
-                [1024, .8],
-                [800, .7],
-                [600, .6],
-                [480, .5],
-                [320, .3]
-            ],
-            gridSize: 50,
-            allowEnlargement: true,
-            autoLoadURL: null,
-            autoLoadOffset: 50,
-            onComplete: function () {},
-            onUpdate: function () {},
-            debug: false
-        };
+/**
+ * uisearch.js v1.0.0
+ * http://www.codrops.com
+ *
+ * Licensed under the MIT license.
+ * http://www.opensource.org/licenses/mit-license.php
+ *
+ * Copyright 2013, Codrops
+ * http://www.codrops.com
+ */
 
-    // The actual plugin constructor
-    function Plugin(element, options) {
-        this.element = element;
-        this.$element = $(element);
-        this.settings = $.extend({}, defaults, options);
-        if(!this.settings.gridSize)
-            this.settings.gridSize = 5;
-        this._defaults = defaults;
-        this._name = pluginName;
-        this.tiles = [];
-        this._loadedImages = 0;
-        this.edges = [];
-        this.currentWidth = 0;
-        this.currentImageSizeFactor = 1;
-        this.ajaxComplete = false;
-        this.isLoading = false;
-        this.currentPage = 1;
-        this.init();
-    }
+;( function( window ) {
 
-    // Avoid Plugin.prototype conflicts
-    $.extend(Plugin.prototype, {
-	    print : function (text) {
-		    if(this.settings.debug)
-		    	console.log(text);
-	    },
-    	setCurrentImageSizeFactor : function () {
-            this.currentImageSizeFactor = 1;
-            var ww = $(window).width();
-            for (var i = 0; i < this.settings.imageSizeFactor.length; i++) {
-                if (this.settings.imageSizeFactor[i][0] >= ww)
-                    this.currentImageSizeFactor = this.settings.imageSizeFactor[i][1];
-            }
-            if(!this.currentImageSizeFactor)
-            	this.currentImageSizeFactor = 1;
-            this.print("current image size factor: " + this.currentImageSizeFactor + " (" + ww + ")");
-        },
-        init: function () {
-            var instance = this;
-            this.$element.find(".ftg-items").css({
-                position: 'relative'
-            });
-            this.tiles = this.$element.find('.tile').not('.ftg-hidden');
+	'use strict';
 
-            this.tiles.css({
-                transition: 'all .3s'
-            });
-            this.currentWidth = this.$element.width();
-            this.print("this.currentWidth: " + this.currentWidth);
+	// EventListener | @jon_neal | //github.com/jonathantneal/EventListener
+	!window.addEventListener && window.Element && (function () {
+	   function addToPrototype(name, method) {
+		  Window.prototype[name] = HTMLDocument.prototype[name] = Element.prototype[name] = method;
+	   }
 
-            var _resizeTo = 0;
-            this.setCurrentImageSizeFactor();
-            $(window).resize(function () {
-                _resizeTo = setTimeout(function () {
-                    if (instance.currentWidth != instance.$element.width()) {
-                        clearTimeout(_resizeTo);
-                        instance.print("this.currentWidth", this.currentWidth);
-                        instance.currentWidth = instance.$element.width();
-                        instance.setCurrentImageSizeFactor();
-                        instance.refresh();
-                    }
-                }, 500);
-            });
+	   var registry = [];
 
-			if(instance.settings.autoLoadURL) {
-				$(window).scroll(function () {
-					if(!instance.ajaxComplete && !instance.isLoading) {
-	                    if ($(window).scrollTop() >= $(document).height() - $(window).height() - instance.settings.autoLoadOffset) {
-	                        instance.isLoading = true;
-	                        $.get(instance.settings.autoLoadURL, { page: ++instance.currentPage }, function (html) {
-	                            if ($.trim(html).length == 0) {
-	                                instance.ajaxComplete = true;
-	                            } else {
-		                            instance.$element.find(".ftg-items").append(html);
-		                            instance.tiles = instance.$element.find('.tile')
-	                                instance.loadImage();
-	                            }
-	                        });
-	                	}
-	                }
-	            });
-			}
+	   addToPrototype("addEventListener", function (type, listener) {
+		  var target = this;
 
-            /*$(window).scroll(function (event) {
-                instance.tiles.each(function (i, el) {
-                    var $el = instance.tiles.eq(i);
-                    if ($el.visible(true)) {
-                        instance.tiles
-                            .splice(i, 1);
-                        $el
-                            .addClass("effect-" + instance.settings.scrollEffect)
-                            .removeClass('module');
-                    }
-                });
-            });*/
-			this.setupFilters();
-            this.edges.push({ left: 0, top: 0, width: this.currentWidth, index: 0 });
-            this.loadImage();
-        },
-        setupFilters: function() {
-	        var instance = this;
-	        instance.$element.find(".ftg-filters a").click(function(e) {
-		        e.preventDefault();
+		  registry.unshift({
+			 __listener: function (event) {
+				event.currentTarget = target;
+				event.pageX = event.clientX + document.documentElement.scrollLeft;
+				event.pageY = event.clientY + document.documentElement.scrollTop;
+				event.preventDefault = function () { event.returnValue = false };
+				event.relatedTarget = event.fromElement || null;
+				event.stopPropagation = function () { event.cancelBubble = true };
+				event.relatedTarget = event.fromElement || null;
+				event.target = event.srcElement || target;
+				event.timeStamp = +new Date;
 
-		        instance.$element.find(".ftg-filters a").removeClass("selected");
-		        $(this).addClass("selected");
+				listener.call(target, event);
+			 },
+			 listener: listener,
+			 target: target,
+			 type: type
+		  });
 
-		        var ft = $(this).attr("href").replace("#ftg-set-", "");
-		        if(ft == "ftgall") {
-			    	instance.$element.find(".tile").removeClass("ftg-hidden");
-		        } else {
-			        instance.$element
-			        			.find(".tile")
-			        			.not(".ftg-set-" + ft)
-			        			.addClass("ftg-hidden")
-			        			.end()
-			        			.filter(".ftg-set-" + ft)
-			        			.removeClass("ftg-hidden");
-			    }
-		        instance.refresh();
-	        });
-        },
-        printEdges: function () {
-            this.$element.find(".edge").remove();
-            for (i = 0; i < this.edges.length; i++) {
-                var $e = $("<div class='edge' />");
-                $e.append("top: " + this.edges[i].top + "<br>");
-                $e.append("left: " + this.edges[i].left + "<br>");
-                $e.append("width: " + this.edges[i].width + "<br>");
-                $e.css({
-                    left: this.edges[i].left,
-                    top: this.edges[i].top,
-                    marginTop: -25,
-                    marginLeft: 20
-                });
-                this.$element.append($e);
-            }
-        },
-        printEdge: function (edge) {
-            var $e = $("<div class='edge enlarged-"+edge.enlarged+"' />");
-            $e.append("<b>"+ edge.index + " " + edge.case + "</b><br>");
-            $e.append("t: " + Math.round(edge.top) + " l: " + edge.left + "<br>");
-            $e.append("width: " + edge.width + "<br>");
-            $e.append("idx: " + edge.tileIndex + "<br>");
+		  this.attachEvent("on" + type, registry[0].__listener);
+	   });
 
-            $e.css({
-                left: edge.left,
-                top: edge.top,
-                marginTop: -25,
-                marginLeft: 20
-            });
-            this.$element.append($e);
-        },
-        refresh: function () {
-	        this.$element.find(".edge").remove();
-            this.edges = [
-                { left: 0, top: 0, width: this.currentWidth }
-            ];
-            this.tiles.removeClass("ftg-loaded ftg-enlarged");
-            this.tiles = this.$element.find('.tile').not('.ftg-hidden');
-            this._loadedImages = 0;
-            this.loadImage();
-        },
-        loadImage: function () {
-            var instance = this;
-            var $tile = this.tiles.eq(this._loadedImages);
+	   addToPrototype("removeEventListener", function (type, listener) {
+		  for (var index = 0, length = registry.length; index < length; ++index) {
+			 if (registry[index].target == this && registry[index].type == type && registry[index].listener == listener) {
+				return this.detachEvent("on" + type, registry.splice(index, 1)[0].__listener);
+			 }
+		  }
+	   });
 
-            if($tile.children("iframe").length)
-                $tile.children("iframe").addClass("item");
+	   addToPrototype("dispatchEvent", function (eventObject) {
+		  try {
+			 return this.fireEvent("on" + eventObject.type, eventObject);
+		  } catch (error) {
+			 for (var index = 0, length = registry.length; index < length; ++index) {
+				if (registry[index].target == this && registry[index].type == eventObject.type) {
+				   registry[index].call(this, eventObject);
+				}
+			 }
+		  }
+	   });
+	})();
 
-            var $item = $tile.find('.item');
-            function next() {
-                instance.add(instance._loadedImages);
+	// http://stackoverflow.com/a/11381730/989439
+	function mobilecheck() {
+		var check = false;
+		(function(a){if(/(android|ipad|playbook|silk|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4)))check = true})(navigator.userAgent||navigator.vendor||window.opera);
+		return check;
+	}
 
-                if (++instance._loadedImages < instance.tiles.length) {
-                    instance.loadImage();
-                } else {
-					var height = instance.lowerEdgeTop();
-					instance.print("lower edge top: " + height);
-					instance.$element.find(".ftg-items").height(height);
-					instance.isLoading = false;
-                    instance.settings.onComplete();
-                }
-            }
-
-            switch ($item.get(0).tagName.toLowerCase()) {
-                case "img":
-                    var img = new Image();
-                    img.onload = function () {
-                        var iFactor = instance.currentImageSizeFactor;
-                        if ($tile.data("ftg-ignore-size-factor"))
-                            iFactor = 1;
-
-                        $item.attr("src", this.src);
-                        $item.data("width", img.width * iFactor );
-                        $item.data("height", img.height * iFactor);
-                        $item.data("owidth", img.width);
-                        $item.data("oheight", img.height);
-                        next();
-                    }
-                    img.onerror = function() {
-	                    instance.print("error loading image: " + img.src);
-	                    next();
-                    }
-                    img.src = $item.data("src");
-                    $tile.data("ftg-type", "image");
-                    break;
-                case "iframe":
-                    $item.data("width", $item.attr("width"));
-                    $item.data("height", $item.attr("height"));
-                    $item.data("owidth", $item.attr("width"));
-                    $item.data("oheight", $item.attr("height"));
-                    $tile.data("ftg-type", "iframe");
-                    next();
-                    break;
-                default:
-                    $item.data("width", $item.data("width"));
-                    $item.data("height", $item.data("height"));
-                    $item.data("owidth", $item.data("width"));
-                    $item.data("oheight", $item.data("height"));
-                    $tile.data("ftg-type", "generic");
-                    next();
-                    break;
-            }
-        },
-        higherEdge: function () {
-            var left = 0;
-            var _top = 100000;
-            var _left = 0;
-            var found = 0;
-
-            for (var i = 0; i < this.edges.length; i++) {
-                if (this.edges[i].top < _top) {
-                    found = i;
-                    _top = this.edges[i].top;
-                }
-            }
-
-            return this.edges[found];
-        },
-        lowerEdgeTop: function () {
-	        var min = 0;
-            for (var i = 0; i < this.edges.length; i++) {
-                if (this.edges[i].top > min) {
-                    min = this.edges[i].top;
-                }
-            }
-
-            return min;
-        },
-        alignEdge: function (edge, index) {
-            //look left
-            for (var i = 0; i < this.edges.length; i++) {
-                if (this.edges[i].left + this.edges[i].width + this.settings.margin == edge.left) {
-                    this.print("found edge on left", i);
-                    //adjust edge
-                    if (edge.top == this.edges[i].top) {
-                        this.print("edges can be aligned [1]");
-                        return { side: 'left', edge: this.edges[i] };
-                    }
-                }
-            }
-            //TODO look right
-            for (var i = 0; i < this.edges.length; i++) {
-                if (this.edges[i].left - this.settings.margin == edge.left + edge.width) {
-                    this.print("found edge on right", i);
-                    //adjust edge
-                    if (edge.top == this.edges[i].top) {
-                        this.print("edges can be aligned [2]");
-                        return { side: 'right', edge: this.edges[i] };
-                    }
-                }
-            }
-
-            return null;
-        },
-        removeEdge: function (edge) {
-            var tmp = [];
-            for (var i = 0; i < this.edges.length; i++) {
-                if (this.edges[i] != edge)
-                    tmp.push(this.edges[i]);
-            }
-            this.edges = tmp;
-        },
-        add: function (tileIndex) {
-            var $t = this.tiles.eq(tileIndex);
-
-            var $item = $t.find('.item');
-            var w = $item.data('width');
-            var h = $item.data('height');
-
-            var hEdge = this.higherEdge();
-            this.print(hEdge);
-            hEdge.tileIndex = tileIndex;
-
-            this.print(tileIndex + " [" + $t.data("ftg-type") + "] (" + w + "x" + h + ")");
-
-            if (hEdge.top > 0) {
-                hEdge.top += this.settings.margin;
-            }
-
-            $t.css({
-                left: hEdge.left,
-                top: hEdge.top,
-                position: 'absolute'
-            });
-
-			hEdge.enlarged = false;
-
-			//is the tile wider than the current edge?
-            if (hEdge.width < w + this.settings.margin) {
-	            hEdge.case = 'Te';
-                this.print('Te', hEdge.width);
-                //edge smaller than the image
-                var w2 = hEdge.width;
-                var h2 = (h / w) * w2;
-
-                if (w2 + hEdge.left - this.settings.margin == this.currentWidth) {
-                    this.print("END");
-                    w2 -= this.settings.margin;
-                    h2 = (h / w) * w2;
-                }
-
-                w = w2;
-                h = h2;
-            } else if (hEdge.width > w) {
-                this.print('tE');
-                //break the edge
-                //is the new edge wider than minTileWidth?
-                if (hEdge.width - w >= this.settings.minTileWidth) {
-	                hEdge.case = 'tE';
-                    this.print('tE1', hEdge.width, hEdge.left, this.currentWidth);
-
-                    var newEdge = {
-                        left: hEdge.left + w + this.settings.margin,
-                        top: hEdge.top - (hEdge.top > 0 ? this.settings.margin : 0),
-                        width: hEdge.width - w - this.settings.margin,
-                        marginLeft: true,
-                        case: 'NEW',
-                        index: hEdge.index + 1
-                    }
-
-                    //console.log("newEdge", newEdge);
-                    this.edges.push(newEdge);
-                    //this.printEdge(newEdge);
-                } else {
-	                hEdge.case = 'tE2';
-                    this.print('tE2');
-                    //not enough space for the next tile
-                    //enlargement
-                    this.print("enlargement", hEdge.width, hEdge.left, this.currentWidth);
-                    var m = hEdge.left + hEdge.width == this.currentWidth ?  0 : this.settings.margin;
-                    //var w2 = hEdge.width - m;
-                    var w2 = hEdge.width;
-                    var h2 = this.settings.allowEnlargement ? (h / w) * w2 : h;
-
-                    if (this.settings.allowEnlargement) {
-                        $t.addClass("ftg-enlarged");
-                        hEdge.enlarged = true;
-                    } else {
-	                    $t.find(".item").css({
-		                    width: w,
-		                    height: h
-	                    });
-                    }
-
-                    w = w2;
-                    h = h2;
-                }
-            }
-
-            hEdge.top += h;
-            var diff = hEdge.top % this.settings.gridSize;
-            hEdge.top -= diff;
-            h -= diff;
-
-            hEdge.left = hEdge.left;
-            hEdge.width = w;
-            //hEdge.index = tileIndex + 1;
-
-			var printEdge = true;
-
-            var aligned = this.alignEdge(hEdge, tileIndex);
-            if (aligned) {
-	            if(aligned.side == 'left') {
-	                this.removeEdge(hEdge);
-	                aligned.edge.width += w + this.settings.margin;
-	                h = h - (hEdge.top - aligned.edge.top);
-					hEdge.top -= h;
-	                printEdge = false;
-				} else {
-	                this.removeEdge(aligned.edge);
-	                hEdge.width += this.settings.margin + aligned.edge.width;
-	                printEdge = false;
-	            }
-
-                $t.height(h);
-            }
-
-            if (this.$element.find(".ftg-items").height() < hEdge.top)
-                this.$element.find(".ftg-items").height(hEdge.top);
-
-			if(this.settings.debug && printEdge) {
-				this.printEdge(hEdge);
-			}
-
-            if ($t.data("ftg-type") == "iframe") {
-                $t.find("iframe").height(h);
-            }
-
-            this.print(w + "x" + h);
-            this.print("----");
-
-            $t.css({
-                width: w,
-                height: h
-            });
-
-            var ratio = w / $item.data("width");
-
-			var hdiff = ($item.data("height") * ratio) - h;
-			$item.css({
-				top: 0 - (hdiff / 2)
-			});
-            $t.addClass("ftg-loaded");
-        }
-    });
-
-    $.fn[pluginName] = function (options) {
-        this.each(function () {
-            if (!$.data(this, "plugin_" + pluginName)) {
-                $.data(this, "plugin_" + pluginName, new Plugin(this, options));
-            }
-        });
-
-        // chain jQuery functions
-        return this;
-    };
-
-	$(function () {
-		$(".ftg-social a").click(function(e) {
-
-			e.preventDefault();
-			var social = $(this).data("social");
-			var $tile = $(this).parents(".tile").first();
-			var image = $tile.data("big");
-			if(! image)
-				image = $tile.find(".item").attr("src");
-
-			var text = $.trim($tile.find(".caption").text());
-			if(! text.length)
-				text = document.title;
-
-			if(social == "facebook") {
-				var url = "https://www.facebook.com/dialog/feed?app_id=1447224948871585&"+
-                            "link="+encodeURIComponent(location.href)+"&" +
-                            "display=popup&"+
-                            "name="+encodeURIComponent(document.title)+"&"+
-                            "caption=&"+
-                            "description="+encodeURIComponent(text)+"&"+
-                            "picture="+encodeURIComponent(qualifyURL(image))+"&"+
-                            "ref=share&"+
-                            "actions={%22name%22:%22View%20the%20gallery%22,%20%22link%22:%22"+encodeURIComponent(location.href)+"%22}&"+
-                            "redirect_uri=http://final-tiles-gallery.com/facebook_redirect.html";
-
-                var w = window.open(url, "ftgw", "location=1,status=1,scrollbars=1,width=600,height=400");
-                w.moveTo((screen.width / 2) - (300), (screen.height / 2) - (200));
-			}
-
-			if(social == "twitter") {
-				var w = window.open("https://twitter.com/intent/tweet?url=" + encodeURI(location.href.split('#')[0]) + "&text=" + encodeURI(text), "ftgw", "location=1,status=1,scrollbars=1,width=600,height=400");
-                w.moveTo((screen.width / 2) - (300), (screen.height / 2) - (200));
-			}
-
-			if(social == "pinterest") {
-				var url = "http://pinterest.com/pin/create/button/?url=" + encodeURIComponent(location.href) + "&description=" + encodeURI(text);
-
-                url += ("&media=" + encodeURIComponent(qualifyURL(image)));
-
-                var w = window.open(url, "ftgw", "location=1,status=1,scrollbars=1,width=600,height=400");
-                w.moveTo((screen.width / 2) - (300), (screen.height / 2) - (200));
-			}
-
-			if(social == "google-plus") {
-				var url = "https://plus.google.com/share?url=" + encodeURI(location.href);
-
-                var w = window.open(url, "ftgw", "location=1,status=1,scrollbars=1,width=600,height=400");
-                w.moveTo((screen.width / 2) - (300), (screen.height / 2) - (200));
-			}
-		});
+	// http://www.jonathantneal.com/blog/polyfills-and-prototypes/
+	!String.prototype.trim && (String.prototype.trim = function() {
+		return this.replace(/^\s+|\s+$/g, '');
 	});
-})(jQuery, window, document);
+
+	function UISearch( el, options ) {
+		this.el = el;
+		this.inputEl = el.querySelector( 'form > input.sb-search-input' );
+		this._initEvents();
+	}
+
+	UISearch.prototype = {
+		_initEvents : function() {
+			var self = this,
+				initSearchFn = function( ev ) {
+					ev.stopPropagation();
+					// trim its value
+					self.inputEl.value = self.inputEl.value.trim();
+
+					if( !classie.has( self.el, 'sb-search-open' ) ) { // open it
+						ev.preventDefault();
+						self.open();
+					}
+					else if( classie.has( self.el, 'sb-search-open' ) && /^\s*$/.test( self.inputEl.value ) ) { // close it
+						ev.preventDefault();
+						self.close();
+					}
+				}
+
+			this.el.addEventListener( 'click', initSearchFn );
+			this.el.addEventListener( 'touchstart', initSearchFn );
+			this.inputEl.addEventListener( 'click', function( ev ) { ev.stopPropagation(); });
+			this.inputEl.addEventListener( 'touchstart', function( ev ) { ev.stopPropagation(); } );
+		},
+		open : function() {
+			var self = this;
+			classie.add( this.el, 'sb-search-open' );
+			// focus the input
+			if( !mobilecheck() ) {
+				this.inputEl.focus();
+			}
+			// close the search input if body is clicked
+			var bodyFn = function( ev ) {
+				self.close();
+				this.removeEventListener( 'click', bodyFn );
+				this.removeEventListener( 'touchstart', bodyFn );
+			};
+			document.addEventListener( 'click', bodyFn );
+			document.addEventListener( 'touchstart', bodyFn );
+		},
+		close : function() {
+			this.inputEl.blur();
+			classie.remove( this.el, 'sb-search-open' );
+		}
+	}
+
+	// add to global namespace
+	window.UISearch = UISearch;
+
+} )( window );
