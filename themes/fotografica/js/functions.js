@@ -12,6 +12,7 @@
 		new mlPushMenu( document.getElementById( 'mp-menu' ), document.getElementById( 'trigger-xmall' ) );
 		new mlPushMenu( document.getElementById( 'mp-menu' ), document.getElementById( 'trigger-medium' ) );
 
+		console.log('s');
 
 
 		/*------------------------------------*\
