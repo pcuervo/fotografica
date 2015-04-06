@@ -636,8 +636,7 @@ function showNumberTweets(url){
 }// showNumberTweets
 
 function showNumberShares(url){
-	//console.log(url);
-	//console.log('url');
+	console.log(url);
 	if( !window.fbApiInit ) {
 
 	}
@@ -658,10 +657,10 @@ function showNumberShares(url){
 				} else {
 					showNumberShares(url);
 				}
-			);
-		} catch(err){
-			//console.log(err);
-		}
+			}
+		);
+	} catch(err){
+		console.log(err);
 	}
 }// showNumberShares
 
