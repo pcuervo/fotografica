@@ -1236,7 +1236,7 @@
 			$existing_ids_in = implode("', '", $existing_ids);
 			$query .= " AND id NOT IN ('".$existing_ids_in."')";
 		}
-		$query .= " AND post_status = 'publish' ORDER BY RAND() LIMIT ".$limit;
+		$query .= " AND post_status = 'publish' ORDER BY post_date DESC LIMIT ".$limit;
 		$posts_info = $wpdb->get_results( $query, OBJECT );
 
 
@@ -1276,7 +1276,7 @@
 			$existing_ids_in = implode("', '", $existing_ids);
 			$query .= " AND id NOT IN ('".$existing_ids_in."')";
 		}
-		$query .= " AND post_status = 'publish' ORDER BY RAND() LIMIT ".$limit;
+		$query .= " AND post_status = 'publish' ORDER BY post_date DESC LIMIT ".$limit;
 		$posts_info = $wpdb->get_results( $query, OBJECT );
 
 		$info_publicaciones = array();
@@ -2169,8 +2169,8 @@
 							if ( $dateColecciones ){
 								$html .= '<span class="[ media--info__date ]">'.$dateColeccionesName.'</span>,';
 							}
-
-							$html .= '<br /> de la colección <a href="'.site_url( $coleccionColeccionesSlug ).'" class="[ media--info__colection ]">'.$coleccionColeccionesName.'</a>';
+						
+							$html .= '<br /> de la colección <a href="'.site_url().'/colecciones?coleccion='.$coleccionColeccionesSlug.'" class="[ media--info__colection ]">'.$coleccionColeccionesName.'</a>';
 						$html .= '</p>
 						<div class="[ media-info__tags ] [ text-center ]">';
 								$themeCounter = 1;
@@ -2461,8 +2461,7 @@
 							if ( $dateRecientes ){
 								$html .= '<span class="[ media--info__date ]">'.$dateRecientesName.'</span>,';
 							}
-
-							$html .= '<br /> de la colección <a href="'.site_url( $coleccionRecientesSlug ).'" class="[ media--info__colection ]">'.$coleccionRecientesName.'</a>';
+							$html .= '<br /> de la colección <a href="'.site_url().'/colecciones?coleccion='.$coleccionRecientesSlug.'" class="[ media--info__colection ]">'.$coleccionRecientesName.'</a>';
 						$html .= '</p>
 
 

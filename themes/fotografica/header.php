@@ -69,7 +69,7 @@
 											$args = array(
 												'tax_query' => array(
 													array(
-														'taxonomy' => 'coleccion',
+														'taxonomy' => 'colecciones',
 														'field' => 'slug',
 														'terms' => 'coleccion-centro-cultural-arte-contemporaneo'
 													)

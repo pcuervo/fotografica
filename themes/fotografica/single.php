@@ -127,7 +127,7 @@
 
 					<!-- COLECCION -->
 					<br />
-					de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>
+					de la colección <a href="<?php echo site_url() ?>/colecciones?coleccion=<?php echo $coleccionColeccionesSlug ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>
 
 				<?php } ?>
 
