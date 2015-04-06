@@ -302,14 +302,15 @@ function scrollY() {
 }
 
 //Show lightbox and run cycle
-function openLightbox(){
-	$('.cycle-slideshow').cycle({
-		slides 		: ".image-single",
-		fx 			: "scrollHorz",
-		swipe 		: "true",
-		timeout 	: "0",
-		centerHorz : "true",
-		centerVert : "true"
+function openLightbox( imagenID ){
+	//console.log(imagenID);
+	$('.slideshow').cycle({
+		slides 		: '.image-single',
+		fx 			: 'scrollHorz',
+		swipe 		: true,
+		timeout 	: 0,
+		centerHorz 	: true,
+		centerVert 	: true
 	});
 	$('.lightbox').show();
 }
@@ -509,12 +510,12 @@ function getHtmlCarteleras(results){
 				<span class="[ opacity-gradient--full ]"></span> \
 				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
 					<p class="[ text-center ]"> \
-						<a href="'+results.permalink+'" class="[ media--info__name ]">'+results.titulo+'</a> \
-					</p>';
-					if ( results.fec_ini ){
-						html_resultados = html_resultados+'<p class="[ text-center ]">del '+results.fec_ini+' al '+results.fec_fin+'</p> ';
-					}
-				html_resultados = html_resultados+'</p> \
+						<a href="'+results.permalink+'" class="[ media--info__name ]">'+results.titulo+'</a>';
+						if ( results.fec_ini ){
+							html_resultados = html_resultados+'<p class="[ text-center ]">del '+results.fec_ini+' al '+results.fec_fin+'</p> ';
+						}
+					html_resultados = html_resultados+'</p> \
+				</div> \
 			</a> \
 		</div> \
 	</article>';
@@ -630,8 +631,8 @@ function showNumberTweets(url){
 }// showNumberTweets
 
 function showNumberShares(url){
-	console.log(url);
-	console.log('url');
+	//console.log(url);
+	//console.log('url');
 	if( !window.fbApiInit ) {
 		try {
 			FB.api(
@@ -653,7 +654,7 @@ function showNumberShares(url){
 				}
 			);
 		} catch(err){
-			console.log(err);
+			//console.log(err);
 		}
 	}
 }// showNumberShares
@@ -666,23 +667,23 @@ function shareOnFacebook(url){
 		},
 		function(response) {
 			if (response && !response.error_code) {
-				console.log(response);
+				//console.log(response);
 			} else {
-				console.log(response.error_code);
+				//console.log(response.error_code);
 			}
 		}
 	);
 }// shareOnFacebook
 
 function fbEnsureInit(callback) {
-    if( !window.fbApiInit ) {
-    	console.log('no ha cargado FB...');
-        setTimeout(function() {fbEnsureInit(callback);}, 50);
-    } else {
-    	console.log('ya cargó FB...');
-    	console.log('callback');
-        callback;
-    }
+	if( !window.fbApiInit ) {
+		//console.log('no ha cargado FB...');
+		setTimeout(function() {fbEnsureInit(callback);}, 50);
+	} else {
+		// console.log('ya cargó FB...');
+		// console.log('callback');
+		callback;
+	}
 }// fbEnsureInit
 
 

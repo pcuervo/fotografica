@@ -171,24 +171,22 @@
 												</a>
 											</h1>
 										</div>
-										<div class="[ columna xmall-4 ][ ][ text-right ]">
-											<!--<form id="forma_busqeda" class="forma_busqeda" method="get" action="<?php echo site_url(); ?>" >
-												<input type="text" name="s" id="s" value="¿Qué estás buscando?" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;">
-												<input type="submit">
-											</form> forma_busqeda -->
-											<a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="#">
-												<i class="[ icon-search ][ bg-highlight color-claro ]"></i>
-											</a>
-											<a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="https://twitter.com/FotograficaMx">
+										<div class="[ columna xmall-4 ][ relative ][ text-right ]">
+											<div id="sb-search" class="[ sb-search ][ inline-block align-middle ]">
+												<form id="forma_busqeda" class="forma_busqeda" method="get" action="<?php echo site_url(); ?>">
+													<input class="sb-search-input" placeholder="¿Qué quieres buscar?" type="text" name="s" id="s">
+													<input class="sb-search-submit" type="submit" value="">
+													<span class="[ sb-icon-search ][ inline-block align-middle ][ menu__item menu__item-small ]">
+														<i class="[ icon-search ][ bg-highlight color-claro ]"></i>
+													</span>
+												</form>
+											</div><a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="https://twitter.com/FotograficaMx">
 												<i class="[ icon-twitter ]"></i>
-											</a>
-											<a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="https://www.facebook.com/FOTOGRAFICA.FundacionTelevisa">
+											</a><a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="https://www.facebook.com/FOTOGRAFICA.FundacionTelevisa">
 												<i class="[ icon-facebook ]"></i>
-											</a>
-											<a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="http://i.instagram.com/fotograficamx/">
+											</a><a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="http://i.instagram.com/fotograficamx/">
 												<i class="[ icon-instagram ]"></i>
-											</a>
-											<a class="[ inline-block align-middle ][ menu__item menu__item-large ]" href="http://www.fundaciontelevisa.org/" target="_blank">
+											</a><a class="[ inline-block align-middle ][ menu__item menu__item-large ]" href="http://www.fundaciontelevisa.org/" target="_blank">
 												<i class="[ icon-logo-fundacion-televisa ]"></i>
 											</a>
 										</div>

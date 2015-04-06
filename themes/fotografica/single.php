@@ -462,7 +462,7 @@
 			</div><!-- wrapper -->
 		</section><!-- .results -->
 	<?php } ?>
-	<div class="[ lightbox ] [ cycle-slideshow ]">
+	<div class="[ lightbox ] [ slideshow ]">
 		<?php
 			$attachedMediaArgs = array(
 				'post_type' => 'attachment',
@@ -474,8 +474,8 @@
 
 		?>
 		<div class="[ image-single ]">
-			<div class="[ wrapper ]">
-				<img class="[ image-responsive ]" src="<?php echo THEMEPATH; ?>images/test-9.jpg" alt="">
+			<div class="[ full-height ]">
+				<img class="[  ]" src="<?php echo THEMEPATH; ?>images/test-9.jpg" alt="">
 				<p class="[ image-caption ] [ text-center ]">Retrato de Gerardo Murillo “Dr. atl”, Ciudad de México, ca. 1956</p>
 			</div><!-- wrapper -->
 		</div>

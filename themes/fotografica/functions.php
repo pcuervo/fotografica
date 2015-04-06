@@ -237,12 +237,12 @@
 							/**
 							 * On load
 							**/
-							<?php if ( $postType === 'fotografos'){ ?>
+							<?php if ( $postType === 'fotografos' ){ ?>
 								//console.log( 'fotografos' );
 								runMasonry('.results', '.result' );
 							<?php } ?>
 
-							<?php if ( $postType === 'exposiciones'){ ?>
+							<?php if ( $postType === 'exposiciones' OR $postType === 'publicaciones' ){ ?>
 								runFitVids('.fit-vids-wrapper');
 							<?php } ?>
 
@@ -254,14 +254,11 @@
 							$('.js-tweet-count').text('<?php echo $tweets->count ?>');
 
 							<?php if ( $postType === 'proyectos'){ ?>
-								//console.log( 'proyectos' );
 
-								// multiple elements
-								var posts = document.querySelectorAll('.final-tiles-gallery');
-								imagesLoaded( posts, function() {
-
-									$('.final-tiles-gallery').finalTilesGallery();
-
+								$('.final-tiles-gallery').each(function(index) {
+									$(this).finalTilesGallery({
+										gridSize: 24
+									});
 								});
 
 							<?php } ?>
@@ -270,8 +267,10 @@
 							 * Triggered events
 							**/
 
-							$('.single-content').on('click','.single-content-image', function(){
-								openLightbox(this);
+							$('.single-content').on('click','.tile-inner', function(e){
+								e.preventDefault();
+								var imagenID = $(this).data('id');
+								openLightbox(imagenID);
 							});
 
 							$('.button--heart').on('click', function(e){
@@ -338,6 +337,8 @@
 							console.log('click');
 							toggleiFrame();
 						});
+
+						new UISearch( document.getElementById( 'sb-search' ) );
 
 
 
