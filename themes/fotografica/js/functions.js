@@ -13,7 +13,6 @@
 		new mlPushMenu( document.getElementById( 'mp-menu' ), document.getElementById( 'trigger-medium' ) );
 
 
-
 		/*------------------------------------*\
 			#Triggered events
 		\*------------------------------------*/
