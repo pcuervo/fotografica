@@ -41,7 +41,7 @@
 					</div>
 					<div class="[ modal-content ]">
 						<div class="[ modal-header ] [ border-bottom margin-bottom-small ]">
-							<h2 class="[ text-center ]">Colección Manuél Álvarez Bravo</h2>
+							<h2 class="[ text-center ] [ js-titulo-coleccion ]"></h2>
 						</div><!-- modal-header -->
 						<div class="[ modal-body ]">
 

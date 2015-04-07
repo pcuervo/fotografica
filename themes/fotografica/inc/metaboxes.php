@@ -37,7 +37,7 @@
 echo <<<END
 
 	<label>Fecha inicial (AAAA-MM-DD):</label>
-	<input type="text" class="widefat" id="lugar" name="_evento_fecha_inicial_meta" value="$fecha_inicial" />
+	<input type="text" class="widefat js-datepicker" id="lugar" name="_evento_fecha_inicial_meta" value="$fecha_inicial" />
 
 END;
 	}
@@ -51,7 +51,7 @@ END;
 echo <<<END
 
 	<label>Fecha final (AAAA-MM-DD):</label>
-	<input type="text" class="widefat" id="lugar" name="_evento_fecha_final_meta" value="$fecha_final" />
+	<input type="text" class="widefat js-datepicker" id="lugar" name="_evento_fecha_final_meta" value="$fecha_final" />
 
 END;
 	}
