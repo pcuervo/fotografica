@@ -47,8 +47,8 @@
 
 						</div><!-- modal-body -->
 					</div><!-- modal-content -->
-				</div>
-			</div>
+				</div><!-- modal -->
+			</div><!-- modal-wrapper -->
 		</div><!-- /container -->
 		<?php wp_footer(); ?>
 	</body>

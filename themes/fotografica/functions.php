@@ -278,9 +278,8 @@
 							$('.single-content').on('click','.tile-inner', function(e){
 								e.preventDefault();
 								var imagenNumber = $(this).data('number');
-								var lightbox = $(this).closest('.lightbox');
-								console.log(lightbox);
-								//openLightbox(lightboxID, imagenNumber);
+								var lightboxNumber = $(this).closest('.final-tiles-gallery').data('gallery-number');
+								openLightbox(lightboxNumber, imagenNumber);
 							});
 
 							$('.button--heart').on('click', function(e){
@@ -302,6 +301,10 @@
 									showNumberShares('<?php echo $current_link ?>');
 									scrolled = true;
 								}
+							});
+
+							$('.close-modal').on('click', function(event) {
+								closeModal( $(this) );
 							});
 
 
@@ -2170,7 +2173,7 @@
 							if ( $dateColecciones ){
 								$html .= '<span class="[ media--info__date ]">'.$dateColeccionesName.'</span>,';
 							}
-						
+
 							$html .= '<br /> de la colección <a href="'.site_url().'/colecciones?coleccion='.$coleccionColeccionesSlug.'" class="[ media--info__colection ]">'.$coleccionColeccionesName.'</a>';
 						$html .= '</p>
 						<div class="[ media-info__tags ] [ text-center ]">';

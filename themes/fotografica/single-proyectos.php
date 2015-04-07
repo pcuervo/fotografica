@@ -110,25 +110,36 @@
 		if( has_shortcode( $content, 'gallery' ) ) {
 			$galleries = get_galleries_from_content($content);
 			foreach ($galleries as $gallery => $galleryIDs) { ?>
-				<div class="[ lightbox ] [ slideshow ]" rel="slideshow-<?php echo $gallery; ?>">
-					<?php
-					$images = sga_gallery_images('full', $galleryIDs);
-
-					foreach ($images as $key => $image) {
-						$imageID     = $image[4];
-						$imageURL    = $image[0];
-						$imagePostID = get_post_id_by_attachment_id($imageID);
-						$imagePost   = get_post( $imagePostID->post_id );
-
-					?>
-						<div class="[ image-single ]" data-number="<?php echo $key; ?>">
-							<div class="[ full-height ]">
-								<img class="" src="<?php echo $imageURL; ?>">
-								<p class="[ image-caption ] [ text-center ]"><?php echo $imagePost->post_title; ?></p>
-							</div><!-- full-height -->
+				<div class="[ modal-wrapper modal-wrapper-<?php echo $gallery; ?> ][ hide ]">
+					<div class="[ modal modal--read-mode modal--lightbox ]">
+						<div class="[ close-modal ]">
+							<i class="[ icon-close ]"></i>
 						</div>
-					<?php } ?>
-				</div><!-- .lightbox -->
+						<div class="[ modal-content ]">
+							<div class="[ modal-body ]">
+								<div class="[ slideshow slideshow-<?php echo $gallery; ?> ]">
+									<?php
+									$images = sga_gallery_images('full', $galleryIDs);
+
+									foreach ($images as $key => $image) {
+										$imageID     = $image[4];
+										$imageURL    = $image[0];
+										$imagePostID = get_post_id_by_attachment_id($imageID);
+										$imagePost   = get_post( $imagePostID->post_id );
+
+									?>
+										<div class="[ image-single ]" data-number="<?php echo $key+1; ?>">
+											<div class="[ full-height ]">
+												<img class="" src="<?php echo $imageURL; ?>">
+												<p class="[ image-caption ] [ text-center ]"><?php echo $imagePost->post_title; ?></p>
+											</div><!-- full-height -->
+										</div>
+									<?php } ?>
+								</div><!-- slideshow -->
+							</div><!-- modal-body -->
+						</div><!-- modal-content -->
+					</div><!-- modal -->
+				</div><!-- modal-wrapper -->
 			<?php }
 		}
 

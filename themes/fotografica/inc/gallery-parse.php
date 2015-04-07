@@ -85,7 +85,7 @@ function sga_contentfilter($content = '') {
 
 
 	$gall .= '
-	<div id="gallery-'.$gallid.'" class="[ final-tiles-gallery gallery galleryid-'.$gallid.' ][ margin-bottom ]"><div class="[ ftg-items ]">';
+	<div id="gallery-'.$gallid.'" class="[ final-tiles-gallery gallery galleryid-'.$gallid.' ][ margin-bottom ]" data-gallery-number="'.$gallid.'"><div class="[ ftg-items ]">';
 
 					for ($i=0;$i<count($thumbs);$i++) {
 						$thumb = $thumbs[$i];

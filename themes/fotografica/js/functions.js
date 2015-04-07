@@ -306,28 +306,26 @@ function scrollY() {
 }
 
 //Show lightbox and run cycle
-function openLightbox( lightbox, imagenNumber ){
-	console.log(lightbox);
-	console.log(imagenNumber);
-	// $('.slideshow').cycle({
-	// 	slides 		: '.image-single',
-	// 	fx 			: 'scrollHorz',
-	// 	swipe 		: true,
-	// 	timeout 	: 0,
-	// 	centerHorz 	: true,
-	// 	centerVert 	: true,
-	// 	goto 		: imagenNumber
-	// });
-	// $('.lightbox').show();
+function openLightbox( lightboxNumber, imagenNumber ){
+	$('.slideshow-'+lightboxNumber).cycle({
+		slides 			: '.image-single',
+		fx 				: 'scrollHorz',
+		swipe 			: true,
+		timeout 		: 0,
+		centerHorz 		: true,
+		centerVert 		: true,
+		startingSlide 	: imagenNumber
+	});
+	$('.slideshow-'+lightboxNumber).cycle('goto', imagenNumber);
+	$('.modal-wrapper-'+lightboxNumber).removeClass('hide');
 }
 
-/**Modal
- * Opens
+/**
+ * Opens Modal
  * @param element
 **/
 function openModal(element){
 	var aAbrir = element.data('modal');
-	console.log(aAbrir);
 	aAbrir = $('#js-'+aAbrir+'.modal-wrapper' );
 	aAbrir.removeClass('hide');
 }
