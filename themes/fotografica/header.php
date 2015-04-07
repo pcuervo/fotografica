@@ -66,22 +66,9 @@
 									<a class="[ mp-back ][ text-center uppercase ]" href="#">atrás</a>
 									<ul class="[ overflow-scroll ]">
 										<?php
-											$args = array(
-												'tax_query' => array(
-													array(
-														'taxonomy' => 'colecciones',
-														'field' => 'slug',
-														'terms' => 'coleccion-centro-cultural-arte-contemporaneo'
-													)
-												)
-											);
-
-											$postslist = get_posts( $args );
-
-											var_dump($postslist);
 
 											$args = array(
-											    'orderby'		=> 'name',
+											    'orderby'		=> 'slug',
 											    'order'         => 'ASC',
 											    'hide_empty'    => true,
 											    'parent'		=> 0,

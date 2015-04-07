@@ -473,7 +473,7 @@ function getExistingIds(){
 function getHtmlColecciones(results){
 	var html_resultados = '<article class="[ result ] [ columna xmall-6 small-ls-12 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
-			<a class="[ block ]" href="'+results.permalink+'"> \
+			<a class="[ block ]" href="'+results.permalink+'" target="_blank"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
 				<span class="[ opacity-gradient--full ]"></span> \
 			</a> \
@@ -481,19 +481,19 @@ function getHtmlColecciones(results){
 				<p class="[ text-center ]">';
 					if ( results.autor ){
 						if ( results.autor != 'Autor no identificado' ){
-							html_resultados = html_resultados+'<a href="'+results.url_autor+'" class="[ media--info__author ]">'+results.autor+'</a>, ';
+							html_resultados = html_resultados+'<a href="'+results.url_autor+'" target="_blank" class="[ media--info__author ]">'+results.autor+'</a>, ';
 						}
 					}
 					if ( results.titulo ){
 						if ( results.titulo !== 'Sin título' || results.titulo !== 'Sin t\u00edtulo' ){
-							html_resultados = html_resultados+'<a href="#" class="[ media--info__name ]">'+results.titulo+'</a>, ';
+							html_resultados = html_resultados+'<a href="'+results.permalink+'" class="[ media--info__name ]" target="_blank">'+results.titulo+'</a>, ';
 						}
 					}
 					if ( typeof results.serie !== 'undefined' && results.serie !== 'undefined' && results.serie !== '' ){
 						html_resultados = html_resultados+'de la serie <span class="[ media--info__series ]">'+results.serie+'</span>, ';
 					}
 					if ( results.coleccion ){
-						html_resultados = html_resultados+'<br /> de la colección <a href="#" class="[ media--info__colection ]">'+results.coleccion+'</a>';
+						html_resultados = html_resultados+'<br /> de la colección <a href="#" class="[ media--info__colection ]" target="_blank">'+results.coleccion+'</a>';
 					}
 				html_resultados = html_resultados+'</p> \
 			</div> \
@@ -503,19 +503,19 @@ function getHtmlColecciones(results){
 }// getHtmlColecciones
 
 function getHtmlFotografos(results){
-	var html_resultados = ' <a href="'+results.url+'" class="[ result ][ button button--hollow button--small button--dark ][ inline-block margin-bottom--small ]" data-id="'+results.id+'">'+results.fotografo+'</a> &nbsp;&nbsp;';
+	var html_resultados = ' <a href="'+results.url+'" target="_blank" class="[ result ][ button button--hollow button--small button--dark ][ inline-block margin-bottom--small ]" data-id="'+results.id+'">'+results.fotografo+'</a> &nbsp;&nbsp;';
 	return html_resultados;
 }
 
 function getHtmlCarteleras(results){
 	var html_resultados = '<article class="[ result ][ columna xmall-6 small-ls-12 medium-4 large-3 ][ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
-			<a class="[ block ]" href="'+results.permalink+'"> \
+			<a class="[ block ]" href="'+results.permalink+'" target="_blank"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
 				<span class="[ opacity-gradient--full ]"></span> \
 				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
 					<p class="[ text-center ]"> \
-						<a href="'+results.permalink+'" class="[ media--info__name ]">'+results.titulo+'</a>';
+						<a href="'+results.permalink+'" target="_blank" class="[ media--info__name ]">'+results.titulo+'</a>';
 						if ( results.fec_ini ){
 							html_resultados = html_resultados+'<p class="[ text-center ]">del '+results.fec_ini+' al '+results.fec_fin+'</p> ';
 						}
@@ -530,10 +530,10 @@ function getHtmlCarteleras(results){
 function getHtmlProyectos(results){
 	var html_resultados = '<article class="[ result ][ bg-image ][ columna columna-margin xmall-12 medium-6 ]" data-id="'+results.id+'" style="background-image: url('+results.img_url+')"> \
 		<div class="[ opacity-gradient ][ square square-absolute ]"> \
-			<a class="[ block ][ media-link ]" href="'+results.permalink+'"></a> \
+			<a class="[ block ][ media-link ]" href="'+results.permalink+'" target="_blank"></a> \
 			<div class="[ media-info media-info--small ][ xmall-12 ]"> \
 				<p class="[ text-center ]"> \
-					<a href="'+results.permalink+'" class="[ media--info__name ]">'+results.titulo+'</a> \
+					<a href="'+results.permalink+'" target="_blank" class="[ media--info__name ]">'+results.titulo+'</a> \
 				</p> \
 			</div> \
 		</div> \
@@ -544,12 +544,12 @@ function getHtmlProyectos(results){
 function getHtmlExposiciones(results){
 	var html_resultados = '<article class="[ result ][ columna xmall-6 small-ls-12 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
-			<a class="[ block ]" href="'+results.permalink+'"> \
+			<a class="[ block ]" href="'+results.permalink+'" target="_blank"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
 				<span class="[ opacity-gradient--full ]"></span> \
 				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
 					<p class="[ text-center ]"> \
-						<a href="'+results.permalink+'" class="[ media--info__name ]">'+results.titulo+'</a> \
+						<a href="'+results.permalink+'" target="_blank" class="[ media--info__name ]">'+results.titulo+'</a> \
 					</p> \
 				</div> \
 			</a> \
@@ -561,12 +561,12 @@ function getHtmlExposiciones(results){
 function getHtmlPublicaciones(results){
 	var html_resultados = '<article class="[ result ][ columna xmall-6 small-ls-12 medium-4 large-3 ][ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
-			<a class="[ block ]" href="'+results.permalink+'"> \
+			<a class="[ block ]" href="'+results.permalink+'" target="_blank"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
 				<span class="[ opacity-gradient--full ]"></span> \
 				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
 					<p class="[ text-center ]"> \
-						<a href="'+results.permalink+'" class="[ media--info__name ]">'+results.titulo+'</a> \
+						<a href="'+results.permalink+'" target="_blank" class="[ media--info__name ]">'+results.titulo+'</a> \
 					</p> \
 				</div> \
 			</a> \
@@ -635,10 +635,6 @@ function showNumberTweets(url){
 }// showNumberTweets
 
 function showNumberShares(url){
-	console.log(url);
-	if( !window.fbApiInit ) {
-		
-	}
 	try {
 		FB.api(
 			"/",

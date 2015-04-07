@@ -148,14 +148,14 @@
 		<div class="[ filters__content ] [ text-center ]">
 			<div class="[ filter-colecciones ]">
 				<?php
-					$termManuelAlvarez = get_term_by('slug', 'coleccion-manuel-alvarez-bravo', 'coleccion');
+					$termManuelAlvarez = get_term_by('slug', '0-coleccion-manuel-alvarez-bravo', 'coleccion');
 					$termCCAC = get_term_by('slug', 'coleccion-centro-cultural-arte-contemporaneo', 'coleccion');
 					$termFundacionTelevisa = get_term_by('slug', 'coleccion-fundacion-televisa', 'coleccion');
 				?>
 					<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="coleccion" data-value="<?php echo $termManuelAlvarez->slug ?>" data-coleccion-term-id="<?php echo $termManuelAlvarez->term_id ?>"><?php echo $termManuelAlvarez->name ?><span data-modal="info-coleccion" data-coleccion-term-id="<?php echo $termManuelAlvarez->term_id ?>"><i class="fa fa-info-circle"></i></span></a>
 					<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="coleccion" data-value="<?php echo $termCCAC->slug ?>"><?php echo $termCCAC->name ?><span data-modal="info-coleccion" data-coleccion-term-id="<?php echo $termCCAC->term_id ?>"><i class="fa fa-info-circle"></i></span></a>
-					<p><?php echo $termFundacionTelevisa->name ?><span data-modal="info-coleccion" data-coleccion-term-id="<?php echo $termFundacionTelevisa->term_id ?>"><i class="fa fa-info-circle"></i></span></p>
 					<div class="[ clear ][ margin-bottom ]"></div>
+					<h2 class="[ text-center ]"><?php echo $termFundacionTelevisa->name ?><span data-modal="info-coleccion" data-coleccion-term-id="<?php echo $termFundacionTelevisa->term_id ?>"></span></h2>
 				<?php
 					$args = array(
 						'orderby'		=> 'name',
