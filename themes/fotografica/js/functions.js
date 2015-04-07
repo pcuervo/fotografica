@@ -435,8 +435,11 @@ function getDescripcionColeccion(id_coleccion){
 		ajax_url,
 		coleccion_data,
 		function(response){
+			console.log(response);
 			var html_descripcion_coleccion = $.parseJSON(response);
-			$('#js-info-coleccion .modal-body').html(html_descripcion_coleccion);
+
+			$('#js-info-coleccion .modal-body').html(html_descripcion_coleccion.description);
+			$('.js-titulo-coleccion').text(html_descripcion_coleccion.title);
 		}
 	);
 }// getDescripcionColeccion

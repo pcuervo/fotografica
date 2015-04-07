@@ -1461,8 +1461,14 @@
 	function get_descripcion_coleccion(){
 		$term_id_coleccion = $_POST['id_coleccion'];
 		$descripcion = term_description( $term_id_coleccion, 'coleccion' );
+		$term = get_term( $term_id_coleccion, 'coleccion' );
 
-		echo json_encode($descripcion , JSON_FORCE_OBJECT);
+		$info_coleccion = array(
+			'title'			=> $term->name,
+			'description'	=> $descripcion
+			);
+
+		echo json_encode($info_coleccion , JSON_FORCE_OBJECT);
 		exit();
 	} // get_descripcion_coleccion
 	add_action("wp_ajax_get_descripcion_coleccion", "get_descripcion_coleccion");
