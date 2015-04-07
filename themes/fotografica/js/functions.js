@@ -173,13 +173,7 @@ function toggleFiltersNav(){
  * Toggle iframe in the footer
 **/
 function toggleiFrame(){
-
-	console.log('toggleiFrame');
-	console.log($('.iframe-fundacion-televisa'));
-
-	$('.iframe-fundacion-televisa').toggle();
-
-
+	$('.iframe-fundacion-televisa').toggleClass('hidden--xmall');
 }
 
 
@@ -312,17 +306,19 @@ function scrollY() {
 }
 
 //Show lightbox and run cycle
-function openLightbox( imagenID ){
-	//console.log(imagenID);
-	$('.slideshow').cycle({
-		slides 		: '.image-single',
-		fx 			: 'scrollHorz',
-		swipe 		: true,
-		timeout 	: 0,
-		centerHorz 	: true,
-		centerVert 	: true
-	});
-	$('.lightbox').show();
+function openLightbox( lightbox, imagenNumber ){
+	console.log(lightbox);
+	console.log(imagenNumber);
+	// $('.slideshow').cycle({
+	// 	slides 		: '.image-single',
+	// 	fx 			: 'scrollHorz',
+	// 	swipe 		: true,
+	// 	timeout 	: 0,
+	// 	centerHorz 	: true,
+	// 	centerVert 	: true,
+	// 	goto 		: imagenNumber
+	// });
+	// $('.lightbox').show();
 }
 
 /**Modal

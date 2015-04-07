@@ -277,8 +277,10 @@
 
 							$('.single-content').on('click','.tile-inner', function(e){
 								e.preventDefault();
-								var imagenID = $(this).data('id');
-								openLightbox(imagenID);
+								var imagenNumber = $(this).data('number');
+								var lightbox = $(this).closest('.lightbox');
+								console.log(lightbox);
+								//openLightbox(lightboxID, imagenNumber);
 							});
 
 							$('.button--heart').on('click', function(e){
@@ -461,7 +463,6 @@
 	require_once('inc/post-types.php');
 	require_once('inc/metaboxes.php');
 	require_once('inc/taxonomies.php');
-	require_once('inc/page-form.php');
 	require_once('inc/pages.php');
 	require_once('inc/users.php');
 

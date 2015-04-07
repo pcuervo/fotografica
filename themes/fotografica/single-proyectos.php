@@ -72,8 +72,7 @@
 			$themesColeccionesName 	= '';
 		}
 
-		$permalinkColeccion = get_permalink( $post->ID );
-	?>
+		$permalinkColeccion = get_permalink( $post->ID ); ?>
 
 		<section class="[ share ] [ margin-bottom--large ]">
 			<div class="[ wrapper ][ clearfix ]">
@@ -106,38 +105,33 @@
 		</section>
 
 		<?php
-			$content = $post->post_content;
+		$content = $post->post_content;
 
-			if( has_shortcode( $content, 'gallery' ) ) {
-				get_galleries_from_content($content);
-			}
-		?>
-		<div class="[ lightbox ] [ slideshow ]">
+		if( has_shortcode( $content, 'gallery' ) ) {
+			$galleries = get_galleries_from_content($content);
+			foreach ($galleries as $gallery => $galleryIDs) { ?>
+				<div class="[ lightbox ] [ slideshow ]" rel="slideshow-<?php echo $gallery; ?>">
+					<?php
+					$images = sga_gallery_images('full', $galleryIDs);
 
-			<?php
-				$attachedMediaArgs = array(
-					'post_type' => 'attachment',
-					'post_mime_type'=>'image',
-					'numberposts' => -1,
-					'post_status' => null,
-					'post_parent' => $post->ID
-				);
+					foreach ($images as $key => $image) {
+						$imageID     = $image[4];
+						$imageURL    = $image[0];
+						$imagePostID = get_post_id_by_attachment_id($imageID);
+						$imagePost   = get_post( $imagePostID->post_id );
 
-			?>
-			<div class="[ image-single ]">
-				<div class="[ full-height ]">
-					<img class="" src="<?php echo THEMEPATH; ?>images/test-9.jpg" alt="">
-					<p class="[ image-caption ] [ text-center ]">Retrato de Gerardo Murillo “Dr. atl”, Ciudad de México, ca. 1956</p>
-				</div><!-- full-height -->
-			</div>
-			<div class="[ image-single ]">
-				<div class="[ full-height ]">
-					<img class="[  ]" src="<?php echo THEMEPATH; ?>images/test-7.jpg" alt="">
-					<p class="[ image-caption ] [ text-center ]">Retrato de Gerardo Murillo “Dr. atl”, Ciudad de México, ca. 1956</p>
-				</div><!-- full-height -->
-			</div>
-		</div><!-- .lightbox -->
-	<?php
+					?>
+						<div class="[ image-single ]" data-number="<?php echo $key; ?>">
+							<div class="[ full-height ]">
+								<img class="" src="<?php echo $imageURL; ?>">
+								<p class="[ image-caption ] [ text-center ]"><?php echo $imagePost->post_title; ?></p>
+							</div><!-- full-height -->
+						</div>
+					<?php } ?>
+				</div><!-- .lightbox -->
+			<?php }
+		}
+
 	} else {
 		/*------------------------------------*\
 		    #ARCHIVE HERO
