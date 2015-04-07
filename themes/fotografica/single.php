@@ -1,8 +1,5 @@
 <?php get_header();
 	the_post(); ?>
-	<div class="[ full-height ][ margin-bottom ]">
-		<?php the_post_thumbnail('full'); ?>
-	</div>
 
 	<?php
 
@@ -18,66 +15,137 @@
 	\*------------------------------------*/
 	$postType = get_post_type();
 
-
-
-
 	/*------------------------------------*\
 	    #DATOS
 	\*------------------------------------*/
 	$taxonomia = '';
-	if ( $postType == 'fotografias' ){
-		$taxonomia = 'coleccion';
-	} elseif ( $postType == 'proyectos' ){
-		$taxonomia = 'tipo-de-proyecto';
-	}
-
-	if($taxonomia != ''){
-		$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
-		$coleccionColecciones 		= wp_get_post_terms( $post->ID, $taxonomia );
-		$coleccionColeccionesName 	= $coleccionColecciones[0]->name;
-		$coleccionColeccionesSlug 	= $coleccionColecciones[0]->slug;
-	}
-
-	$authorColecciones 			= wp_get_post_terms( $post->ID, 'fotografo' );
-	if ( $authorColecciones ){
-		$authorColeccionesName 	= $authorColecciones[0]->name;
-		$authorColeccionesSlug 	= $authorColecciones[0]->slug;
-	} else {
-		$authorColeccionesName 	= 'sin autor';
-	}
-
-	$detalleColecciones = get_post_meta( $post->ID, '_detalles_fotografia_meta', TRUE );
-
-
-	$titleColecciones = get_the_title( $post->ID );
-	if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
-		$titleColecciones = NULL;
+	switch ( $postType ) {
+		case 'fotografias':
+			$taxonomia = 'coleccion';
+			break;
+		case 'proyectos':
+			$taxonomia = 'tipo-de-proyecto';
+			break;
+		default:
 	}
 
 	$slugPost = $post->post_name;
 
-	$seriesColecciones = 0;
+	if( $postType == 'fotografos' ){
+		$fotografiaArgs = array(
+			'post_type' 		=> 'fotografias',
+			'posts_per_page' 	=> 1,
+			'orderby'			=> 'rand',
+			'tax_query'      	=> array(
+				array(
+					'field'    => 'slug',
+					'taxonomy' => 'fotografo',
+					'terms'    => $slugPost
+				),
+			),
+			'post__not_in'		=> array($post->ID)
+		);
+		$fotografiaQuery = new WP_Query( $fotografiaArgs );
+		if( $fotografiaQuery->have_posts() ) : $fotografiaQuery->the_post();
 
-	$placeColecciones = wp_get_post_terms( $post->ID, 'lugar' );
-	if ( $placeColecciones ){
-		$placeColeccionesName 	= $placeColecciones[0]->name;
-	}
+			$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+			$coleccionColecciones 		= wp_get_post_terms( $post->ID, 'coleccion' );
+			$coleccionColeccionesName 	= $coleccionColecciones[0]->name;
+			$coleccionColeccionesSlug 	= $coleccionColecciones[0]->slug;
 
-	$circaColecciones = 0;
+			$authorColecciones 		= wp_get_post_terms( $post->ID, 'fotografo' );
+			if ( $authorColecciones ){
+				$authorColeccionesName 	= $authorColecciones[0]->name;
+				$authorColeccionesSlug 	= $authorColecciones[0]->slug;
+			} else {
+				$authorColeccionesName 	= 'Autor no identificado';
+			}
 
-	$dateColecciones = wp_get_post_terms( $post->ID, 'año' );
-	if ( $dateColecciones ){
-		$dateColeccionesName 	= $dateColecciones[0]->name;
+			$detalleColecciones = get_post_meta( $post->ID, '_detalles_fotografia_meta', TRUE );
+
+			$titleColecciones = get_the_title( $post->ID );
+
+			if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
+				$titleColecciones = NULL;
+			}
+
+			$seriesColecciones = 0;
+
+			$placeColecciones = wp_get_post_terms( $post->ID, 'lugar' );
+			if ( $placeColecciones ){
+				$placeColeccionesName 	= $placeColecciones[0]->name;
+			}
+
+			$circaColecciones = 0;
+
+			$dateColecciones = wp_get_post_terms( $post->ID, 'año' );
+			if ( $dateColecciones ){
+				$dateColeccionesName 	= $dateColecciones[0]->name;
+			} 
+
+			$themesTrabajo = wp_get_post_terms( $post->ID, 'tema' );
+			if ( ! $themesTrabajo ){
+				$themesTrabajoName 	= '';
+			}
+
+			$permalinkTrabajo = get_permalink( $post->ID );
+	?>
+		<div class="[ full-height ][ margin-bottom ]">
+			<?php the_post_thumbnail('full'); ?>
+		</div>
+	<?php
+		endif; wp_reset_query();
 	} else {
-		$dateColeccionesName 	= 's/f';
-	}
+	?>
+		<div class="[ full-height ][ margin-bottom ]">
+			<?php the_post_thumbnail('full'); ?>
+		</div>
+	<?php
+		if($taxonomia != ''){
+			$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+			$coleccionColecciones 		= wp_get_post_terms( $post->ID, $taxonomia );
+			$coleccionColeccionesName 	= $coleccionColecciones[0]->name;
+			$coleccionColeccionesSlug 	= $coleccionColecciones[0]->slug;
+		}
 
-	$themesColecciones = wp_get_post_terms( $post->ID, 'tema' );
-	if ( ! $themesColecciones ){
-		$themesColeccionesName 	= '';
-	}
+		$authorColecciones 			= wp_get_post_terms( $post->ID, 'fotografo' );
+		if ( $authorColecciones ){
+			$authorColeccionesName 	= $authorColecciones[0]->name;
+			$authorColeccionesSlug 	= $authorColecciones[0]->slug;
+		} else {
+			$authorColeccionesName 	= 'Autor no identificaco';
+		}
 
-	$permalinkColeccion = get_permalink( $post->ID );
+		$detalleColecciones = get_post_meta( $post->ID, '_detalles_fotografia_meta', TRUE );
+
+
+		$titleColecciones = get_the_title( $post->ID );
+		if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
+			$titleColecciones = NULL;
+		}
+
+		$seriesColecciones = 0;
+
+		$placeColecciones = wp_get_post_terms( $post->ID, 'lugar' );
+		if ( $placeColecciones ){
+			$placeColeccionesName 	= $placeColecciones[0]->name;
+		}
+
+		$circaColecciones = 0;
+
+		$dateColecciones = wp_get_post_terms( $post->ID, 'año' );
+		if ( $dateColecciones ){
+			$dateColeccionesName 	= $dateColecciones[0]->name;
+		} 
+
+		$themesColecciones = wp_get_post_terms( $post->ID, 'tema' );
+		if ( ! $themesColecciones ){
+			$themesColeccionesName 	= '';
+		}
+
+		$permalinkColeccion = get_permalink( $post->ID );
+	}
+	
 ?>
 
 
@@ -88,7 +156,7 @@
 				<!--  /********************************\ -->
 					<!-- #FOTOGRAFÍAS -->
 				<!--  \**********************************/ -->
-				<?php if ( $postType == 'fotografias' ){ ?>
+				<?php if ( $postType == 'fotografias' || $postType == 'fotografos' ){ ?>
 
 					<!-- NOMBRE APELLIDO -->
 					<?php if ( $authorColeccionesName !== 'Autor no identificado' ){ ?>
@@ -121,13 +189,13 @@
 					<?php } ?>
 
 					<!-- AÑO -->
-					<?php if ( $dateColecciones ){ ?>
+					<?php if ( $dateColecciones && $dateColeccionesName !== 's/f' ){ ?>
 						<span class="[ media--info__date ]"><?php echo $dateColeccionesName; ?></span>,
 					<?php } ?>
 
 					<!-- COLECCION -->
 					<br />
-					de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>
+					de la colección <a href="<?php echo site_url() ?>/colecciones?coleccion=<?php echo $coleccionColeccionesSlug ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>
 
 				<?php } ?>
 
@@ -138,7 +206,7 @@
 				<!--  /********************************\ -->
 					<!-- #PROYECTOS -->
 				<!--  \**********************************/ -->
-				<?php if ( $postType === 'proyectos' ){ ?>
+				<?php if ( $postType === 'proyectos'){ ?>
 					<span class="[ media--info__name]"> <?php the_title( ); ?></span>
 				<?php } ?>
 
@@ -147,7 +215,7 @@
 				<!--  /********************************\ -->
 					<!-- #FOTÓGRAFOS -->
 				<!--  \**********************************/ -->
-				<?php if ( $postType === 'fotografos' ){ ?>
+				<?php if ( $postType === 'fotografos' || $postType === 'carteleras'  ){ ?>
 					<h2 class="[ title ][ text-center ]"> <?php the_title(); ?></h2>
 				<?php } ?>
 
@@ -178,23 +246,29 @@
 				<aside class="[ shown--large ][ columna medium-2 large-3 ][ text-right serif--italic ]">
 					<?php
 						if ( $postType == 'carteleras' ){
+
 							$fecha_inicial = get_post_meta( $post->ID, '_evento_fecha_inicial_meta', true);
 							$fecha_final = get_post_meta( $post->ID, '_evento_fecha_final_meta', true);
+
+							if ( ! empty( $fecha_inicial ) && ! empty( $fecha_final ) ){
+								
 						?>
-							<p><?php echo 'Del '.$fecha_inicial.' al '.$fecha_final ?></p>
-							<div class="[ form-group ] [ margin-bottom ]">
-								<a class="[ addthisevent ] [ btn btn-primary btn-go ]" href="#" title="Add to Calendar" data-track="ga('send', 'event', 'solicitudes', 'click', 'ate-calendar');">
-									<span>Agregar a mi calendario</span>
-									<span class="_start"><?php echo $fecha_inicial ?></span>
-									<span class="_end"><?php echo $fecha_final ?></span>
-									<span class="_zonecode">12</span>
-									<span class="_summary"><?php echo $post->post_title; ?></span>
-									<span class="_organizer">Organizer</span>
-									<span class="_organizer_email">Organizer e-mail</span>
-									<span class="_all_day_event">true</span>
-									<span class="_date_format">DD/MM/YYYY</span>
-								</a>
-							</div><!-- form-group -->
+								<p>Del <?php echo $fecha_inicial ?> al <?php echo $fecha_final ?></p>
+								<div class="[ clear ]"></div>
+								<div class="[ form-group ] [ margin-bottom ]">
+									<a class="[ addthisevent ] [ btn btn-primary btn-go ]" href="#" title="Add to Calendar" data-track="ga('send', 'event', 'solicitudes', 'click', 'ate-calendar');">
+										<span>Agregar a mi calendario</span>
+										<span class="_start"><?php echo $fecha_inicial ?></span>
+										<span class="_end"><?php echo $fecha_final ?></span>
+										<span class="_zonecode">12</span>
+										<span class="_summary"><?php echo $post->post_title; ?></span>
+										<span class="_organizer">Organizer</span>
+										<span class="_organizer_email">Organizer e-mail</span>
+										<span class="_all_day_event">true</span>
+										<span class="_date_format">DD/MM/YYYY</span>
+									</a>
+								</div><!-- form-group -->
+							<?php } ?>
 						<?php } ?>
 				</aside>
 				<div class="[ columna small-12 medium-10 large-6 xxlarge-4 center ]">
@@ -257,9 +331,7 @@
 							$dateTrabajo = wp_get_post_terms( $post->ID, 'año' );
 							if ( $dateTrabajo ){
 								$dateTrabajoName 	= $dateTrabajo[0]->name;
-							} else {
-								$dateTrabajoName 	= 's/f';
-							}
+							} 
 
 							$themesTrabajo = wp_get_post_terms( $post->ID, 'tema' );
 							if ( ! $themesTrabajo ){
@@ -409,9 +481,7 @@
 						$dateColecciones = wp_get_post_terms( $post->ID, 'año' );
 						if ( $dateColecciones ){
 							$dateColeccionesName 	= $dateColecciones[0]->name;
-						} else {
-							$dateColeccionesName 	= 's/f';
-						}
+						} 
 
 						$themesColecciones = wp_get_post_terms( $post->ID, 'tema' );
 						if ( ! $themesColecciones ){
