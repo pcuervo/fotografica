@@ -23,11 +23,11 @@
 								</article>
 								<article class="[ text-center ][ margin-bottom--large ]">
 									<a href="#" class="[ inline-block ][ button button--xmall button--dark ][ js-toggle-iframe ]">
-										Información de Fundación Televisa
+										Más sobre Fundación Televisa
 									</a>
 								</article>
 							</footer>
-							<section class="[ iframe-fundacion-televisa ][ text-center ]">
+							<section class="[ iframe-fundacion-televisa ][ text-center ][ hidden--xmall ]">
 								<iframe src="http://www.fundaciontelevisa.org/footer/" frameborder="0" height="468px" width="100%"></iframe>
 							</section>
 						</section>

@@ -277,8 +277,10 @@
 
 							$('.single-content').on('click','.tile-inner', function(e){
 								e.preventDefault();
-								var imagenID = $(this).data('id');
-								openLightbox(imagenID);
+								var imagenNumber = $(this).data('number');
+								var lightbox = $(this).closest('.lightbox');
+								console.log(lightbox);
+								//openLightbox(lightboxID, imagenNumber);
 							});
 
 							$('.button--heart').on('click', function(e){

@@ -92,7 +92,7 @@ function sga_contentfilter($content = '') {
 						$image = $images[$i];
 
 						$gall .= '<div class="[ tile ]">
-							<a class="[ tile-inner ]" href="'.$image[0].'"'.(($gallery_type == 'lightbox_labeled')?' title="'.$thumb[5].'"':'').' data-id="'.$image[4].'" rel="gallery-'.$gallid.'"><img class="[ item ] attachment-thumbnail" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'.$thumb[0].'" /></a>';
+							<a class="[ tile-inner ]" href="'.$image[0].'"'.(($gallery_type == 'lightbox_labeled')?' title="'.$thumb[5].'"':'').' data-id="'.$image[4].'" data-number="'.$i.'" rel="gallery-'.$gallid.'"><img class="[ item ] attachment-thumbnail" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'.$thumb[0].'" /></a>';
 						$gall .= '</div>'."\n\n"; // title="'.print_r($thumb,true).'"
 					}
 
@@ -122,81 +122,25 @@ function sga_contentfilter($content = '') {
 }
 
 function get_galleries_from_content($content = '') {
-	global $sga_gallery_types,$post,$sga_options,$sga_gallery_params;
+	global $post, $galleries;
 	$post_id = $post->ID;
 	$gallid = $post->ID;
 
-	if (!(strpos($content,'[gallery')===FALSE)) {
-		$howmany = preg_match_all('/\[gallery(\s+columns="[^"]*")?(\s+link="[^"]*")?\s+ids="([^"]*)"\]/',$content,$arrmatches);
-		//echo "Post ID: $post_id - res: $res - Matches:".print_r($arrmatches,true);exit;
+	$galleries = array();
 
-		echo $howmany;
+	$howmany = preg_match_all('/\[gallery(\s+columns="[^"]*")?(\s+link="[^"]*")?\s+ids="([^"]*)"\]/',$content,$arrmatches);
+	for ($gallid=0; $gallid<$howmany; $gallid++) {
 
-		if (!($gallery_type=get_post_meta($post_id, 'gallery_type', true))) { // Post/page's specific setting may override site-wide
-			sga_get_options();
-			$gallery_type = isset($sga_options['sga_gallery_type'])?$sga_options['sga_gallery_type']:NULL;
-		}
+		$gall = '';	// Reset gallery buffer
 
-		for ($gallid=0; $gallid<$howmany; $gallid++) {
+		$res = preg_match('/\s*columns="([0-9]+)"/',$arrmatches[1][$gallid],$arrcolmatch);
 
-			echo 's'.$gallid;
+		$ids = $arrmatches[3][$gallid]; // gallery images IDs are here now
+		$images = sga_gallery_images('full',$ids);
 
-			$gall = '';	// Reset gallery buffer
-			//$gall = "gallery type: $gallery_type<br/>\n";
+		$galleries[] = $ids;
 
-			$res = preg_match('/\s*columns="([0-9]+)"/',$arrmatches[1][$gallid],$arrcolmatch);
-			$columns = 3;
-			if (isset($arrcolmatch[1]) && intval($arrcolmatch[1])) $columns = intval($arrcolmatch[1]);
+	} // Foreach loop on galleries
 
-			$ids=$arrmatches[3][$gallid]; // gallery images IDs are here now
-
-			$images = sga_gallery_images('full',$ids);
-			$thumbs = sga_gallery_images('medium',$ids);
-
-			// Safety check: if there are not settings for selected gallery type, just switch back to lightbox
-			if (!in_array($gallery_type,array('lightbox','lightbox_labeled')) && !is_array($sga_gallery_params[$gallery_type])) $gallery_type='lightbox';
-
-			if (count($images)) {
-
-				switch ($gallery_type) {
-				case 'lightbox':
-				case 'lightbox_labeled':
-				case '':
-
-
-	$gall .= '
-	<div id="gallery-'.$gallid.'" class="[ final-tiles-gallery gallery galleryid-'.$gallid.' ][ margin-bottom ]"><div class="[ ftg-items ]">';
-
-					for ($i=0;$i<count($thumbs);$i++) {
-						$thumb = $thumbs[$i];
-						$image = $images[$i];
-
-						$gall .= '<div class="[ tile ]">
-							<a class="[ tile-inner ]" href="'.$image[0].'"'.(($gallery_type == 'lightbox_labeled')?' title="'.$thumb[5].'"':'').' data-id="'.$image[4].'" rel="gallery-'.$gallid.'"><img class="[ item ] attachment-thumbnail" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="'.$thumb[0].'" /></a>';
-						$gall .= '</div>'."\n\n"; // title="'.print_r($thumb,true).'"
-					}
-
-					$gall .= '</div></div>';
-				break;
-				default:
-					if (isset($sga_gallery_params[$gallery_type]) && ($hfunct = $sga_gallery_params[$gallery_type]['render_function'])) {
-						if (function_exists($hfunct)) {
-							if ($res = call_user_func($hfunct,$images,$thumbs,$post_id,$gallid)) { // If WP triggers an error here, you have an outdated addon plugin. A new param has been added in Simplest Gallery 2.5
-								$gall .= "<!-- Rendered by {$sga_gallery_types[$gallery_type]} BEGIN -->\n";
-								$gall .= $res;
-								$gall .= "<!-- Rendered by {$sga_gallery_types[$gallery_type]} END -->\n";
-							}
-						}
-					}
-				} // Closes SWITCH
-
-				$content = str_replace($arrmatches[0][$gallid],$gall,$content);
-			} else {
-				$gall .= 'Gallery is empty!';
-				$content = str_replace($arrmatches[0][$gallid],$gall,$content);
-			}
-		} // Foreach loop on galleries
-	}
-
-	return $content;
+	return $galleries;
 }
