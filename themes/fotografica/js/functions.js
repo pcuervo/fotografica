@@ -289,7 +289,7 @@ function fixedHeader(){
 		//Get the window height so we now how to position
 		//the header at the bottom
 		var windowHeight = $(window).outerHeight();
-		//Substract the header height feom the window height
+		//Substract the header height from the window height
 		//and apply it as its top
 		var topHeader =  windowHeight - headerHeight;
 		$('.header-wrapper').addClass('header-wrapper--fixed').css('top', topHeader);

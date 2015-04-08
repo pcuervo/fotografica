@@ -31,8 +31,13 @@ body.single{
 
 .single-content-image{
 	display: block;
-	max-width: 100%;
+	max-width: 100%; height: auto;
 	margin: 0 auto @unidad auto;
+}
+
+.single-content-image.size-full{
+	max-width: 200%;
+	position: relative; left: -25%;
 }
 
 .single-content iframe{}

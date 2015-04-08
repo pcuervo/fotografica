@@ -374,7 +374,7 @@
 						 * Responsive
 						**/
 						$(window).resize(function(){
-
+							fixedHeader();
 						});
 
 					});
