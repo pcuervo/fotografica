@@ -24,14 +24,14 @@
 		$video_src = get_video_src($video_trabajo, $videoHost);
 	}
 
+	$featuredImagePostID = '';
 	$featuredImageID = get_post_thumbnail_id();
 
 	$featuredImagePostIDArray = 0;
 	if ( $featuredImageID != '' ){
-		$featuredImagePostID = get_post_id_by_attachment_id($featuredImageID);
+		$featuredImagePostID = get_post_id_by_attachment_id( $featuredImageID );
 	}
-
-	if ( $featuredImagePostID->post_id !== 0 ){
+	if ( $featuredImagePostID ){
 		$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $featuredImagePostID->post_id ),'full' );
 		$coleccionColecciones 		= wp_get_post_terms( $featuredImagePostID->post_id, 'coleccion' );
 
