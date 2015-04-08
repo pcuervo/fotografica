@@ -89,7 +89,7 @@
 		<div></div>
 	</div>
 	<div class="[ text-center ] [ margin-bottom ]">
-		<a class="[ button button--hollow button--dark ] [ inline-block ] [ js-cargar-mas ]">
+		<a class="[ button button--hollow button--dark ][ inline-block ][ hidden--xmall ][ js-cargar-mas ]">
 			Cargar más
 		</a>
 	</div><!-- .text-center -->

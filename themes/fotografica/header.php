@@ -182,11 +182,11 @@
 														<i class="[ icon-search ][ bg-highlight color-claro ]"></i>
 													</span>
 												</form>
-											</div><a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="https://twitter.com/FotograficaMx">
+											</div><a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="https://twitter.com/FotograficaMx" target="_blank">
 												<i class="[ icon-twitter ]"></i>
-											</a><a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="https://www.facebook.com/FOTOGRAFICA.FundacionTelevisa">
+											</a><a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="https://www.facebook.com/FOTOGRAFICA.FundacionTelevisa" target="_blank">
 												<i class="[ icon-facebook ]"></i>
-											</a><a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="http://i.instagram.com/fotograficamx/">
+											</a><a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="http://i.instagram.com/fotograficamx/" target="_blank">
 												<i class="[ icon-instagram ]"></i>
 											</a><a class="[ inline-block align-middle ][ menu__item menu__item-large ]" href="http://www.fundaciontelevisa.org/" target="_blank">
 												<i class="[ icon-logo-fundacion-televisa ]"></i>

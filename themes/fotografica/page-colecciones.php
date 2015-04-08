@@ -266,14 +266,14 @@
 			<p class="[ uppercase ] [ js-num-resultados ]"><span></span> resultados totales con los filtros:</p>
 		</div>
 	</section><!-- .filters -->
-	<section class="[ results ] [ row row--no-margins ] [ margin-bottom ]">
+	<section class="[ results ][ row row--no-margins ][ margin-bottom ]">
 	</section><!-- .results -->
 	<div class="[ loader ] [ center ] ">
 		<div></div>
 	</div>
 	<div class="clear"></div>
 	<div class="[ text-center ] [ margin-bottom ]">
-		<a class="[ button button--hollow button--dark ] [ inline-block ] [ js-cargar-mas ]">
+		<a class="[ button button--hollow button--dark ][ inline-block ][ hidden--xmall ][ js-cargar-mas ]">
 			Cargar más
 		</a>
 	</div><!-- .text-center -->

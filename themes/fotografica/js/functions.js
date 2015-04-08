@@ -5,6 +5,7 @@
 		/*------------------------------------*\
 			#ON LOAD
 		\*------------------------------------*/
+		window.masonryFlag = false;
 
 		/**
 		* Menu
@@ -64,14 +65,24 @@ function setSquareHeight(){
 * Masonry layout for results
 **/
 function runMasonry(container, item){
-	var $container = $(container).masonry();
+	var $container = $(container);
 	$container.imagesLoaded( function() {
 		$container.masonry({
 			itemSelector: item
 		});
-		$container.masonry( 'reloadItems' );
-		$container.masonry( 'layout' );
+		$container.masonry('reloadItems');
+		$container.masonry('layout');
 	});
+}
+
+/**
+* Append elements to Masonry
+**/
+function appendToMasonry(container, items){
+	console.log( $(container) );
+	console.log(items );
+	var $container = $(container);
+	$container.masonry( 'appended', items );
 }
 
 /**
@@ -367,71 +378,85 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 	user_data['post_type'] = post_type;
 	user_data['limit'] = limit;
 	user_data['existing_ids'] = existing_ids;
-
 	user_data['filters'] = '';
 	if(filters.length > 0)
 		user_data['filters'] = filters;
 
+	var html_resultados = '';
 	$.post(
 		ajax_url,
 		user_data,
 		function(response){
-			//console.log(response);
 			var json_posts = $.parseJSON(response);
-			var html_resultados;
+			var html_resultado;
 			var num_posts = -1;
-
 			$.each(json_posts, function(i, val){
 
 				switch(post_type){
 					case 'fotografias':
-						html_resultados = getHtmlColecciones(val);
+						html_resultado = getHtmlColecciones(val);
 						break;
 					case 'fotografos':
-						html_resultados = getHtmlFotografos(val);
+						html_resultado = getHtmlFotografos(val);
 						break;
 					case 'carteleras':
-						html_resultados = getHtmlCarteleras(val);
+						html_resultado = getHtmlCarteleras(val);
 						break;
 					case 'proyectos':
-						html_resultados = getHtmlProyectos(val);
+						html_resultado = getHtmlProyectos(val);
 						break;
 					case 'exposiciones':
-						html_resultados = getHtmlExposiciones(val);
+						html_resultado = getHtmlExposiciones(val);
 						break;
 					case 'publicaciones':
-						html_resultados = getHtmlPublicaciones(val);
+						html_resultado = getHtmlPublicaciones(val);
 						break;
 					case 'nuevas-adquisiciones':
-						html_resultados = getHtmlColecciones(val);
+						html_resultado = getHtmlColecciones(val);
 						break;
 					case 'favoritos':
-						html_resultados = getHtmlColecciones(val);
+						html_resultado = getHtmlColecciones(val);
 						break;
 				}
-				$(html_resultados).appendTo('.results');
+
+				html_resultados = html_resultados+html_resultado;
+
 				num_posts = i;
 			});
 
+			$(html_resultados).appendTo('.results');
+			num_posts = parseInt(num_posts) + 1;
+
+
+
 			/**
-			 * If the postType is 'fotografos' or "proyectos" do not run masonry
+			 * Compare each set of results with total results
 			**/
-			//console.log(post_type);
+
 			if ( post_type !== 'fotografos' && post_type !== 'proyectos' ){
-				runMasonry('.results', '.result' );
+
+				runMasonry( '.results', '.result' );
+
+				// if ( ! window.masonryFlag ){
+				// 	runMasonry( '.results', '.result' );
+				// 	window.masonryFlag = true;
+				// } else {
+				// 	window.masonryFlag = false;
+				// }
+
+
 			}
 
+
 			// Hide "cargar mas" when there are no more posts to load
-			num_posts = parseInt(num_posts) + 1;
 			if(parseInt(limit) > parseInt(num_posts))
-				$('.js-cargar-mas').hide();
+				$('.js-cargar-mas').addClass('hidden--xmall');
 			else
-				$('.js-cargar-mas').show();
+				$('.js-cargar-mas').removeClass('hidden--xmall');
 
 			/**
 			 * If there are no results show a message staying the fact.
 			**/
-			//console.log(num_posts);
 			if ( num_posts < 0 ){
 				var emptyMessage = '<div class="[ wrapper ]"><h2 class="[ padding ][ margin-bottom ][ text-center ][ bg-highlight color-claro ]">Tu búsqueda no generó ningún resultado, elimina alguno de los filtros de arriba hasta obtener resultados.</h2></div>';
 				$(emptyMessage).appendTo('.results');
@@ -439,6 +464,8 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 					destroyMasonry('.results');
 				}, 50);
 			}
+
+
 
 		}// response
 	)

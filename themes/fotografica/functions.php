@@ -48,6 +48,40 @@
 					$(function(){
 
 						/*------------------------------------*\
+							#GLOBAL
+						\*------------------------------------*/
+
+						/**
+						 * On load
+						**/
+						setHeightMinusElement('.overflow-scroll', '.mp-level', 'h2');
+
+
+						/**
+						 * Triggered events
+						**/
+
+						$('.content-wrapper').scroll(function(){
+							fixedHeader();
+						});
+
+						$('.js-toggle-iframe').on('click', function(){
+							toggleiFrame();
+						});
+
+						new UISearch( document.getElementById( 'sb-search' ) );
+
+
+
+
+						/**
+						 * Responsive
+						**/
+						$(window).resize(function(){
+							fixedHeader();
+						});
+
+						/*------------------------------------*\
 							#HOME
 						\*------------------------------------*/
 						<?php if ( is_home() ) { ?>
@@ -115,7 +149,7 @@
 							 * If the postType is "fotografos" or "proyecto" do not run masonry
 							**/
 							<?php if ( $postType !== 'fotografos' AND $postType !== 'proyectos' ){ ?>
-								runMasonry('.results', '.result' );
+								//runMasonry('.results', '.result' );
 							<?php } ?>
 
 							var filter = $('.filter[data-value="hoy"]');
@@ -138,14 +172,11 @@
 						/*------------------------------------*\
 							#PAGE COLECCIONES
 						\*------------------------------------*/
-						<?php } elseif ( is_page() == 'colecciones') { ?>
+						<?php } elseif ( is_page('colecciones') ) { ?>
 
 							/**
 							 * On load
 							**/
-
-							runMasonry('.results', '.result' );
-
 							var existing_ids = 0;
 							<?php
 								global $coleccion;
@@ -248,7 +279,6 @@
 							**/
 							<?php global $current_link; ?>
 							<?php if ( $postType === 'fotografos'){ ?>
-								//console.log( 'fotografos' );
 								runMasonry('.results', '.result' );
 							<?php } ?>
 
@@ -337,45 +367,6 @@
 								saveContact(data);
 							});
 						<?php } ?>
-
-
-
-
-
-						/*------------------------------------*\
-							#GLOBAL
-						\*------------------------------------*/
-
-						/**
-						 * On load
-						**/
-						setHeightMinusElement('.overflow-scroll', '.mp-level', 'h2');
-
-
-						/**
-						 * Triggered events
-						**/
-
-						$('.content-wrapper').scroll(function(){
-							fixedHeader();
-						});
-
-						$('.js-toggle-iframe').on('click', function(){
-							console.log('click');
-							toggleiFrame();
-						});
-
-						new UISearch( document.getElementById( 'sb-search' ) );
-
-
-
-
-						/**
-						 * Responsive
-						**/
-						$(window).resize(function(){
-							fixedHeader();
-						});
 
 					});
 				}(jQuery));
