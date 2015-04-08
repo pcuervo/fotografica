@@ -316,8 +316,29 @@ function openLightbox( lightboxNumber, imagenNumber ){
 		centerVert 		: true,
 		startingSlide 	: imagenNumber
 	});
-	$('.slideshow-'+lightboxNumber).cycle('goto', imagenNumber);
-	$('.modal-wrapper-'+lightboxNumber).removeClass('hide');
+
+	$('.slideshow-'+lightboxNumber).on( 'cycle-update-view', function( e, optionHash, slideOptionsHash, currentSlideEl ) {
+		$('.modal-wrapper').addClass('hide');
+		$(this).closest('.modal-wrapper').removeClass('hide');
+	});
+
+	$('body').on('keydown', function(e) {
+		console.log('keydown');
+		e.preventDefault();
+		if(e.which == 37) { // left
+			console.log('left');
+			$('.slideshow-'+lightboxNumber).cycle('prev');
+		} else if(e.which == 39) { // right
+			console.log('right');
+			$('.slideshow-'+lightboxNumber).cycle('next');
+		}
+	});
+}
+
+function destroyCycle(){
+	$('.slideshow').each(function(){
+		$(this).cycle('destroy');
+	});
 }
 
 /**
@@ -335,7 +356,7 @@ function openModal(element){
  * @param element to be closed
 **/
 function closeModal(element){
-	var aCerrar = element.parent().parent();
+	var aCerrar = element.closest('.modal-wrapper');
 	aCerrar.addClass('hide');
 }
 

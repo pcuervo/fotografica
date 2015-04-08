@@ -20,7 +20,7 @@
 
 		the_post(); ?>
 		<div class="[ full-height ][ margin-bottom ]">
-			<?php the_post_thumbnail('full'); ?>
+			<?php the_post_thumbnail('full', array('class' => 'full-height-centered') ); ?>
 		</div>
 
 		<?php
@@ -125,16 +125,32 @@
 									$images = sga_gallery_images('full', $galleryIDs);
 
 									foreach ($images as $key => $image) {
-										$imageID     = $image[4];
-										$imageURL    = $image[0];
-										$imagePostID = get_post_id_by_attachment_id($imageID);
-										$imagePost   = get_post( $imagePostID->post_id );
+										$imageID         = $image[4];
+										$imageURL        = $image[0];
+										$imagePostID     = get_post_id_by_attachment_id($imageID);
+										$imagePost       = get_post( $imagePostID->post_id );
+
+										$titleimagePost = get_the_title( $imagePostID->post_id );
+										if ( strpos($titleimagePost, 'Sin título') !== false OR $titleimagePost == '' OR strpos($titleimagePost, '&nbsp') !== false ){
+											$titleimagePost = NULL;
+										}
+
+										$authorImagePost = wp_get_post_terms( $imagePostID->post_id, 'fotografo' );
+										if ( $authorImagePost ){
+											$authorImagePostName 	= $authorImagePost[0]->name;
+											$authorImagePostSlug 	= $authorImagePost[0]->slug;
+										} else {
+											$authorImagePost 	= 'Autor no identificaco';
+										}
+
+										$permalinkImagePost = get_permalink( $imagePostID->post_id );
 
 									?>
 										<div class="[ image-single ]" data-number="<?php echo $key+1; ?>">
 											<div class="[ full-height ]">
-												<img class="" src="<?php echo $imageURL; ?>">
-												<p class="[ image-caption ] [ text-center ]"><?php echo $imagePost->post_title; ?></p>
+												<a href="<?php echo $permalinkImagePost; ?>" target="_blank">
+													<img class="[ full-height-centered ]" src="<?php echo $imageURL; ?>">
+												</a>
 											</div><!-- full-height -->
 										</div>
 									<?php } ?>

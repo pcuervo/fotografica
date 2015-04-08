@@ -81,7 +81,7 @@
 			$dateColecciones = wp_get_post_terms( $post->ID, 'año' );
 			if ( $dateColecciones ){
 				$dateColeccionesName 	= $dateColecciones[0]->name;
-			} 
+			}
 
 			$themesTrabajo = wp_get_post_terms( $post->ID, 'tema' );
 			if ( ! $themesTrabajo ){
@@ -91,14 +91,14 @@
 			$permalinkTrabajo = get_permalink( $post->ID );
 	?>
 		<div class="[ full-height ][ margin-bottom ]">
-			<?php the_post_thumbnail('full'); ?>
+			<?php the_post_thumbnail('full', array('class' => 'full-height-centered') ); ?>
 		</div>
 	<?php
 		endif; wp_reset_query();
 	} else {
 	?>
 		<div class="[ full-height ][ margin-bottom ]">
-			<?php the_post_thumbnail('full'); ?>
+			<?php the_post_thumbnail('full', array('class' => 'full-height-centered')); ?>
 		</div>
 	<?php
 		if($taxonomia != ''){
@@ -136,7 +136,7 @@
 		$dateColecciones = wp_get_post_terms( $post->ID, 'año' );
 		if ( $dateColecciones ){
 			$dateColeccionesName 	= $dateColecciones[0]->name;
-		} 
+		}
 
 		$themesColecciones = wp_get_post_terms( $post->ID, 'tema' );
 		if ( ! $themesColecciones ){
@@ -145,7 +145,7 @@
 
 		$permalinkColeccion = get_permalink( $post->ID );
 	}
-	
+
 ?>
 
 
@@ -251,7 +251,7 @@
 							$fecha_final = get_post_meta( $post->ID, '_evento_fecha_final_meta', true);
 
 							if ( ! empty( $fecha_inicial ) && ! empty( $fecha_final ) ){
-								
+
 						?>
 								<p>Del <?php echo $fecha_inicial ?> al <?php echo $fecha_final ?></p>
 								<div class="[ clear ]"></div>
@@ -331,7 +331,7 @@
 							$dateTrabajo = wp_get_post_terms( $post->ID, 'año' );
 							if ( $dateTrabajo ){
 								$dateTrabajoName 	= $dateTrabajo[0]->name;
-							} 
+							}
 
 							$themesTrabajo = wp_get_post_terms( $post->ID, 'tema' );
 							if ( ! $themesTrabajo ){
@@ -481,7 +481,7 @@
 						$dateColecciones = wp_get_post_terms( $post->ID, 'año' );
 						if ( $dateColecciones ){
 							$dateColeccionesName 	= $dateColecciones[0]->name;
-						} 
+						}
 
 						$themesColecciones = wp_get_post_terms( $post->ID, 'tema' );
 						if ( ! $themesColecciones ){
@@ -545,7 +545,7 @@
 		?>
 		<div class="[ image-single ]">
 			<div class="[ full-height ]">
-				<img class="[  ]" src="<?php echo THEMEPATH; ?>images/test-9.jpg" alt="">
+				<img class="[ full-height-centered ]" src="<?php echo THEMEPATH; ?>images/test-9.jpg" alt="">
 				<p class="[ image-caption ] [ text-center ]">Retrato de Gerardo Murillo “Dr. atl”, Ciudad de México, ca. 1956</p>
 			</div><!-- wrapper -->
 		</div>

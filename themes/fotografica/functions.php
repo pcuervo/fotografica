@@ -305,6 +305,13 @@
 
 							$('.close-modal').on('click', function(event) {
 								closeModal( $(this) );
+								destroyCycle();
+							});
+							$('.modal--lightbox').on('click', function(event) {
+								if ( ! $(event.target).closest('.image-single img').length ) {
+									closeModal( $('.close-modal') );
+									destroyCycle();
+								}
 							});
 
 
