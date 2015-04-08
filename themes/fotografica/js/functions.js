@@ -548,12 +548,8 @@ function getHtmlCarteleras(results){
 function getHtmlProyectos(results){
 	var html_resultados = '<article class="[ result ][ bg-image ][ columna columna-margin xmall-12 medium-6 ]" data-id="'+results.id+'" style="background-image: url('+results.img_url+')"> \
 		<div class="[ opacity-gradient ][ square square-absolute ]"> \
-			<a class="[ block ][ media-link ]" href="'+results.permalink+'" target="_blank"></a> \
-			<div class="[ media-info media-info--small ][ xmall-12 ]"> \
-				<p class="[ text-center ]"> \
-					<a href="'+results.permalink+'" target="_blank" class="[ media--info__name ]">'+results.titulo+'</a> \
-				</p> \
-			</div> \
+			<a class="[ block ][ media-link ]" href="'+results.permalink+'"></a> \
+			<a class="[ button button--hollow ] [ center-full ]" href="'+results.permalink+'">'+results.titulo+'</a> \
 		</div> \
 	</article>';
 	return html_resultados;
@@ -565,11 +561,7 @@ function getHtmlExposiciones(results){
 			<a class="[ block ]" href="'+results.permalink+'" target="_blank"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
 				<span class="[ opacity-gradient--full ]"></span> \
-				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
-					<p class="[ text-center ]"> \
-						<a href="'+results.permalink+'" target="_blank" class="[ media--info__name ]">'+results.titulo+'</a> \
-					</p> \
-				</div> \
+				<a class="[ button button--hollow ] [ center-full ]" href="'+results.permalink+'">'+results.titulo+'</a> \
 			</a> \
 		</div> \
 	</article>';

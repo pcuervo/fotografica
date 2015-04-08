@@ -252,7 +252,7 @@
 								runMasonry('.results', '.result' );
 							<?php } ?>
 
-							<?php if ( $postType === 'exposiciones' OR $postType === 'publicaciones' ){ ?>
+							<?php if ( $postType === 'exposiciones' OR $postType === 'publicaciones' OR $postType === 'nuestro-trabajo' ){ ?>
 								runFitVids('.fit-vids-wrapper');
 							<?php } ?>
 
@@ -1543,11 +1543,11 @@
 		global $wpdb;
 
 		$query = "
-			SELECT post_id
+			SELECT post_parent AS post_id
 			FROM wp_postmeta AS pm
 			INNER JOIN wp_posts AS p ON pm.meta_value=p.ID
 			WHERE ID = ".$attachment_id."
-			AND pm.meta_key = '_thumbnail_id' ORDER BY RAND() LIMIT 1";
+			AND pm.meta_key = '_thumbnail_id' LIMIT 1";
 		$post_id_results = $wpdb->get_results( $query, OBJECT );
 
 		if ( empty($post_id_results) ){

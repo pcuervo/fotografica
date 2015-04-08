@@ -1,7 +1,7 @@
 <?php
 	get_header();
 	the_post();
-	
+
 	// Get number of shares current page
 	global $current_link;
 	$current_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
@@ -10,7 +10,7 @@
 ?>
 
 	<div class="[ full-height ][ margin-bottom ]">
-		<?php the_post_thumbnail('full'); ?>
+		<?php the_post_thumbnail('full', array('class' => 'full-height-centered')); ?>
 	</div>
 
 <?php

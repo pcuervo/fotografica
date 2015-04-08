@@ -69,7 +69,11 @@
 				$titleColecciones = NULL;
 			}
 
-			$seriesColecciones = 0;
+			$seriesColecciones = '';
+			$serie = wp_get_post_terms( $post->id, 'serie' );
+			if ( $serie ){
+				$seriesColecciones = $serie[0]->name;
+			}
 
 			$placeColecciones = wp_get_post_terms( $post->ID, 'lugar' );
 			if ( $placeColecciones ){
@@ -124,7 +128,12 @@
 			$titleColecciones = NULL;
 		}
 
-		$seriesColecciones = 0;
+		$seriesColecciones = '';
+		$serie = wp_get_post_terms( $post->ID, 'serie' );
+
+		if ( $serie ){
+			$seriesColecciones = $serie[0]->name;
+		}
 
 		$placeColecciones = wp_get_post_terms( $post->ID, 'lugar' );
 		if ( $placeColecciones ){
@@ -469,7 +478,11 @@
 							$titleColecciones = NULL;
 						}
 
-						$seriesColecciones = 0;
+						$seriesColecciones = '';
+						$serie = wp_get_post_terms( $post->id, 'serie' );
+						if ( $serie ){
+							$seriesColecciones = $serie[0]->name;
+						}
 
 						$placeColecciones = wp_get_post_terms( $post->ID, 'lugar' );
 						if ( $placeColecciones ){
@@ -531,30 +544,59 @@
 				</div><!-- row -->
 			</div><!-- wrapper -->
 		</section><!-- .results -->
-	<?php } ?>
-	<div class="[ lightbox ] [ slideshow ]">
-		<?php
-			$attachedMediaArgs = array(
-				'post_type' => 'attachment',
-				'post_mime_type'=>'image',
-				'numberposts' => -1,
-				'post_status' => null,
-				'post_parent' => $post->ID
-			);
+	<?php }
+	$content = $post->post_content;
 
-		?>
-		<div class="[ image-single ]">
-			<div class="[ full-height ]">
-				<img class="[ full-height-centered ]" src="<?php echo THEMEPATH; ?>images/test-9.jpg" alt="">
-				<p class="[ image-caption ] [ text-center ]">Retrato de Gerardo Murillo “Dr. atl”, Ciudad de México, ca. 1956</p>
-			</div><!-- wrapper -->
-		</div>
-		<div class="[ image-single ]">
-			<div class="[ wrapper ]">
-				<img class="[ image-responsive ]" src="<?php echo THEMEPATH; ?>images/test-7.jpg" alt="">
-				<p class="[ image-caption ] [ text-center ]">Retrato de Gerardo Murillo “Dr. atl”, Ciudad de México, ca. 1956</p>
-			</div><!-- wrapper -->
-		</div>
-	</div><!-- .lightbox -->
+	if( has_shortcode( $content, 'gallery' ) ) {
+		$galleries = get_galleries_from_content($content);
+		foreach ($galleries as $gallery => $galleryIDs) { ?>
+			<div class="[ modal-wrapper modal-wrapper-<?php echo $gallery; ?> ][ hide ]">
+				<div class="[ modal modal--read-mode modal--lightbox ]">
+					<div class="[ close-modal ]">
+						<i class="[ icon-close ]"></i>
+					</div>
+					<div class="[ modal-content ]">
+						<div class="[ modal-body ]">
+							<div class="[ slideshow slideshow-<?php echo $gallery; ?> ]">
+								<?php
+								$images = sga_gallery_images('full', $galleryIDs);
+
+								foreach ($images as $key => $image) {
+									$imageID         = $image[4];
+									$imageURL        = $image[0];
+									$imagePostID     = get_post_id_by_attachment_id($imageID);
+									$imagePost       = get_post( $imagePostID->post_id );
+
+									$titleimagePost = get_the_title( $imagePostID->post_id );
+									if ( strpos($titleimagePost, 'Sin título') !== false OR $titleimagePost == '' OR strpos($titleimagePost, '&nbsp') !== false ){
+										$titleimagePost = NULL;
+									}
+
+									$authorImagePost = wp_get_post_terms( $imagePostID->post_id, 'fotografo' );
+									if ( $authorImagePost ){
+										$authorImagePostName 	= $authorImagePost[0]->name;
+										$authorImagePostSlug 	= $authorImagePost[0]->slug;
+									} else {
+										$authorImagePost 	= 'Autor no identificaco';
+									}
+
+									$permalinkImagePost = get_permalink( $imagePostID->post_id );
+
+								?>
+									<div class="[ image-single ]" data-number="<?php echo $key+1; ?>">
+										<div class="[ full-height ]">
+											<a href="<?php echo $permalinkImagePost; ?>" target="_blank">
+												<img class="[ full-height-centered ]" src="<?php echo $imageURL; ?>">
+											</a>
+										</div><!-- full-height -->
+									</div>
+								<?php } ?>
+							</div><!-- slideshow -->
+						</div><!-- modal-body -->
+					</div><!-- modal-content -->
+				</div><!-- modal -->
+			</div><!-- modal-wrapper -->
+		<?php }
+	} ?>
 	<script type="text/javascript" src="https://addthisevent.com/libs/ate-latest.min.js"></script>
 <?php get_footer(); ?>

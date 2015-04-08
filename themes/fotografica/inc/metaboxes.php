@@ -88,7 +88,7 @@ END;
 echo <<<END
 
 	<label>Texto sidebar</label>
-	<textarea class="widefat" rows="8" id="sidebar" name="_sidebar_trabajo_meta" value="$sidebar_trabajo"></textarea>
+	<textarea class="widefat" rows="8" id="sidebar" name="_sidebar_trabajo_meta">$sidebar_trabajo</textarea>
 
 END;
 	}

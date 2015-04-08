@@ -28,17 +28,17 @@
 
 	$featuredImagePostIDArray = 0;
 	if ( $featuredImageID != '' ){
-		$featuredImagePostIDArray 	= get_post_id_by_attachment_id($featuredImageID);
+		$featuredImagePostID = get_post_id_by_attachment_id($featuredImageID);
 	}
 
-	if ( $featuredImagePostIDArray !== 0 ){
-		$featuredImagePostID 		= $featuredImagePostIDArray[0]->post_id;
-		$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $featuredImagePostID ),'full' );
-		$coleccionColecciones 		= wp_get_post_terms( $featuredImagePostID, 'coleccion' );
+	if ( $featuredImagePostID->post_id !== 0 ){
+		$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $featuredImagePostID->post_id ),'full' );
+		$coleccionColecciones 		= wp_get_post_terms( $featuredImagePostID->post_id, 'coleccion' );
+
 		$coleccionColeccionesName 	= $coleccionColecciones[0]->name;
 		$coleccionColeccionesSlug 	= $coleccionColecciones[0]->slug;
 
-		$authorColecciones 		= wp_get_post_terms( $featuredImagePostID, 'fotografo' );
+		$authorColecciones 		= wp_get_post_terms( $featuredImagePostID->post_id, 'fotografo' );
 		if ( $authorColecciones ){
 			$authorColeccionesName 	= $authorColecciones[0]->name;
 			$authorColeccionesSlug 	= $authorColecciones[0]->slug;
@@ -46,33 +46,33 @@
 			$authorColeccionesName 	= 'Autor no identificado';
 		}
 
-		$titleColecciones = get_the_title( $featuredImagePostID );
+		$titleColecciones = get_the_title( $featuredImagePostID->post_id );
 		if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
 			$titleColecciones = NULL;
 		}
 
 		$seriesColecciones = 0;
 
-		$placeColecciones = wp_get_post_terms( $featuredImagePostID, 'lugar' );
+		$placeColecciones = wp_get_post_terms( $featuredImagePostID->post_id, 'lugar' );
 		if ( $placeColecciones ){
 			$placeColeccionesName 	= $placeColecciones[0]->name;
 		}
 
 		$circaColecciones = 0;
 
-		$dateColecciones = wp_get_post_terms( $featuredImagePostID, 'año' );
+		$dateColecciones = wp_get_post_terms( $featuredImagePostID->post_id, 'año' );
 		if ( $dateColecciones ){
 			$dateColeccionesName 	= $dateColecciones[0]->name;
 		} else {
 			$dateColeccionesName 	= 's/f';
 		}
 
-		$themesColecciones = wp_get_post_terms( $featuredImagePostID, 'tema' );
+		$themesColecciones = wp_get_post_terms( $featuredImagePostID->post_id, 'tema' );
 		if ( ! $themesColecciones ){
 			$themesColeccionesName 	= '';
 		}
 
-		$permalinkColeccion = get_permalink( $featuredImagePostID );
+		$permalinkColeccion = get_permalink( $featuredImagePostID->post_id );
 	?>
 		<section class="[ colecciones ][ bg-image ][ margin-bottom ]" style="background-image: url(<?php echo $bgColecciones[0]; ?>)">
 			<div class="[ opacity-gradient rectangle ]">
@@ -114,27 +114,11 @@
 					<?php if ( $dateColecciones ){ ?>
 						<span class="[ media--info__date ]"><?php echo $dateColeccionesName; ?></span>
 					<?php } ?>
-					</p>
 
 					<!-- COLECCION -->
 					<br /> de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>
 
-					<!-- TAGS -->
-					<div class="[ media-info__tags ] [ text-center ]">
-						<?php
-							$themeCounter = 1;
-							if ( $themesColeccionesName ){
-								foreach ($themesColeccionesName as $themeColeccionesName) {
-									$themeColeccionesName = $themeColeccionesName->name; ?>
-									<a href="<?php echo site_url('$themeColeccionesName'); ?>" class="[ tag ]">#<?php echo $themeColeccionesName; ?></a>
-									<?php $themeCounter ++;
-									if ( $themeCounter == 3 ){
-										break;
-									}
-								}
-							}
-						?>
-					</div>
+					</p>
 				</div>
 			</div>
 		</section>
@@ -142,10 +126,12 @@
 		<div class="[ margin-bottom ][ fit-vids-wrapper ]">
 			<iframe src="https:<?php echo $video_src; ?>?color=1aa2dc&title=0&byline=0&portrait=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 		</div>
+	<?php }
+	if ( !empty($video_src) ){ ?>
+		<h2 class="[ text-center color-dark ][ title ][ margin-bottom--large ]">
+			<?php the_title(); ?>
+		</h2>
 	<?php } ?>
-	<h2 class="[ text-center color-dark ][ title ][ margin-bottom--large ]">
-		<?php the_title(); ?>
-	</h2>
 	<section class="[ margin-bottom--large ][ single-content ]">
 		<div class="[ wrapper ]">
 			<div class="[ row ]">
@@ -303,36 +289,59 @@
 			</div><!-- row -->
 		</div><!-- wrapper -->
 	</section><!-- .results -->
+	<?php
+	$content = $post->post_content;
 
+	if( has_shortcode( $content, 'gallery' ) ) {
+		$galleries = get_galleries_from_content($content);
+		foreach ($galleries as $gallery => $galleryIDs) { ?>
+			<div class="[ modal-wrapper modal-wrapper-<?php echo $gallery; ?> ][ hide ]">
+				<div class="[ modal modal--read-mode modal--lightbox ]">
+					<div class="[ close-modal ]">
+						<i class="[ icon-close ]"></i>
+					</div>
+					<div class="[ modal-content ]">
+						<div class="[ modal-body ]">
+							<div class="[ slideshow slideshow-<?php echo $gallery; ?> ]">
+								<?php
+								$images = sga_gallery_images('full', $galleryIDs);
 
-	<div class="[ lightbox ] [ cycle-slideshow ]">
+								foreach ($images as $key => $image) {
+									$imageID         = $image[4];
+									$imageURL        = $image[0];
+									$imagePostID     = get_post_id_by_attachment_id($imageID);
+									$imagePost       = get_post( $imagePostID->post_id );
 
-		<?php
-			$attachedMediaArgs = array(
-				'post_type' => 'attachment',
-				'post_mime_type'=>'image',
-				'numberposts' => -1,
-				'post_status' => null,
-				'post_parent' => $post->ID
-			);
-			//$attachedMedia = get_embedded_media('imsage', $attachedMediaArgs);
-			// echo '<pre>';
-			// 	print_r($attachedMedia);
-			// echo '</pre>';
+									$titleimagePost = get_the_title( $imagePostID->post_id );
+									if ( strpos($titleimagePost, 'Sin título') !== false OR $titleimagePost == '' OR strpos($titleimagePost, '&nbsp') !== false ){
+										$titleimagePost = NULL;
+									}
 
-		?>
-		<div class="[ image-single ]">
-			<div class="[ wrapper ]">
-				<img class="[ image-responsive ]" src="<?php echo THEMEPATH; ?>images/test-9.jpg" alt="">
-				<p class="[ image-caption ] [ text-center ]">Retrato de Gerardo Murillo “Dr. atl”, Ciudad de México, ca. 1956</p>
-			</div><!-- wrapper -->
-		</div>
-		<div class="[ image-single ]">
-			<div class="[ wrapper ]">
-				<img class="[ image-responsive ]" src="<?php echo THEMEPATH; ?>images/test-7.jpg" alt="">
-				<p class="[ image-caption ] [ text-center ]">Retrato de Gerardo Murillo “Dr. atl”, Ciudad de México, ca. 1956</p>
-			</div><!-- wrapper -->
-		</div>
-	</div><!-- .lightbox -->
+									$authorImagePost = wp_get_post_terms( $imagePostID->post_id, 'fotografo' );
+									if ( $authorImagePost ){
+										$authorImagePostName 	= $authorImagePost[0]->name;
+										$authorImagePostSlug 	= $authorImagePost[0]->slug;
+									} else {
+										$authorImagePost 	= 'Autor no identificaco';
+									}
+
+									$permalinkImagePost = get_permalink( $imagePostID->post_id );
+
+								?>
+									<div class="[ image-single ]" data-number="<?php echo $key+1; ?>">
+										<div class="[ full-height ]">
+											<a href="<?php echo $permalinkImagePost; ?>" target="_blank">
+												<img class="[ full-height-centered ]" src="<?php echo $imageURL; ?>">
+											</a>
+										</div><!-- full-height -->
+									</div>
+								<?php } ?>
+							</div><!-- slideshow -->
+						</div><!-- modal-body -->
+					</div><!-- modal-content -->
+				</div><!-- modal -->
+			</div><!-- modal-wrapper -->
+		<?php }
+	} ?>
 	<script type="text/javascript" src="https://addthisevent.com/libs/ate-latest.min.js"></script>
 <?php get_footer(); ?>
