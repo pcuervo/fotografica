@@ -81,19 +81,22 @@
 							fixedHeader();
 						});
 
-						/*------------------------------------*\
-							#HOME
-						\*------------------------------------*/
+
 						<?php if ( is_home() ) { ?>
+							/*------------------------------------*\
+								#HOME
+							\*------------------------------------*/
+						<?php }
 
 
 
 
-						/*------------------------------------*\
-							#ARCHIVE
-						\*------------------------------------*/
-						<?php } elseif ( is_archive() ) { ?>
 
+
+						if ( is_archive() ) { ?>
+							/*------------------------------------*\
+								#ARCHIVE
+							\*------------------------------------*/
 							var existing_ids = 0;
 
 
@@ -147,37 +150,45 @@
 							**/
 							<?php if ( $postType == 'publicaciones' ){ ?>
 								$('.tab-filter').click();
-								console.log('clicking');
-							<?php } ?>
-
-							/**
-							 * If the postType is "fotografos" or "proyecto" do not run masonry
-							**/
-							<?php if ( $postType !== 'fotografos' AND $postType !== 'proyectos' ){ ?>
-								//runMasonry('.results', '.result' );
 							<?php } ?>
 
 							var filter = $('.filter[data-value="hoy"]');
 							addFilter( filter );
 							advancedSearch('<?php echo $postType ?>', getFilters(false), 20, existing_ids);
+						<?php }
 
 
 
 
 
-						/*------------------------------------*\
-							#POST TYPE
-						\*------------------------------------*/
-						<?php } elseif ( get_post_type() == 'post-type') { ?>
+						if ( is_post_type_archive('fotografos') ) { ?>
+							/*------------------------------------*\
+								#ARCHIVE FOTOGRAFOS
+							\*------------------------------------*/
+							$('.close-modal').on('click', function(event) {
+								closeModal( $(this) );
+							});
+						<?php }
 
 
 
 
 
-						/*------------------------------------*\
-							#PAGE COLECCIONES
-						\*------------------------------------*/
-						<?php } elseif ( is_page('colecciones') ) { ?>
+
+						if ( get_post_type() == 'post-type') { ?>
+							/*------------------------------------*\
+								#POST TYPE
+							\*------------------------------------*/
+						<?php }
+
+
+
+
+
+						if ( is_page('colecciones') ) { ?>
+							/*------------------------------------*\
+								#PAGE COLECCIONES
+							\*------------------------------------*/
 
 							/**
 							 * On load
@@ -269,14 +280,16 @@
 							$('.close-modal').on('click', function(event) {
 								closeModal( $(this) );
 							});
+						<?php }
 
 
 
 
-						/*------------------------------------*\
-							#SINGLE
-						\*------------------------------------*/
-						<?php } elseif ( is_single() ) { ?>
+
+						if ( is_single() ) { ?>
+							/*------------------------------------*\
+								#SINGLE
+							\*------------------------------------*/
 
 							/**
 							 * On load
@@ -347,15 +360,14 @@
 									destroyCycle();
 								}
 							});
-
-
-
-						/*------------------------------------*\
-							#SINGLE CONSERVACION
-						\*------------------------------------*/
 						<?php }
 
-							if ( is_single('conservacion') ) { ?>
+
+
+						if ( is_single('conservacion') ) { ?>
+							/*------------------------------------*\
+								#SINGLE CONSERVACION
+							\*------------------------------------*/
 
 							/**
 							 * On load
@@ -364,7 +376,15 @@
 
 						<?php } ?>
 
+
+
+
+
+
 						<?php if( is_page('contactanos') ) { ?>
+							/*------------------------------------*\
+								#PAGE CONTACTANOS
+							\*------------------------------------*/
 							$('.js-contact button').on('click', function(e){
 								e.preventDefault();
 								var data = $('.js-contact').serialize()

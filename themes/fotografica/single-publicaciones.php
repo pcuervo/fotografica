@@ -59,16 +59,16 @@
 			</div>
 		</div><!-- .wrapper -->
 	</section>
-	<?php
-	// db563839239
-	if( $post_type != 'fotografos') { ?>
-		<section class="[ margin-bottom ]">
-			<h2 class="[ title ] [ text-center ]">Te puede interesar</h2>
 
-			<div class="[ wrapper ]">
-				<div class="[ row ]">
-					<?php
+	<section class="[ margin-bottom ]">
+		<h2 class="[ title ] [ text-center ]">Te puede interesar</h2>
 
+		<div class="[ wrapper ]">
+			<div class="[ row ]">
+				<?php
+
+				$has_related = false;
+				while( ! $has_related ){
 					// Jalar taxonomía y termino al azar para fotos relacionadas
 					$tax = get_object_taxonomies( $post );
 					$random_tax = rand(0, count($tax)-1);
@@ -203,11 +203,13 @@
 								</div>
 							</div>
 						</article>
-					<?php $counter++; endwhile; endif; wp_reset_query(); ?>
-				</div><!-- row -->
-			</div><!-- wrapper -->
-		</section><!-- .results -->
-	<?php } ?>
+					<?php $counter++; endwhile; endif; wp_reset_query();
+				} //while
+				?>
+			</div><!-- row -->
+		</div><!-- wrapper -->
+	</section><!-- .results -->
+
 	<div class="[ lightbox ] [ cycle-slideshow ]">
 
 		<?php
