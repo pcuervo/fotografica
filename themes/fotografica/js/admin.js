@@ -40,6 +40,13 @@
 			dateFormat: 	'yy-mm-dd'
 		});
 
+		$('.js-datepicker-2').datepicker({
+			changeMonth: 	true,
+			changeYear: 	true,
+			yearRange: 		"-300:+0",
+			dateFormat: 	'yy-mm-dd'
+		});
+
 
 	});
 })(jQuery);

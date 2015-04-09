@@ -37,7 +37,7 @@
 echo <<<END
 
 	<label>Fecha inicial (AAAA-MM-DD):</label>
-	<input type="text" class="widefat js-datepicker" id="lugar" name="_evento_fecha_inicial_meta" value="$fecha_inicial" />
+	<input type="text" class="widefat js-datepicker" name="_evento_fecha_inicial_meta" value="$fecha_inicial" />
 
 END;
 	}
@@ -51,7 +51,7 @@ END;
 echo <<<END
 
 	<label>Fecha final (AAAA-MM-DD):</label>
-	<input type="text" class="widefat js-datepicker" id="lugar" name="_evento_fecha_final_meta" value="$fecha_final" />
+	<input type="text" class="widefat js-datepicker-2" name="_evento_fecha_final_meta" value="$fecha_final" />
 
 END;
 	}
@@ -63,7 +63,7 @@ END;
 echo <<<END
 
 	<label>URL de video (Vimeo):</label>
-	<input type="text" class="widefat" id="lugar" name="_evento_video_proyecto_meta" value="$video_proyecto" />
+	<input type="text" class="widefat" name="_evento_video_proyecto_meta" value="$video_proyecto" />
 
 END;
 	}
@@ -76,7 +76,7 @@ END;
 echo <<<END
 
 	<label>URL de video (Vimeo):</label>
-	<input type="text" class="widefat" id="lugar" name="_video_trabajo_meta" value="$video_trabajo" />
+	<input type="text" class="widefat" name="_video_trabajo_meta" value="$video_trabajo" />
 
 END;
 	}
@@ -100,7 +100,7 @@ END;
 echo <<<END
 
 	<label>Fecha de nacimiento:</label>
-	<input type="text" class="widefat js-datepicker" id="lugar" name="_fecha_nacimiento_meta" value="$fecha_nacimiento" />
+	<input type="text" class="widefat js-datepicker" name="_fecha_nacimiento_meta" value="$fecha_nacimiento" />
 
 END;
 	}// metabox_video_proyecto
@@ -239,6 +239,11 @@ END;
 		if ( isset($_POST['_info_publicacion_meta']) ){
 			$data = htmlspecialchars($_POST['_info_publicacion_meta']);
 			update_post_meta($post_id, '_info_publicacion_meta', $data );
+		}
+
+		if ( isset($_POST['_fecha_nacimiento_meta']) ){
+			$data = htmlspecialchars($_POST['_fecha_nacimiento_meta']);
+			update_post_meta($post_id, '_fecha_nacimiento_meta', $data );
 		}
 
 	});

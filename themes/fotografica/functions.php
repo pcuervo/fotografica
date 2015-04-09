@@ -208,12 +208,14 @@
 									var filter = $('.filter[data-value="nuevas-adquisiciones"]');
 									addFilter(filter);
 									advancedSearch('nuevas-adquisiciones', getFilters(false), 20, existing_ids);
+									showTotalResults( 'nuevas-adquisiciones', getFilters(false) );
 							<?php
 								} else if ($filtro == 'favoritos'){
 							?>
 									var filter = $('.filter[data-value="favoritos"]');
 									addFilter(filter);
 									advancedSearch('favoritos', getFilters(false), 20, existing_ids);
+									showTotalResults( 'favoritos', getFilters(false) );
 							<?php
 								}
 							?>
@@ -268,8 +270,9 @@
 								advancedSearch('fotografias', getFilters(false), 20, existing_ids);
 							});
 
-							<?php if ($filtro == '') { ?>
+							<?php if ($filtro == '' && $coleccion == '') { ?>
 								advancedSearch('fotografias', getFilters(false), 15, existing_ids);
+								showTotalResults( 'fotografias', getFilters(false) );
 							<?php } ?>
 
 							$('.filter--info span').on('click', function(event) {
@@ -1587,6 +1590,12 @@
 			case 'carteleras':
 				$num_results = get_num_results_carteleras($filters);
 				break;
+			case 'nuevas-adquisiciones':
+				$num_results = get_num_results_nuevas_adquisiciones($filters);
+				break;
+			case 'favoritos':
+				$num_results = get_num_results_favoritos($filters);
+				break;
 			default:
 				$num_results = 0;
 		}// switch
@@ -1919,6 +1928,38 @@
 
 		return $total_results;
 	} // get_num_results_carteleras
+
+	function get_num_results_nuevas_adquisiciones($filtros = ''){
+		global $post;
+		global $wpdb;
+
+		$query = "
+			SELECT id FROM wp_posts
+			WHERE post_type = 'fotografias'
+			AND post_status = 'publish' ORDER BY post_date LIMIT 20";
+		$posts_info = $wpdb->get_results( $query, OBJECT );
+		$results = $wpdb->get_results( $query );
+		$total_results = $wpdb->num_rows;
+
+		return $total_results;
+	} // get_num_results_nuevas_adquisiciones
+
+	function get_num_results_favoritos($filtros = ''){
+		global $post;
+		global $wpdb;
+
+		$query = "
+			SELECT P.ID FROM wp_posts P
+			INNER JOIN wp_postmeta PM ON PM.post_id = P.ID
+			WHERE meta_key = 'num_likes'
+			AND post_status = 'publish' 
+			ORDER BY meta_value DESC";
+
+		$results = $wpdb->get_results( $query );
+		$total_results = $wpdb->num_rows;
+
+		return $total_results;
+	} // get_num_results_favoritos
 
 	function get_decadas_nacimiento(){
 		global $wpdb;
