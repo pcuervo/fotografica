@@ -391,7 +391,7 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 			var html_resultado;
 			var num_posts = -1;
 			$.each(json_posts, function(i, val){
-
+				console.log(val);
 				switch(post_type){
 					case 'fotografias':
 						html_resultado = getHtmlColecciones(val);
@@ -539,7 +539,7 @@ function getHtmlColecciones(results){
 						html_resultados = html_resultados+'de la serie <span class="[ media--info__series ]">'+results.serie+'</span>, ';
 					}
 					if ( results.coleccion ){
-						html_resultados = html_resultados+'<br /> de la colección <a href="#" class="[ media--info__colection ]" target="_blank">'+results.coleccion+'</a>';
+						html_resultados = html_resultados+'<br /> de la colección <a href="'+site_url+'/colecciones?coleccion='+results.coleccion_slug+'" class="[ media--info__colection ]" target="_blank">'+results.coleccion+'</a>';
 					}
 				html_resultados = html_resultados+'</p> \
 			</div> \

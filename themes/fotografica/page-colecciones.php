@@ -77,7 +77,6 @@
 			</h2>
 			<div class="[ media-info media-info--large ] [ xmall-12 ] [ shown--large ]">
 				<p class="[ text-center ]">
-
 					<!-- NOMBRE APELLIDO -->
 					<?php if ( $authorColeccionesName !== 'Autor no identificado' ){ ?>
 						<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
@@ -110,7 +109,7 @@
 
 					<!-- COLECCION -->
 					<br />
-					de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>
+					de la colección <a href="<?php echo site_url().'/colecciones?coleccion='.$coleccionColeccionesSlug ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>
 
 				</p>
 
