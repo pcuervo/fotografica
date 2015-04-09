@@ -35,8 +35,11 @@
 		$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $featuredImagePostID->post_id ),'full' );
 		$coleccionColecciones 		= wp_get_post_terms( $featuredImagePostID->post_id, 'coleccion' );
 
-		$coleccionColeccionesName 	= $coleccionColecciones[0]->name;
-		$coleccionColeccionesSlug 	= $coleccionColecciones[0]->slug;
+		if( $coleccionColecciones ){
+			$coleccionColeccionesName 	= $coleccionColecciones[0]->name;
+			$coleccionColeccionesSlug 	= $coleccionColecciones[0]->slug;
+		}
+		
 
 		$authorColecciones 		= wp_get_post_terms( $featuredImagePostID->post_id, 'fotografo' );
 		if ( $authorColecciones ){
@@ -84,11 +87,9 @@
 
 
 					<!-- NOMBRE APELLIDO -->
-					<?php if ( $authorColeccionesName == 'Autor no identificado' ){ ?>
+					<?php if ( $authorColeccionesName !== 'Autor no identificado' ){ ?>
 						<span class="[ media--info__author ]"><?php echo $authorColeccionesName; ?></span>,
-					<?php } else { ?>
-						<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
-					<?php } ?>
+					<?php }  ?>
 
 					<!-- TÍTULO -->
 					<?php if ( $titleColecciones ){ ?>
@@ -116,7 +117,9 @@
 					<?php } ?>
 
 					<!-- COLECCION -->
-					<br /> de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>
+					<?php if ( $coleccionColecciones ){ ?>
+						<br /> de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>
+					<?php } ?>
 
 					</p>
 				</div>

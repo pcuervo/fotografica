@@ -148,12 +148,10 @@
 							/**
 							 * If the postType is "publicaciones" show filters opened
 							**/
-							<?php if ( $postType == 'publicaciones' ){ ?>
+							<?php if ( $postType == 'publicaciones' || $postType == 'carteleras' ){ ?>
 								$('.tab-filter').click();
 							<?php } ?>
 
-							var filter = $('.filter[data-value="hoy"]');
-							addFilter( filter );
 							advancedSearch('<?php echo $postType ?>', getFilters(false), 20, existing_ids);
 						<?php }
 

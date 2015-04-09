@@ -101,9 +101,6 @@
 			<p class="[ uppercase ] [ js-num-resultados ]"><span></span> resultados totales con los filtros:</p>
 		</div>
 	</section><!-- .filters -->
-	<!-- /** -->
-	<!-- * If the post type is different from "fotografias" add wrapper and center it so the results do not use the full width -->
-	<!-- **/ -->
 	<section class="[ results ] [ row row--no-margins ] [ margin-bottom ]">
 	</section><!-- .results -->
 	<div class="[ loader ] [ center ] ">
