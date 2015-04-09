@@ -70,7 +70,7 @@
 			<!--  \**********************************/ -->
 			<?php if ( $postType == 'publicaciones' ){ ?>
 				<div class="[ filter-publicaciones ]">
-					<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ] " data-type="tipo" data-value="nuestras-publicaciones">Nuestra publicaciones</a>
+					<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ] " data-type="tipo" data-value="nuestras-publicaciones">Nuestras publicaciones</a>
 					<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="tipo" data-value="coediciones">Coediciones</a>
 				</div><!-- .filter-fecha -->
 			<?php } ?>

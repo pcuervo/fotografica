@@ -4,7 +4,7 @@
 ?>
 
 	<div class="[ full-height ][ margin-bottom ]">
-		<?php the_post_thumbnail('full'); ?>
+		<?php the_post_thumbnail('full', array('class' => 'full-height-centered') ); ?>
 	</div>
 
 <?php
@@ -37,6 +37,18 @@
 			<?php the_title(); ?>
 		</h2>
 	</div><!-- wrapper -->
+	<section class="[ share ] [ margin-bottom--large ]">
+		<div class="[ wrapper ][ clearfix ]">
+			<div class="[ clearfix ][ columna medium-8 large-4 center ]">
+				<a href="https://twitter.com/share?url=<?php echo $current_link; ?>&via=fotograficamx" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" class="[ button button--dark button__share button--twitter ] [ columna xmall-6 ]">
+					<i class="[ xmall-3 inline-block align-middle ] fa fa-twitter"></i><span class="[ xmall-2 ]">&nbsp;</span><span class="[ xmall-7 inline-block align-middle ][ js-tweet-count ]"></span>
+				</a>
+				<div class="[ button button--dark button__share button--facebook ] [ columna xmall-6 ]">
+					<i class="[ xmall-3 inline-block align-middle ] fa fa-facebook-square"></i><span class="[ xmall-2 ]">&nbsp;</span><span class="[ xmall-7 inline-block align-middle ][ js-share-count ]"></span>
+				</div>
+			</div>
+		</div><!-- .wrapper -->
+	</section><!-- .share -->
 	<section class="[ margin-bottom--large ][ single-content ]">
 		<div class="[ wrapper ]">
 			<div class="[ row ]">
@@ -127,6 +139,7 @@
 							<h2 class="[ title ] [ text-center ]">Te puede interesar</h2>
 						<?php }
 
+						$has_related = true;
 						$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
 
 						$coleccionColecciones 		= wp_get_post_terms( $post->ID, 'coleccion' );
@@ -213,34 +226,58 @@
 		</div><!-- wrapper -->
 	</section><!-- .results -->
 
-	<div class="[ lightbox ] [ cycle-slideshow ]">
+	<?php
+	$content = $post->post_content;
 
-		<?php
-			$attachedMediaArgs = array(
-				'post_type' => 'attachment',
-				'post_mime_type'=>'image',
-				'numberposts' => -1,
-				'post_status' => null,
-				'post_parent' => $post->ID
-			);
-			//$attachedMedia = get_embedded_media('imsage', $attachedMediaArgs);
-			// echo '<pre>';
-			// 	print_r($attachedMedia);
-			// echo '</pre>';
+	if( has_shortcode( $content, 'gallery' ) ) {
+		$galleries = get_galleries_from_content($content);
+		foreach ($galleries as $gallery => $galleryIDs) { ?>
+			<div class="[ modal-wrapper modal-wrapper-<?php echo $gallery; ?> ][ hide ]">
+				<div class="[ modal modal--read-mode modal--lightbox ]">
+					<div class="[ close-modal ]">
+						<i class="[ icon-close ]"></i>
+					</div>
+					<div class="[ modal-content ]">
+						<div class="[ modal-body ]">
+							<div class="[ slideshow slideshow-<?php echo $gallery; ?> ]">
+								<?php
+								$images = sga_gallery_images('full', $galleryIDs);
 
-		?>
-		<div class="[ image-single ]">
-			<div class="[ wrapper ]">
-				<img class="[ image-responsive ]" src="<?php echo THEMEPATH; ?>images/test-9.jpg" alt="">
-				<p class="[ image-caption ] [ text-center ]">Retrato de Gerardo Murillo “Dr. atl”, Ciudad de México, ca. 1956</p>
-			</div><!-- wrapper -->
-		</div>
-		<div class="[ image-single ]">
-			<div class="[ wrapper ]">
-				<img class="[ image-responsive ]" src="<?php echo THEMEPATH; ?>images/test-7.jpg" alt="">
-				<p class="[ image-caption ] [ text-center ]">Retrato de Gerardo Murillo “Dr. atl”, Ciudad de México, ca. 1956</p>
-			</div><!-- wrapper -->
-		</div>
-	</div><!-- .lightbox -->
-	<script type="text/javascript" src="https://addthisevent.com/libs/ate-latest.min.js"></script>
+								foreach ($images as $key => $image) {
+									$imageID         = $image[4];
+									$imageURL        = $image[0];
+									$imagePostID     = get_post_id_by_attachment_id($imageID);
+									$imagePost       = get_post( $imagePostID->post_id );
+
+									$titleimagePost = get_the_title( $imagePostID->post_id );
+									if ( strpos($titleimagePost, 'Sin título') !== false OR $titleimagePost == '' OR strpos($titleimagePost, '&nbsp') !== false ){
+										$titleimagePost = NULL;
+									}
+
+									$authorImagePost = wp_get_post_terms( $imagePostID->post_id, 'fotografo' );
+									if ( $authorImagePost ){
+										$authorImagePostName 	= $authorImagePost[0]->name;
+										$authorImagePostSlug 	= $authorImagePost[0]->slug;
+									} else {
+										$authorImagePost 	= 'Autor no identificaco';
+									}
+
+									$permalinkImagePost = get_permalink( $imagePostID->post_id );
+
+								?>
+									<div class="[ image-single ]" data-number="<?php echo $key+1; ?>">
+										<div class="[ full-height ]">
+											<a href="<?php echo $permalinkImagePost; ?>" target="_blank">
+												<img class="[ full-height-centered ]" src="<?php echo $imageURL; ?>">
+											</a>
+										</div><!-- full-height -->
+									</div>
+								<?php } ?>
+							</div><!-- slideshow -->
+						</div><!-- modal-body -->
+					</div><!-- modal-content -->
+				</div><!-- modal -->
+			</div><!-- modal-wrapper -->
+		<?php }
+	} ?>
 <?php get_footer(); ?>

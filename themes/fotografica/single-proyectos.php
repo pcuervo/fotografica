@@ -184,6 +184,7 @@
 								<h2 class="[ title ] [ text-center ]">Te puede interesar</h2>
 							<?php }
 
+							$has_related = true;
 							$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
 
 							$coleccionColecciones 		= wp_get_post_terms( $post->ID, 'coleccion' );

@@ -146,17 +146,11 @@
 	<section class="[ share ] [ margin-bottom--large ]">
 		<div class="[ wrapper ][ clearfix ]">
 			<div class="[ clearfix ][ columna medium-8 large-4 center ]">
-				<a href="https://twitter.com/share?url=<?php echo $current_link; ?>&via=fotograficamx" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" class="[ button button--dark button__share button--twitter ] [ columna xmall-4 ]">
+				<a href="https://twitter.com/share?url=<?php echo $current_link; ?>&via=fotograficamx" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" class="[ button button--dark button__share button--twitter ] [ columna xmall-6 ]">
 					<i class="[ xmall-3 inline-block align-middle ] fa fa-twitter"></i><span class="[ xmall-2 ]">&nbsp;</span><span class="[ xmall-7 inline-block align-middle ][ js-tweet-count ]"></span>
 				</a>
-				<div class="[ button button--dark button__share button--facebook ] [ columna xmall-4 ]">
+				<div class="[ button button--dark button__share button--facebook ] [ columna xmall-6 ]">
 					<i class="[ xmall-3 inline-block align-middle ] fa fa-facebook-square"></i><span class="[ xmall-2 ]">&nbsp;</span><span class="[ xmall-7 inline-block align-middle ][ js-share-count ]"></span>
-				</div>
-				<?php
-					$num_likes_meta = get_post_meta( $post->ID, 'num_likes', TRUE );
-				?>
-				<div class="[ button button--dark button__share button--heart ] [ columna xmall-4 ]" data-post-id="<?php echo $post->ID ?>">
-					<i class="[ xmall-3 inline-block align-middle ] fa fa-heart"></i><span class="[ xmall-2 ]">&nbsp;</span><span class="[ xmall-7 inline-block align-middle ][ js-num-likes ]"><?php echo ($num_likes_meta == '') ? 0 : $num_likes_meta; ?></span>
 				</div>
 			</div>
 		</div><!-- .wrapper -->
