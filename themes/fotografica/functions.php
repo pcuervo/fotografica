@@ -2078,11 +2078,40 @@
 					('destacado', 2),
 					('proyectos', 3),
 					('publicaciones', 4),
-					('exposiciones', 5)";
+					('exposiciones', 5),
+					('nuevas adquisiciones', 6)";
 			$wpdb->query( $sql_insert );
 		}
 	}// create_table_orden_home
 	add_action('init', 'create_table_orden_home');
+
+	function create_table_secciones_home(){
+		global $wpdb;
+		$table_name = "wp_secciones_home";
+		if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
+		    // Crear tabla
+			$sql_create_table = "CREATE TABLE wp_secciones_home (
+					seccion_id bigint(20) UNSIGNED NOT NULL auto_increment,
+					seccion varchar(30) NOT NULL,
+					PRIMARY KEY  (seccion_id)
+		     	)";
+			$wpdb->query( $sql_create_table );
+
+			// Rellenar tabla
+			$sql_insert = "
+				INSERT INTO wp_secciones_home
+					(seccion)
+				VALUES
+					('colecciones'),
+					('destacado'),
+					('proyectos'),
+					('publicaciones'),
+					('exposiciones'),
+					('nuevas adquisiciones')";
+			$wpdb->query( $sql_insert );
+		}
+	}// create_table_secciones_home
+	add_action('init', 'create_table_secciones_home');
 
 	function get_secciones_orden_home(){
 		global $wpdb;
@@ -2094,20 +2123,50 @@
 		return $orden_secciones_home;
 	}// get_secciones_orden_home
 
-	function save_secciones_orden_home() {
+	function get_seccion_orden_home( $posicion ){
+		global $wpdb;
+		$query = "
+				SELECT * FROM wp_orden_home
+				WHERE posicion = $posicion";
+		$orden_secciones_home = $wpdb->get_results( $query, OBJECT );
 
+		return $orden_secciones_home[0];
+	}// get_seccion_orden_home
+
+	function get_secciones_home(){
+		global $wpdb;
+		$query = "SELECT * FROM wp_secciones_home";
+		$secciones_home = $wpdb->get_results( $query, OBJECT );
+
+		return $secciones_home;
+	}// get_secciones_home
+
+	function save_secciones_orden_home() {
+		global $wpdb;
 		if ( isset( $_POST['posicion_1'] )  ) {
+			// Rellenar tabla
+			$sql_insert = "TRUNCATE TABLE wp_orden_home";
+			$wpdb->query( $sql_insert );
+
 			$posicion_1 =  $_POST['posicion_1'];
 			$posicion_2 =  $_POST['posicion_2'];
 			$posicion_3 =  $_POST['posicion_3'];
 			$posicion_4 =  $_POST['posicion_4'];
 			$posicion_5 =  $_POST['posicion_5'];
+			$posicion_6 =  $_POST['posicion_6'];
 
-			update_orden_home( 1, $posicion_1 );
-			update_orden_home( 2, $posicion_2 );
-			update_orden_home( 3, $posicion_3 );
-			update_orden_home( 4, $posicion_4 );
-			update_orden_home( 5, $posicion_5 );
+			// Rellenar tabla
+			$sql_insert = "
+				INSERT INTO wp_orden_home
+					(seccion, posicion)
+				VALUES
+					('$posicion_1', 1),
+					('$posicion_2', 2),
+					('$posicion_3', 3),
+					('$posicion_4', 4),
+					('$posicion_5', 5),
+					('$posicion_6', 6)";
+			$wpdb->query( $sql_insert );
 		} // end if
 
 	} // end my_theme_send_email
