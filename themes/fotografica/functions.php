@@ -26,6 +26,7 @@
 		// localize scripts
 		wp_localize_script( 'functions', 'ajax_url', admin_url('admin-ajax.php') );
 		wp_localize_script( 'functions', 'post_type', get_post_type() );
+		wp_localize_script( 'functions', 'site_url', site_url() );
 
 		// styles
 		wp_enqueue_style( 'styles', get_stylesheet_uri() );
@@ -200,6 +201,7 @@
 							?>
 									var filter = $('.filter[data-value="<?php echo $coleccion; ?>"]');
 									addFilter( filter );
+									advancedSearch('fotografias', getFilters(false), 20, existing_ids);
 							<?php
 								} else if ($coleccion == 'adquisiciones-recientes'){
 							?>
@@ -914,6 +916,7 @@
 			}
 			// Coleccion
 			$coleccionName 	= 'Sin coleccion';
+			$coleccionSlug = '';
 			$coleccion = wp_get_post_terms( $post->id, 'coleccion' );
 			if ( $coleccion ){
 				$coleccionName 	= $coleccion[0]->name;
@@ -928,16 +931,17 @@
 
 			// Se arma el objecto que se regresa
 			$info_colecciones[$key] = array(
-				'id'		=> $post->id,
-				'permalink'	=> get_permalink( $post->id ),
-				'titulo'	=> $titleColecciones,
-				'img_url'	=> $url,
-				'autor'		=> $authorColeccionesName,
-				'url_autor'	=> $authorColeccionesSlug,
-				'ano'		=> $anoFotosName,
-				'lugar'		=> $lugarName,
-				'coleccion'	=> $coleccionName,
-				'serie'		=> $coleccionSerie,
+				'id'				=> $post->id,
+				'permalink'			=> get_permalink( $post->id ),
+				'titulo'			=> $titleColecciones,
+				'img_url'			=> $url,
+				'autor'				=> $authorColeccionesName,
+				'url_autor'			=> $authorColeccionesSlug,
+				'ano'				=> $anoFotosName,
+				'lugar'				=> $lugarName,
+				'coleccion'			=> $coleccionName,
+				'coleccion_slug'	=> $coleccionSlug,
+				'serie'				=> $coleccionSerie,
 				);
 		}
 
