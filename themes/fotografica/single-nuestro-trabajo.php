@@ -84,11 +84,9 @@
 
 
 					<!-- NOMBRE APELLIDO -->
-					<?php if ( $authorColeccionesName == 'Autor no identificado' ){ ?>
+					<?php if ( $authorColeccionesName !== 'Autor no identificado' ){ ?>
 						<span class="[ media--info__author ]"><?php echo $authorColeccionesName; ?></span>,
-					<?php } else { ?>
-						<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
-					<?php } ?>
+					<?php }  ?>
 
 					<!-- TÍTULO -->
 					<?php if ( $titleColecciones ){ ?>
@@ -116,7 +114,9 @@
 					<?php } ?>
 
 					<!-- COLECCION -->
-					<br /> de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>
+					<?php if ( $coleccionColeccionesName ){ ?>
+						<br /> de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>
+					<?php } ?>
 
 					</p>
 				</div>
