@@ -1928,7 +1928,8 @@
 			SELECT P.ID FROM wp_posts P
 			INNER JOIN wp_postmeta PM ON PM.post_id = P.ID
 			WHERE meta_key = 'num_likes'
-			AND post_status = 'publish' ORDER BY meta_value DESC";
+			AND post_status = 'publish' 
+			ORDER BY meta_value DESC";
 
 		$results = $wpdb->get_results( $query );
 		$total_results = $wpdb->num_rows;

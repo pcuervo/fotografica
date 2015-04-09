@@ -44,7 +44,7 @@
 				<p class="[ text-center ]">
 					<!-- TÍTULO -->
 					<?php if ( $titlePublicaciones ){ ?>
-						<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titlePublicaciones; ?></a>
+						<a href="<?php echo $permalinkPublicacion; ?>" class="[ media--info__name ]"><?php echo $titlePublicaciones; ?></a>
 					<?php } ?>
 				</p>
 			</div>

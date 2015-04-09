@@ -257,36 +257,12 @@
 		);
 		register_post_type( 'publicacion-digital', $args );
 
-		// NOTAS DE PRENSA
-		$labels = array(
-			'name'          => 'Notas de prensa',
-			'singular_name' => 'Nota de prensa',
-			'add_new'       => 'Nueva Nota de prensa',
-			'add_new_item'  => 'Nueva Nota de prensa',
-			'edit_item'     => 'Editar Nota de prensa',
-			'new_item'      => 'Nueva Nota de prensa',
-			'all_items'     => 'Todas',
-			'view_item'     => 'Ver Nota de prensa',
-			'search_items'  => 'Buscar Nota de prensa',
-			'not_found'     => 'No se encontro',
-			'menu_name'     => 'Notas de prensa'
-		);
-		$args = array(
-			'labels'             => $labels,
-			'public'             => true,
-			'publicly_queryable' => true,
-			'show_ui'            => true,
-			'show_in_menu'       => true,
-			'query_var'          => true,
-			'rewrite'            => array( 'slug' => 'nota-prensa' ),
-			'capability_type'    => 'post',
-			'has_archive'        => true,
-			'hierarchical'       => false,
-			'taxonomies'         => array( 'post_tag', 'category' ),
-			'menu_position'      => 6,
-			'supports'           => array( 'title', 'editor', 'thumbnail' )
-		);
-		register_post_type( 'notas-prensa', $args );
+		// BORRAR DESPUES DE CORRER EN PROD
+		global $wp_post_types;
+		if( isset( $wp_post_types[ 'notas-prensa' ] ) ){
+			unset( $wp_post_types[ 'notas-prensa' ] );
+		}
+		
 
 		// CARTELERA
 		$labels = array(
