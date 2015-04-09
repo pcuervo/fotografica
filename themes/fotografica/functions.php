@@ -121,6 +121,11 @@
 								advancedSearch('<?php echo $postType ?>', getFilters(false), 20, existing_ids);
 							});
 
+							$('.filter--info span').on('click', function(event) {
+								var coleccion_id = $(this).data('coleccion-term-id');
+								var descripcion = getDescripcionColeccion(coleccion_id, $(this) );
+							});
+
 							$('.js-cargar-mas').on('click', function(e){
 								e.preventDefault();
 								existing_ids = getExistingIds();
@@ -209,13 +214,14 @@
 							/**
 							 * If the postType is "proyecto" there are no filters
 							**/
-							<?php if (  $postType !== 'proyecto' ){ ?>
+							<?php if ( $postType !== 'proyecto' ){ ?>
 
 								$('.tab-filter').on('click', function(){
 									showFilters( this );
 								});
 
-								$('.filters__content').on('click', '.filter', function(){
+								$('.filters__content').on('click', '.filter', function(e){
+									console.log(e.target);
 									addFilter( this );
 									//existing_ids = getExistingIds();
 									clearGrid();
@@ -257,9 +263,7 @@
 
 							$('.filter--info span').on('click', function(event) {
 								var coleccion_id = $(this).data('coleccion-term-id');
-								var descripcion = getDescripcionColeccion(coleccion_id);
-								openModal( $(this) );
-
+								var descripcion = getDescripcionColeccion(coleccion_id, $(this) );
 							});
 
 							$('.close-modal').on('click', function(event) {

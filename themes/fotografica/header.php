@@ -178,9 +178,9 @@
 												<form id="forma_busqeda" class="forma_busqeda" method="get" action="<?php echo site_url(); ?>">
 													<input class="sb-search-input" placeholder="¿Qué quieres buscar?" type="text" name="s" id="s">
 													<input class="sb-search-submit" type="submit" value="">
-													<span class="[ sb-icon-search ][ inline-block align-middle ][ menu__item menu__item-small ]">
+													<button class="[ sb-icon-search ][ inline-block align-middle ][ menu__item menu__item-small ]">
 														<i class="[ icon-search ][ bg-highlight color-claro ]"></i>
-													</span>
+													</button>
 												</form>
 											</div><a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="https://twitter.com/FotograficaMx" target="_blank">
 												<i class="[ icon-twitter ]"></i>
