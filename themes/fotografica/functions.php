@@ -302,7 +302,7 @@
 								runMasonry('.results', '.result' );
 							<?php } ?>
 
-							<?php if ( $postType === 'exposiciones' OR $postType === 'publicaciones' OR $postType === 'nuestro-trabajo' ){ ?>
+							<?php if ( $postType === 'exposiciones' OR $postType === 'publicaciones' OR $postType === 'nuestro-trabajo' OR $postType === 'proyectos' ){ ?>
 								runFitVids('.fit-vids-wrapper');
 							<?php } ?>
 
@@ -1952,7 +1952,7 @@
 			SELECT P.ID FROM wp_posts P
 			INNER JOIN wp_postmeta PM ON PM.post_id = P.ID
 			WHERE meta_key = 'num_likes'
-			AND post_status = 'publish' 
+			AND post_status = 'publish'
 			ORDER BY meta_value DESC";
 
 		$results = $wpdb->get_results( $query );

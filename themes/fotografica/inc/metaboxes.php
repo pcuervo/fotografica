@@ -103,7 +103,7 @@ echo <<<END
 	<input type="text" class="widefat js-datepicker" name="_fecha_nacimiento_meta" value="$fecha_nacimiento" />
 
 END;
-	}// metabox_video_proyecto
+	}// metabox_fecha_nacimiento
 
 	function metabox_detalles_fotografia($post){
 		$detalles_fotografia = get_post_meta($post->ID, '_detalles_fotografia_meta', true);
@@ -166,6 +166,7 @@ END;
 		wp_editor( htmlspecialchars_decode($info_publicacion), '_info_publicacion', $info_publicacion_editor_settings );
 
 	}// metabox_links_exposicion
+
 
 	function name_meta_callback($post){
 		// $name = get_post_meta($post->ID, '_name_meta', true);
