@@ -2281,7 +2281,7 @@
 							}
 
 							if ( $titleColecciones ){
-								$html .= '<a href="'.$permalinkColeccion.'" class="[ media--info__name ]">'.$titleColecciones.'</a>,';
+								$html .= ' <a href="'.$permalinkColeccion.'" class="[ media--info__name ]">'.$titleColecciones.'</a>,';
 							}
 
 							if ( $seriesColecciones ){
@@ -2289,15 +2289,15 @@
 							}
 
 							if ( $placeColecciones ){
-								$html .= '<span class="[ media--info__place ]">'.$placeColeccionesName.'</span>,';
+								$html .= ' <span class="[ media--info__place ]">'.$placeColeccionesName.'</span>,';
 							}
 
 							if ( $circaColecciones ){
-								$html .= '<span class="[ media--info__circa ]">circa </span>';
+								$html .= ' <span class="[ media--info__circa ]">circa </span>';
 							}
 
 							if ( $dateColecciones ){
-								$html .= '<span class="[ media--info__date ]">'.$dateColeccionesName.'</span>,';
+								$html .= ' <span class="[ media--info__date ]">'.$dateColeccionesName.'</span>,';
 							}
 
 							$html .= '<br /> de la colección <a href="'.site_url().'/colecciones?coleccion='.$coleccionColeccionesSlug.'" class="[ media--info__colection ]">'.$coleccionColeccionesName.'</a>';
@@ -2573,7 +2573,7 @@
 							}
 
 							if ( $titleRecientes ){
-								$html .= '<a href="'.$permalinkRecientes.'" class="[ media--info__name ]">'.$titleRecientes.'</a>,';
+								$html .= ' <a href="'.$permalinkRecientes.'" class="[ media--info__name ]">'.$titleRecientes.'</a>,';
 							}
 
 							if ( $seriesRecientes ){
@@ -2581,15 +2581,15 @@
 							}
 
 							if ( $placeRecientes ){
-								$html .= '<span class="[ media--info__place ]">'.$placeRecientesName.'</span>,';
+								$html .= ' <span class="[ media--info__place ]">'.$placeRecientesName.'</span>,';
 							}
 
 							if ( $circaRecientes ){
-								$html .= '<span class="[ media--info__circa ]">circa </span>';
+								$html .= ' <span class="[ media--info__circa ]">circa </span>';
 							}
 
 							if ( $dateRecientes ){
-								$html .= '<span class="[ media--info__date ]">'.$dateRecientesName.'</span>,';
+								$html .= ' <span class="[ media--info__date ]">'.$dateRecientesName.'</span>,';
 							}
 							$html .= '<br /> de la colección <a href="'.site_url().'/colecciones?coleccion='.$coleccionRecientesSlug.'" class="[ media--info__colection ]">'.$coleccionRecientesName.'</a>';
 						$html .= '</p>
@@ -2708,27 +2708,27 @@
 							}
 
 							if ( $titleFeatured ){
-								$html .= '<a href="'.$permalinkFeatured.'" class="[ media--info__name ]">'.$titleFeatured.'</a>,';
+								$html .= ' <a href="'.$permalinkFeatured.'" class="[ media--info__name ]">'.$titleFeatured.'</a>,';
 							}
 
 							if ( $seriesFeatured ){
-								$html .= 'de la serie <span class="[ media--info__series ]">'.$seriesFeatured.'</span>,';
+								$html .= ' de la serie <span class="[ media--info__series ]">'.$seriesFeatured.'</span>,';
 							}
 
 							if ( $placeFeatured ){
-								$html .= '<span class="[ media--info__place ]">'.$placeFeaturedName.'</span>,';
+								$html .= ' <span class="[ media--info__place ]">'.$placeFeaturedName.'</span>,';
 							}
 
 							if ( $circaFeatured ){
-								$html .= '<span class="[ media--info__circa ]">circa </span>';
+								$html .= ' <span class="[ media--info__circa ]">circa </span>';
 							}
 
 							if ( $dateFeatured ){
-								$html .= '<span class="[ media--info__date ]">'.$dateFeaturedName.'</span>,';
+								$html .= ' <span class="[ media--info__date ]">'.$dateFeaturedName.'</span>,';
 							}
 
 							if ( $coleccionFeatured ){
-								$html .= '<br />de la colección <a href="'.site_url( $coleccionFeaturedSlug ).'" class="[ media--info__colection ]"> '.$coleccionFeaturedName.'</a>';
+								$html .= '<br /> de la colección <a href="'.site_url( $coleccionFeaturedSlug ).'" class="[ media--info__colection ]"> '.$coleccionFeaturedName.'</a>';
 							}
 						$html .= '</p>
 					</div>
