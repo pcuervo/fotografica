@@ -120,60 +120,45 @@
 			<div class="[ media-info media-info--large ] [ xmall-12 ] [ shown--medium ]">
 				<p class="[ text-center ]">
 
-				<!-- NOMBRE APELLIDO -->
-				<?php if ( $authorProyectosName == 'Autor no identificado' ){ ?>
-					<span class="[ media--info__author ]"><?php echo $authorProyectosName; ?></span>,
-				<?php } else { ?>
-					<a href="<?php echo site_url( $authorProyectosSlug ); ?>" class="[ media--info__author ]"><?php echo $authorProyectosName;?></a>,
-				<?php } ?>
+					<!-- NOMBRE APELLIDO -->
+					<?php if ( $authorProyectosName == 'Autor no identificado' ){ ?>
+						<span class="[ media--info__author ]"><?php echo $authorProyectosName; ?></span>,
+					<?php } else { ?>
+						<a href="<?php echo site_url( $authorProyectosSlug ); ?>" class="[ media--info__author ]"><?php echo $authorProyectosName;?></a>,
+					<?php } ?>
 
-				<!-- TÍTULO -->
-				<?php if ( $titleProyectos ){ ?>
-					<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleProyectos; ?></a>,
-				<?php } ?>
+					<!-- TÍTULO -->
+					<?php if ( $titleProyectos ){ ?>
+						<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleProyectos; ?></a>,
+					<?php } ?>
 
-				<!-- DE LA SERIE -->
-				<?php if ( $seriesProyectos ){ ?>
-					de la serie <span class="[ media--info__series ]"><?php echo $seriesProyectos; ?></span>,
-				<?php } ?>
+					<!-- DE LA SERIE -->
+					<?php if ( $seriesProyectos ){ ?>
+						de la serie <span class="[ media--info__series ]"><?php echo $seriesProyectos; ?></span>,
+					<?php } ?>
 
-				<!-- COLECCION -->
-				<?php if ( $coleccionProyectos ){ ?>
-					<br /> de la colección <a href="<?php echo site_url( $coleccionProyectosSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionProyectosName; ?></a>,
-				<?php } ?>
+					<!-- COLECCION -->
+					<?php if ( $coleccionProyectos ){ ?>
+						<br /> de la colección <a href="<?php echo site_url( $coleccionProyectosSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionProyectosName; ?></a>,
+					<?php } ?>
 
-				<!-- LUGAR -->
-				<?php if ( $placeProyectos ){ ?>
-					<span class="[ media--info__place ]"><?php echo $placeProyectosName; ?></span>,
-				<?php } ?>
+					<!-- LUGAR -->
+					<?php if ( $placeProyectos ){ ?>
+						<span class="[ media--info__place ]"><?php echo $placeProyectosName; ?></span>,
+					<?php } ?>
 
-				<!-- CIRCA -->
-				<?php if ( $circaProyectos ){ ?>
-					<span class="[ media--info__circa ]">circa </span>
-				<?php } ?>
+					<!-- CIRCA -->
+					<?php if ( $circaProyectos ){ ?>
+						<span class="[ media--info__circa ]">circa </span>
+					<?php } ?>
 
-				<!-- AÑO -->
-				<?php if ( $dateProyectos ){ ?>
-					<span class="[ media--info__date ][ shown--medium shown--medium--inline ]"><?php echo $dateProyectosName; ?></span>
-				<?php } ?>
+					<!-- AÑO -->
+					<?php if ( $dateProyectos ){ ?>
+						<span class="[ media--info__date ][ shown--medium shown--medium--inline ]"><?php echo $dateProyectosName; ?></span>
+					<?php } ?>
+
 				</p>
 
-				<!-- TAGS -->
-				<div class="[ media-info__tags ] [ text-center ]">
-					<?php
-						$themeCounter = 1;
-						if ( $themesProyectosName ){
-							foreach ($themesProyectosName as $themeProyectosName) {
-								$themeProyectosName = $themeProyectosName->name; ?>
-								<a href="<?php echo site_url('$themeProyectosName'); ?>" class="[ tag ]">#<?php echo $themeProyectosName; ?></a>
-								<?php $themeCounter ++;
-								if ( $themeCounter == 3 ){
-									break;
-								}
-							}
-						}
-					?>
-				</div>
 			</div>
 		</div>
 	</section>

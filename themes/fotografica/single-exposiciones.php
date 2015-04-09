@@ -62,187 +62,212 @@
 			</div>
 		</div><!-- .wrapper -->
 	</section>
-	<?php
-	// db563839239
-	if( $post_type != 'fotografos') { ?>
-		<section class="[ margin-bottom ]">
-			<h2 class="[ title ] [ text-center ]">Te puede interesar</h2>
+	<section class="[ margin-bottom ]">
+		<div class="[ wrapper ]">
+			<div class="[ row ]">
+				<?php
 
-			<div class="[ wrapper ]">
-				<div class="[ row ]">
-					<?php
+				$has_related       = false;
+				$has_related_limit = 0;
+				while( ! $has_related AND $has_related_limit <= 10 ){
+					// Jalar taxonomía y termino al azar para fotos relacionadas
+					$tax = get_object_taxonomies( $post );
+					$random_tax = rand(0, count($tax)-1);
 
-					$has_related = false;
-					while( ! $has_related ) {
-						// Jalar taxonomía y termino al azar para fotos relacionadas
-						$tax = get_object_taxonomies( $post );
-						$random_tax = rand(0, count($tax)-1);
+					if(empty($tax)){
+						$terms = [];
+					} else {
+						$terms = wp_get_post_terms( $post->ID, $tax[$random_tax] );
+						$term_test = wp_get_post_terms( $post->ID, $tax[0] );
 
-						if(empty($tax)){
-							$terms = [];
-						} else {
+						$i = 0;
+						while( count($terms) == 0 ) {
+							$i++;
+							if( $i > 50 ) break;
+							$random_tax = rand(0, count($tax)-1);
 							$terms = wp_get_post_terms( $post->ID, $tax[$random_tax] );
-							$term_test = wp_get_post_terms( $post->ID, $tax[0] );
-
-							$i = 0;
-							while( count($terms) == 0 ) {
-								$i++;
-								if( $i > 50 ) break;
-								$random_tax = rand(0, count($tax)-1);
-								$terms = wp_get_post_terms( $post->ID, $tax[$random_tax] );
-							}
-							$random_term = rand(0, count($terms)-1);
 						}
+						$random_term = rand(0, count($terms)-1);
+					}
 
 
-						$counter = 1;
-						$bgColecciones = '';
-						$coleccionColecciones = '';
-						$authorColecciones = '';
-						$titleColecciones = '';
-						$seriesColecciones = '';
-						$placeColecciones = '';
-						$circaColecciones = 0;
-						$dateColecciones = '';
-						if(empty($terms)){
-							$args = array(
-								'post_type' 		=> 'fotografias',
-								'posts_per_page' 	=> 3,
-								'orderby' 			=> 'rand',
-								'post__not_in'		=> array($post->ID),
-							);
-						} else {
-							$args = array(
-								'post_type' 		=> 'fotografias',
-								'posts_per_page' 	=> 3,
-								'orderby' 			=> 'rand',
-								'post__not_in'		=> array($post->ID),
-								'tax_query'			=> array(
-									array(
-										'taxonomy'	=> $tax[$random_tax],
-										'terms'		=> $terms[$random_term],
-									),
+					$counter = 1;
+					$bgColecciones = '';
+					$coleccionColecciones = '';
+					$authorColecciones = '';
+					$titleColecciones = '';
+					$seriesColecciones = '';
+					$placeColecciones = '';
+					$circaColecciones = 0;
+					$dateColecciones = '';
+					if(empty($terms)){
+						$args = array(
+							'post_type' 		=> 'fotografias',
+							'posts_per_page' 	=> 3,
+							'orderby' 			=> 'rand',
+							'post__not_in'		=> array($post->ID),
+						);
+					} else {
+						$args = array(
+							'post_type' 		=> 'fotografias',
+							'posts_per_page' 	=> 3,
+							'orderby' 			=> 'rand',
+							'post__not_in'		=> array($post->ID),
+							'tax_query'			=> array(
+								array(
+									'taxonomy'	=> $tax[$random_tax],
+									'terms'		=> $terms[$random_term],
 								),
-							);
+							),
+						);
+					}
+
+					$queryFotografias = new WP_Query( $args );
+					if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post(); ?>
+
+						<?php if ( $counter == 1 ) { ?>
+							<h2 class="[ title ] [ text-center ]">Te puede interesar</h2>
+						<?php }
+
+						$has_related = true;
+						$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+
+						$coleccionColecciones 		= wp_get_post_terms( $post->ID, 'coleccion' );
+						$coleccionColeccionesName 	= $coleccionColecciones[0]->name;
+						$coleccionColeccionesSlug 	= $coleccionColecciones[0]->slug;
+
+						$authorColecciones 		= wp_get_post_terms( $post->ID, 'fotografo' );
+						if ( $authorColecciones ){
+							$authorColeccionesName 	= $authorColecciones[0]->name;
+							$authorColeccionesSlug 	= $authorColecciones[0]->slug;
+						} else {
+							$authorColeccionesName 	= 'Autor no identificado';
 						}
 
-						$queryFotografias = new WP_Query( $args );
-						if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post();
-							$has_related = true;
-							$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+						$titleColecciones = get_the_title( $post->ID );
+						if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
+							$titleColecciones = NULL;
+						}
 
-							$coleccionColecciones 		= wp_get_post_terms( $post->ID, 'coleccion' );
-							$coleccionColeccionesName 	= $coleccionColecciones[0]->name;
-							$coleccionColeccionesSlug 	= $coleccionColecciones[0]->slug;
+						$seriesColecciones = 0;
 
-							$authorColecciones 		= wp_get_post_terms( $post->ID, 'fotografo' );
-							if ( $authorColecciones ){
-								$authorColeccionesName 	= $authorColecciones[0]->name;
-								$authorColeccionesSlug 	= $authorColecciones[0]->slug;
-							} else {
-								$authorColeccionesName 	= 'Autor no identificado';
-							}
+						$placeColecciones = wp_get_post_terms( $post->ID, 'lugar' );
+						if ( $placeColecciones ){
+							$placeColeccionesName 	= $placeColecciones[0]->name;
+						}
 
-							$titleColecciones = get_the_title( $post->ID );
-							if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
-								$titleColecciones = NULL;
-							}
+						$circaColecciones = 0;
 
-							$seriesColecciones = 0;
+						$dateColecciones = wp_get_post_terms( $post->ID, 'año' );
+						if ( $dateColecciones ){
+							$dateColeccionesName 	= $dateColecciones[0]->name;
+						} else {
+							$dateColeccionesName 	= 's/f';
+						}
 
-							$placeColecciones = wp_get_post_terms( $post->ID, 'lugar' );
-							if ( $placeColecciones ){
-								$placeColeccionesName 	= $placeColecciones[0]->name;
-							}
+						$themesColecciones = wp_get_post_terms( $post->ID, 'tema' );
+						if ( ! $themesColecciones ){
+							$themesColeccionesName 	= '';
+						}
 
-							$circaColecciones = 0;
-
-							$dateColecciones = wp_get_post_terms( $post->ID, 'año' );
-							if ( $dateColecciones ){
-								$dateColeccionesName 	= $dateColecciones[0]->name;
-							} else {
-								$dateColeccionesName 	= 's/f';
-							}
-
-							$themesColecciones = wp_get_post_terms( $post->ID, 'tema' );
-							if ( ! $themesColecciones ){
-								$themesColeccionesName 	= '';
-							}
-
-							$permalinkColeccion = get_permalink( $post->ID );
-						?>
-							<article class="[ relacionadas ] [ bg-image ] [ span xmall-12 medium-6 ]" style="background-image: url(<?php echo $bgColecciones[0]; ?>)">
-								<div class="[ opacity-gradient <?php echo ( $counter == 1 ) ? '[ square square-absolute ]' : '[ rectangle rectangle-absolute ]' ?> ]">
-									<a class="[ block ][ media-link ]" href="<?php echo $permalinkColeccion; ?>"></a>
-									<div class="[ media-info media-info--small ] [ xmall-12 ]">
-										<p class="[ text-center ]">
-
-											<!-- NOMBRE APELLIDO -->
-											<?php if ( $authorColeccionesName != 'Autor no identificado' ){ ?>
-												<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
-											<?php } ?>
-
-											<!-- TÍTULO -->
-											<?php if ( $titleColecciones ){ ?>
-												<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleColecciones; ?></a>,
-											<?php } ?>
-
-											<!-- DE LA SERIE -->
-											<?php if ( $seriesColecciones ){ ?>
-												de la serie <span class="[ media--info__series ]"><?php echo $seriesColecciones; ?></span>,
-											<?php } ?>
-
-											<!-- COLECCION -->
-											<br /> de la colección <a href="<?php echo site_url() ?>/colecciones?coleccion=<?php echo $coleccionColeccionesSlug ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>,
-
-											<!-- CIRCA -->
-											<?php if ( $circaColecciones ){ ?>
-												<span class="[ media--info__circa ]">circa </span>
-											<?php } ?>
-
-											<!-- AÑO -->
-											<?php if ( $dateColecciones ){ ?>
-												<span class="[ media--info__date ]"><?php echo $dateColeccionesName; ?></span>
-											<?php } ?>
-										</p>
-									</div>
-								</div>
-							</article>
-						<?php $counter++; endwhile; endif; wp_reset_query();
-					} //while
+						$permalinkColeccion = get_permalink( $post->ID );
 					?>
-				</div><!-- row -->
-			</div><!-- wrapper -->
-		</section><!-- .results -->
-	<?php } ?>
-	<div class="[ lightbox ] [ cycle-slideshow ]">
+						<article class="[ relacionadas ] [ bg-image ] [ span xmall-12 medium-6 ]" style="background-image: url(<?php echo $bgColecciones[0]; ?>)">
+							<div class="[ opacity-gradient <?php echo ( $counter == 1 ) ? '[ square square-absolute ]' : '[ rectangle rectangle-absolute ]' ?> ]">
+								<a class="[ block ][ media-link ]" href="<?php echo $permalinkColeccion; ?>"></a>
+								<div class="[ media-info media-info--small ] [ xmall-12 ]">
+									<p class="[ text-center ]">
 
-		<?php
-			$attachedMediaArgs = array(
-				'post_type' => 'attachment',
-				'post_mime_type'=>'image',
-				'numberposts' => -1,
-				'post_status' => null,
-				'post_parent' => $post->ID
-			);
-			//$attachedMedia = get_embedded_media('imsage', $attachedMediaArgs);
-			// echo '<pre>';
-			// 	print_r($attachedMedia);
-			// echo '</pre>';
+										<!-- NOMBRE APELLIDO -->
+										<?php if ( $authorColeccionesName != 'Autor no identificado' ){ ?>
+											<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
+										<?php } ?>
 
-		?>
-		<div class="[ image-single ]">
-			<div class="[ wrapper ]">
-				<img class="[ image-responsive ]" src="<?php echo THEMEPATH; ?>images/test-9.jpg" alt="">
-				<p class="[ image-caption ] [ text-center ]">Retrato de Gerardo Murillo “Dr. atl”, Ciudad de México, ca. 1956</p>
-			</div><!-- wrapper -->
-		</div>
-		<div class="[ image-single ]">
-			<div class="[ wrapper ]">
-				<img class="[ image-responsive ]" src="<?php echo THEMEPATH; ?>images/test-7.jpg" alt="">
-				<p class="[ image-caption ] [ text-center ]">Retrato de Gerardo Murillo “Dr. atl”, Ciudad de México, ca. 1956</p>
-			</div><!-- wrapper -->
-		</div>
-	</div><!-- .lightbox -->
+										<!-- TÍTULO -->
+										<?php if ( $titleColecciones ){ ?>
+											<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleColecciones; ?></a>,
+										<?php } ?>
+
+										<!-- DE LA SERIE -->
+										<?php if ( $seriesColecciones ){ ?>
+											de la serie <span class="[ media--info__series ]"><?php echo $seriesColecciones; ?></span>,
+										<?php } ?>
+
+										<!-- COLECCION -->
+										<br /> de la colección <a href="<?php echo site_url() ?>/colecciones?coleccion=<?php echo $coleccionColeccionesSlug ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>,
+
+										<!-- CIRCA -->
+										<?php if ( $circaColecciones ){ ?>
+											<span class="[ media--info__circa ]">circa </span>
+										<?php } ?>
+
+										<!-- AÑO -->
+										<?php if ( $dateColecciones ){ ?>
+											<span class="[ media--info__date ]"><?php echo $dateColeccionesName; ?></span>
+										<?php } ?>
+									</p>
+								</div>
+							</div>
+						</article>
+					<?php $counter++; endwhile; endif; wp_reset_query();
+				} //while
+				?>
+			</div><!-- row -->
+		</div><!-- wrapper -->
+	</section><!-- .results -->
+	<?php
+	$content = $post->post_content;
+
+	if( has_shortcode( $content, 'gallery' ) ) {
+		$galleries = get_galleries_from_content($content);
+		foreach ($galleries as $gallery => $galleryIDs) { ?>
+			<div class="[ modal-wrapper modal-wrapper-<?php echo $gallery; ?> ][ hide ]">
+				<div class="[ modal modal--read-mode modal--lightbox ]">
+					<div class="[ close-modal ]">
+						<i class="[ icon-close ]"></i>
+					</div>
+					<div class="[ modal-content ]">
+						<div class="[ modal-body ]">
+							<div class="[ slideshow slideshow-<?php echo $gallery; ?> ]">
+								<?php
+								$images = sga_gallery_images('full', $galleryIDs);
+
+								foreach ($images as $key => $image) {
+									$imageID         = $image[4];
+									$imageURL        = $image[0];
+									$imagePostID     = get_post_id_by_attachment_id($imageID);
+									$imagePost       = get_post( $imagePostID->post_id );
+
+									$titleimagePost = get_the_title( $imagePostID->post_id );
+									if ( strpos($titleimagePost, 'Sin título') !== false OR $titleimagePost == '' OR strpos($titleimagePost, '&nbsp') !== false ){
+										$titleimagePost = NULL;
+									}
+
+									$authorImagePost = wp_get_post_terms( $imagePostID->post_id, 'fotografo' );
+									if ( $authorImagePost ){
+										$authorImagePostName 	= $authorImagePost[0]->name;
+										$authorImagePostSlug 	= $authorImagePost[0]->slug;
+									} else {
+										$authorImagePost 	= 'Autor no identificaco';
+									}
+
+									$permalinkImagePost = get_permalink( $imagePostID->post_id );
+
+								?>
+									<div class="[ image-single ]" data-number="<?php echo $key+1; ?>">
+										<div class="[ full-height ]">
+											<a href="<?php echo $permalinkImagePost; ?>" target="_blank">
+												<img class="[ full-height-centered ]" src="<?php echo $imageURL; ?>">
+											</a>
+										</div><!-- full-height -->
+									</div>
+								<?php } ?>
+							</div><!-- slideshow -->
+						</div><!-- modal-body -->
+					</div><!-- modal-content -->
+				</div><!-- modal -->
+			</div><!-- modal-wrapper -->
+		<?php }
+	} ?>
 	<script type="text/javascript" src="https://addthisevent.com/libs/ate-latest.min.js"></script>
 <?php get_footer(); ?>

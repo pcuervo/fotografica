@@ -333,9 +333,8 @@ function openLightbox( lightboxNumber, imagenNumber ){
 		$(this).closest('.modal-wrapper').removeClass('hide');
 	});
 
-	$('body').on('keydown', function(e) {
-		console.log('keydown');
-		e.preventDefault();
+	$(document).on('keydown', function(e) {
+		//e.preventDefault();
 		if(e.which == 37) { // left
 			console.log('left');
 			$('.slideshow-'+lightboxNumber).cycle('prev');
@@ -369,6 +368,7 @@ function openModal(element){
 function closeModal(element){
 	var aCerrar = element.closest('.modal-wrapper');
 	aCerrar.addClass('hide');
+	$(document).unbind('keydown');
 }
 
 // AJAX

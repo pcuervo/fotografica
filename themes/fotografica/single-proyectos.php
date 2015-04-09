@@ -7,29 +7,38 @@
 	$num_shares_url = "http://api.facebook.com/restserver.php?method=links.getStats&urls=".$current_link;
 	$fb_stats = file_get_contents('http://api.facebook.com/restserver.php?method=links.getStats&urls=http://pcuervo.com/fotografica/fotografias/sin-titulo-17/');
 
-
-	/*------------------------------------*\
-	    #GET THE POST TYPE
-	\*------------------------------------*/
-	$postType = get_post_type();
-
 	$terms = wp_get_post_terms( $post->ID, 'tipo-de-proyecto' );
 	$url_video_proyecto = get_post_meta($post->ID, '_evento_video_proyecto_meta', true);
+	$videoHost = NULL;
+	$video_src = '';
+	if (strpos($url_video_proyecto,'youtube') !== false) {
+		$videoHost = 'youtube';
+	}
+	if (strpos($url_video_proyecto,'vimeo') !== false) {
+		$videoHost = 'vimeo';
+	}
+	if( $videoHost ){
+		$video_src = get_video_src($url_video_proyecto, $videoHost);
+	}
 
 	if($terms[0]->slug == 'individual'){
 
-		the_post(); ?>
-		<div class="[ full-height ][ margin-bottom ]">
-			<?php the_post_thumbnail('full', array('class' => 'full-height-centered') ); ?>
-		</div>
+		the_post();
 
-		<?php
-		$taxonomia = '';
-		if ( $postType == 'fotografias' ){
-			$taxonomia = 'coleccion';
-		} elseif ( $postType == 'proyectos' ){
-			$taxonomia = 'tipo-de-proyecto';
-		}
+		if ( ! empty($video_src) ){ ?>
+			<div class="[ wrapper ]">
+				<div class="[ margin-bottom ][ fit-vids-wrapper ]">
+					<iframe src="https:<?php echo $video_src; ?>?color=1aa2dc&title=0&byline=0&portrait=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+				</div>
+			</div><!-- wrapper -->
+		<?php }
+
+		if ( empty($video_src) ){ ?>
+			<div class="[ full-height ][ margin-bottom ]">
+				<?php the_post_thumbnail('full', array('class' => 'full-height-centered') ); ?>
+			</div>
+		<?php }
+		$taxonomia = 'tipo-de-proyecto';
 
 		if($taxonomia != ''){
 			$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
@@ -83,12 +92,17 @@
 					<div class="[ button button--dark button__share button--facebook ] [ columna xmall-6 ]">
 						<i class="[ xmall-3 inline-block align-middle ] fa fa-facebook-square"></i><span class="[ xmall-2 ]">&nbsp;</span><span class="[ xmall-7 inline-block align-middle ][ js-share-count ]"></span>
 					</div>
-					
+
 				</div>
 			</div><!-- .wrapper -->
 		</section><!-- .share -->
 		<section class="[ margin-bottom--large ][ single-content ]">
-			<div class="[ wrapper ][ ]">
+			<div class="[ wrapper ]">
+				<?php if ( ! empty($video_src) ){ ?>
+					<div class="[ margin-bottom ]">
+						<?php the_post_thumbnail('large', array('class' => '[ block center ]') ); ?>
+					</div>
+				<?php } ?>
 				<div class="[ row ]">
 					<aside class="[ shown--large ][ columna medium-2 large-3 ][ text-right serif--italic ]">
 						<?php if ( $url_video_proyecto != '' ) { ?>
@@ -103,14 +117,14 @@
 		</section>
 
 		<section class="[ margin-bottom ]">
-			<h2 class="[ title ] [ text-center ]">Te puede interesar</h2>
-
 			<div class="[ wrapper ]">
 				<div class="[ row ]">
 					<?php
 
-					$has_related = false;
-					while( ! $has_related ){
+					$has_related       = false;
+					$has_related_limit = 0;
+					while( ! $has_related AND $has_related_limit <= 10 ){
+						$has_related_limit++;
 						// Jalar taxonomía y termino al azar para fotos relacionadas
 						$tax = get_object_taxonomies( $post );
 						$random_tax = rand(0, count($tax)-1);
@@ -164,7 +178,11 @@
 						}
 
 						$queryFotografias = new WP_Query( $args );
-						if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post();
+						if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post(); ?>
+
+							<?php if ( $counter == 1 ) { ?>
+								<h2 class="[ title ] [ text-center ]">Te puede interesar</h2>
+							<?php }
 
 							$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
 
@@ -311,132 +329,19 @@
 		/*------------------------------------*\
 		    #ARCHIVE HERO
 		\*------------------------------------*/
-		$bgArchive = '';
-		$coleccionColecciones = '';
-		$authorColecciones = '';
-		$titleColecciones = '';
-		$seriesColecciones = '';
-		$placeColecciones = '';
-		$circaColecciones = 0;
-		$dateColecciones = '';
-		$args = array(
-			'post_type' 		=> 'fotografias',
-			'posts_per_page' 	=> 1,
-			'orderby' 			=> 'rand'
-		);
-		$queryFotografias = new WP_Query( $args );
-		if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post(); ?>
-			<?php
 
-				$bgArchive = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
 
-				$coleccionColecciones 		= wp_get_post_terms( $post->ID, 'coleccion' );
-				$coleccionColeccionesName 	= $coleccionColecciones[0]->name;
-				$coleccionColeccionesSlug 	= $coleccionColecciones[0]->slug;
-
-				$authorColecciones 		= wp_get_post_terms( $post->ID, 'fotografo' );
-				if ( $authorColecciones ){
-					$authorColeccionesName 	= $authorColecciones[0]->name;
-					$authorColeccionesSlug 	= $authorColecciones[0]->slug;
-				}  else {
-					$authorColeccionesName 	= 'Autor no identificado';
-				}
-
-				$titleColecciones = get_the_title( $post->ID );
-				if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
-					$titleColecciones = NULL;
-				}
-
-				$seriesColecciones = 0;
-
-				$placeColecciones = wp_get_post_terms( $post->ID, 'lugar' );
-				if ( $placeColecciones ){
-					$placeColeccionesName 	= $placeColecciones[0]->name;
-				}
-
-				$circaColecciones = 0;
-
-				$dateColecciones = wp_get_post_terms( $post->ID, 'año' );
-				if ( $dateColecciones ){
-					$dateColeccionesName 	= $dateColecciones[0]->name;
-				} else {
-					$dateColeccionesName 	= 's/f';
-				}
-
-				$themesColecciones = wp_get_post_terms( $post->ID, 'tema' );
-				if ( ! $themesColecciones ){
-					$themesColeccionesName 	= '';
-				}
-
-				$permalinkColeccion = get_permalink( $post->ID );
-		endwhile; endif; wp_reset_query(); ?>
-		<section class="[ colecciones ] [ bg-image ]" style="background-image: url(<?php echo $bgArchive[0]; ?>)">
+		$bgArchive = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+		?>
+		<section class="[ proyectos ][ bg-image ]" style="background-image: url(<?php echo $bgArchive[0]; ?>)">
 			<div class="[ opacity-gradient rectangle ]">
 				<h2 class="[ center-full ] [ title ]">
-					<?php echo $postType; ?> <br />
+					<?php echo the_title(); ?>
 				</h2>
-				<div class="[ media-info media-info--large ] [ xmall-12 ] [ shown--medium ]">
-					<p class="[ text-center ]">
-
-					<!-- COLECCION -->
-					De la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>,
-
-					<!-- NOMBRE APELLIDO -->
-					<?php if ( $authorColeccionesName !== 'Autor no identificado' ){ ?>
-						<span><?php echo $authorColeccionesName; ?></span>,
-					<?php } else { ?>
-						<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
-					<?php } ?>
-
-					<!-- TÍTULO -->
-					<?php if ( $titleColecciones ){ ?>
-						<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleColecciones; ?></a>,
-					<?php } else { ?>
-						<span class="[ media--info__name ]">sin título</span>,
-					<?php } ?>
-
-					<!-- DE LA SERIE -->
-					<?php if ( $seriesColecciones ){ ?>
-						de la serie <span class="[ media--info__series ]"><?php echo $seriesColecciones; ?></span>,
-					<?php } ?>
-
-					<!-- LUGAR -->
-					<?php if ( $placeColecciones ){ ?>
-						<span class="[ media--info__place ]"><?php echo $placeColeccionesName; ?></span>,
-					<?php } ?>
-
-					<!-- CIRCA -->
-					<?php if ( $circaColecciones ){ ?>
-						<span class="[ media--info__circa ]">circa</span>
-					<?php } ?>
-
-					<!-- AÑO -->
-					<?php if ( $dateColecciones ){ ?>
-						<span class="[ media--info__date ]"><?php echo $dateColeccionesName; ?></span>
-					<?php } ?>
-					</p>
-
-					<!-- TAGS -->
-					<div class="[ media-info__tags ] [ text-center ]">
-						<?php
-							$themeCounter = 1;
-							if ( $themesColeccionesName ){
-								foreach ($themesColeccionesName as $themeColeccionesName) {
-									$themeColeccionesName = $themeColeccionesName->name; ?>
-									<a href="<?php echo site_url('$themeColeccionesName'); ?>" class="[ tag ]">#<?php echo $themeColeccionesName; ?></a>
-									<?php $themeCounter ++;
-									if ( $themeCounter == 3 ){
-										break;
-									}
-								}
-							}
-						?>
-					</div>
-				</div>
 			</div>
 		</section>
 		<div class="clear"></div>
-		<section class="[ results ] [ row ] [ margin-bottom ] <?php echo ($postType == 'fotografos' ? '[ text-center ]' : ''); ?>">
+		<section class="[ results ][ row ][ margin-bottom ]">
 			<?php
 				$args = array(
 					'post_type' 		=> 'proyectos',

@@ -402,13 +402,13 @@
 
 	if( $post_type !== 'fotografos') { ?>
 		<section class="[ margin-bottom ]">
-			<h2 class="[ title ] [ text-center ]">Te puede interesar</h2>
 			<div class="[ wrapper ]">
 				<div class="[ row ]">
 					<?php
 
-					$has_related = false;
-					while( ! $has_related ){
+					$has_related       = false;
+					$has_related_limit = 0;
+					while( ! $has_related AND $has_related_limit <= 10 ){
 
 						// Jalar taxonomía y termino al azar para fotos relacionadas
 						$tax = get_object_taxonomies( $post );
@@ -462,7 +462,12 @@
 						}
 
 						$queryFotografias = new WP_Query( $args );
-						if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post();
+						if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post(); ?>
+
+							<?php if ( $counter == 1 ) { ?>
+								<h2 class="[ title ] [ text-center ]">Te puede interesar</h2>
+							<?php }
+
 							$has_related = true;
 							$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
 
