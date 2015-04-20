@@ -23,7 +23,7 @@
 								</article>
 								<article class="[ text-center ][ margin-bottom--large ]">
 									<a href="#" class="[ inline-block ][ button button--xmall button--dark ][ js-toggle-iframe ]">
-										Más sobre Fundación Televisa
+										Más programas de Fundación Televisa
 									</a>
 								</article>
 							</footer>

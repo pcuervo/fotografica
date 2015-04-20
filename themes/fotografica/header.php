@@ -102,7 +102,7 @@
 										<?php
 											}// foreach term
 										?>
-										<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/colecciones?coleccion=adquisiciones-recientes' ?>">Nuevas adquisiciones</a></li>
+										<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/colecciones?coleccion=adquisiciones-recientes' ?>">Adquisiciones recientes</a></li>
 										<li><a class="[ text-center uppercase ]" href="<?php echo site_url().'/colecciones?filtro=favoritos' ?>">Favoritos</a></li>
 									</ul>
 								</div>

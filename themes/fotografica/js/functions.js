@@ -517,7 +517,7 @@ function getExistingIds(){
 }// getExistingIds
 
 function getHtmlColecciones(results){
-	var html_resultados = '<article class="[ result ] [ columna xmall-6 small-ls-12 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
+	var html_resultados = '<article class="[ result ] [ columna xmall-12 small-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
 			<a class="[ block ]" href="'+results.permalink+'" target="_blank"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
@@ -554,7 +554,7 @@ function getHtmlFotografos(results){
 }
 
 function getHtmlCarteleras(results){
-	var html_resultados = '<article class="[ result ][ columna xmall-6 small-ls-12 medium-4 large-3 ][ margin-bottom-small ]" data-id="'+results.id+'"> \
+	var html_resultados = '<article class="[ result ][ columna xmall-12 small-6 medium-4 large-3 ][ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
 			<a class="[ block ]" href="'+results.permalink+'" target="_blank"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
@@ -574,7 +574,7 @@ function getHtmlCarteleras(results){
 }
 
 function getHtmlProyectos(results){
-	var html_resultados = '<article class="[ result ][ bg-image ][ columna columna-margin xmall-12 medium-6 ]" data-id="'+results.id+'" style="background-image: url('+results.img_url+')"> \
+	var html_resultados = '<article class="[ result ][ bg-image ][ columna columna-margin xmall-12 small-6 ]" data-id="'+results.id+'" style="background-image: url('+results.img_url+')"> \
 		<div class="[ opacity-gradient ][ square square-absolute ]"> \
 			<a class="[ block ][ media-link ]" href="'+results.permalink+'"></a> \
 			<a class="[ button button--hollow ] [ center-full ]" href="'+results.permalink+'">'+results.titulo+'</a> \
@@ -584,7 +584,7 @@ function getHtmlProyectos(results){
 }// getHtmlProyectos
 
 function getHtmlExposiciones(results){
-	var html_resultados = '<article class="[ result ][ columna xmall-6 small-ls-12 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
+	var html_resultados = '<article class="[ result ][ columna xmall-12 small-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
 			<a class="[ block ]" href="'+results.permalink+'" target="_blank"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
@@ -597,7 +597,7 @@ function getHtmlExposiciones(results){
 }
 
 function getHtmlPublicaciones(results){
-	var html_resultados = '<article class="[ result ][ columna xmall-6 small-ls-12 medium-4 large-3 ][ margin-bottom-small ]" data-id="'+results.id+'"> \
+	var html_resultados = '<article class="[ result ][ columna xmall-12 small-6 medium-4 large-3 ][ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
 			<a class="[ block ]" href="'+results.permalink+'" target="_blank"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
