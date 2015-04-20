@@ -281,7 +281,7 @@
 										<?php } ?>
 
 										<!-- COLECCION -->
-										<br /> de la colección <a href="<?php echo site_url( $coleccionColeccionesSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>,
+										<br /> de la colección <a href="<?php echo site_url().'/colecciones?coleccion='.$coleccionColeccionesSlug; ?>" class="[ media--info__colection ]"> <?php echo $coleccionColeccionesName; ?></a>,
 
 										<!-- CIRCA -->
 										<?php if ( $circaColecciones ){ ?>
