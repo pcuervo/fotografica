@@ -8,10 +8,10 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="cleartype" content="on">
+		<?php wp_head(); ?>
 		<!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 		<script src="//use.typekit.net/wqp7onq.js"></script>
 		<script>try{Typekit.load();}catch(e){}</script>
-		<?php wp_head(); ?>
 		<script>
 		    (function(f,b){
 		        var c;
