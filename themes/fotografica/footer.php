@@ -21,7 +21,7 @@
 									<p class="[ text-center ]"><small>Todos los derechos reservados Fundación Televisa</small></p>
 									<p class="[ text-center ]"><small><a href="<?php echo site_url('aviso-de-privacidad'); ?>">Aviso de privacidad</a></small></p>
 								</article>
-								<article class="[ text-center ][ margin-bottom--large ]">
+								<article class="[ text-center ]">
 									<a href="#" class="[ inline-block ][ button button--xmall button--dark ][ js-toggle-iframe ]">
 										Más sobre Fundación Televisa
 									</a>

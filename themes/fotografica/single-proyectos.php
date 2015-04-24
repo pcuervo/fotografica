@@ -98,11 +98,6 @@
 		</section><!-- .share -->
 		<section class="[ margin-bottom--large ][ single-content ]">
 			<div class="[ wrapper ]">
-				<?php if ( ! empty($video_src) ){ ?>
-					<div class="[ margin-bottom ]">
-						<?php the_post_thumbnail('large', array('class' => '[ block center ]') ); ?>
-					</div>
-				<?php } ?>
 				<div class="[ row ]">
 					<aside class="[ shown--large ][ columna medium-2 large-3 ][ text-right serif--italic ]">
 						<?php if ( $url_video_proyecto != '' ) { ?>

@@ -245,6 +245,13 @@
 									$imagePost       = get_post( $imagePostID->post_id );
 
 									$titleimagePost = get_the_title( $imagePostID->post_id );
+
+									echo '<pre>';
+										print_r('$imageID'.$imageID);
+										print_r('$imagePostID'.$imagePostID);
+										print_r('$imagePost'.$imagePost);
+										print_r('$titleimagePost'.$titleimagePost);
+									echo '</pre>';
 									if ( strpos($titleimagePost, 'Sin título') !== false OR $titleimagePost == '' OR strpos($titleimagePost, '&nbsp') !== false ){
 										$titleimagePost = NULL;
 									}

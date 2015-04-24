@@ -20,9 +20,26 @@
 			<?php
 			$index = 1;
 			if ( have_posts() ) : while( have_posts() ) : the_post(); ?>
+				<?php
+					$postType = get_post_type();
 
+					switch ( $postType ) {
+						case 'fotografos':
+							$postType = 'fotógrafos';
+							break;
+						case 'carteleras':
+							$postType = 'cartelera';
+							break;
+						case 'espacios-publicos':
+							$postType = 'cartelera';
+							break;
+						case 'fotografias':
+							$postType = 'colecciones';
+							break;
+					}
+				?>
 				<div class="[]">
-					<h3><a class="exclude" href="<?php the_permalink(); ?>"><?php $title = get_the_title(); $keys= explode(" ",$s); $title = preg_replace('/('.implode('|', $keys) .')/iu', '\0', $title); echo $title; ?></a> <small>- <?php echo get_post_type(); ?></small></h3>
+					<h3><a class="exclude" href="<?php the_permalink(); ?>"><?php $title = get_the_title(); $keys= explode(" ",$s); $title = preg_replace('/('.implode('|', $keys) .')/iu', '\0', $title); echo $title; ?></a> <small>- <?php echo $postType; ?></small></h3>
 				</div><!-- link_articulo -->
 
 			<?php endwhile; endif; ?>

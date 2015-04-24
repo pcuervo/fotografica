@@ -185,6 +185,8 @@ function toggleFiltersNav(){
 **/
 function toggleiFrame(){
 	$('.iframe-fundacion-televisa').toggleClass('hidden--xmall');
+	$('.js-toggle-iframe').toggleClass('margin-bottom');
+	$('.footer-wrapper').css('margin-bottom', 0);
 }
 
 
@@ -304,10 +306,10 @@ function fixedHeader(){
 		//and apply it as its top
 		var topHeader =  windowHeight - headerHeight;
 		$('.header-wrapper').addClass('header-wrapper--fixed').css('top', topHeader);
-		setHeaderHeightPadding('.footer-wrapper', 'bottom');
+		//setHeaderHeightPadding('.footer-wrapper', 'bottom');
 	} else {
 		$('.header-wrapper').removeClass('header-wrapper--fixed').css('top', 0);
-		setPadding('.footer-wrapper', 'bottom', 0);
+		//setPadding('.footer-wrapper', 'bottom', 0);
 	}
 }
 
@@ -391,7 +393,7 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 			var html_resultado;
 			var num_posts = -1;
 			$.each(json_posts, function(i, val){
-				console.log(val);
+				//console.log(val);
 				switch(post_type){
 					case 'fotografias':
 						html_resultado = getHtmlColecciones(val);
@@ -560,10 +562,11 @@ function getHtmlCarteleras(results){
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
 				<span class="[ opacity-gradient--full ]"></span> \
 				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
-					<p class="[ text-center ]"> \
-						<a href="'+results.permalink+'" target="_blank" class="[ media--info__name ]">'+results.titulo+'</a>';
-						if ( results.fec_ini ){
-							html_resultados = html_resultados+'<p class="[ text-center ]">del '+results.fec_ini+' al '+results.fec_fin+'</p> ';
+					<p class="[ text-center ]">';
+						if ( results.titulo ){
+							if ( results.titulo !== 'Sin título' || results.titulo !== 'Sin t\u00edtulo' ){
+								html_resultados = html_resultados+'<a href="'+results.permalink+'" class="[ media--info__title ]" target="_blank">'+results.titulo+'</a>';
+							}
 						}
 					html_resultados = html_resultados+'</p> \
 				</div> \
@@ -575,9 +578,21 @@ function getHtmlCarteleras(results){
 
 function getHtmlProyectos(results){
 	var html_resultados = '<article class="[ result ][ bg-image ][ columna columna-margin xmall-12 medium-6 ]" data-id="'+results.id+'" style="background-image: url('+results.img_url+')"> \
-		<div class="[ opacity-gradient ][ square square-absolute ]"> \
-			<a class="[ block ][ media-link ]" href="'+results.permalink+'"></a> \
-			<a class="[ button button--hollow ] [ center-full ]" href="'+results.permalink+'">'+results.titulo+'</a> \
+		<div class="[ opacity-gradient ][ square square-absolute ]">';
+			if ( results.term == 'link' ){
+				html_resultados = html_resultados+'<a class="[ block ][ media-link ]" href="'+results.link+'" target="_blank"></a>';
+			} else {
+				html_resultados = html_resultados+'<a class="[ block ][ media-link ]" href="'+results.permalink+'"></a>';
+			}
+			html_resultados = html_resultados+ '<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
+				<p class="[ text-center ]">';
+					if ( results.titulo ){
+						if ( results.titulo !== 'Sin título' || results.titulo !== 'Sin t\u00edtulo' ){
+							html_resultados = html_resultados+'<a href="'+results.permalink+'" class="[ media--info__title ]">'+results.titulo+'</a>';
+						}
+					}
+				html_resultados = html_resultados+'</p> \
+			</div> \
 		</div> \
 	</article>';
 	return html_resultados;
@@ -589,7 +604,15 @@ function getHtmlExposiciones(results){
 			<a class="[ block ]" href="'+results.permalink+'" target="_blank"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
 				<span class="[ opacity-gradient--full ]"></span> \
-				<a class="[ button button--hollow ] [ center-full ]" href="'+results.permalink+'">'+results.titulo+'</a> \
+				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
+					<p class="[ text-center ]">';
+						if ( results.titulo ){
+							if ( results.titulo !== 'Sin título' || results.titulo !== 'Sin t\u00edtulo' ){
+								html_resultados = html_resultados+'<a href="'+results.permalink+'" class="[ media--info__title ]" target="_blank">'+results.titulo+'</a>';
+							}
+						}
+					html_resultados = html_resultados+'</p> \
+				</div> \
 			</a> \
 		</div> \
 	</article>';

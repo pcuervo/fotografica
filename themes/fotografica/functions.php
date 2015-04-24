@@ -311,7 +311,7 @@
 							?>
 							$('.js-tweet-count').text('<?php echo $tweets->count ?>');
 
-							<?php if ( $postType === 'proyectos'){ ?>
+							<?php if ( $postType === 'proyectos' OR $postType === 'fotografos' OR $postType === 'exposiciones' OR $postType === 'cartelera' ){ ?>
 
 								$('.final-tiles-gallery').each(function(index) {
 									$(this).finalTilesGallery({
@@ -1241,6 +1241,11 @@
 			// URL imagen
 			$thumb = wp_get_attachment_image_src( get_post_thumbnail_id( $post->id ), 'large' );
 			$url = $thumb['0'];
+			$terms = wp_get_post_terms( $post->id, 'tipo-de-proyecto' );
+			$term = $terms[0]->slug;
+			$link = get_post_meta($post->id, '_link_proyecto_meta', true);
+
+
 
 
 			// Se arma el objecto que se regresa
@@ -1248,7 +1253,9 @@
 				'id'		=> $post->id,
 				'titulo'	=> $titleColecciones,
 				'img_url'	=> $url,
-				'permalink'	=> get_permalink( $post->id )
+				'permalink'	=> get_permalink( $post->id ),
+				'term'		=> $term,
+				'link'		=> $link
 				);
 		}
 
@@ -2361,7 +2368,7 @@
 					<p class="[ text-center ]">';
 
 					if ( $titleProyectos ){
-						$html .= '<a href="'.$permalinkProyectos.'" class="[ media--info__name ]">'.$titleProyectos.'</a>';
+						$html .= '<a href="'.$permalinkProyectos.'" class="[ media--info__author ]">'.$titleProyectos.'</a>';
 					}
 
 					$html .= '<div class="[ media-info__tags ] [ text-center ]">';
@@ -2422,7 +2429,7 @@
 						<p class="[ text-center ]">';
 
 						if ( $titlePublicaciones ){
-							$html .= '<a href="'.$permalinkPublicacion.'" class="[ media--info__name ]">'.$titlePublicaciones.'</a>';
+							$html .= '<a href="'.$permalinkPublicacion.'" class="[ media--info__author ]">'.$titlePublicaciones.'</a>';
 						}
 
 						$html .= '</p>
@@ -2487,7 +2494,7 @@
 					<p class="[ text-center ][ ellipsis ]">';
 
 						if ( $titleExposiciones ){
-							$html .= '<a href="'.$permalinkExposiciones.'" class="[ media--info__name ]">'.$titleExposiciones.'</a>';
+							$html .= '<a href="'.$permalinkExposiciones.'" class="[ media--info__author ]">'.$titleExposiciones.'</a>';
 						}
 
 						if ( $lugarYFechaExposiciones ){
