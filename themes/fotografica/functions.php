@@ -358,7 +358,12 @@
 								destroyCycle();
 							});
 							$('.modal--lightbox').on('click', function(event) {
-								if ( ! $(event.target).closest('.image-single img').length ) {
+								console.log($(event.target));
+								// if ( ! $(event.target).closest('.image-single img').length ) {
+								// 	closeModal( $('.close-modal') );
+								// 	destroyCycle();
+								// }
+								if ( $(event.target).is('.modal, .full-height' ) ) {
 									closeModal( $('.close-modal') );
 									destroyCycle();
 								}

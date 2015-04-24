@@ -306,6 +306,11 @@
 
 									?>
 										<div class="[ image-single ]" data-number="<?php echo $key+1; ?>">
+											<div class="[ info-modal ]">
+												<a href="<?php echo $permalinkImagePost; ?>" target="_blank">
+													<i class="[ icon-info ]"></i>
+												</a>
+											</div>
 											<div class="[ full-height ]">
 												<a href="<?php echo $permalinkImagePost; ?>" target="_blank">
 													<img class="[ full-height-centered ]" src="<?php echo $imageURL; ?>">
@@ -313,6 +318,12 @@
 											</div><!-- full-height -->
 										</div>
 									<?php } ?>
+									<div class="[ cycle-control cycle-prev ]">
+										<i class="icon-chevron-prev"></i>
+									</div><!-- cycle-prev  -->
+									<div class="[ cycle-control cycle-next ]">
+										<i class="icon-chevron-next"></i>
+									</div><!-- cycle-next  -->
 								</div><!-- slideshow -->
 							</div><!-- modal-body -->
 						</div><!-- modal-content -->

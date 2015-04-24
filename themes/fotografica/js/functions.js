@@ -338,10 +338,8 @@ function openLightbox( lightboxNumber, imagenNumber ){
 	$(document).on('keydown', function(e) {
 		//e.preventDefault();
 		if(e.which == 37) { // left
-			console.log('left');
 			$('.slideshow-'+lightboxNumber).cycle('prev');
 		} else if(e.which == 39) { // right
-			console.log('right');
 			$('.slideshow-'+lightboxNumber).cycle('next');
 		}
 	});
