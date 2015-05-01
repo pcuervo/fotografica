@@ -109,7 +109,8 @@
 								showFilters( this );
 							});
 
-							$('.filters__content').on('click', '.filter', function(){
+							$('.filters__content').on('click', '.filter', function(e){
+								//e.stopImmediatePropagation();
 								addFilter( this );
 								//existing_ids = getExistingIds();
 								clearGrid();
@@ -125,7 +126,8 @@
 								advancedSearch('<?php echo $postType ?>', getFilters(false), 20, existing_ids);
 							});
 
-							$('.filter--info span').on('click', function(event) {
+							$('.filter--info span').on('click', function(e) {
+								e.stopImmediatePropagation();
 								var coleccion_id = $(this).data('coleccion-term-id');
 								var descripcion = getDescripcionColeccion(coleccion_id, $(this) );
 							});
@@ -234,12 +236,13 @@
 								});
 
 								$('.filters__content').on('click', '.filter', function(e){
-									console.log(e.target);
-									addFilter( this );
-									//existing_ids = getExistingIds();
-									clearGrid();
-									showTotalResults( 'fotografias', getFilters(false) );
-									advancedSearch('fotografias', getFilters(false), 20, existing_ids);
+									if ( ! $(e.target).is('span, i') ){
+										addFilter( this );
+										//existing_ids = getExistingIds();
+										clearGrid();
+										showTotalResults( 'fotografias', getFilters(false) );
+										advancedSearch('fotografias', getFilters(false), 20, existing_ids);
+									}
 								});
 
 								$('.filters__results').on('click', '.filter', function(){
