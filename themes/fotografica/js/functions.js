@@ -517,7 +517,7 @@ function getExistingIds(){
 }// getExistingIds
 
 function getHtmlColecciones(results){
-	var html_resultados = '<article class="[ result ] [ columna xmall-6 small-ls-12 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
+	var html_resultados = '<article class="[ result ] [ columna xmall-12 small-ls-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
 			<a class="[ block ]" href="'+results.permalink+'" target="_blank"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
@@ -554,7 +554,7 @@ function getHtmlFotografos(results){
 }
 
 function getHtmlCarteleras(results){
-	var html_resultados = '<article class="[ result ][ columna xmall-6 small-ls-12 medium-4 large-3 ][ margin-bottom-small ]" data-id="'+results.id+'"> \
+	var html_resultados = '<article class="[ result ][ columna xmall-12 small-ls-6 medium-4 large-3 ][ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
 			<a class="[ block ]" href="'+results.permalink+'" target="_blank"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
@@ -597,9 +597,9 @@ function getHtmlProyectos(results){
 }// getHtmlProyectos
 
 function getHtmlExposiciones(results){
-	var html_resultados = '<article class="[ result ][ columna xmall-6 small-ls-12 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
+	var html_resultados = '<article class="[ result ][ columna xmall-12 small-ls-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
-			<a class="[ block ]" href="'+results.permalink+'" target="_blank"> \
+			<a class="[ block ]" href="'+results.permalink+'"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \
 				<span class="[ opacity-gradient--full ]"></span> \
 				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
@@ -618,7 +618,7 @@ function getHtmlExposiciones(results){
 }
 
 function getHtmlPublicaciones(results){
-	var html_resultados = '<article class="[ result ][ columna xmall-6 small-ls-12 medium-4 large-3 ][ margin-bottom-small ]" data-id="'+results.id+'"> \
+	var html_resultados = '<article class="[ result ][ columna xmall-12 small-ls-6 medium-4 large-3 ][ margin-bottom-small ]" data-id="'+results.id+'"> \
 		<div class="[ relative ]"> \
 			<a class="[ block ]" href="'+results.permalink+'" target="_blank"> \
 				<img src="'+results.img_url+'" class="[ image-responsive ]" /> \

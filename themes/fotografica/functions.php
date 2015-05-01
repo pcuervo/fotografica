@@ -309,12 +309,10 @@
 								runFitVids('.fit-vids-wrapper');
 							<?php } ?>
 
-							<?php
-								$tweets = json_decode(file_get_contents('http://cdn.api.twitter.com/1/urls/count.json?url='.$current_link));
-							?>
+							<?php $tweets = json_decode(file_get_contents('http://cdn.api.twitter.com/1/urls/count.json?url='.$current_link)); ?>
 							$('.js-tweet-count').text('<?php echo $tweets->count ?>');
 
-							<?php if ( $postType === 'proyectos' OR $postType === 'fotografos' OR $postType === 'exposiciones' OR $postType === 'cartelera' ){ ?>
+							<?php if ( $postType === 'proyectos' OR $postType === 'fotografos' OR $postType === 'exposiciones' OR $postType === 'cartelera' OR $postType === 'publicaciones' ){ ?>
 
 								$('.final-tiles-gallery').each(function(index) {
 									$(this).finalTilesGallery({
