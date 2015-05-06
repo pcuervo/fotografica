@@ -23,7 +23,8 @@
 	$args = array(
 		'post_type' 		=> 'fotografias',
 		'posts_per_page' 	=> 1,
-		'orderby' 			=> 'rand'
+		'orderby' 			=> 'rand',
+		'category_name'		=> 'cover'
 	);
 	$queryFotografias = new WP_Query( $args );
 	if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post();
