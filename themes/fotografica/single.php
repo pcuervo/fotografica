@@ -172,14 +172,14 @@
 						<a href="<?php echo site_url( $authorColeccionesSlug ); ?>" class="[ media--info__author ]"><?php echo $authorColeccionesName;?></a>,
 					<?php } ?>
 
-					<!-- DETALLE -->
-					<?php if ( $detalleColecciones ){ ?>
-						<span class="[ media--info__name ]"><?php echo $detalleColecciones;?></span>,
-					<?php } ?>
-
 					<!-- TÍTULO -->
 					<?php if ( $titleColecciones ){ ?>
 						<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleColecciones; ?></a>,
+					<?php } ?>
+
+					<!-- DETALLE -->
+					<?php if ( $detalleColecciones ){ ?>
+						<?php echo $detalleColecciones;?>,
 					<?php } ?>
 
 					<!-- DE LA SERIE -->
@@ -353,7 +353,7 @@
 
 
 						?>
-						<div class="[ result ] [ columna xmall-6 small-ls-12 medium-4 large-3 ] [ margin-bottom-small ]" data-id="2379">
+						<div class="[ result ] [ columna xmall-12 small-ls-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="2379">
 							<div class="[ relative ]">
 								<a class="[ block ]" href="<?php the_permalink(); ?>">
 									<?php the_post_thumbnail('medium', array('class' => '[ image-responsive ]') ); ?>

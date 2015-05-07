@@ -23,7 +23,8 @@
 	$args = array(
 		'post_type' 		=> 'fotografias',
 		'posts_per_page' 	=> 1,
-		'orderby' 			=> 'rand'
+		'orderby' 			=> 'rand',
+		'category_name'		=> 'cover'
 	);
 	$queryFotografias = new WP_Query( $args );
 	if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post();
@@ -139,7 +140,7 @@
 					<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="colecciones">Colecciones</a>
 					<!-- <a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="fotografos">Fotógrafos</a> -->
 					<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="decada">Década</a>
-					<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="tema">Tema</a>
+					<!-- <a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="tema">Tema</a> -->
 					<a class="[ tab-filter ] [ text-center ] [ columna xmall-4 medium-2 ]" href="#" data-filter="buscar">Buscar</a>
 				</div><!-- row -->
 			</div><!-- wrapper -->
@@ -154,7 +155,7 @@
 					<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="coleccion" data-value="<?php echo $termManuelAlvarez->slug ?>" data-coleccion-term-id="<?php echo $termManuelAlvarez->term_id ?>"><?php echo $termManuelAlvarez->name ?><span data-modal="info-coleccion" data-coleccion-term-id="<?php echo $termManuelAlvarez->term_id ?>"><i class="fa fa-info-circle"></i></span></a>
 					<a class="[ filter filter--info ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="coleccion" data-value="<?php echo $termCCAC->slug ?>"><?php echo $termCCAC->name ?><span data-modal="info-coleccion" data-coleccion-term-id="<?php echo $termCCAC->term_id ?>"><i class="fa fa-info-circle"></i></span></a>
 					<div class="[ clear ][ margin-bottom ]"></div>
-					<h2 class="[ text-center ]"><?php echo $termFundacionTelevisa->name ?><span data-modal="info-coleccion" data-coleccion-term-id="<?php echo $termFundacionTelevisa->term_id ?>"></span></h2>
+					<h2 class="[ text-center ][ filter--info ]"><?php echo $termFundacionTelevisa->name ?> <span data-modal="info-coleccion" data-coleccion-term-id="<?php echo $termFundacionTelevisa->term_id ?>"><i class="fa fa-info-circle"></i></span></h2>
 				<?php
 					$args = array(
 						'orderby'		=> 'name',
@@ -227,21 +228,6 @@
 					}
 				?>
 			</div><!-- .filter-decada -->
-			<div class="[ filter-tema ]">
-				<?php
-					$args = array(
-						'orderby'		=> 'name',
-						'order' 		=> 'ASC',
-						'hide_empty' 	=> true,
-					);
-					$terms = get_terms('tema', $args);
-					foreach ($terms as $key => $term) {
-				?>
-						<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="tema" data-value="<?php echo $term->name ?>"><?php echo $term->name ?></a>
-				<?php
-					}
-				?>
-			</div><!-- .filter-tema -->
 			<div class="[ filter-buscar ]">
 				<form class="[ form ]" action="">
 					<fieldset class="[ columna xmall-12 medium-8 ][ center ]">

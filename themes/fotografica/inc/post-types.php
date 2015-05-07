@@ -133,37 +133,6 @@
 		);
 		register_post_type( 'exposiciones', $args );
 
-		// ESPACIOS PÚBLICOS
-		$labels = array(
-			'name'          => 'Espacios Públicos',
-			'singular_name' => 'Espacios Público',
-			'add_new'       => 'Nuevo Espacios Públicos',
-			'add_new_item'  => 'Nuevo Espacios Públicos',
-			'edit_item'     => 'Editar Espacios Públicos',
-			'new_item'      => 'Nuevo Espacios Públicos',
-			'all_items'     => 'Todas',
-			'view_item'     => 'Ver Espacios Públicos',
-			'search_items'  => 'Buscar Espacios Públicos',
-			'not_found'     => 'No se encontro',
-			'menu_name'     => 'Espacios Públicos'
-		);
-		$args = array(
-			'labels'             => $labels,
-			'public'             => true,
-			'publicly_queryable' => true,
-			'show_ui'            => true,
-			'show_in_menu'       => true,
-			'query_var'          => true,
-			'rewrite'            => array( 'slug' => 'espacios-publicos' ),
-			'capability_type'    => 'post',
-			'has_archive'        => true,
-			'hierarchical'       => false,
-			'taxonomies'         => array( 'post_tag', 'category' ),
-			'menu_position'      => 6,
-			'supports'           => array( 'title', 'editor', 'thumbnail' )
-		);
-		register_post_type( 'espacios-publicos', $args );
-
 		// PUBLICACIONES
 		$labels = array(
 			'name'          => 'Publicaciones',
@@ -224,45 +193,7 @@
 			'menu_position'      => 6,
 			'supports'           => array( 'title', 'editor', 'thumbnail' )
 		);
-		register_post_type( 'investigaciones', $args );
-
-		// PUBLICACIONES DIGITALES
-		$labels = array(
-			'name'          => 'Publicaciones digitales',
-			'singular_name' => 'Publicación digital',
-			'add_new'       => 'Nueva Publicación digital',
-			'add_new_item'  => 'Nueva Publicación digital',
-			'edit_item'     => 'Editar Publicación digital',
-			'new_item'      => 'Nueva Publicación digital',
-			'all_items'     => 'Todas',
-			'view_item'     => 'Ver Publicación digital',
-			'search_items'  => 'Buscar Publicación digital',
-			'not_found'     => 'No se encontro',
-			'menu_name'     => 'Publicaciones digitales'
-		);
-		$args = array(
-			'labels'             => $labels,
-			'public'             => true,
-			'publicly_queryable' => true,
-			'show_ui'            => true,
-			'show_in_menu'       => true,
-			'query_var'          => true,
-			'rewrite'            => array( 'slug' => 'publicacion-digital' ),
-			'capability_type'    => 'post',
-			'has_archive'        => true,
-			'hierarchical'       => false,
-			'taxonomies'         => array( 'post_tag', 'category' ),
-			'menu_position'      => 6,
-			'supports'           => array( 'title', 'editor', 'thumbnail' )
-		);
-		register_post_type( 'publicacion-digital', $args );
-
-		// BORRAR DESPUES DE CORRER EN PROD
-		global $wp_post_types;
-		if( isset( $wp_post_types[ 'notas-prensa' ] ) ){
-			unset( $wp_post_types[ 'notas-prensa' ] );
-		}
-		
+		register_post_type( 'investigaciones', $args );		
 
 		// CARTELERA
 		$labels = array(
@@ -325,37 +256,6 @@
 			'supports'           => array( 'title', 'editor', 'thumbnail' )
 		);
 		register_post_type( 'nuestro-trabajo', $args );
-
-		// NOTICIAS
-		$labels = array(
-			'name'          => 'Noticias',
-			'singular_name' => 'Noticia',
-			'add_new'       => 'Nueva Noticia',
-			'add_new_item'  => 'Nueva Noticia',
-			'edit_item'     => 'Editar Noticia',
-			'new_item'      => 'Nueva Noticia',
-			'all_items'     => 'Todas',
-			'view_item'     => 'Ver Noticia',
-			'search_items'  => 'Buscar Noticia',
-			'not_found'     => 'No se encontro',
-			'menu_name'     => 'Noticias'
-		);
-		$args = array(
-			'labels'             => $labels,
-			'public'             => true,
-			'publicly_queryable' => true,
-			'show_ui'            => true,
-			'show_in_menu'       => true,
-			'query_var'          => true,
-			'rewrite'            => array( 'slug' => 'noticia' ),
-			'capability_type'    => 'post',
-			'has_archive'        => true,
-			'hierarchical'       => false,
-			'taxonomies'         => array( 'post_tag', 'category' ),
-			'menu_position'      => 6,
-			'supports'           => array( 'title', 'editor', 'thumbnail' )
-		);
-		register_post_type( 'noticias', $args );
 
 		// CONTACTO
 		$labels = array(

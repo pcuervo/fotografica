@@ -25,13 +25,39 @@
 /**
  * Elements
 **/
-.close-modal{
+.close-modal, .info-modal, .modal--lightbox .cycle-control{
 	color: @highlight;
 	font-size: 25px;
-	float: right;
-	position: relative;
 	z-index: @zIndex-2;
 	cursor: pointer;
+}
+
+.close-modal, .info-modal{
+	position: relative;
+}
+
+.close-modal{
+	float: right;
+}
+
+.info-modal{
+	float: left;
+	padding: 4px 4px 4px 1px; .border-radius(50%);
+	background: @claro;
+}
+
+.modal--lightbox .cycle-control{
+	padding: 4px 4px 4px 1px; .border-radius(50%);
+	background: @claro;
+	position: absolute; top: 48%;
+}
+
+.modal--lightbox .cycle-prev{
+	left: 5px;
+}
+
+.modal--lightbox .cycle-next{
+	right: 5px;
 }
 
 

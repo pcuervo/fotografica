@@ -148,14 +148,23 @@
 										<div class="[ columna xmall-8 ][ text-center ]">
 											<h1 class="[ text-center ]">
 												<a class="[ inline-block ][ menu__item menu__item-large ]" href="<?php echo site_url(); ?>">
-													<i class="[ icon-logo-fotografica-chico ]"></i>
+													<?php
+														switch ( is_home() ) {
+															case true:
+																echo '<i class="[ icon-logo-fotografica ]"></i>';
+																break;
+															default:
+																echo '<i class="[ icon-logo-fotografica-chico ]"></i>';
+																break;
+														}
+													?>
 												</a>
 											</h1>
 										</div>
 										<div class="[ columna xmall-2 ][ text-right ]">
-											<!-- <a class="[ inline-block ][ menu__item menu__item-large ]" href="http://www.fundaciontelevisa.org/" target="_blank">
+											<a class="[ inline-block ][ menu__item menu__item-large ]" href="http://www.fundaciontelevisa.org/" target="_blank">
 												<i class="[ icon-logo-fundacion-televisa ]"></i>
-											</a> -->
+											</a>
 										</div>
 									</nav>
 								</div><!-- [ hidden-large ] -->
@@ -169,7 +178,16 @@
 										<div class="[ columna xmall-4 ]">
 											<h1 class="[ text-center ]">
 												<a class="[ inline-block ][ menu__item menu__item-large ]" href="<?php echo site_url(); ?>">
-													<i class="[ icon-logo-fotografica-chico ]"></i>
+													<?php
+														switch ( is_home() ) {
+															case true:
+																echo '<i class="[ icon-logo-fotografica ]"></i>';
+																break;
+															default:
+																echo '<i class="[ icon-logo-fotografica-chico ]"></i>';
+																break;
+														}
+													?>
 												</a>
 											</h1>
 										</div>
@@ -182,7 +200,9 @@
 														<i class="[ icon-search ][ bg-highlight color-claro ]"></i>
 													</button>
 												</form>
-											</div><a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="https://twitter.com/FotograficaMx" target="_blank">
+											</div><a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="https://vimeo.com/fotografica" target="_blank">
+												<i class="[ icon-vimeo ]"></i>
+											</a><a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="https://twitter.com/FotograficaMx" target="_blank">
 												<i class="[ icon-twitter ]"></i>
 											</a><a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="https://www.facebook.com/FOTOGRAFICA.FundacionTelevisa" target="_blank">
 												<i class="[ icon-facebook ]"></i>

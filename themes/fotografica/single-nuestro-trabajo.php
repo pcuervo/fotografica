@@ -8,7 +8,6 @@
 	$num_shares_url = "http://api.facebook.com/restserver.php?method=links.getStats&urls=".$current_link;
 	$fb_stats = file_get_contents('http://api.facebook.com/restserver.php?method=links.getStats&urls=http://pcuervo.com/fotografica/fotografias/sin-titulo-17/');
 
-
 	$sidebar_trabajo = get_post_meta($post->ID, '_sidebar_trabajo_meta', true);
 
 	$video_trabajo = get_post_meta($post->ID, '_video_trabajo_meta', true);
@@ -39,7 +38,7 @@
 			$coleccionColeccionesName 	= $coleccionColecciones[0]->name;
 			$coleccionColeccionesSlug 	= $coleccionColecciones[0]->slug;
 		}
-		
+
 
 		$authorColecciones 		= wp_get_post_terms( $featuredImagePostID->post_id, 'fotografo' );
 		if ( $authorColecciones ){
@@ -125,17 +124,13 @@
 				</div>
 			</div>
 		</section>
-	<?php } if ( ! empty($video_src) ){ ?>
+	<?php }
+	if ( ! empty($video_src) ){ ?>
 		<div class="[ wrapper ]">
 			<div class="[ margin-bottom ][ fit-vids-wrapper ]">
 				<iframe src="https:<?php echo $video_src; ?>?color=1aa2dc&title=0&byline=0&portrait=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 			</div>
 		</div><!-- wrapper -->
-	<?php }
-	if ( !empty($video_src) ){ ?>
-		<h2 class="[ text-center color-dark ][ title ][ margin-bottom--large ]">
-			<?php the_title(); ?>
-		</h2>
 	<?php } ?>
 	<section class="[ margin-bottom--large ][ single-content ]">
 		<div class="[ wrapper ]">

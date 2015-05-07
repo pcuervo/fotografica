@@ -66,33 +66,6 @@
 			register_taxonomy( 'lugar', 'fotografias', $args );
 		}
 
-		// COVER
-		if( ! taxonomy_exists('cover')){
-
-			$labels = array(
-				'name'              => 'Cover',
-				'singular_name'     => 'Cover',
-				'search_items'      => 'Buscar',
-				'all_items'         => 'Todos',
-				'edit_item'         => 'Editar Cover',
-				'update_item'       => 'Actualizar Cover',
-				'add_new_item'      => 'Nuevo Cover',
-				'new_item_name'     => 'Nombre Nuevo Cover',
-				'menu_name'         => 'Cover'
-			);
-			$args = array(
-				'hierarchical'      => true,
-				'labels'            => $labels,
-				'show_ui'           => true,
-				'show_admin_column' => true,
-				'show_in_nav_menus' => true,
-				'query_var'         => true,
-				'rewrite'           => array( 'slug' => 'cover' ),
-			);
-
-			register_taxonomy( 'cover', 'fotografias', $args );
-		}
-
 		// SERIES
 		if( ! taxonomy_exists('serie')){
 
@@ -438,6 +411,8 @@
 			);
 			register_taxonomy( 'lugar', 'fotografias', $args );
 		}// taxonomy lugar
+		
+		//addCoverToPhoto();
 
 	}
 
@@ -448,9 +423,10 @@
 		insertPhotographerTaxonomyTerms();
 		insertPhotographerTaxonomyTermsFromPostType();
 		insertPlaceTaxonomyTerms();
-		insertLastNameTaxonomyTerms();
+		//insertLastNameTaxonomyTerms();
 		insertSeriesTaxonomyTerms();
 		insertArchiveNameToProject();
+
 		// Estas funciones solo se deben de correr una vez
 		//addPhotographerToPhoto();
 		//addYearToPhoto();
@@ -625,3 +601,16 @@
 		}
 	}// addPhotographerToPhoto
 
+	function addCoverToPhoto(){
+		global $wpdb;
+		$results = $wpdb->get_results( 'SELECT ID FROM wp_posts WHERE post_type = "fotografias"', OBJECT );
+
+		foreach ($results as $photo) { 
+			$set_categories = wp_set_object_terms( $photo->ID, 'cover', 'category', true );
+		}
+	}// addCoverToPhoto
+
+// TERMS
+if ( ! term_exists( 'Cover', 'category' ) ){
+	wp_insert_term( 'Cover', 'category' );
+}

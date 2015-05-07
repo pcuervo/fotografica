@@ -11,6 +11,7 @@
 		add_meta_box( 'evento_fecha_inicial', 'Fecha inicial del evento', 'metabox_evento_fecha_inicial', 'carteleras', 'advanced', 'high' );
 		add_meta_box( 'evento_fecha_final', 'Fecha final del evento', 'metabox_evento_fecha_final', 'carteleras', 'advanced', 'high' );
 		add_meta_box( 'video_proyecto', 'Video del proyecto', 'metabox_video_proyecto', 'proyectos', 'advanced', 'high' );
+		add_meta_box( 'link_proyecto', 'Link', 'metabox_link_proyecto', 'proyectos', 'advanced', 'high' );
 		add_meta_box( 'sidebar_trabajo', 'Sidebar de nuestro trabajo', 'metabox_sidebar_trabajo', 'nuestro-trabajo', 'advanced', 'high' );
 		add_meta_box( 'video_trabajo', 'Video de nuestro trabajo', 'metabox_video_trabajo', 'nuestro-trabajo', 'advanced', 'high' );
 		add_meta_box( 'fecha_nacimiento', 'Fecha de nacimieto', 'metabox_fecha_nacimiento', 'fotografos', 'advanced', 'high' );
@@ -64,6 +65,18 @@ echo <<<END
 
 	<label>URL de video (Vimeo):</label>
 	<input type="text" class="widefat" name="_evento_video_proyecto_meta" value="$video_proyecto" />
+
+END;
+	}
+
+	function metabox_link_proyecto($post){
+		$link_proyecto = get_post_meta($post->ID, '_link_proyecto_meta', true);
+		wp_nonce_field(__FILE__, '_link_proyecto_meta_nonce');
+
+echo <<<END
+
+	<label>URL link:</label>
+	<input type="text" class="widefat" name="_link_proyecto_meta" value="$link_proyecto" />
 
 END;
 	}
@@ -205,6 +218,10 @@ END;
 
 		if ( isset($_POST['_evento_video_proyecto_meta']) and check_admin_referer(__FILE__, '_evento_video_proyecto_meta_nonce') ){
 			update_post_meta($post_id, '_evento_video_proyecto_meta', $_POST['_evento_video_proyecto_meta']);
+		}
+
+		if ( isset($_POST['_link_proyecto_meta']) and check_admin_referer(__FILE__, '_link_proyecto_meta_nonce') ){
+			update_post_meta($post_id, '_link_proyecto_meta', $_POST['_link_proyecto_meta']);
 		}
 
 		if ( isset($_POST['_video_trabajo_meta']) and check_admin_referer(__FILE__, '_video_trabajo_meta_nonce') ){

@@ -109,7 +109,11 @@
 								showFilters( this );
 							});
 
-							$('.filters__content').on('click', '.filter', function(){
+							$('.filters__content').on('click', '.filter', function(e){
+								<?php if( $postType == 'carteleras' ) {?>
+									removeFilters();
+								<?php } ?>
+								//e.stopImmediatePropagation();
 								addFilter( this );
 								//existing_ids = getExistingIds();
 								clearGrid();
@@ -125,7 +129,8 @@
 								advancedSearch('<?php echo $postType ?>', getFilters(false), 20, existing_ids);
 							});
 
-							$('.filter--info span').on('click', function(event) {
+							$('.filter--info span').on('click', function(e) {
+								e.stopImmediatePropagation();
 								var coleccion_id = $(this).data('coleccion-term-id');
 								var descripcion = getDescripcionColeccion(coleccion_id, $(this) );
 							});
@@ -234,12 +239,13 @@
 								});
 
 								$('.filters__content').on('click', '.filter', function(e){
-									console.log(e.target);
-									addFilter( this );
-									//existing_ids = getExistingIds();
-									clearGrid();
-									showTotalResults( 'fotografias', getFilters(false) );
-									advancedSearch('fotografias', getFilters(false), 20, existing_ids);
+									if ( ! $(e.target).is('span, i') ){
+										addFilter( this );
+										//existing_ids = getExistingIds();
+										clearGrid();
+										showTotalResults( 'fotografias', getFilters(false) );
+										advancedSearch('fotografias', getFilters(false), 20, existing_ids);
+									}
 								});
 
 								$('.filters__results').on('click', '.filter', function(){
@@ -250,9 +256,6 @@
 								});
 
 							<?php } ?>
-
-
-
 
 							$('.js-cargar-mas').on('click', function(e){
 								e.preventDefault();
@@ -267,6 +270,7 @@
 								removeSearchFilters();
 								addSearchFilter( filter_value );
 								clearGrid();
+								showTotalResults( 'fotografias', getFilters(false) );
 								advancedSearch('fotografias', getFilters(false), 20, existing_ids);
 							});
 
@@ -306,12 +310,10 @@
 								runFitVids('.fit-vids-wrapper');
 							<?php } ?>
 
-							<?php
-								$tweets = json_decode(file_get_contents('http://cdn.api.twitter.com/1/urls/count.json?url='.$current_link));
-							?>
+							<?php $tweets = json_decode(file_get_contents('http://cdn.api.twitter.com/1/urls/count.json?url='.$current_link)); ?>
 							$('.js-tweet-count').text('<?php echo $tweets->count ?>');
 
-							<?php if ( $postType === 'proyectos'){ ?>
+							<?php if ( $postType === 'proyectos' OR $postType === 'fotografos' OR $postType === 'exposiciones' OR $postType === 'cartelera' OR $postType === 'publicaciones' ){ ?>
 
 								$('.final-tiles-gallery').each(function(index) {
 									$(this).finalTilesGallery({
@@ -358,7 +360,12 @@
 								destroyCycle();
 							});
 							$('.modal--lightbox').on('click', function(event) {
-								if ( ! $(event.target).closest('.image-single img').length ) {
+								console.log($(event.target));
+								// if ( ! $(event.target).closest('.image-single img').length ) {
+								// 	closeModal( $('.close-modal') );
+								// 	destroyCycle();
+								// }
+								if ( $(event.target).is('.modal, .full-height' ) ) {
 									closeModal( $('.close-modal') );
 									destroyCycle();
 								}
@@ -691,6 +698,30 @@
 			OR isset($query->post_title) AND preg_match("/$string/i", remove_accents(str_replace(' ', '-', $query->post_title) ) ) )
 			echo 'active';
 	}
+
+
+	function exclude_empty_title( $where, &$wp_query )
+	{
+	    global $wpdb;
+
+	    $where .= ' AND ' . $wpdb->posts . ".post_title <> '&nbsp;'";
+	    return $where;
+	}// exclude_empty_title
+
+	function rename_attacment( $post_ID ){
+
+		
+	    $post = get_post( $post_ID );
+	    $file = get_attached_file( $post_ID );
+	    $path = pathinfo( $file );
+
+	    $newfilename = $post->post_title . "_" . $post_ID;
+	    $newfile = $path['dirname']."/".$newfilename.".".$path['extension'];
+
+	    rename($file, $newfile);    
+	    update_attached_file( $post_ID, $newfile );
+	}// rename_attacment
+	add_action('add_attachment', 'rename_attacment');
 
 // AJAX FUNCTIONS //////////////////////////////////////////////////////
 
@@ -1144,7 +1175,7 @@
 
 			// SELECT P.id, P.post_title, T.name, T.slug FROM wp_posts P
 			$query = "
-				SELECT id FROM wp_posts P
+				SELECT DISTINCT id FROM wp_posts P
 				INNER JOIN wp_postmeta PM ON PM.post_id = P.id
 				WHERE post_type = 'carteleras'
 				AND meta_key IN ('_evento_fecha_final_meta', '_evento_fecha_inicial_meta') AND (";
@@ -1152,6 +1183,7 @@
 			//$inicioHoy = strtotime("midnight", $hoy);
 			//$finHoy = strtotime("tomorrow", $inicioHoy) - 1;
 			foreach ($filtros as $key => $filtro) {
+
 				if($key != 0) $query .= ' OR';
 
 				if($filtro['value'] == 'anteriores') {
@@ -1161,7 +1193,16 @@
 					$query .= " meta_value > '".$hoy."'";
 				}
 				if($filtro['value'] == 'hoy') {
-					$query .= " meta_value = '".$hoy."'";
+					$query .= " ID IN (
+									SELECT post_id FROM wp_postmeta
+									WHERE meta_key = '_evento_fecha_inicial_meta'
+									AND meta_value < '$hoy' 
+								)
+								AND ID IN (
+									SELECT post_id FROM wp_postmeta
+									WHERE meta_key = '_evento_fecha_final_meta'
+									AND meta_value > '$hoy' 
+								)";
 				}
 			}
 			$query .= ')';
@@ -1206,6 +1247,10 @@
 		return $info_colecciones;
 	} // advanced_search_carteleras
 
+	function get_query_carteleras_hoy( $hoy ){
+
+	}// get_query_carteleras_hoy
+
 	function advanced_search_proyectos($filtros = '', $limit, $existing_ids){
 		global $post;
 		global $wpdb;
@@ -1241,6 +1286,11 @@
 			// URL imagen
 			$thumb = wp_get_attachment_image_src( get_post_thumbnail_id( $post->id ), 'large' );
 			$url = $thumb['0'];
+			$terms = wp_get_post_terms( $post->id, 'tipo-de-proyecto' );
+			$term = $terms[0]->slug;
+			$link = get_post_meta($post->id, '_link_proyecto_meta', true);
+
+
 
 
 			// Se arma el objecto que se regresa
@@ -1248,7 +1298,9 @@
 				'id'		=> $post->id,
 				'titulo'	=> $titleColecciones,
 				'img_url'	=> $url,
-				'permalink'	=> get_permalink( $post->id )
+				'permalink'	=> get_permalink( $post->id ),
+				'term'		=> $term,
+				'link'		=> $link
 				);
 		}
 
@@ -1523,6 +1575,8 @@
 
 	function update_featured_post( $post_id ){
 
+		$post_type = get_post_type( $post_id );
+
 		$terms = wp_get_post_terms( $post_id, 'category' );
 		$is_destacado = false;
 		foreach ($terms as $key => $term) {
@@ -1533,6 +1587,11 @@
 		}
 
 		if( $is_destacado ){
+
+			if ( $post_type == 'fotografias' || $post_type == 'fotografos' ){
+				wp_remove_object_terms( $post_id, 'destacado', 'category');
+				return;
+			}
 			removeFeatured( $post_id );
 		}
 
@@ -1754,6 +1813,7 @@
 
 			$query = $query." AND P.post_status = 'publish' GROUP BY id HAVING COUNT(id) > ".$filter_type_count;
 		}
+
 		$results = $wpdb->get_results( $query );
 		$total_results = $wpdb->num_rows;
 
@@ -1917,7 +1977,16 @@
 					$query .= " meta_value > '".$hoy."'";
 				}
 				if($filtro['value'] == 'hoy') {
-					$query .= " meta_value = '".$hoy."'";
+					$query .= " ID IN (
+									SELECT post_id FROM wp_postmeta
+									WHERE meta_key = '_evento_fecha_inicial_meta'
+									AND meta_value < '$hoy' 
+								)
+								AND ID IN (
+									SELECT post_id FROM wp_postmeta
+									WHERE meta_key = '_evento_fecha_final_meta'
+									AND meta_value > '$hoy' 
+								)";
 				}
 			}
 			$query .= ')';
@@ -2224,7 +2293,8 @@
 		$args = array(
 			'post_type' 		=> 'fotografias',
 			'posts_per_page' 	=> 1,
-			'orderby' 			=> 'rand'
+			'orderby' 			=> 'rand',
+			'category_name'		=> 'Cover'
 		);
 		$queryFotografias = new WP_Query( $args );
 		if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post();
@@ -2361,7 +2431,7 @@
 					<p class="[ text-center ]">';
 
 					if ( $titleProyectos ){
-						$html .= '<a href="'.$permalinkProyectos.'" class="[ media--info__name ]">'.$titleProyectos.'</a>';
+						$html .= '<a href="'.$permalinkProyectos.'" class="[ media--info__author ]">'.$titleProyectos.'</a>';
 					}
 
 					$html .= '<div class="[ media-info__tags ] [ text-center ]">';
@@ -2422,7 +2492,7 @@
 						<p class="[ text-center ]">';
 
 						if ( $titlePublicaciones ){
-							$html .= '<a href="'.$permalinkPublicacion.'" class="[ media--info__name ]">'.$titlePublicaciones.'</a>';
+							$html .= '<a href="'.$permalinkPublicacion.'" class="[ media--info__author ]">'.$titlePublicaciones.'</a>';
 						}
 
 						$html .= '</p>
@@ -2487,7 +2557,7 @@
 					<p class="[ text-center ][ ellipsis ]">';
 
 						if ( $titleExposiciones ){
-							$html .= '<a href="'.$permalinkExposiciones.'" class="[ media--info__name ]">'.$titleExposiciones.'</a>';
+							$html .= '<a href="'.$permalinkExposiciones.'" class="[ media--info__author ]">'.$titleExposiciones.'</a>';
 						}
 
 						if ( $lugarYFechaExposiciones ){
