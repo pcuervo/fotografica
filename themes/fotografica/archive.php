@@ -78,7 +78,7 @@
 	<section class="[ colecciones ] [ bg-image ] <?php if ( $postType == 'proyectos' OR $postType == 'exposiciones' ){ echo '[ margin-bottom--small ]'; } ?> " style="background-image: url(<?php echo $bgArchive[0]; ?>)">
 		<div class="[ opacity-gradient rectangle ]">
 			<h2 class="[ center-full ] [ title ]">
-				<?php echo $postType; ?> <br />
+				<?php echo $postType == 'fotografias' ? 'fotografías' : $postType; ?> <br />
 			</h2>
 			<div class="[ media-info media-info--large ] [ xmall-12 ] [ shown--medium ]">
 				<p class="[ text-center ]">

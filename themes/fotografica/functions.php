@@ -2171,7 +2171,7 @@
 			$wpdb->query( $sql_insert );
 		} // end if
 
-	} // end my_theme_send_email
+	} // end save_secciones_orden_home
 	add_action( 'init', 'save_secciones_orden_home' );
 
 	function update_orden_home($posicion, $seccion){
