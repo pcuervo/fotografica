@@ -100,9 +100,9 @@
 			<div class="[ wrapper ]">
 				<div class="[ row ]">
 					<aside class="[ shown--large ][ columna medium-2 large-3 ][ text-right serif--italic ]">
-						<?php if ( $url_video_proyecto != '' ) { ?>
-							<div class="[ url-video ]]"><?php echo $url_video_proyecto ?></div>
-						<?php } ?>
+						<?php //if ( $url_video_proyecto != '' ) { ?>
+							<!-- <div class="[ url-video ]]"><?php echo $url_video_proyecto ?></div> -->
+						<?php //} ?>
 					</aside>
 					<div class="[ columna small-12 medium-10 large-6 xxlarge-4 center ]">
 						<?php the_content(); ?>
