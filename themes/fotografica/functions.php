@@ -710,7 +710,6 @@
 
 	function rename_attacment( $post_ID ){
 
-		
 	    $post = get_post( $post_ID );
 	    $file = get_attached_file( $post_ID );
 	    $path = pathinfo( $file );
@@ -720,8 +719,9 @@
 
 	    rename($file, $newfile);    
 	    update_attached_file( $post_ID, $newfile );
+	    
 	}// rename_attacment
-	add_action('add_attachment', 'rename_attacment');
+	//add_action('add_attachment', 'rename_attacment');
 
 // AJAX FUNCTIONS //////////////////////////////////////////////////////
 
