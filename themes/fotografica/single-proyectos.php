@@ -96,14 +96,10 @@
 				</div>
 			</div><!-- .wrapper -->
 		</section><!-- .share -->
+
 		<section class="[ margin-bottom--large ][ single-content ]">
 			<div class="[ wrapper ]">
 				<div class="[ row ]">
-					<aside class="[ shown--large ][ columna medium-2 large-3 ][ text-right serif--italic ]">
-						<?php if ( $url_video_proyecto != '' ) { ?>
-							<div class="[ url-video ]]"><?php echo $url_video_proyecto ?></div>
-						<?php } ?>
-					</aside>
 					<div class="[ columna small-12 medium-10 large-6 xxlarge-4 center ]">
 						<?php the_content(); ?>
 					</div>
@@ -439,18 +435,26 @@
 		/*------------------------------------*\
 		    #ARCHIVE HERO
 		\*------------------------------------*/
-
-
+		setup_postdata($post);
 		$bgArchive = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
 		?>
-		<section class="[ proyectos ][ bg-image ]" style="background-image: url(<?php echo $bgArchive[0]; ?>)">
+		<section class="[ proyectos ][ bg-image ][ margin-bottom ]" style="background-image: url(<?php echo $bgArchive[0]; ?>)">
 			<div class="[ opacity-gradient rectangle ]">
 				<h2 class="[ center-full ] [ title ]">
-					<?php echo the_title(); ?>
+					<?php the_title(); ?>
 				</h2>
 			</div>
 		</section>
 		<div class="clear"></div>
+		<section class="[ margin-bottom--large ][ single-content ]">
+			<div class="[ wrapper ]">
+				<div class="[ row ]">
+					<div class="[ columna small-12 medium-10 large-6 xxlarge-4 center ]">
+						<?php the_content( ); ?>
+					</div>
+				</div>
+			</div><!-- .wrapper -->
+		</section>
 		<section class="[ results ][ row ][ margin-bottom ]">
 			<?php
 				$args = array(

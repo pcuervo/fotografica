@@ -79,8 +79,8 @@ function runMasonry(container, item){
 * Append elements to Masonry
 **/
 function appendToMasonry(container, items){
-	console.log( $(container) );
-	console.log(items );
+	//console.log( $(container) );
+	//console.log(items );
 	var $container = $(container);
 	$container.masonry( 'appended', items );
 }
@@ -392,6 +392,7 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 		ajax_url,
 		user_data,
 		function(response){
+
 			var json_posts = $.parseJSON(response);
 			var html_resultado;
 			var num_posts = -1;
@@ -439,17 +440,7 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 			**/
 
 			if ( post_type !== 'fotografos' && post_type !== 'proyectos' ){
-
 				runMasonry( '.results', '.result' );
-
-				// if ( ! window.masonryFlag ){
-				// 	runMasonry( '.results', '.result' );
-				// 	window.masonryFlag = true;
-				// } else {
-				// 	window.masonryFlag = false;
-				// }
-
-
 			}
 
 
@@ -475,7 +466,7 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 		}// response
 	)
 	.fail(function(e){
-		console.log(e);
+		//console.log(e);
 	});
 }// searchColeccionesTest
 
@@ -634,7 +625,7 @@ function getHtmlPublicaciones(results){
 				<span class="[ opacity-gradient--full ]"></span> \
 				<div class="[ media-info media-info--small ] [ xmall-12 ]"> \
 					<p class="[ text-center ]"> \
-						<a href="'+results.permalink+'" target="_blank" class="[ media--info__name ]">'+results.titulo+'</a> \
+						<a href="'+results.permalink+'" target="_blank" class="[ media--info__title ]">'+results.titulo+'</a> \
 					</p> \
 				</div> \
 			</a> \
@@ -679,7 +670,7 @@ function saveContact(data){
 		ajax_url,
 		data,
 		function(response){
-			console.log(response);
+			//console.log(response);
 			$('.js-contact').empty();
 			$('.js-contact').append('<p>Gracias por contactarnos '+response+'</p>');
 		}
@@ -696,7 +687,7 @@ function showNumberTweets(url){
 	$.get(
 		'http://urls.api.twitter.com/1/urls/count.json?url='+url,
 		function( response ){
-			console.log(response);
+			//console.log(response);
 		}
 	);
 }// showNumberTweets
@@ -710,7 +701,7 @@ function showNumberShares(url){
 				"access_token": "853048764736608|MaIMwoVY0SKEWJFYfZ7Ga4_NCrk"
 			},
 			function (response) {
-				console.log(response);
+				//console.log(response);
 				if (response && !response.error) {
 					if(typeof response.share !== 'undefined'){
 						var share_count = response.share.share_count;
@@ -722,7 +713,7 @@ function showNumberShares(url){
 			}
 		);
 	} catch(err){
-		console.log(err);
+		//console.log(err);
 	}
 }// showNumberShares
 

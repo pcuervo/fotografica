@@ -200,7 +200,7 @@
 														<i class="[ icon-search ][ bg-highlight color-claro ]"></i>
 													</button>
 												</form>
-											</div><a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="https://vimeo.com/fotografica" target="_blank">
+											</div><a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="https://vimeo.com/fotograficamx" target="_blank">
 												<i class="[ icon-vimeo ]"></i>
 											</a><a class="[ inline-block align-middle ][ menu__item menu__item-small ]" href="https://twitter.com/FotograficaMx" target="_blank">
 												<i class="[ icon-twitter ]"></i>

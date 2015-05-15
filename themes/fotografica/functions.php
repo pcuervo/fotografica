@@ -302,7 +302,7 @@
 							 * On load
 							**/
 							<?php global $current_link; ?>
-							<?php if ( $postType === 'fotografos'){ ?>
+							<?php if ( $postType === 'fotografos' OR $postType === 'proyectos' ){ ?>
 								runMasonry('.results', '.result' );
 							<?php } ?>
 
@@ -717,7 +717,7 @@
 	    $newfilename = $post->post_title . "_" . $post_ID;
 	    $newfile = $path['dirname']."/".$newfilename.".".$path['extension'];
 
-	    rename($file, $newfile);    
+	    rename($file, $newfile);
 	    update_attached_file( $post_ID, $newfile );
 	    
 	}// rename_attacment
@@ -1196,12 +1196,12 @@
 					$query .= " ID IN (
 									SELECT post_id FROM wp_postmeta
 									WHERE meta_key = '_evento_fecha_inicial_meta'
-									AND meta_value < '$hoy' 
+									AND meta_value < '$hoy'
 								)
 								AND ID IN (
 									SELECT post_id FROM wp_postmeta
 									WHERE meta_key = '_evento_fecha_final_meta'
-									AND meta_value > '$hoy' 
+									AND meta_value > '$hoy'
 								)";
 				}
 			}
@@ -1980,12 +1980,12 @@
 					$query .= " ID IN (
 									SELECT post_id FROM wp_postmeta
 									WHERE meta_key = '_evento_fecha_inicial_meta'
-									AND meta_value < '$hoy' 
+									AND meta_value < '$hoy'
 								)
 								AND ID IN (
 									SELECT post_id FROM wp_postmeta
 									WHERE meta_key = '_evento_fecha_final_meta'
-									AND meta_value > '$hoy' 
+									AND meta_value > '$hoy'
 								)";
 				}
 			}

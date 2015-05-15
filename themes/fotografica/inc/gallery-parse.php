@@ -44,7 +44,6 @@ function sga_get_options($check_post_fields=FALSE) {
 
 
 add_filter('the_content', 'sga_contentfilter', 10);
-
 function sga_contentfilter($content = '') {
 	global $sga_gallery_types,$post,$sga_options,$sga_gallery_params;
 	$post_id = $post->ID;
