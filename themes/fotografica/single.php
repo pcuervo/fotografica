@@ -264,7 +264,7 @@
 							if ( ! empty( $fecha_inicial ) && ! empty( $fecha_final ) ){
 
 						?>
-								<p>Del <?php echo $fecha_inicial ?> al <?php echo $fecha_final ?></p>
+								<p>Del <?php echo get_formatted_event_date( $fecha_inicial ) ?> <br /> al <?php echo get_formatted_event_date( $fecha_final ) ?></p>
 								<div class="[ clear ]"></div>
 								<div class="[ form-group ] [ margin-bottom ]">
 									<a class="[ addthisevent ] [ btn btn-primary btn-go ]" href="#" title="Add to Calendar" data-track="ga('send', 'event', 'solicitudes', 'click', 'ate-calendar');">

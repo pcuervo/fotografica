@@ -659,6 +659,7 @@ function showTotalResults( post_type, filters ){
 		ajax_url,
 		data,
 		function(response){
+			console.log(response);
 			var json_response = $.parseJSON(response);
 			$('.js-num-resultados span').text(json_response);
 		}

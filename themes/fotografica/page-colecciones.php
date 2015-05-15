@@ -228,6 +228,21 @@
 					}
 				?>
 			</div><!-- .filter-decada -->
+			<div class="[ filter-tema ]">
+				<?php
+					$args = array(
+						'orderby'		=> 'name',
+						'order' 		=> 'ASC',
+						'hide_empty' 	=> true,
+					);
+					$terms = get_terms('tema', $args);
+					foreach ($terms as $key => $term) {
+				?>
+						<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="tema" data-value="<?php echo $term->name ?>"><?php echo $term->name ?></a>
+				<?php
+					}
+				?>
+			</div><!-- .filter-tema -->
 			<div class="[ filter-buscar ]">
 				<form class="[ form ]" action="">
 					<fieldset class="[ columna xmall-12 medium-8 ][ center ]">

@@ -148,6 +148,8 @@
 								removeSearchFilters();
 								addSearchFilter( filter_value );
 								clearGrid();
+
+								showTotalResults( '<?php echo $postType ?>', getFilters(false) );
 								advancedSearch('<?php echo $postType ?>', getFilters(false), 20, existing_ids);
 							});
 
@@ -723,6 +725,59 @@
 	}// rename_attacment
 	//add_action('add_attachment', 'rename_attacment');
 
+	/**
+	 * Converts date from YYYY-MM-DD format to readable date (with months in Spanish)
+	 * @param string $date - A date in YYYY-MM-DD format
+	 * @return string $formatted_date - Date in Spanish
+	 */
+	function get_formatted_event_date( $date ){
+
+		$date_arr = explode('-', $date);
+		$day = $date_arr[2];
+		$month = get_month_name( $date_arr[1] );
+		$year = $date_arr[0];
+
+		return $day . ' de ' . $month . ', ' . $year;
+
+	}// get_formatted_event_date
+
+	/**
+	 * Return the name of a month in Spanish.
+	 * @param string $month - Number of month
+	 * @return string $month_name - The name of month in Spanish
+	 */
+	function get_month_name( $month ){
+
+		switch ( $month ) {
+			case 1:
+				return 'enero';
+			case 2:
+				return 'febrero';
+			case 3:
+				return 'marzo';
+			case 4:
+				return 'abril';
+			case 5:
+				return 'mayo';
+			case 6:
+				return 'junio';
+			case 7:
+				return 'julio';
+			case 8:
+				return 'agosto';
+			case 9:
+				return 'septiembre';
+			case 10:
+				return 'octubre';
+			case 11:
+				return 'noviembre';
+			default:
+				return 'diciembre';
+		}// switch
+
+	}// get_month_name
+
+
 // AJAX FUNCTIONS //////////////////////////////////////////////////////
 
 	/**
@@ -1090,6 +1145,8 @@
 
 			// Add filtering terms for años
 			if($is_pais){
+				if($is_coleccion || $is_decada) $query = $query." OR";
+
 				$filter_type_count++;
 				$pais_terms_in = implode("', '", $pais_terms);
 				$query = $query." T.slug IN ( SELECT slug FROM wp_terms WHERE slug IN ('".$pais_terms_in."') ) ";
@@ -1161,14 +1218,15 @@
 		if ($filtros == ''){
 			$query = "
 				SELECT id FROM wp_posts P INNER JOIN wp_postmeta PM ON PM.post_id = P.id
-				WHERE post_type = 'carteleras'";
+				WHERE post_type = 'carteleras'
+				AND meta_key IN ('_evento_fecha_final_meta', '_evento_fecha_inicial_meta')";
 
 			if($existing_ids != '0'){
 				$existing_ids_in = implode("', '", $existing_ids);
 				$query .= " AND id NOT IN ('".$existing_ids_in."')";
 			}
 			//$query .= " AND post_status = 'publish' AND meta_value = '".$hoy."' GROUP BY id ORDER BY RAND() LIMIT ".$limit;
-			$query .= " AND post_status = 'publish' GROUP BY id ORDER BY RAND() LIMIT ".$limit;
+			$query .= " AND post_status = 'publish' GROUP BY id ORDER BY '_evento_fecha_final_meta' DESC LIMIT ".$limit;
 
 			$posts_info = $wpdb->get_results( $query, OBJECT );
 		} else {
@@ -1211,7 +1269,7 @@
 				$existing_ids_in = implode("', '", $existing_ids);
 				$query .= " AND id NOT IN ('".$existing_ids_in."')";
 			}
-			$query .= " AND post_status = 'publish' GROUP BY id ORDER BY RAND() LIMIT ".$limit;
+			$query .= " AND post_status = 'publish' GROUP BY id ORDER BY '_evento_fecha_final_meta' DESC LIMIT ".$limit;
 
 			$posts_info = $wpdb->get_results( $query );
 		}
@@ -1830,7 +1888,11 @@
 				INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
 				INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
 				INNER JOIN wp_terms T ON T.term_id = TT.term_id
-				WHERE P.post_type = 'fotografos' AND P.post_status = 'publish' AND P.post_content <> '' GROUP BY P.id";
+				WHERE P.post_type = 'fotografos'";
+
+			$query .= " AND P.post_status = 'publish' AND P.post_content <> '' GROUP BY P.id ORDER BY RAND() ";
+
+			$posts_info = $wpdb->get_results( $query, OBJECT );
 		} else {
 
 			// SELECT P.id, P.post_title, T.name, T.slug FROM wp_posts P
@@ -1845,14 +1907,16 @@
 			$taxonomies = array();
 			$is_coleccion = false;
 			$coleccion_terms = array();
-			$is_ano = false;
-			$ano_terms = array();
+			$is_decada = false;
+			$decada_terms = array();
 			$is_pais = false;
 			$pais_terms = array();
 			$is_tema = false;
 			$tema_terms = array();
 			$is_apellido = false;
 			$apellido_terms = array();
+			$is_busqueda = false;
+			$busqueda_term = '';
 			foreach ($filtros as $key => $filtro) {
 				array_push($taxonomies, $filtro['type']);
 
@@ -1864,6 +1928,10 @@
 					$is_pais = true;
 					array_push($pais_terms, $filtro['value']);
 				}
+				if( $filtro['type'] == 'decada-de-nacimiento' ) {
+					$is_decada = true;
+					array_push($decada_terms, $filtro['value']);
+				}
 				if( $filtro['type'] == 'apellido' ) {
 					$is_apellido = true;
 					array_push($apellido_terms, $filtro['value']);
@@ -1872,15 +1940,22 @@
 					$is_tema = true;
 					array_push($tema_terms, $filtro['value']);
 				}
+				if( $filtro['type'] == 'buscar' ) {
+					$is_busqueda = true;
+					$busqueda_term = $filtro['value'];
+					array_pop($taxonomies);
+				}
+
 			}
 			$taxonomies = array_unique($taxonomies);
 			$taxonomies_in = implode("', '", $taxonomies);
 
 			// Add taxonomies to query
-			$query = $query." AND TT.taxonomy IN ('".$taxonomies_in."')";
+			if( ! $is_busqueda || ( $is_coleccion || $is_decada || $is_pais || $is_tema || $is_apellido ) )
+				$query = $query." AND TT.taxonomy IN ('".$taxonomies_in."')";
 
 			// If the filters include terms, open condition
-			if($is_coleccion || $is_ano || $is_pais || $is_tema || $is_apellido) $query = $query." AND ( ";
+			if($is_coleccion || $is_decada || $is_pais || $is_tema || $is_apellido ) $query = $query." AND ( ";
 
 			// Add filtering terms for colecciones
 			if($is_coleccion){
@@ -1890,14 +1965,14 @@
 			}
 
 			// Add filtering terms for años
-			if($is_ano){
+			if($is_decada){
 				$filter_type_count++;
 				if($is_coleccion) $query = $query." OR";
 
 				$query = $query."  T.slug IN ( SELECT slug FROM wp_terms WHERE";
-				foreach ($ano_terms as $key => $ano) {
-					$initial_year = $ano;
-					$final_year = strval(intval($ano) + 9);
+				foreach ($decada_terms as $key => $decada) {
+					$initial_year = $decada;
+					$final_year = strval(intval($decada) + 9);
 					if($key == 0) {
 						$query .= " slug  BETWEEN '".$initial_year."' AND '".$final_year."'";
 						continue;
@@ -1909,21 +1984,24 @@
 
 			// Add filtering terms for años
 			if($is_pais){
+				if($is_coleccion || $is_decada) $query = $query." OR";
+
 				$filter_type_count++;
 				$pais_terms_in = implode("', '", $pais_terms);
 				$query = $query." T.slug IN ( SELECT slug FROM wp_terms WHERE slug IN ('".$pais_terms_in."') ) ";
 			}
 			// Add filtering terms for temas
 			if($is_tema){
-				if($is_coleccion || $is_ano || $is_pais) $query = $query." OR";
+				if($is_coleccion || $is_decada || $is_pais) $query = $query." OR";
 				$filter_type_count++;
 				$tema_terms_id = implode("', '", $tema_terms);
 				$query = $query." T.slug IN ( SELECT slug FROM wp_terms WHERE name IN ('".$tema_terms_id."') ) ";
 			}
+
 			// Add filtering terms for apellidos
 			if($is_apellido){
 				$filter_type_count++;
-				if($is_coleccion || $is_ano || $is_pais || $is_tema) $query = $query." OR";
+				if($is_coleccion || $is_decada || $is_pais || $is_tema) $query = $query." OR";
 
 				$query .= "  T.slug IN ( SELECT slug FROM wp_terms T INNER JOIN wp_term_taxonomy TT ON TT.term_id = T.term_id WHERE (";
 
@@ -1938,9 +2016,27 @@
 			}
 
 			// Close filtering terms if  they exist
-			if($is_coleccion || $is_ano || $is_pais || $is_tema || $is_apellido) $query = $query." )";
+			if($is_coleccion || $is_decada || $is_pais || $is_tema || $is_apellido) $query = $query." )";
 
-			$query = $query." AND post_status = 'publish' AND post_content <> '' GROUP BY id HAVING COUNT(id) > ".$filter_type_count;
+			// Add filtering terms for busqueda
+			if($is_busqueda) $query .= " AND post_title LIKE '%".$busqueda_term."%'";
+
+			$query = $query." AND post_status = 'publish' AND post_content <> '' GROUP BY id HAVING COUNT(id) > ".$filter_type_count." ORDER BY RAND()";
+			$posts_info = $wpdb->get_results( $query );
+		}
+
+		$info_colecciones = array();
+		foreach ($posts_info as $key => $post) {
+			// Título
+			$fotografo = get_the_title( $post->id );
+			// URL fotografo
+			$url = get_permalink( $post->id );
+			// Se arma el objecto que se regresa
+			$info_colecciones[$key] = array(
+				'id'		=> $post->id,
+				'fotografo'	=> $fotografo,
+				'url'		=> $url,
+				);
 		}
 
 		$results = $wpdb->get_results( $query );

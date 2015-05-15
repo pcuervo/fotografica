@@ -19,7 +19,8 @@
 	$dateExposiciones = '';
 	$args = array(
 		'post_type' 		=> 'exposiciones',
-		'posts_per_page' 	=> 1
+		'posts_per_page' 	=> 1,
+		'orderby' 			=> 'rand'
 	);
 	$queryExposiciones = new WP_Query( $args );
 	if ( $queryExposiciones->have_posts() ) : while ( $queryExposiciones->have_posts() ) : $queryExposiciones->the_post();
