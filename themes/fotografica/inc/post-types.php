@@ -164,37 +164,6 @@
 		);
 		register_post_type( 'publicaciones', $args );
 
-		// INVESTIGACIONES
-		$labels = array(
-			'name'          => 'Investigaciones',
-			'singular_name' => 'Investigación',
-			'add_new'       => 'Nueva Investigación',
-			'add_new_item'  => 'Nueva Investigación',
-			'edit_item'     => 'Editar Investigación',
-			'new_item'      => 'Nueva Investigación',
-			'all_items'     => 'Todas',
-			'view_item'     => 'Ver Investigación',
-			'search_items'  => 'Buscar Investigación',
-			'not_found'     => 'No se encontro',
-			'menu_name'     => 'Investigaciones'
-		);
-		$args = array(
-			'labels'             => $labels,
-			'public'             => true,
-			'publicly_queryable' => true,
-			'show_ui'            => true,
-			'show_in_menu'       => true,
-			'query_var'          => true,
-			'rewrite'            => array( 'slug' => 'investigaciones' ),
-			'capability_type'    => 'post',
-			'has_archive'        => true,
-			'hierarchical'       => false,
-			'taxonomies'         => array( 'post_tag', 'category' ),
-			'menu_position'      => 6,
-			'supports'           => array( 'title', 'editor', 'thumbnail' )
-		);
-		register_post_type( 'investigaciones', $args );		
-
 		// CARTELERA
 		$labels = array(
 			'name'          => 'Cartelera',

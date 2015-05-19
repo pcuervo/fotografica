@@ -255,7 +255,7 @@
 		<div class="[ wrapper ]">
 			<div class="[ row ]">
 				<aside class="[ shown--large ][ columna medium-2 large-3 ][ text-right serif--italic ]">
-					<?php
+					<?php 
 						if ( $postType == 'carteleras' ){
 
 							$fecha_inicial = get_post_meta( $post->ID, '_evento_fecha_inicial_meta', true);

@@ -219,6 +219,7 @@
 					<?php
 						$decadas = get_decadas_nacimiento();
 						foreach ($decadas as $decada) {
+							if( $decada == '0' ) continue;
 					?>
 							<a class="[ filter ] [ button button--hollow button--small button--dark ] [ inline-block margin-bottom--small ]" data-type="decada-de-nacimiento" data-value="<?php echo $decada ?>"><?php echo $decada ?></a>
 					<?php

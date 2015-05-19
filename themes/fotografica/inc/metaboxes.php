@@ -75,7 +75,7 @@ END;
 
 echo <<<END
 
-	<label>URL link:</label>
+	<label>URL: <small>Debe comenzar con "http://" </label>
 	<input type="text" class="widefat" name="_link_proyecto_meta" value="$link_proyecto" />
 
 END;

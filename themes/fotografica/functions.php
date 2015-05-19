@@ -882,7 +882,7 @@
 				}
 				if( $filtro['type'] == 'tema' ) {
 					$is_tema = true;
-					array_push($tema_terms, '#'.$filtro['value']);
+					array_push($tema_terms, $filtro['value']);
 				}
 				if( $filtro['type'] == 'buscar' ) {
 					$is_busqueda = true;
@@ -2135,7 +2135,8 @@
 		$query = "
 				SELECT meta_value
 				FROM wp_postmeta
-				WHERE meta_key = '_fecha_nacimiento_meta' ";
+				WHERE meta_key = '_fecha_nacimiento_meta'
+				ORDER BY meta_value";
 		$results = $wpdb->get_results( $query );
 		foreach ($results as $fecha) {
 			$decada = get_decada_por_fecha( $fecha->meta_value );
@@ -2621,7 +2622,8 @@
 		$bgExposiciones = '';
 		$args = array(
 			'post_type' 		=> 'exposiciones',
-			'posts_per_page' 	=> 1
+			'posts_per_page' 	=> 1,
+			'orderby'			=> 'rand',
 		);
 		$queryExposiciones = new WP_Query( $args );
 		if ( $queryExposiciones->have_posts() ) : while ( $queryExposiciones->have_posts() ) : $queryExposiciones->the_post(); ?>

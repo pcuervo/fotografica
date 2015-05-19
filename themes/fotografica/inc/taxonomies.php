@@ -374,16 +374,7 @@
 				'query_var'         => true,
 				'rewrite'           => array( 'slug' => 'tema' ),
 			);
-			$postTypeTema = array(
-				'fotografos',
-				'fotografias',
-				'proyectos',
-				'exposiciones',
-				'publiaciones',
-				'cartelera',
-				'nuestro-trabajo',
-				'noticias',
-				);
+			$postTypeTema = array( 'fotografias' );
 			register_taxonomy( 'tema', $postTypeTema, $args );
 		}// taxonomy tema
 
