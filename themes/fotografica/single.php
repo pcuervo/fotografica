@@ -410,7 +410,7 @@
 					$postTypeRand = rand(0, count($extraPostType)-1);
 					$args = array(
 						'post_type' 		=> $postTypeRand,
-						'posts_per_page' 	=> 1,
+						'posts_per_page' 	=> 3,
 						'orderby' 			=> 'rand'
 					);
 
@@ -428,6 +428,8 @@
 					if ( $queryRandomPost->have_posts() ) : while ( $queryRandomPost->have_posts() ) : $queryRandomPost->the_post(); 
 
 						$bgRandom = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+
+						if ( empty( $bgRandom ) ) continue;
 
 						$coleccionRandom 		= wp_get_post_terms( $post->ID, 'coleccion' );
 						$coleccionRandomName 	= $coleccionRandom[0]->name;
@@ -470,6 +472,7 @@
 						}
 
 						$permalinkColeccion = get_permalink( $post->ID );
+						break;
 
 					?>
 						<h2 class="[ title ] [ text-center ]">Te puede interesar</h2>
