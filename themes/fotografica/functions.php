@@ -294,7 +294,6 @@
 
 
 
-
 						if ( is_single() ) { ?>
 							/*------------------------------------*\
 								#SINGLE
@@ -307,6 +306,7 @@
 							<?php if ( $postType === 'fotografos' OR $postType === 'proyectos' ){ ?>
 								runMasonry('.results', '.result' );
 							<?php } ?>
+
 
 							<?php if ( $postType === 'exposiciones' OR $postType === 'publicaciones' OR $postType === 'nuestro-trabajo' OR $postType === 'proyectos' ){ ?>
 								runFitVids('.fit-vids-wrapper');
@@ -345,7 +345,6 @@
 							});
 
 							$('.button--facebook').on('click', function(){
-								console.log('sharing is caring...');
 								shareOnFacebook('<?php echo $current_link ?>');
 							});
 
@@ -362,7 +361,6 @@
 								destroyCycle();
 							});
 							$('.modal--lightbox').on('click', function(event) {
-								console.log($(event.target));
 								// if ( ! $(event.target).closest('.image-single img').length ) {
 								// 	closeModal( $('.close-modal') );
 								// 	destroyCycle();
@@ -375,7 +373,6 @@
 						<?php }
 
 
-
 						if ( is_single('conservacion') ) { ?>
 							/*------------------------------------*\
 								#SINGLE CONSERVACION
@@ -386,14 +383,13 @@
 							**/
 							runFitVids('.fit-vids-wrapper');
 
-						<?php } ?>
+						<?php }
 
 
 
 
 
-
-						<?php if( is_page('contactanos') ) { ?>
+						if( is_page('contactanos') ) { ?>
 							/*------------------------------------*\
 								#PAGE CONTACTANOS
 							\*------------------------------------*/
@@ -721,7 +717,7 @@
 
 	    rename($file, $newfile);
 	    update_attached_file( $post_ID, $newfile );
-	    
+
 	}// rename_attacment
 	//add_action('add_attachment', 'rename_attacment');
 

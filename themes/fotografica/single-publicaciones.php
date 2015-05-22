@@ -166,7 +166,9 @@
 							$placeColeccionesName 	= $placeColecciones[0]->name;
 						}
 
-						$circaColecciones = 0;
+						if ( in_category('circa', $post->ID ) ){
+							$circaColecciones = true;
+						}
 
 						$dateColecciones = wp_get_post_terms( $post->ID, 'año' );
 						if ( $dateColecciones ){
@@ -208,7 +210,7 @@
 
 										<!-- CIRCA -->
 										<?php if ( $circaColecciones ){ ?>
-											<span class="[ media--info__circa ]">circa </span>
+											<span class="[ media--info__circa ]">ca. </span>
 										<?php } ?>
 
 										<!-- AÑO -->
@@ -247,25 +249,35 @@
 									$imageID         = $image[4];
 									$imageURL        = $image[0];
 									$imagePostID     = get_post_id_by_attachment_id($imageID);
-									$imagePost       = get_post( $imagePostID->post_id );
 
-									$titleimagePost = get_the_title( $imagePostID->post_id );
-									if ( strpos($titleimagePost, 'Sin título') !== false OR $titleimagePost == '' OR strpos($titleimagePost, '&nbsp') !== false ){
-										$titleimagePost = NULL;
+									if ( $imagePostID ){
+										$imagePost       = get_post( $imagePostID->post_id );
+										$titleimagePost = get_the_title( $imagePostID->post_id );
+
+										if ( strpos($titleimagePost, 'Sin título') !== false OR $titleimagePost == '' OR strpos($titleimagePost, '&nbsp') !== false ){
+											$titleimagePost = NULL;
+										}
+
+										$authorImagePost = wp_get_post_terms( $imagePostID->post_id, 'fotografo' );
+										if ( $authorImagePost ){
+											$authorImagePostName 	= $authorImagePost[0]->name;
+											$authorImagePostSlug 	= $authorImagePost[0]->slug;
+										} else {
+											$authorImagePost 	= 'Autor no identificaco';
+										}
+
+										$permalinkImagePost = get_permalink( $imagePostID->post_id );
 									}
-
-									$authorImagePost = wp_get_post_terms( $imagePostID->post_id, 'fotografo' );
-									if ( $authorImagePost ){
-										$authorImagePostName 	= $authorImagePost[0]->name;
-										$authorImagePostSlug 	= $authorImagePost[0]->slug;
-									} else {
-										$authorImagePost 	= 'Autor no identificaco';
-									}
-
-									$permalinkImagePost = get_permalink( $imagePostID->post_id );
 
 								?>
 									<div class="[ image-single ]" data-number="<?php echo $key+1; ?>">
+										<?php if ( $imagePostID ){ ?>
+											<div class="[ info-modal ]">
+												<a href="<?php echo $permalinkImagePost; ?>" target="_blank">
+													<i class="[ icon-info ]"></i>
+												</a>
+											</div>
+										<?php } ?>
 										<div class="[ full-height ]">
 											<a href="<?php echo $permalinkImagePost; ?>" target="_blank">
 												<img class="[ full-height-centered ]" src="<?php echo $imageURL; ?>">
@@ -273,6 +285,12 @@
 										</div><!-- full-height -->
 									</div>
 								<?php } ?>
+								<div class="[ cycle-control cycle-prev ]">
+									<i class="icon-chevron-prev"></i>
+								</div><!-- cycle-prev  -->
+								<div class="[ cycle-control cycle-next ]">
+									<i class="icon-chevron-next"></i>
+								</div><!-- cycle-next  -->
 							</div><!-- slideshow -->
 						</div><!-- modal-body -->
 					</div><!-- modal-content -->

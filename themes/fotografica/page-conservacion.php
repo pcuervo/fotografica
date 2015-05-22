@@ -50,7 +50,9 @@
 				$placeColeccionesName 	= $placeColecciones[0]->name;
 			}
 
-			$circaColecciones = 0;
+			if ( in_category('circa', $post->ID ) ){
+				$circaColecciones = true;
+			}
 
 			$dateColecciones = wp_get_post_terms( $post->ID, 'año' );
 			if ( $dateColecciones ){
@@ -99,7 +101,7 @@
 
 				<!-- CIRCA -->
 				<?php if ( $circaColecciones ){ ?>
-					<span class="[ media--info__circa ]">circa </span>
+					<span class="[ media--info__circa ]">ca. </span>
 				<?php } ?>
 
 				<!-- AÑO -->
@@ -130,5 +132,5 @@
 	<section>
 		<?php the_content() ?>
 	</section>
-	
+
 <?php get_footer(); ?>

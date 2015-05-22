@@ -55,7 +55,9 @@
 			$placeFotografosName 	= $placeFotografos[0]->name;
 		}
 
-		$circaFotografos = 0;
+		if ( in_category('circa', $post->ID ) ){
+			$circaFotografos = true;
+		}
 
 		$dateFotografos = wp_get_post_terms( $post->ID, 'año' );
 		if ( $dateFotografos ){
@@ -102,7 +104,7 @@
 
 					<!-- CIRCA -->
 					<?php if ( $circaFotografos ){ ?>
-						<span class="[ media--info__circa ]">circa </span>
+						<span class="[ media--info__circa ]">ca. </span>
 					<?php } ?>
 
 					<!-- AÑO -->

@@ -67,7 +67,9 @@
 			$placeColeccionesName 	= $placeColecciones[0]->name;
 		}
 
-		$circaColecciones = 0;
+		if ( in_category('circa', $post->ID ) ){
+			$circaColecciones = true;
+		}
 
 		$dateColecciones = wp_get_post_terms( $post->ID, 'año' );
 		if ( $dateColecciones ){
@@ -131,7 +133,7 @@
 					$dateRandom = '';
 
 					$queryRandomPost = new WP_Query( $args );
-					if ( $queryRandomPost->have_posts() ) : while ( $queryRandomPost->have_posts() ) : $queryRandomPost->the_post(); 
+					if ( $queryRandomPost->have_posts() ) : while ( $queryRandomPost->have_posts() ) : $queryRandomPost->the_post();
 
 						$bgRandom = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
 
@@ -218,7 +220,7 @@
 							</article>
 					<?php
 					endwhile; endif; wp_reset_query();
-					
+
 					$has_related       = false;
 					$has_related_limit = 0;
 					while( ! $has_related AND $has_related_limit <= 10 ){
@@ -276,7 +278,7 @@
 						}
 
 						$queryFotografias = new WP_Query( $args );
-						if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post(); 
+						if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post();
 
 							$has_related = true;
 							$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
@@ -305,7 +307,9 @@
 								$placeColeccionesName 	= $placeColecciones[0]->name;
 							}
 
-							$circaColecciones = 0;
+							if ( in_category('circa', $post->ID ) ){
+								$circaColecciones = true;
+							}
 
 							$dateColecciones = wp_get_post_terms( $post->ID, 'año' );
 							if ( $dateColecciones ){
@@ -347,7 +351,7 @@
 
 											<!-- CIRCA -->
 											<?php if ( $circaColecciones ){ ?>
-												<span class="[ media--info__circa ]">circa </span>
+												<span class="[ media--info__circa ]">ca. </span>
 											<?php } ?>
 
 											<!-- AÑO -->
@@ -367,7 +371,6 @@
 
 		<?php
 		$content = $post->post_content;
-
 		if( has_shortcode( $content, 'gallery' ) ) {
 			$galleries = get_galleries_from_content($content);
 			foreach ($galleries as $gallery => $galleryIDs) { ?>
@@ -386,30 +389,35 @@
 										$imageID         = $image[4];
 										$imageURL        = $image[0];
 										$imagePostID     = get_post_id_by_attachment_id($imageID);
-										$imagePost       = get_post( $imagePostID->post_id );
 
-										$titleimagePost = get_the_title( $imagePostID->post_id );
-										if ( strpos($titleimagePost, 'Sin título') !== false OR $titleimagePost == '' OR strpos($titleimagePost, '&nbsp') !== false ){
-											$titleimagePost = NULL;
+										if ( $imagePostID ){
+											$imagePost       = get_post( $imagePostID->post_id );
+											$titleimagePost = get_the_title( $imagePostID->post_id );
+
+											if ( strpos($titleimagePost, 'Sin título') !== false OR $titleimagePost == '' OR strpos($titleimagePost, '&nbsp') !== false ){
+												$titleimagePost = NULL;
+											}
+
+											$authorImagePost = wp_get_post_terms( $imagePostID->post_id, 'fotografo' );
+											if ( $authorImagePost ){
+												$authorImagePostName 	= $authorImagePost[0]->name;
+												$authorImagePostSlug 	= $authorImagePost[0]->slug;
+											} else {
+												$authorImagePost 	= 'Autor no identificaco';
+											}
+
+											$permalinkImagePost = get_permalink( $imagePostID->post_id );
 										}
-
-										$authorImagePost = wp_get_post_terms( $imagePostID->post_id, 'fotografo' );
-										if ( $authorImagePost ){
-											$authorImagePostName 	= $authorImagePost[0]->name;
-											$authorImagePostSlug 	= $authorImagePost[0]->slug;
-										} else {
-											$authorImagePost 	= 'Autor no identificaco';
-										}
-
-										$permalinkImagePost = get_permalink( $imagePostID->post_id );
 
 									?>
 										<div class="[ image-single ]" data-number="<?php echo $key+1; ?>">
-											<div class="[ info-modal ]">
-												<a href="<?php echo $permalinkImagePost; ?>" target="_blank">
-													<i class="[ icon-info ]"></i>
-												</a>
-											</div>
+											<?php if ( $imagePostID ){ ?>
+												<div class="[ info-modal ]">
+													<a href="<?php echo $permalinkImagePost; ?>" target="_blank">
+														<i class="[ icon-info ]"></i>
+													</a>
+												</div>
+											<?php } ?>
 											<div class="[ full-height ]">
 												<a href="<?php echo $permalinkImagePost; ?>" target="_blank">
 													<img class="[ full-height-centered ]" src="<?php echo $imageURL; ?>">
@@ -430,14 +438,12 @@
 				</div><!-- modal-wrapper -->
 			<?php }
 		}
-
 	} else {
 		/*------------------------------------*\
-		    #ARCHIVE HERO
+			#ARCHIVE HERO
 		\*------------------------------------*/
 		setup_postdata($post);
-		$bgArchive = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
-		?>
+		$bgArchive = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' ); ?>
 		<section class="[ proyectos ][ bg-image ][ margin-bottom ]" style="background-image: url(<?php echo $bgArchive[0]; ?>)">
 			<div class="[ opacity-gradient rectangle ]">
 				<h2 class="[ center-full ] [ title ]">
@@ -480,10 +486,7 @@
 							</a>
 						</div>
 					</article>
-			<?php
-				endwhile; endif; wp_reset_query(); ?>
+			<?php endwhile; endif; wp_reset_query(); ?>
 		</section><!-- .results -->
-<?php
-	}
+	<?php }
 	get_footer();
-?>
