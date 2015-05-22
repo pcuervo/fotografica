@@ -89,7 +89,7 @@
 
 						<!-- TÍTULO -->
 						<?php if ( $titleProyectos ){ ?>
-							<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleProyectos; ?></a>,
+							<a href="<?php echo $permalinkProyectos; ?>" class="[ media--info__name ]"><?php echo $titleProyectos; ?></a>,
 						<?php } ?>
 
 						<!-- DE LA SERIE -->
@@ -99,7 +99,7 @@
 
 						<!-- COLECCION -->
 						<?php if ( $coleccionProyectos ){ ?>
-							<br /> de la colección <a href="<?php echo site_url( $coleccionProyectosSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionProyectosName; ?></a>,
+							<br /> de la colección <a href="<?php echo site_url().'/colecciones?coleccion='.$coleccionProyectosSlug; ?>" class="[ media--info__colection ]"> <?php echo $coleccionProyectosName; ?></a>
 						<?php } ?>
 
 						<!-- LUGAR -->

@@ -255,7 +255,7 @@
 		<div class="[ wrapper ]">
 			<div class="[ row ]">
 				<aside class="[ shown--large ][ columna medium-2 large-3 ][ text-right serif--italic ]">
-					<?php
+					<?php 
 						if ( $postType == 'carteleras' ){
 
 							$fecha_inicial = get_post_meta( $post->ID, '_evento_fecha_inicial_meta', true);
@@ -264,7 +264,7 @@
 							if ( ! empty( $fecha_inicial ) && ! empty( $fecha_final ) ){
 
 						?>
-								<p>Del <?php echo $fecha_inicial ?> al <?php echo $fecha_final ?></p>
+								<p>Del <?php echo get_formatted_event_date( $fecha_inicial ) ?> <br /> al <?php echo get_formatted_event_date( $fecha_final ) ?></p>
 								<div class="[ clear ]"></div>
 								<div class="[ form-group ] [ margin-bottom ]">
 									<a class="[ addthisevent ] [ btn btn-primary btn-go ]" href="#" title="Add to Calendar" data-track="ga('send', 'event', 'solicitudes', 'click', 'ate-calendar');">
@@ -410,7 +410,7 @@
 					$postTypeRand = rand(0, count($extraPostType)-1);
 					$args = array(
 						'post_type' 		=> $postTypeRand,
-						'posts_per_page' 	=> 1,
+						'posts_per_page' 	=> 3,
 						'orderby' 			=> 'rand'
 					);
 
@@ -428,6 +428,8 @@
 					if ( $queryRandomPost->have_posts() ) : while ( $queryRandomPost->have_posts() ) : $queryRandomPost->the_post(); 
 
 						$bgRandom = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+
+						if ( empty( $bgRandom ) ) continue;
 
 						$coleccionRandom 		= wp_get_post_terms( $post->ID, 'coleccion' );
 						$coleccionRandomName 	= $coleccionRandom[0]->name;
@@ -470,6 +472,7 @@
 						}
 
 						$permalinkColeccion = get_permalink( $post->ID );
+						break;
 
 					?>
 						<h2 class="[ title ] [ text-center ]">Te puede interesar</h2>
