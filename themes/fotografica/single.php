@@ -29,83 +29,12 @@
 		default:
 	}
 
-	$slugPost = $post->post_name;
+	$slugPost = $post->post_name; ?>
 
-	if( $postType == 'fotografos' ){
-		$fotografiaArgs = array(
-			'post_type' 		=> 'fotografias',
-			'posts_per_page' 	=> 1,
-			'orderby'			=> 'rand',
-			'tax_query'      	=> array(
-				array(
-					'field'    => 'slug',
-					'taxonomy' => 'fotografo',
-					'terms'    => $slugPost
-				),
-			),
-			'post__not_in'		=> array($post->ID)
-		);
-		$fotografiaQuery = new WP_Query( $fotografiaArgs );
-		if( $fotografiaQuery->have_posts() ) : $fotografiaQuery->the_post();
+	<div class="[ full-height ][ margin-bottom ]">
+		<?php the_post_thumbnail('full', array('class' => 'full-height-centered')); ?>
+	</div>
 
-			$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
-			$coleccionColecciones 		= wp_get_post_terms( $post->ID, 'coleccion' );
-			$coleccionColeccionesName 	= $coleccionColecciones[0]->name;
-			$coleccionColeccionesSlug 	= $coleccionColecciones[0]->slug;
-
-			$authorColecciones 		= wp_get_post_terms( $post->ID, 'fotografo' );
-			if ( $authorColecciones ){
-				$authorColeccionesName 	= $authorColecciones[0]->name;
-				$authorColeccionesSlug 	= $authorColecciones[0]->slug;
-			} else {
-				$authorColeccionesName 	= 'Autor no identificado';
-			}
-
-			$detalleColecciones = get_post_meta( $post->ID, '_detalles_fotografia_meta', TRUE );
-
-			$titleColecciones = get_the_title( $post->ID );
-
-			if ( strpos($titleColecciones, 'Sin título') !== false OR $titleColecciones == '' OR strpos($titleColecciones, '&nbsp') !== false ){
-				$titleColecciones = NULL;
-			}
-
-			$seriesColecciones = '';
-			$serie = wp_get_post_terms( $post->id, 'serie' );
-			if ( $serie ){
-				$seriesColecciones = $serie[0]->name;
-			}
-
-			$placeColecciones = wp_get_post_terms( $post->ID, 'lugar' );
-			if ( $placeColecciones ){
-				$placeColeccionesName 	= $placeColecciones[0]->name;
-			}
-
-			if ( in_category('circa', $post->ID ) ){
-				$circaColecciones = true;
-			}
-
-			$dateColecciones = wp_get_post_terms( $post->ID, 'año' );
-			if ( $dateColecciones ){
-				$dateColeccionesName 	= $dateColecciones[0]->name;
-			}
-
-			$themesTrabajo = wp_get_post_terms( $post->ID, 'tema' );
-			if ( ! $themesTrabajo ){
-				$themesTrabajoName 	= '';
-			}
-
-			$permalinkTrabajo = get_permalink( $post->ID );
-	?>
-		<div class="[ full-height ][ margin-bottom ]">
-			<?php the_post_thumbnail('full', array('class' => 'full-height-centered') ); ?>
-		</div>
-	<?php
-		endif; wp_reset_query();
-	} else {
-	?>
-		<div class="[ full-height ][ margin-bottom ]">
-			<?php the_post_thumbnail('full', array('class' => 'full-height-centered')); ?>
-		</div>
 	<?php
 		if($taxonomia != ''){
 			$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
@@ -155,9 +84,7 @@
 		}
 
 		$permalinkColeccion = get_permalink( $post->ID );
-	}
-
-?>
+	?>
 
 
 	<section class="[ margin-bottom--large ]">
@@ -167,7 +94,7 @@
 				<!--  /********************************\ -->
 					<!-- #FOTOGRAFÍAS -->
 				<!--  \**********************************/ -->
-				<?php if ( $postType == 'fotografias' || $postType == 'fotografos' ){ ?>
+				<?php if ( $postType == 'fotografias' ){ ?>
 
 					<!-- NOMBRE APELLIDO -->
 					<?php if ( $authorColeccionesName !== 'Autor no identificado' ){ ?>
@@ -210,27 +137,16 @@
 
 				<?php } ?>
 
-
-
-
-
-				<!--  /********************************\ -->
-					<!-- #PROYECTOS -->
-				<!--  \**********************************/ -->
-				<?php if ( $postType === 'proyectos'){ ?>
-					<span class="[ media--info__name]"> <?php the_title( ); ?></span>
-				<?php } ?>
-
-
-
-				<!--  /********************************\ -->
-					<!-- #FOTÓGRAFOS -->
-				<!--  \**********************************/ -->
-				<?php if ( $postType === 'fotografos' || $postType === 'carteleras'  ){ ?>
-					<h2 class="[ title ][ text-center ]"> <?php the_title(); ?></h2>
-				<?php } ?>
-
 			</p>
+
+
+			<!--  /********************************\ -->
+				<!-- #CARTELERAS -->
+			<!--  \**********************************/ -->
+			<?php if ( $postType === 'carteleras'  ){ ?>
+				<h2 class="[ title ][ text-center ]"> <?php the_title(); ?></h2>
+			<?php } ?>
+
 		</div>
 	</section>
 	<section class="[ share ] [ margin-bottom--large ]">
@@ -263,9 +179,7 @@
 							$fecha_inicial = get_post_meta( $post->ID, '_evento_fecha_inicial_meta', true);
 							$fecha_final = get_post_meta( $post->ID, '_evento_fecha_final_meta', true);
 
-							if ( ! empty( $fecha_inicial ) && ! empty( $fecha_final ) ){
-
-						?>
+							if ( ! empty( $fecha_inicial ) && ! empty( $fecha_final ) ){ ?>
 								<p>Del <?php echo get_formatted_event_date( $fecha_inicial ) ?> <br /> al <?php echo get_formatted_event_date( $fecha_final ) ?></p>
 								<div class="[ clear ]"></div>
 								<div class="[ form-group ] [ margin-bottom ]">
@@ -291,118 +205,7 @@
 		</div><!-- .wrapper -->
 	</section>
 
-
-	<?php if( $post_type === 'fotografos' ) { ?>
-		<section>
-			<h2 class="[ title ][ text-center ]">Trabajo</h2>
-			<div class="[ wrapper ]">
-				<article class="[ results ][ row row--no-margins ][ margin-bottom ]">
-					<?php
-						$trabajoArgs = array(
-							'post_type'      => 'fotografias',
-							'posts_per_page' => -1,
-							'tax_query'      => array(
-								array(
-									'field'    => 'slug',
-									'taxonomy' => 'fotografo',
-									'terms'    => $slugPost
-								),
-							),
-							'post__not_in'		=> array($post->ID)
-						);
-						$trabajoQuery = new WP_Query( $trabajoArgs );
-						if( $trabajoQuery->have_posts() ) : while( $trabajoQuery->have_posts() ) : $trabajoQuery->the_post();
-
-							$coleccionTrabajo 		= wp_get_post_terms( $post->ID, 'coleccion' );
-							$coleccionTrabajoName 	= $coleccionTrabajo[0]->name;
-							$coleccionTrabajoSlug 	= $coleccionTrabajo[0]->slug;
-
-							$authorTrabajo 		= wp_get_post_terms( $post->ID, 'fotografo' );
-							if ( $authorTrabajo ){
-								$authorTrabajoName 	= $authorTrabajo[0]->name;
-								$authorTrabajoSlug 	= $authorTrabajo[0]->slug;
-							} else {
-								$authorTrabajoName 	= 'Autor no identificado';
-							}
-
-							$titleTrabajo = get_the_title( $post->ID );
-
-							if ( strpos($titleTrabajo, 'Sin título') !== false OR $titleTrabajo == '' OR strpos($titleTrabajo, '&nbsp') !== false ){
-								$titleTrabajo = NULL;
-							}
-
-
-							$seriesTrabajo = 0;
-
-							$placeTrabajo = wp_get_post_terms( $post->ID, 'lugar' );
-							if ( $placeTrabajo ){
-								$placeTrabajoName 	= $placeTrabajo[0]->name;
-							}
-
-							$circaTrabajo = 0;
-
-							$dateTrabajo = wp_get_post_terms( $post->ID, 'año' );
-							if ( $dateTrabajo ){
-								$dateTrabajoName 	= $dateTrabajo[0]->name;
-							}
-
-							$themesTrabajo = wp_get_post_terms( $post->ID, 'tema' );
-							if ( ! $themesTrabajo ){
-								$themesTrabajoName 	= '';
-							}
-
-							$permalinkTrabajo = get_permalink( $post->ID );
-
-
-						?>
-						<div class="[ result ] [ columna xmall-12 small-ls-6 medium-4 large-3 ] [ margin-bottom-small ]" data-id="2379">
-							<div class="[ relative ]">
-								<a class="[ block ]" href="<?php the_permalink(); ?>">
-									<?php the_post_thumbnail('medium', array('class' => '[ image-responsive ]') ); ?>
-									<span class="[ opacity-gradient--full ]"></span>
-								</a>
-								<div class="[ media-info media-info--small ] [ xmall-12 ]">
-									<a class="[ block ]" href="http://localhost:8888/fotografica/fotografias/sin-titulo/">
-									<p class="[ text-center ]">
-										<!-- NOMBRE APELLIDO -->
-										<?php if ( $authorTrabajoName != 'Autor no identificado' ){ ?>
-											<a href="<?php echo site_url( $authorTrabajoSlug ); ?>" class="[ media--info__author ]"><?php echo $authorTrabajoName;?></a>,
-										<?php } ?>
-
-										<!-- TÍTULO -->
-										<?php if ( $titleTrabajo ){ ?>
-											<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleTrabajo; ?></a>,
-										<?php } ?>
-
-										<!-- DE LA SERIE -->
-										<?php if ( $seriesTrabajo ){ ?>
-											de la serie <span class="[ media--info__series ]"><?php echo $seriesTrabajo; ?></span>
-										<?php } ?>
-
-										<!-- CIRCA -->
-										<?php if ( $circaTrabajo ){ ?>
-											<span class="[ media--info__circa ]">circa </span>,
-										<?php } ?>
-
-										<!-- AÑO -->
-										<?php if ( $dateTrabajo ){ ?>
-											<span class="[ media--info__date ]"><?php echo $dateTrabajoName; ?></span>,
-										<?php } ?>
-
-										<!-- COLECCION -->
-										<br />
-										de la colección <a href="<?php echo site_url( $coleccionTrabajoSlug ); ?>" class="[ media--info__colection ]"> <?php echo $coleccionTrabajoName; ?></a>
-									</p>
-								</div>
-							</div>
-						</div>
-					<?php endwhile; endif; wp_reset_postdata(); ?>
-				</article>
-			</div>
-		</section>
-	<?php }
-
-	if( $post_type !== 'fotografos') { ?>
+	<?php if( $post_type !== 'fotografos') { ?>
 		<section class="[ margin-bottom ]">
 			<div class="[ wrapper ]">
 				<div class="[ row ]">
@@ -665,6 +468,8 @@
 			</div><!-- wrapper -->
 		</section><!-- .results -->
 	<?php
+	}
+
 	$content = $post->post_content;
 
 	if( has_shortcode( $content, 'gallery' ) ) {
