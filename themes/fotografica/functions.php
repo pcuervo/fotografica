@@ -1183,7 +1183,7 @@
 			// Add filtering terms for busqueda
 			if($is_busqueda) $query .= " AND post_title LIKE '%".$busqueda_term."%'";
 
-			$query = $query." AND post_status = 'publish' AND post_content <> '' GROUP BY id HAVING COUNT(id) > ".$filter_type_count." ORDER BY RAND() LIMIT ".$limit;
+			$query = $query." AND post_status = 'publish' AND post_content <> '' GROUP BY id HAVING COUNT(id) > ".$filter_type_count." ORDER BY P.post_name, RAND() LIMIT ".$limit;
 			$posts_info = $wpdb->get_results( $query );
 		}
 
@@ -1452,7 +1452,7 @@
 			$existing_ids_in = implode("', '", $existing_ids);
 			$query .= " AND id NOT IN ('".$existing_ids_in."')";
 		}
-		$query .= " AND post_status = 'publish' ORDER BY post_date LIMIT ".$limit;
+		$query .= " AND post_status = 'publish' ORDER BY post_date DESC LIMIT ".$limit;
 		$posts_info = $wpdb->get_results( $query, OBJECT );
 
 		$info_nuevas_adquisiciones = array();

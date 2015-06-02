@@ -48,11 +48,15 @@
 	if( $fotografoQuery->have_posts() ) : while( $fotografoQuery->have_posts() ) : $fotografoQuery->the_post();
 
 		$bgFotografo = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
-		$coleccionFotografo 		= wp_get_post_terms( $post->ID, 'coleccion' );
-		$coleccionFotografoName 	= $coleccionFotografo[0]->name;
-		$coleccionFotografoSlug 	= $coleccionFotografo[0]->slug;
+		
+		$coleccionFotografo = wp_get_post_terms( $post->ID, 'coleccion' );
+		$coleccionFotografoName = '';
+		if ( ! empty( $coleccionFotografo ) ){
+			$coleccionFotografoName = $coleccionFotografo[0]->name;
+			$coleccionFotografoSlug = $coleccionFotografo[0]->slug;
+		}
 
-		$authorFotografo 		= wp_get_post_terms( $post->ID, 'fotografo' );
+		$authorFotografo 			= wp_get_post_terms( $post->ID, 'fotografo' );
 		if ( $authorFotografo ){
 			$authorFotografoName 	= $authorFotografo[0]->name;
 			$authorFotografoSlug 	= $authorFotografo[0]->slug;
@@ -134,8 +138,12 @@
 					<?php } ?>
 
 					<!-- COLECCION -->
-					<br />
-					de la colección <a href="<?php echo site_url() ?>/colecciones?coleccion=<?php echo $coleccionFotografoSlug ?>" class="[ media--info__colection ]"> <?php echo $coleccionFotografoName; ?></a>
+					<?php if ( $coleccionFotografoName ){ ?>
+						<br />
+						de la colección <a href="<?php echo site_url() ?>/colecciones?coleccion=<?php echo $coleccionFotografoSlug ?>" class="[ media--info__colection ]"> <?php echo $coleccionFotografoName; ?></a>
+					<?php } ?>
+
+					
 
 				</p>
 			</div>
@@ -189,10 +197,13 @@
 						$trabajoQuery = new WP_Query( $trabajoArgs );
 						if( $trabajoQuery->have_posts() ) : while( $trabajoQuery->have_posts() ) : $trabajoQuery->the_post();
 
-							$coleccionTrabajo 		= wp_get_post_terms( $post->ID, 'coleccion' );
-							$coleccionTrabajoName 	= $coleccionTrabajo[0]->name;
-							$coleccionTrabajoSlug 	= $coleccionTrabajo[0]->slug;
-
+							$coleccionTrabajo = wp_get_post_terms( $post->ID, 'coleccion' );
+							$coleccionTrabajoName = '';
+							if( ! empty( $coleccionTrabajo )  ){
+								$coleccionTrabajoName 	= $coleccionTrabajo[0]->name;
+								$coleccionTrabajoSlug 	= $coleccionTrabajo[0]->slug;
+							}
+							
 							$authorTrabajo 		= wp_get_post_terms( $post->ID, 'fotografo' );
 							if ( $authorTrabajo ){
 								$authorTrabajoName 	= $authorTrabajo[0]->name;
