@@ -292,6 +292,7 @@
 	<section class="[ margin-bottom ]">
 		<div class="[ wrapper ]">
 			<div class="[ row ]">
+				<h2 class="[ title ] [ text-center ]">Te puede interesar</h2>
 				<?php
 
 					$extraPostType = array('proyectos', 'publicaciones', 'exposiciones');
@@ -360,7 +361,6 @@
 						$permalinkColeccion = get_permalink( $post->ID );
 
 					?>
-						<h2 class="[ title ] [ text-center ]">Te puede interesar</h2>
 						<article class="[ relacionadas ][ bg-image ][ span xmall-12 medium-6 ]" style="background-image: url(<?php echo $bgRandom[0]; ?>)">
 								<div class="[ opacity-gradient <?php echo ( $counter == 1 ) ? '[ square square-absolute ]' : '[ rectangle rectangle-absolute ]' ?> ]">
 									<a class="[ block ][ media-link ]" href="<?php echo $permalinkColeccion; ?>"></a>

@@ -2493,6 +2493,7 @@
 		global $post;
 
 		$bgProyectos = '';
+		$themesProyectosName 	= '';
 		$proyectosArgs = array(
 			'posts_per_page' 	=> 1,
 			'orderby' 			=> 'rand',
@@ -2865,7 +2866,7 @@
 		$html = '
 			<section class="[ colecciones ] [ bg-image ]" style="background-image: url('.$url_photo.' )">
 				<div class="[ opacity-gradient square ]">
-					<a href="'.site_url('colecciones').'" class="[ button button--hollow button--large ] [ center-full ]">
+					<a href="'. $permalinkFeatured .'" class="[ button button--hollow button--large ] [ center-full ]">
 						Destacado
 					</a>
 					<div class="[ media-info media-info--large ] [ xmall-12 ]">
