@@ -39,6 +39,34 @@
 			register_taxonomy( 'coleccion', $postTypeColecciones, $args );
 		}
 
+		// ADQUISICIONES RECIENTES
+		if( ! taxonomy_exists('adquisiciones-recientes')){
+
+			$labels = array(
+				'name'              => 'Adquisiciones recientes',
+				'singular_name'     => 'Adquisición reciente',
+				'search_items'      => 'Buscar',
+				'all_items'         => 'Todos',
+				'edit_item'         => 'Editar Adquisición reciente',
+				'update_item'       => 'Actualizar Adquisición reciente',
+				'add_new_item'      => 'Nueva Adquisición reciente',
+				'new_item_name'     => 'Nombre Nueva Adquisición reciente',
+				'menu_name'         => 'Adquisiciones recientes'
+			);
+			$args = array(
+				'hierarchical'      => true,
+				'labels'            => $labels,
+				'show_ui'           => true,
+				'show_admin_column' => true,
+				'show_in_nav_menus' => true,
+				'query_var'         => true,
+				'rewrite'           => array( 'slug' => 'adquisiciones-recientes' ),
+			);
+
+			$postTypeAdquisicionesRecientes = array( 'fotografias' );
+			register_taxonomy( 'adquisiciones-recientes', $postTypeAdquisicionesRecientes, $args );
+		}
+
 		// LUGAR
 		if( ! taxonomy_exists('lugar')){
 
@@ -404,6 +432,7 @@
 		}// taxonomy lugar
 		
 		//addCoverToPhoto();
+		insertAdquisicionesRecientesTaxonomyTerm();
 
 	}
 
@@ -447,7 +476,7 @@
 		$results = $wpdb->get_results( 'SELECT DISTINCT meta_value FROM wp_postmeta WHERE meta_key LIKE "%wpcf-s%" AND meta_key <> "" AND meta_value <> "" ORDER BY meta_value', OBJECT );
 
 		foreach ($results as $year) {
-			//var_dump($year);
+			
 			$term = term_exists($year->meta_value, 'serie');
 			if ($term !== 0 && $term !== null) continue;
 
@@ -514,6 +543,15 @@
 			wp_insert_term($place->meta_value, 'apellido');
 		}
 	}// insertLastNameTaxonomyTerms
+
+	function insertAdquisicionesRecientesTaxonomyTerm(){
+
+		$term = term_exists( 'si', 'adquisiciones-recientes' );
+		if ($term !== 0 && $term !== null) return;
+
+		wp_insert_term( 'si', 'adquisiciones-recientes' );
+
+	}// insertAdquisicionesRecientesTaxonomyTerm
 
 	function insertArchiveNameToProject(){
 		global $post;

@@ -1445,8 +1445,13 @@
 		global $wpdb;
 
 		$query = "
-			SELECT id FROM wp_posts
-			WHERE post_type = 'fotografias'";
+			SELECT id FROM wp_posts P
+			INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
+			INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
+			INNER JOIN wp_terms T ON T.term_id = TT.term_id
+			WHERE post_type = 'fotografias'
+			AND taxonomy = 'adquisiciones-recientes'
+			AND name = 'si'";
 
 		if($existing_ids != '0'){
 			$existing_ids_in = implode("', '", $existing_ids);
@@ -1790,7 +1795,7 @@
 				}
 				if( $filtro['type'] == 'tema' ) {
 					$is_tema = true;
-					array_push($tema_terms, '#'.$filtro['value']);
+					array_push($tema_terms, $filtro['value']);
 				}
 				if( $filtro['type'] == 'buscar' ) {
 					$is_busqueda = true;
@@ -2097,9 +2102,14 @@
 		global $wpdb;
 
 		$query = "
-			SELECT id FROM wp_posts
+			SELECT ID FROM wp_posts P
+			INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
+			INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
+			INNER JOIN wp_terms T ON T.term_id = TT.term_id
 			WHERE post_type = 'fotografias'
-			AND post_status = 'publish' ORDER BY post_date LIMIT 20";
+			AND taxonomy = 'adquisiciones-recientes'
+			AND name = 'si'";
+
 		$posts_info = $wpdb->get_results( $query, OBJECT );
 		$results = $wpdb->get_results( $query );
 		$total_results = $wpdb->num_rows;
@@ -2679,54 +2689,62 @@
 		$circaRecientes = 0;
 		$dateRecientes = '';
 
-		$query = "
-			SELECT id FROM wp_posts
-			WHERE post_type = 'fotografias'
-			AND post_status = 'publish'
-			ORDER BY post_date LIMIT 1";
-		$posts_info = $wpdb->get_results( $query, OBJECT );
+		$adquisicionesRecientesArgs = array(
+			'post_type' => 'fotografias',
+			'posts_per_page' 	=> 1,
+			'orderby'			=> 'rand',
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'adquisiciones-recientes',
+					'field'    => 'slug',
+					'terms'    => 'si',
+				),
+			),
+		);
+		$adquisicionesRecientesQuery = new WP_Query( $adquisicionesRecientesArgs );
+		if( $adquisicionesRecientesQuery->have_posts() ) : $adquisicionesRecientesQuery->the_post();
 
-		$bgRecientes = wp_get_attachment_image_src( get_post_thumbnail_id( $posts_info[0]->id ),'full' );
+			$bgRecientes = wp_get_attachment_image_src( get_post_thumbnail_id( get_the_ID() ),'full' );
+			$coleccionRecientes 		= wp_get_post_terms( get_the_ID(), 'coleccion' );
+			$coleccionRecientesName 	= $coleccionRecientes[0]->name;
+			$coleccionRecientesSlug 	= $coleccionRecientes[0]->slug;
 
-		$coleccionRecientes 		= wp_get_post_terms( $posts_info[0]->id, 'coleccion' );
-		$coleccionRecientesName 	= $coleccionRecientes[0]->name;
-		$coleccionRecientesSlug 	= $coleccionRecientes[0]->slug;
+			$authorRecientes 		= wp_get_post_terms( get_the_ID(), 'fotografo' );
+			if ( $authorRecientes ){
+				$authorRecientesName 	= $authorRecientes[0]->name;
+				$authorRecientesSlug 	= $authorRecientes[0]->slug;
+			} else {
+				$authorRecientesName 	= 'sin autor';
+			}
 
-		$authorRecientes 		= wp_get_post_terms( $posts_info[0]->id, 'fotografo' );
-		if ( $authorRecientes ){
-			$authorRecientesName 	= $authorRecientes[0]->name;
-			$authorRecientesSlug 	= $authorRecientes[0]->slug;
-		} else {
-			$authorRecientesName 	= 'sin autor';
-		}
+			$titleRecientes = get_the_title( get_the_ID() );
+			if ( strpos($titleRecientes, 'Sin título') !== false OR $titleRecientes == '' OR strpos($titleRecientes, '&nbsp') !== false ){
+				$titleRecientes = NULL;
+			}
 
-		$titleRecientes = get_the_title( $posts_info[0]->id );
-		if ( strpos($titleRecientes, 'Sin título') !== false OR $titleRecientes == '' OR strpos($titleRecientes, '&nbsp') !== false ){
-			$titleRecientes = NULL;
-		}
+			$seriesRecientes = 0;
 
-		$seriesRecientes = 0;
+			$placeRecientes = wp_get_post_terms( get_the_ID(), 'lugar' );
+			if ( $placeRecientes ){
+				$placeRecientesName 	= $placeRecientes[0]->name;
+			}
 
-		$placeRecientes = wp_get_post_terms( $posts_info[0]->id, 'lugar' );
-		if ( $placeRecientes ){
-			$placeRecientesName 	= $placeRecientes[0]->name;
-		}
+			$circaRecientes = 0;
 
-		$circaRecientes = 0;
+			$dateRecientes = wp_get_post_terms( get_the_ID(), 'año' );
+			if ( $dateRecientes ){
+				$dateRecientesName 	= $dateRecientes[0]->name;
+			} else {
+				$dateRecientesName 	= 's/f';
+			}
 
-		$dateRecientes = wp_get_post_terms( $posts_info[0]->id, 'año' );
-		if ( $dateRecientes ){
-			$dateRecientesName 	= $dateRecientes[0]->name;
-		} else {
-			$dateRecientesName 	= 's/f';
-		}
+			$themesRecientes = wp_get_post_terms( get_the_ID(), 'tema' );
+			if ( ! $themesRecientes ){
+				$themesRecientesName 	= '';
+			}
 
-		$themesRecientes = wp_get_post_terms( $posts_info[0]->id, 'tema' );
-		if ( ! $themesRecientes ){
-			$themesRecientesName 	= '';
-		}
-
-		$permalinkRecientes = get_permalink( $posts_info[0]->id );
+			$permalinkRecientes = get_permalink( get_the_ID() );
+		endif;
 
 		$html = '
 			<section class="[ nuevas-adquisiciones ] [ bg-image ]" style="background-image: url('.$bgRecientes[0].')">
