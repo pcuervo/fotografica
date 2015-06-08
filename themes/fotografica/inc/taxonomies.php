@@ -330,31 +330,6 @@
 			register_taxonomy( 'tipo-de-publicacion', 'publicaciones', $args );
 		}// taxonomy apellido
 
-		// Medio
-		if( ! taxonomy_exists('medio')){
-			$labels = array(
-				'name'              => 'Medio',
-				'singular_name'     => 'Medio',
-				'search_items'      => 'Buscar',
-				'all_items'         => 'Todos',
-				'edit_item'         => 'Editar Medio',
-				'update_item'       => 'Actualizar Medio',
-				'add_new_item'      => 'Nuevo Medio',
-				'new_item_name'     => 'Nombre Nuevo Medio',
-				'menu_name'         => 'Medio'
-			);
-			$args = array(
-				'hierarchical'      => true,
-				'labels'            => $labels,
-				'show_ui'           => true,
-				'show_admin_column' => true,
-				'show_in_nav_menus' => true,
-				'query_var'         => true,
-				'rewrite'           => array( 'slug' => 'medio' ),
-			);
-			register_taxonomy( 'medio', 'publicaciones', $args );
-		}// taxonomy medio
-
 		// Tipo de noticia
 		if( ! taxonomy_exists('tipo-de-noticia')){
 			$labels = array(
@@ -433,6 +408,7 @@
 		
 		//addCoverToPhoto();
 		insertAdquisicionesRecientesTaxonomyTerm();
+		insertTipoPublicacionTaxonomyTerm();
 
 	}
 
@@ -552,6 +528,20 @@
 		wp_insert_term( 'si', 'adquisiciones-recientes' );
 
 	}// insertAdquisicionesRecientesTaxonomyTerm
+
+	function insertTipoPublicacionTaxonomyTerm(){
+
+		$term_nuestras = term_exists( 'Nuestras publicaciones', 'tipo-de-publicacion' );
+		if ( $term_nuestras == 0 && $term_nuestras == null ) {
+			wp_insert_term( 'Nuestras publicaciones', 'tipo-de-publicacion' );
+		}
+
+		$term_coed = term_exists( 'Coediciones', 'tipo-de-publicacion' );
+		if ( $term_coed == 0 && $term_coed == null ) {
+			wp_insert_term( 'Coediciones', 'tipo-de-publicacion' );
+		}
+
+	}// insertTipoPublicacionTaxonomyTerm
 
 	function insertArchiveNameToProject(){
 		global $post;

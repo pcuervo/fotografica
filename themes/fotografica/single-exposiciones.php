@@ -71,12 +71,13 @@
 	<section class="[ margin-bottom ]">
 		<div class="[ wrapper ]">
 			<div class="[ row ]">
+				<h2 class="[ title ] [ text-center ]">Te puede interesar</h2>
 				<?php
 
 				$extraPostType = array('proyectos', 'publicaciones', 'exposiciones');
 				$postTypeRand = rand(0, count($extraPostType)-1);
 				$args = array(
-					'post_type' 		=> $postTypeRand,
+					'post_type' 		=> $extraPostType[$postTypeRand],
 					'posts_per_page' 	=> 1,
 					'orderby' 			=> 'rand'
 				);
@@ -97,9 +98,12 @@
 					$bgRandom = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
 
 					$coleccionRandom 		= wp_get_post_terms( $post->ID, 'coleccion' );
-					$coleccionRandomName 	= $coleccionRandom[0]->name;
-					$coleccionRandomSlug 	= $coleccionRandom[0]->slug;
-
+					$coleccionRandomName	= '';
+					if( ! empty( $coleccionRandom ) ) {
+						$coleccionRandomName 	= $coleccionRandom[0]->name;
+						$coleccionRandomSlug 	= $coleccionRandom[0]->slug;
+					}
+					
 					$authorRandom 		= wp_get_post_terms( $post->ID, 'fotografo' );
 					if ( $authorRandom ){
 						$authorRandomName 	= $authorRandom[0]->name;
@@ -139,7 +143,6 @@
 					$permalinkColeccion = get_permalink( $post->ID );
 
 				?>
-					<h2 class="[ title ] [ text-center ]">Te puede interesar</h2>
 					<article class="[ relacionadas ][ bg-image ][ span xmall-12 medium-6 ]" style="background-image: url(<?php echo $bgRandom[0]; ?>)">
 							<div class="[ opacity-gradient <?php echo ( $counter == 1 ) ? '[ square square-absolute ]' : '[ rectangle rectangle-absolute ]' ?> ]">
 								<a class="[ block ][ media-link ]" href="<?php echo $permalinkColeccion; ?>"></a>
@@ -172,7 +175,9 @@
 										<?php } ?>
 
 										<!-- COLECCION -->
-										<br /> de la colección <a href="<?php echo site_url().'/colecciones?coleccion='.$coleccionRandomSlug; ?>" class="[ media--info__colection ]"> <?php echo $coleccionRandomName; ?></a>
+										<?php if ( $coleccionRandomName !== '' ){ ?>
+											<br /> de la colección <a href="<?php echo site_url().'/colecciones?coleccion='.$coleccionRandomSlug; ?>" class="[ media--info__colection ]"> <?php echo $coleccionRandomName; ?></a>
+										<?php } ?>
 									</p>
 								</div>
 							</div>
@@ -183,27 +188,11 @@
 				$has_related       = false;
 				$has_related_limit = 0;
 				while( ! $has_related AND $has_related_limit <= 10 ){
-					// Jalar taxonomía y termino al azar para fotos relacionadas
-					$tax = get_object_taxonomies( $post );
-					$random_tax = rand(0, count($tax)-1);
+					$has_related_limit++;
 
-					if(empty($tax)){
-						$terms = [];
-					} else {
-						$terms = wp_get_post_terms( $post->ID, $tax[$random_tax] );
-						$term_test = wp_get_post_terms( $post->ID, $tax[0] );
-
-						$i = 0;
-						while( count($terms) == 0 ) {
-							$i++;
-							if( $i > 50 ) break;
-							$random_tax = rand(0, count($tax)-1);
-							$terms = wp_get_post_terms( $post->ID, $tax[$random_tax] );
-						}
-						$random_term = rand(0, count($terms)-1);
-					}
-
-
+					$tags = array();
+					foreach ( get_the_tags() as $tag ) array_push($tags, $tag->term_id);
+					
 					$counter = 1;
 					$bgColecciones = '';
 					$coleccionColecciones = '';
@@ -213,27 +202,12 @@
 					$placeColecciones = '';
 					$circaColecciones = 0;
 					$dateColecciones = '';
-					if(empty($terms)){
-						$args = array(
-							'post_type' 		=> 'fotografias',
-							'posts_per_page' 	=> 2,
-							'orderby' 			=> 'rand',
-							'post__not_in'		=> array($post->ID),
-						);
-					} else {
-						$args = array(
-							'post_type' 		=> 'fotografias',
-							'posts_per_page' 	=> 2,
-							'orderby' 			=> 'rand',
-							'post__not_in'		=> array($post->ID),
-							'tax_query'			=> array(
-								array(
-									'taxonomy'	=> $tax[$random_tax],
-									'terms'		=> $terms[$random_term],
-								),
-							),
-						);
-					}
+
+					$args = array( 
+						'tag__in' 			=> $tags, 
+						'posts_per_page' 	=> 3,
+						'orderby' 			=> 'rand',
+					);
 
 					$queryFotografias = new WP_Query( $args );
 					if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post();
@@ -320,8 +294,11 @@
 								</div>
 							</div>
 						</article>
+
 					<?php $counter++; endwhile; endif; wp_reset_query();
 				} //while
+
+				
 				?>
 			</div><!-- row -->
 		</div><!-- wrapper -->

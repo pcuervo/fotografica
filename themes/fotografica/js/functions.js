@@ -17,7 +17,7 @@
 		/*------------------------------------*\
 			#Triggered events
 		\*------------------------------------*/
-
+ 
 		/**
 		 * Show and hide elements with the ajax calls
 		**/
@@ -79,8 +79,6 @@ function runMasonry(container, item){
 * Append elements to Masonry
 **/
 function appendToMasonry(container, items){
-	//console.log( $(container) );
-	//console.log(items );
 	var $container = $(container);
 	$container.masonry( 'appended', items );
 }

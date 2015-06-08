@@ -210,12 +210,14 @@
 			<div class="[ wrapper ]">
 				<div class="[ row ]">
 					<h2 class="[ title ] [ text-center ]">Te puede interesar</h2>
+					
 					<?php
 
 					$extraPostType = array('proyectos', 'publicaciones', 'exposiciones');
 					$postTypeRand = rand(0, count($extraPostType)-1);
+					$randomPostType = $extraPostType[$postTypeRand];
 					$args = array(
-						'post_type' 		=> $postTypeRand,
+						'post_type' 		=> $randomPostType,
 						'posts_per_page' 	=> 3,
 						'orderby' 			=> 'rand'
 					);
@@ -231,6 +233,7 @@
 					$dateRandom = '';
 
 					$queryRandomPost = new WP_Query( $args );
+
 					if ( $queryRandomPost->have_posts() ) : while ( $queryRandomPost->have_posts() ) : $queryRandomPost->the_post();
 
 						$bgRandom = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
@@ -238,8 +241,13 @@
 						if ( empty( $bgRandom ) ) continue;
 
 						$coleccionRandom 		= wp_get_post_terms( $post->ID, 'coleccion' );
-						$coleccionRandomName 	= $coleccionRandom[0]->name;
-						$coleccionRandomSlug 	= $coleccionRandom[0]->slug;
+						$coleccionRandomName 	= '';
+
+						if( ! empty( $coleccionRandom ) ){
+							$coleccionRandomName 	= $coleccionRandom[0]->name;
+							$coleccionRandomSlug 	= $coleccionRandom[0]->slug;
+						}
+						
 
 						$authorRandom 		= wp_get_post_terms( $post->ID, 'fotografo' );
 						if ( $authorRandom ){
@@ -314,7 +322,9 @@
 											<?php } ?>
 
 											<!-- COLECCION -->
-											<br /> de la colección <a href="<?php echo site_url().'/colecciones?coleccion='.$coleccionRandomSlug; ?>" class="[ media--info__colection ]"> <?php echo $coleccionRandomName; ?></a>
+											<?php if ( $coleccionRandomName !== '' ) { ?>
+												<br /> de la colección <a href="<?php echo site_url().'/colecciones?coleccion='.$coleccionRandomSlug; ?>" class="[ media--info__colection ]"> <?php echo $coleccionRandomName; ?></a>
+											<?php } ?>
 										</p>
 									</div>
 								</div>
@@ -325,7 +335,7 @@
 					$has_related       = false;
 					$has_related_limit = 0;
 					while( ! $has_related AND $has_related_limit <= 10 ){
-
+						$has_related_limit++;
 						// Jalar taxonomía y termino al azar para fotos relacionadas
 						$tax = get_object_taxonomies( $post );
 						$random_tax = rand(0, count($tax)-1);
@@ -346,6 +356,16 @@
 							$random_term = rand(0, count($terms)-1);
 						}
 
+						$has_irrelevant_term = false;
+
+						foreach ($terms as $term) {
+							if( 'destacado' == $term->slug ) {
+								$has_irrelevant_term = true;
+								break;
+							}
+						}
+						
+
 						$counter = 1;
 						$bgColecciones = '';
 						$coleccionColecciones = '';
@@ -355,7 +375,8 @@
 						$placeColecciones = '';
 						$circaColecciones = 0;
 						$dateColecciones = '';
-						if(empty($terms)){
+						
+						if( empty($terms) || $has_irrelevant_term ){
 							$args = array(
 								'post_type' 		=> 'fotografias',
 								'posts_per_page' 	=> 2,
