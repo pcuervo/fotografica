@@ -9,7 +9,7 @@
 	$fb_stats = file_get_contents('http://api.facebook.com/restserver.php?method=links.getStats&urls=http://pcuervo.com/fotografica/fotografias/sin-titulo-17/');
 ?>
 
-	<div class="[ full-height ][ margin-bottom ]">
+	<div class="[ full-he	ight ][ margin-bottom ]">
 		<?php the_post_thumbnail('full', array('class' => 'full-height-centered')); ?>
 	</div>
 
@@ -103,7 +103,7 @@
 						$coleccionRandomName 	= $coleccionRandom[0]->name;
 						$coleccionRandomSlug 	= $coleccionRandom[0]->slug;
 					}
-					
+
 					$authorRandom 		= wp_get_post_terms( $post->ID, 'fotografo' );
 					if ( $authorRandom ){
 						$authorRandomName 	= $authorRandom[0]->name;
@@ -191,8 +191,12 @@
 					$has_related_limit++;
 
 					$tags = array();
-					foreach ( get_the_tags() as $tag ) array_push($tags, $tag->term_id);
-					
+					$get_the_tags = get_the_tags();
+
+					if ( $get_the_tags ){
+						foreach ( get_the_tags() as $tag ) array_push($tags, $tag->term_id);
+					}
+
 					$counter = 1;
 					$bgColecciones = '';
 					$coleccionColecciones = '';
@@ -203,8 +207,8 @@
 					$circaColecciones = 0;
 					$dateColecciones = '';
 
-					$args = array( 
-						'tag__in' 			=> $tags, 
+					$args = array(
+						'tag__in' 			=> $tags,
 						'posts_per_page' 	=> 3,
 						'orderby' 			=> 'rand',
 					);
@@ -298,7 +302,7 @@
 					<?php $counter++; endwhile; endif; wp_reset_query();
 				} //while
 
-				
+
 				?>
 			</div><!-- row -->
 		</div><!-- wrapper -->
