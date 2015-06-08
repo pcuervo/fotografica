@@ -1052,7 +1052,6 @@
 			$posts_info = $wpdb->get_results( $query, OBJECT );
 		} else {
 
-			// SELECT P.id, P.post_title, T.name, T.slug FROM wp_posts P
 			$query = "
 				SELECT id, COUNT(id)  FROM wp_posts P
 				INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
