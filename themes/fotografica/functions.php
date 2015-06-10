@@ -1365,9 +1365,9 @@
 		global $wpdb;
 
 		$query = "
-			SELECT id FROM wp_posts P INNER JOIN wp_postmeta PM ON PM.post_id = P.id
-				WHERE post_type = 'exposiciones'
-				AND meta_key IN ('_evento_fecha_final_meta', '_evento_fecha_inicial_meta')";
+			SELECT DISTINCT id FROM wp_posts P INNER JOIN wp_postmeta PM ON PM.post_id = P.id
+				WHERE post_type = 'exposiciones'";
+				//AND meta_key IN ('_evento_fecha_final_meta', '_evento_fecha_inicial_meta')";
 
 		if($existing_ids != '0'){
 			$existing_ids_in = implode("', '", $existing_ids);

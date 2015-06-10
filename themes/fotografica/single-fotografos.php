@@ -298,7 +298,7 @@
 					$extraPostType = array('proyectos', 'publicaciones', 'exposiciones');
 					$postTypeRand = rand(0, count($extraPostType)-1);
 					$args = array(
-						'post_type' 		=> $postTypeRand,
+						'post_type' 		=> $extraPostType[$postTypeRand],
 						'posts_per_page' 	=> 1,
 						'orderby' 			=> 'rand'
 					);
@@ -319,9 +319,12 @@
 						$bgRandom = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
 
 						$coleccionRandom 		= wp_get_post_terms( $post->ID, 'coleccion' );
-						$coleccionRandomName 	= $coleccionRandom[0]->name;
-						$coleccionRandomSlug 	= $coleccionRandom[0]->slug;
-
+						$coleccionRandomName = '';
+						if( ! empty( $coleccionRandomName ) ){
+							$coleccionRandomName 	= $coleccionRandom[0]->name;
+							$coleccionRandomSlug 	= $coleccionRandom[0]->slug;
+						}
+						
 						$authorRandom 		= wp_get_post_terms( $post->ID, 'fotografo' );
 						if ( $authorRandom ){
 							$authorRandomName 	= $authorRandom[0]->name;

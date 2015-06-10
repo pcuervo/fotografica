@@ -108,9 +108,9 @@
 					<?php } ?>
 
 					<!-- CIRCA -->
-					<?php if ( $circaColecciones ){ ?>
-						<span class="[ media--info__circa ]">ca. </span>
-					<?php } ?>
+					<?php //if ( $circaColecciones ){ ?>
+						<!-- <span class="[ media--info__circa ]">ca. </span> -->
+					<?php //} ?>
 
 					<!-- AÑO -->
 					<?php if ( $dateColecciones ){ ?>
@@ -149,12 +149,13 @@
 	<section class="[ margin-bottom ]">
 		<div class="[ wrapper ]">
 			<div class="[ row ]">
+				<h2 class="[ title ] [ text-center ]">Te puede interesar</h2>
 				<?php
 
 				$extraPostType = array('proyectos', 'publicaciones', 'exposiciones');
 				$postTypeRand = rand(0, count($extraPostType)-1);
 				$args = array(
-					'post_type' 		=> $postTypeRand,
+					'post_type' 		=> $extraPostType[$postTypeRand],
 					'posts_per_page' 	=> 1,
 					'orderby' 			=> 'rand'
 				);
@@ -175,8 +176,11 @@
 					$bgRandom = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
 
 					$coleccionRandom 		= wp_get_post_terms( $post->ID, 'coleccion' );
-					$coleccionRandomName 	= $coleccionRandom[0]->name;
-					$coleccionRandomSlug 	= $coleccionRandom[0]->slug;
+					$coleccionRandomName = '';
+					if( ! empty( $coleccionRandom ) ){
+						$coleccionRandomName 	= $coleccionRandom[0]->name;
+						$coleccionRandomSlug 	= $coleccionRandom[0]->slug;
+					}			
 
 					$authorRandom 		= wp_get_post_terms( $post->ID, 'fotografo' );
 					if ( $authorRandom ){
@@ -217,7 +221,6 @@
 					$permalinkColeccion = get_permalink( $post->ID );
 
 				?>
-					<h2 class="[ title ] [ text-center ]">Te puede interesar</h2>
 					<article class="[ relacionadas ][ bg-image ][ span xmall-12 medium-6 ]" style="background-image: url(<?php echo $bgRandom[0]; ?>)">
 							<div class="[ opacity-gradient <?php echo ( $counter == 1 ) ? '[ square square-absolute ]' : '[ rectangle rectangle-absolute ]' ?> ]">
 								<a class="[ block ][ media-link ]" href="<?php echo $permalinkColeccion; ?>"></a>
@@ -294,14 +297,14 @@
 					if(empty($terms)){
 						$args = array(
 							'post_type' 		=> 'fotografias',
-							'posts_per_page' 	=> 2,
+							'posts_per_page' 	=> 3,
 							'orderby' 			=> 'rand',
 							'post__not_in'		=> array($post->ID),
 						);
 					} else {
 						$args = array(
 							'post_type' 		=> 'fotografias',
-							'posts_per_page' 	=> 2,
+							'posts_per_page' 	=> 3,
 							'orderby' 			=> 'rand',
 							'post__not_in'		=> array($post->ID),
 							'tax_query'			=> array(
@@ -387,7 +390,7 @@
 
 										<!-- CIRCA -->
 										<?php if ( $circaColecciones ){ ?>
-											<span class="[ media--info__circa ]">ca. </span>
+											<!-- <span class="[ media--info__circa ]">ca. </span> -->
 										<?php } ?>
 
 										<!-- AÑO -->
