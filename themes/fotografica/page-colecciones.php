@@ -67,9 +67,7 @@
 		}
 
 		$themesColecciones = wp_get_post_terms( $post->ID, 'tema' );
-		if ( ! $themesColecciones ){
-			$themesColeccionesName 	= '';
-		}
+		$themesColeccionesName 	= '';
 
 		$permalinkColeccion = get_permalink( $post->ID );
 	endwhile; endif; wp_reset_query(); ?>
