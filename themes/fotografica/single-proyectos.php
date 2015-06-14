@@ -38,8 +38,8 @@
 				<?php the_post_thumbnail('full', array('class' => 'full-height-centered') ); ?>
 			</div>
 		<?php }
-		$taxonomia = 'tipo-de-proyecto';
 
+		$taxonomia = 'tipo-de-proyecto';
 		if($taxonomia != ''){
 			$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
 			$coleccionColecciones 		= wp_get_post_terms( $post->ID, $taxonomia );
@@ -84,6 +84,8 @@
 		}
 
 		$permalinkColeccion = get_permalink( $post->ID ); ?>
+
+		<h2 class="[ title ][ text-center ]"> <?php the_title(); ?></h2>
 
 		<section class="[ share ] [ margin-bottom--large ]">
 			<div class="[ wrapper ][ clearfix ]">
@@ -480,7 +482,7 @@
 								<span class="[ opacity-gradient--full ]"></span>
 								<div class="[ media-info media-info--small ] [ xmall-12 ]">
 									<p class="[ text-center ]">
-										<a href="<?php echo $url ?>" class="[ media--info__name ]"><?php the_title() ?></a>
+										<a href="<?php echo $url ?>" class="[ media--info__title ]"><?php the_title() ?></a>
 									</p>
 								</div>
 							</a>

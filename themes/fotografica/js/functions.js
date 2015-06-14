@@ -17,7 +17,7 @@
 		/*------------------------------------*\
 			#Triggered events
 		\*------------------------------------*/
- 
+
 		/**
 		 * Show and hide elements with the ajax calls
 		**/
@@ -584,7 +584,11 @@ function getHtmlProyectos(results){
 				<p class="[ text-center ]">';
 					if ( results.titulo ){
 						if ( results.titulo !== 'Sin título' || results.titulo !== 'Sin t\u00edtulo' ){
-							html_resultados = html_resultados+'<a href="'+results.permalink+'" class="[ media--info__title ]">'+results.titulo+'</a>';
+							if ( results.term == 'link' ){
+								html_resultados = html_resultados+'<a href="'+results.link+'" class="[ media--info__title ]">'+results.titulo+'</a>';
+							} else {
+								html_resultados = html_resultados+'<a href="'+results.permalink+'" class="[ media--info__title ]">'+results.titulo+'</a>';
+							}
 						}
 					}
 				html_resultados = html_resultados+'</p> \

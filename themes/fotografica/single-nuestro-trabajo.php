@@ -128,11 +128,25 @@
 		</section>
 	<?php }
 	if ( ! empty($video_src) ){ ?>
-		<div class="[ wrapper ]">
-			<div class="[ margin-bottom ][ fit-vids-wrapper ]">
-				<iframe src="https:<?php echo $video_src; ?>?color=1aa2dc&title=0&byline=0&portrait=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-			</div>
-		</div><!-- wrapper -->
+		<section class="[ margin-bottom--large ][ single-content ]">
+			<div class="[ wrapper ]">
+				<div class="[ row ]">
+					<div class="[ columna small-12 medium-10 large-6 xxlarge-4 center ]">
+						<?php if ( $video_src ){ ?>
+							<div class="[ margin-bottom ][ fit-vids-wrapper ]">
+							<?php if ( $videoHost == 'vimeo' ){ ?>
+								<iframe src="https:<?php echo $video_src; ?>?color=1aa2dc&title=0&byline=0&portrait=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+							<?php } ?>
+							<?php if ( $videoHost == 'youtube' ){ ?>
+								<iframe src="https:<?php echo $video_src; ?>?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+							<?php } ?>
+							</div>
+						<?php }
+						the_content(); ?>
+					</div>
+				</div>
+			</div><!-- .wrapper -->
+		</section>
 	<?php } ?>
 	<section class="[ margin-bottom--large ][ single-content ]">
 		<div class="[ wrapper ]">
@@ -180,7 +194,7 @@
 					if( ! empty( $coleccionRandom ) ){
 						$coleccionRandomName 	= $coleccionRandom[0]->name;
 						$coleccionRandomSlug 	= $coleccionRandom[0]->slug;
-					}			
+					}
 
 					$authorRandom 		= wp_get_post_terms( $post->ID, 'fotografo' );
 					if ( $authorRandom ){

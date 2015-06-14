@@ -62,7 +62,7 @@
 							<iframe src="https:<?php echo $video_src; ?>?color=1aa2dc&title=0&byline=0&portrait=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 						<?php } ?>
 						<?php if ( $videoHost == 'youtube' ){ ?>
-							<iframe src="https://www.youtube.com/embed/1ZWLWxpBv5g?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+							<iframe src="https:<?php echo $video_src; ?>?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
 						<?php } ?>
 						</div>
 					<?php }

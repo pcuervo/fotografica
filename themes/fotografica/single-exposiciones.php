@@ -9,7 +9,7 @@
 	$fb_stats = file_get_contents('http://api.facebook.com/restserver.php?method=links.getStats&urls=http://pcuervo.com/fotografica/fotografias/sin-titulo-17/');
 ?>
 
-	<div class="[ full-he	ight ][ margin-bottom ]">
+	<div class="[ full-height ][ margin-bottom ]">
 		<?php the_post_thumbnail('full', array('class' => 'full-height-centered')); ?>
 	</div>
 
