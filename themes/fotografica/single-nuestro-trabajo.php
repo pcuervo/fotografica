@@ -266,8 +266,6 @@
 											<span class="[ media--info__date ]"><?php echo $dateRandomName; ?></span>,
 										<?php } ?>
 
-										<!-- COLECCION -->
-										<br /> de la colección <a href="<?php echo site_url().'/colecciones?coleccion='.$coleccionRandomSlug; ?>" class="[ media--info__colection ]"> <?php echo $coleccionRandomName; ?></a>
 									</p>
 								</div>
 							</div>

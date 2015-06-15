@@ -75,7 +75,115 @@
 	<section class="[ margin-bottom ]">
 		<div class="[ wrapper ]">
 			<div class="[ row ]">
+				<h2 class="[ title ] [ text-center ]">Te puede interesar</h2>
 				<?php
+
+				$extraPostType = array('proyectos', 'publicaciones', 'exposiciones');
+				$postTypeRand = rand(0, count($extraPostType)-1);
+				$args = array(
+					'post_type' 		=> $extraPostType[$postTypeRand],
+					'posts_per_page' 	=> 1,
+					'orderby' 			=> 'rand'
+				);
+
+				$counter = 1;
+				$bgRandom = '';
+				$coleccionRandom = '';
+				$authorRandom = '';
+				$titleRandom = '';
+				$seriesRandom = '';
+				$placeRandom = '';
+				$circaRandom = 0;
+				$dateRandom = '';
+
+				$queryRandomPost = new WP_Query( $args );
+				if ( $queryRandomPost->have_posts() ) : while ( $queryRandomPost->have_posts() ) : $queryRandomPost->the_post();
+
+					$bgRandom = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+
+					$coleccionRandom 		= wp_get_post_terms( $post->ID, 'coleccion' );
+					$coleccionRandomName	= '';
+					if( ! empty( $coleccionRandom ) ) {
+						$coleccionRandomName 	= $coleccionRandom[0]->name;
+						$coleccionRandomSlug 	= $coleccionRandom[0]->slug;
+					}
+
+					$authorRandom 		= wp_get_post_terms( $post->ID, 'fotografo' );
+					if ( $authorRandom ){
+						$authorRandomName 	= $authorRandom[0]->name;
+						$authorRandomSlug 	= $authorRandom[0]->slug;
+					} else {
+						$authorRandomName 	= 'Autor no identificado';
+					}
+
+					$titleRandom = get_the_title( $post->ID );
+					if ( strpos($titleRandom, 'Sin título') !== false OR $titleRandom == '' OR strpos($titleRandom, '&nbsp') !== false ){
+						$titleRandom = NULL;
+					}
+
+					$seriesRandom = '';
+					$serie = wp_get_post_terms( $post->id, 'serie' );
+					if ( $serie ){
+						$seriesRandom = $serie[0]->name;
+					}
+
+					$placeRandom = wp_get_post_terms( $post->ID, 'lugar' );
+					if ( $placeRandom ){
+						$placeRandomName 	= $placeRandom[0]->name;
+					}
+
+					$circaRandom = 0;
+
+					$dateRandom = wp_get_post_terms( $post->ID, 'año' );
+					if ( $dateRandom ){
+						$dateRandomName 	= $dateRandom[0]->name;
+					}
+
+					$themesRandom = wp_get_post_terms( $post->ID, 'tema' );
+					if ( ! $themesRandom ){
+						$themesRandomName 	= '';
+					}
+
+					$permalinkColeccion = get_permalink( $post->ID );
+
+				?>
+					<article class="[ relacionadas ][ bg-image ][ span xmall-12 medium-6 ]" style="background-image: url(<?php echo $bgRandom[0]; ?>)">
+							<div class="[ opacity-gradient <?php echo ( $counter == 1 ) ? '[ square square-absolute ]' : '[ rectangle rectangle-absolute ]' ?> ]">
+								<a class="[ block ][ media-link ]" href="<?php echo $permalinkColeccion; ?>"></a>
+								<div class="[ media-info media-info--small ][ xmall-12 ]">
+									<p class="[ text-center ]">
+
+										<!-- NOMBRE APELLIDO -->
+										<?php if ( $authorRandomName != 'Autor no identificado' ){ ?>
+											<a href="<?php echo site_url( $authorRandomSlug ); ?>" class="[ media--info__author ]"><?php echo $authorRandomName;?></a>,
+										<?php } ?>
+
+										<!-- TÍTULO -->
+										<?php if ( $titleRandom ){ ?>
+											<a href="<?php echo $permalinkColeccion; ?>" class="[ media--info__name ]"><?php echo $titleRandom; ?></a>,
+										<?php } ?>
+
+										<!-- DE LA SERIE -->
+										<?php if ( $seriesRandom ){ ?>
+											de la serie <span class="[ media--info__series ]"><?php echo $seriesRandom; ?></span>,
+										<?php } ?>
+
+										<!-- CIRCA -->
+										<?php if ( $circaRandom ){ ?>
+											<span class="[ media--info__circa ]">circa </span>
+										<?php } ?>
+
+										<!-- AÑO -->
+										<?php if ( $dateRandom ){ ?>
+											<span class="[ media--info__date ]"><?php echo $dateRandomName; ?></span>,
+										<?php } ?>
+
+									</p>
+								</div>
+							</div>
+						</article>
+				<?php
+				endwhile; endif; wp_reset_query();
 
 				$has_related       = false;
 				$has_related_limit = 0;
@@ -133,11 +241,7 @@
 					}
 
 					$queryFotografias = new WP_Query( $args );
-					if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post(); ?>
-
-						<?php if ( $counter == 1 ) { ?>
-							<h2 class="[ title ] [ text-center ]">Te puede interesar</h2>
-						<?php }
+					if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post(); 
 
 						$has_related = true;
 						$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
