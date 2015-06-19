@@ -1234,8 +1234,7 @@
 			$query = "
 				SELECT DISTINCT id FROM wp_posts P
 				INNER JOIN wp_postmeta PM ON PM.post_id = P.id
-				WHERE post_type = 'carteleras'
-				AND meta_key IN ('_evento_fecha_final_meta', '_evento_fecha_inicial_meta') AND (";
+				WHERE post_type = 'carteleras'";
 
 			//$inicioHoy = strtotime("midnight", $hoy);
 			//$finHoy = strtotime("tomorrow", $inicioHoy) - 1;
@@ -1244,12 +1243,15 @@
 				if($key != 0) $query .= ' OR';
 
 				if($filtro['value'] == 'anteriores') {
+					$query .= "AND meta_key IN ('_evento_fecha_inicial_meta') AND (";
 					$query .= " meta_value < '".$hoy."'";
 				}
 				if($filtro['value'] == 'proximos') {
+					$query .= "AND meta_key IN ('_evento_fecha_inicial_meta') AND (";
 					$query .= " meta_value > '".$hoy."'";
 				}
 				if($filtro['value'] == 'hoy') {
+					$query .= "AND meta_key IN ('_evento_fecha_final_meta', '_evento_fecha_inicial_meta') AND (";
 					$query .= " ID IN (
 									SELECT post_id FROM wp_postmeta
 									WHERE meta_key = '_evento_fecha_inicial_meta'
@@ -2102,19 +2104,21 @@
 			$query = "
 				SELECT id FROM wp_posts P
 				INNER JOIN wp_postmeta PM ON PM.post_id = P.id
-				WHERE post_type = 'carteleras'
-				AND meta_key IN ('_evento_fecha_final_meta', '_evento_fecha_inicial_meta') AND (";
+				WHERE post_type = 'carteleras'";
 
 			foreach ($filtros as $key => $filtro) {
 				if($key != 0) $query .= ' OR';
 
 				if($filtro['value'] == 'anteriores') {
+					$query .= "AND meta_key IN ('_evento_fecha_inicial_meta') AND (";
 					$query .= " meta_value < '".$hoy."'";
 				}
 				if($filtro['value'] == 'proximos') {
+					$query .= "AND meta_key IN ('_evento_fecha_inicial_meta') AND (";
 					$query .= " meta_value > '".$hoy."'";
 				}
 				if($filtro['value'] == 'hoy') {
+					$query .= "AND meta_key IN ('_evento_fecha_final_meta', '_evento_fecha_inicial_meta') AND (";
 					$query .= " ID IN (
 									SELECT post_id FROM wp_postmeta
 									WHERE meta_key = '_evento_fecha_inicial_meta'
