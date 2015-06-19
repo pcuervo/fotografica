@@ -218,7 +218,7 @@
 					$randomPostType = $extraPostType[$postTypeRand];
 					$args = array(
 						'post_type' 		=> $randomPostType,
-						'posts_per_page' 	=> 3,
+						'posts_per_page' 	=> 1,
 						'orderby' 			=> 'rand'
 					);
 
@@ -235,6 +235,7 @@
 					$queryRandomPost = new WP_Query( $args );
 
 					if ( $queryRandomPost->have_posts() ) : while ( $queryRandomPost->have_posts() ) : $queryRandomPost->the_post();
+
 
 						$bgRandom = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
 
@@ -286,7 +287,6 @@
 						}
 
 						$permalinkColeccion = get_permalink( $post->ID );
-						break;
 
 					?>
 						
@@ -375,7 +375,7 @@
 						if( empty($terms) || $has_irrelevant_term ){
 							$args = array(
 								'post_type' 		=> 'fotografias',
-								'posts_per_page' 	=> 2,
+								'posts_per_page' 	=> 3,
 								'orderby' 			=> 'rand',
 								'post__not_in'		=> array($post->ID),
 							);

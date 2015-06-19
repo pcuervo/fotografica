@@ -1243,7 +1243,7 @@
 				if($key != 0) $query .= ' OR';
 
 				if($filtro['value'] == 'anteriores') {
-					$query .= "AND meta_key IN ('_evento_fecha_inicial_meta') AND (";
+					$query .= "AND meta_key IN ('_evento_fecha_final_meta') AND (";
 					$query .= " meta_value < '".$hoy."'";
 				}
 				if($filtro['value'] == 'proximos') {
@@ -1497,7 +1497,7 @@
 			$existing_ids_in = implode("', '", $existing_ids);
 			$query .= " AND id NOT IN ('".$existing_ids_in."')";
 		}
-		$query .= " AND post_status = 'publish' ORDER BY rand DESC LIMIT ".$limit;
+		$query .= " AND post_status = 'publish' ORDER BY RAND() DESC LIMIT ".$limit;
 		$posts_info = $wpdb->get_results( $query, OBJECT );
 
 		$info_nuevas_adquisiciones = array();
@@ -2110,7 +2110,7 @@
 				if($key != 0) $query .= ' OR';
 
 				if($filtro['value'] == 'anteriores') {
-					$query .= "AND meta_key IN ('_evento_fecha_inicial_meta') AND (";
+					$query .= "AND meta_key IN ('_evento_fecha_final_meta') AND (";
 					$query .= " meta_value < '".$hoy."'";
 				}
 				if($filtro['value'] == 'proximos') {
