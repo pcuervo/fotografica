@@ -181,16 +181,55 @@
 				<?php
 				endwhile; endif; wp_reset_query();
 
-				$has_related       = false;
-				$has_related_limit = 0;
-				while( ! $has_related AND $has_related_limit <= 10 ){
-					$has_related_limit++;
+				// $has_related       = false;
+				// $has_related_limit = 0;
+				// while( ! $has_related AND $has_related_limit <= 10 ){
+				// 	$has_related_limit++;
 
-					$tags = array();
-					$get_the_tags = get_the_tags();
+				// 	$tags = array();
+				// 	$get_the_tags = get_the_tags();
 
-					if ( $get_the_tags ){
-						foreach ( get_the_tags() as $tag ) array_push($tags, $tag->term_id);
+				// 	if ( $get_the_tags ){
+				// 		foreach ( get_the_tags() as $tag ) array_push($tags, $tag->term_id);
+				// 	}
+
+				// 	$counter = 1;
+				// 	$bgColecciones = '';
+				// 	$coleccionColecciones = '';
+				// 	$authorColecciones = '';
+				// 	$titleColecciones = '';
+				// 	$seriesColecciones = '';
+				// 	$placeColecciones = '';
+				// 	$circaColecciones = 0;
+				// 	$dateColecciones = '';
+
+				// 	$args = array(
+				// 		'tag__in' 			=> $tags,
+				// 		'posts_per_page' 	=> 3,
+				// 		'orderby' 			=> 'rand',
+				// 	);
+
+					$has_related       = false;
+					$has_related_limit = 0;
+					while( ! $has_related AND $has_related_limit <= 10 ){
+					// Jalar taxonomía y termino al azar para fotos relacionadas
+					$tax = get_object_taxonomies( $post );
+					$random_tax = rand(0, count($tax)-1);
+
+					if(empty($tax)){
+						$terms = [];
+					} else {
+						$terms = wp_get_post_terms( $post->ID, $tax[$random_tax] );
+						$term_test = wp_get_post_terms( $post->ID, $tax[0] );
+
+						$i = 0;
+						while( count($terms) == 0 ) {
+							$i++;
+							if( $i > 50 ) break;
+							$random_tax = rand(0, count($tax)-1);
+							$terms = wp_get_post_terms( $post->ID, $tax[$random_tax] );
+						}
+						$random_term = rand(0, count($terms)-1);
 					}
 
 					$counter = 1;
@@ -202,12 +241,27 @@
 					$placeColecciones = '';
 					$circaColecciones = 0;
 					$dateColecciones = '';
-
-					$args = array(
-						'tag__in' 			=> $tags,
-						'posts_per_page' 	=> 3,
-						'orderby' 			=> 'rand',
-					);
+					if(empty($terms)){
+						$args = array(
+							'post_type' 		=> 'fotografias',
+							'posts_per_page' 	=> 3,
+							'orderby' 			=> 'rand',
+							'post__not_in'		=> array($post->ID),
+						);
+					} else {
+						$args = array(
+							'post_type' 		=> 'fotografias',
+							'posts_per_page' 	=> 3,
+							'orderby' 			=> 'rand',
+							'post__not_in'		=> array($post->ID),
+							'tax_query'			=> array(
+								array(
+									'taxonomy'	=> $tax[$random_tax],
+									'terms'		=> $terms[$random_term],
+								),
+							),
+						);
+					}
 
 					$queryFotografias = new WP_Query( $args );
 					if ( $queryFotografias->have_posts() ) : while ( $queryFotografias->have_posts() ) : $queryFotografias->the_post();

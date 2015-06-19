@@ -100,7 +100,6 @@
 							\*------------------------------------*/
 							var existing_ids = 0;
 
-
 							/**
 							 * Triggered events
 							**/
@@ -111,7 +110,8 @@
 
 							$('.filters__content').on('click', '.filter', function(e){
 								<?php if( $postType == 'carteleras' ) {?>
-									removeFilters();
+									//removeFilters();
+
 								<?php } ?>
 								//e.stopImmediatePropagation();
 								addFilter( this );
@@ -160,7 +160,11 @@
 								$('.tab-filter').click();
 							<?php } ?>
 
-							advancedSearch('<?php echo $postType ?>', getFilters(false), 20, existing_ids);
+							<?php if( $postType == 'carteleras' ) { ?>
+								$('[data-value="hoy"]').click();
+							<?php } else { ?>
+								advancedSearch('<?php echo $postType ?>', getFilters(false), 20, existing_ids);
+							<?php } ?>
 						<?php }
 
 
@@ -1249,12 +1253,12 @@
 					$query .= " ID IN (
 									SELECT post_id FROM wp_postmeta
 									WHERE meta_key = '_evento_fecha_inicial_meta'
-									AND meta_value < '$hoy'
+									AND meta_value <= '$hoy'
 								)
 								AND ID IN (
 									SELECT post_id FROM wp_postmeta
 									WHERE meta_key = '_evento_fecha_final_meta'
-									AND meta_value > '$hoy'
+									AND meta_value >= '$hoy'
 								)";
 				}
 			}
@@ -1268,6 +1272,8 @@
 
 			$posts_info = $wpdb->get_results( $query );
 		}
+
+		//echo $query;
 
 		$info_colecciones = array();
 		foreach ($posts_info as $key => $post) {
@@ -1489,7 +1495,7 @@
 			$existing_ids_in = implode("', '", $existing_ids);
 			$query .= " AND id NOT IN ('".$existing_ids_in."')";
 		}
-		$query .= " AND post_status = 'publish' ORDER BY post_date DESC LIMIT ".$limit;
+		$query .= " AND post_status = 'publish' ORDER BY rand DESC LIMIT ".$limit;
 		$posts_info = $wpdb->get_results( $query, OBJECT );
 
 		$info_nuevas_adquisiciones = array();
@@ -2112,12 +2118,12 @@
 					$query .= " ID IN (
 									SELECT post_id FROM wp_postmeta
 									WHERE meta_key = '_evento_fecha_inicial_meta'
-									AND meta_value < '$hoy'
+									AND meta_value <= '$hoy'
 								)
 								AND ID IN (
 									SELECT post_id FROM wp_postmeta
 									WHERE meta_key = '_evento_fecha_final_meta'
-									AND meta_value > '$hoy'
+									AND meta_value >= '$hoy'
 								)";
 				}
 			}

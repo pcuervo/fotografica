@@ -391,7 +391,7 @@ function advancedSearch(post_type, filters, limit, existing_ids){
 		user_data,
 		function(response){
 
-			console.log(response);
+			//console.log(response);
 
 			var json_posts = $.parseJSON(response);
 			var html_resultado;
