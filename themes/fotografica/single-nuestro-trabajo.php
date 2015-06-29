@@ -60,6 +60,7 @@
 			$placeColeccionesName 	= $placeColecciones[0]->name;
 		}
 
+		$circaColecciones = false;
 		if ( in_category('circa', $post->ID ) ){
 			$circaColecciones = true;
 		}
@@ -108,9 +109,9 @@
 					<?php } ?>
 
 					<!-- CIRCA -->
-					<?php //if ( $circaColecciones ){ ?>
-						<!-- <span class="[ media--info__circa ]">ca. </span> -->
-					<?php //} ?>
+					<?php if ( $circaColecciones ){ ?>
+						<span class="[ media--info__circa ]">ca. </span>
+					<?php } ?>
 
 					<!-- AÑO -->
 					<?php if ( $dateColecciones ){ ?>
@@ -220,7 +221,9 @@
 						$placeRandomName 	= $placeRandom[0]->name;
 					}
 
-					$circaRandom = 0;
+					if ( in_category('circa', $post->ID ) ){
+						$circaRandom = true;
+					}
 
 					$dateRandom = wp_get_post_terms( $post->ID, 'año' );
 					if ( $dateRandom ){
@@ -258,7 +261,7 @@
 
 										<!-- CIRCA -->
 										<?php if ( $circaRandom ){ ?>
-											<span class="[ media--info__circa ]">circa </span>
+											<span class="[ media--info__circa ]">ca. </span>
 										<?php } ?>
 
 										<!-- AÑO -->
@@ -402,7 +405,7 @@
 
 										<!-- CIRCA -->
 										<?php if ( $circaColecciones ){ ?>
-											<!-- <span class="[ media--info__circa ]">ca. </span> -->
+											<span class="[ media--info__circa ]">ca. </span>
 										<?php } ?>
 
 										<!-- AÑO -->

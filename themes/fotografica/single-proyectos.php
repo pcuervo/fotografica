@@ -67,6 +67,7 @@
 			$placeColeccionesName 	= $placeColecciones[0]->name;
 		}
 
+		$circaColecciones = false;
 		if ( in_category('circa', $post->ID ) ){
 			$circaColecciones = true;
 		}
@@ -164,7 +165,9 @@
 							$placeRandomName 	= $placeRandom[0]->name;
 						}
 
-						$circaRandom = 0;
+						if ( in_category('circa', $post->ID ) ){
+							$circaRandom = true;
+						}
 
 						$dateRandom = wp_get_post_terms( $post->ID, 'año' );
 						if ( $dateRandom ){
@@ -179,7 +182,7 @@
 						$permalinkColeccion = get_permalink( $post->ID );
 
 					?>
-						
+
 						<article class="[ relacionadas ][ bg-image ][ span xmall-12 medium-6 ]" style="background-image: url(<?php echo $bgRandom[0]; ?>)">
 								<div class="[ opacity-gradient <?php echo ( $counter == 1 ) ? '[ square square-absolute ]' : '[ rectangle rectangle-absolute ]' ?> ]">
 									<a class="[ block ][ media-link ]" href="<?php echo $permalinkColeccion; ?>"></a>
@@ -203,7 +206,7 @@
 
 											<!-- CIRCA -->
 											<?php if ( $circaRandom ){ ?>
-												<span class="[ media--info__circa ]">circa </span>
+												<span class="[ media--info__circa ]">ca. </span>
 											<?php } ?>
 
 											<!-- AÑO -->
@@ -254,7 +257,7 @@
 						$circaColecciones = 0;
 						$dateColecciones = '';
 						// if(empty($terms)){
-							
+
 						// } else {
 						// 	$args = array(
 						// 		'post_type' 		=> 'fotografias',

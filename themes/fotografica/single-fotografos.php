@@ -48,7 +48,7 @@
 	if( $fotografoQuery->have_posts() ) : while( $fotografoQuery->have_posts() ) : $fotografoQuery->the_post();
 
 		$bgFotografo = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
-		
+
 		$coleccionFotografo = wp_get_post_terms( $post->ID, 'coleccion' );
 		$coleccionFotografoName = '';
 		if ( ! empty( $coleccionFotografo ) ){
@@ -83,7 +83,10 @@
 			$placeFotografoName 	= $placeFotografo[0]->name;
 		}
 
-		$circaFotografo = 0;
+		$circaFotografo = false;
+		if ( in_category('circa', $post->ID ) ){
+			$circaFotografo = true;
+		}
 
 		$dateFotografo = wp_get_post_terms( $post->ID, 'año' );
 		if ( $dateFotografo ){
@@ -129,7 +132,7 @@
 
 					<!-- CIRCA -->
 					<?php if ( $circaFotografo ){ ?>
-						<span class="[ media--info__circa ]">circa </span>
+						<span class="[ media--info__circa ]">ca. </span>
 					<?php } ?>
 
 					<!-- AÑO -->
@@ -143,7 +146,7 @@
 						de la colección <a href="<?php echo site_url() ?>/colecciones?coleccion=<?php echo $coleccionFotografoSlug ?>" class="[ media--info__colection ]"> <?php echo $coleccionFotografoName; ?></a>
 					<?php } ?>
 
-					
+
 
 				</p>
 			</div>
@@ -203,7 +206,7 @@
 								$coleccionTrabajoName 	= $coleccionTrabajo[0]->name;
 								$coleccionTrabajoSlug 	= $coleccionTrabajo[0]->slug;
 							}
-							
+
 							$authorTrabajo 		= wp_get_post_terms( $post->ID, 'fotografo' );
 							if ( $authorTrabajo ){
 								$authorTrabajoName 	= $authorTrabajo[0]->name;
@@ -226,7 +229,10 @@
 								$placeTrabajoName 	= $placeTrabajo[0]->name;
 							}
 
-							$circaTrabajo = 0;
+							$circaTrabajo = false;
+							if ( in_category('circa', $post->ID ) ){
+								$circaTrabajo = true;
+							}
 
 							$dateTrabajo = wp_get_post_terms( $post->ID, 'año' );
 							if ( $dateTrabajo ){
@@ -268,7 +274,7 @@
 
 										<!-- CIRCA -->
 										<?php if ( $circaTrabajo ){ ?>
-											<span class="[ media--info__circa ]">circa </span>,
+											<span class="[ media--info__circa ]">ca. </span>,
 										<?php } ?>
 
 										<!-- AÑO -->
@@ -324,7 +330,7 @@
 							$coleccionRandomName 	= $coleccionRandom[0]->name;
 							$coleccionRandomSlug 	= $coleccionRandom[0]->slug;
 						}
-						
+
 						$authorRandom 		= wp_get_post_terms( $post->ID, 'fotografo' );
 						if ( $authorRandom ){
 							$authorRandomName 	= $authorRandom[0]->name;
@@ -349,7 +355,9 @@
 							$placeRandomName 	= $placeRandom[0]->name;
 						}
 
-						$circaRandom = 0;
+						if ( in_category('circa', $post->ID ) ){
+							$circaRandom = true;
+						}
 
 						$dateRandom = wp_get_post_terms( $post->ID, 'año' );
 						if ( $dateRandom ){
@@ -387,7 +395,7 @@
 
 											<!-- CIRCA -->
 											<?php if ( $circaRandom ){ ?>
-												<span class="[ media--info__circa ]">circa </span>
+												<span class="[ media--info__circa ]">ca. </span>
 											<?php } ?>
 
 											<!-- AÑO -->
