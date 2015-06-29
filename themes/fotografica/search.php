@@ -1,5 +1,5 @@
 <?php 
-	global $post;
+	global $post, $wp_query, $query_string;
 	get_header(); 
 ?>
 	<div class="wrapper">
@@ -13,7 +13,9 @@
 					"s" 				=> $s,
 					"posts_per_page"	=> "-1"
 					);
+
 				$allsearch = new WP_Query( $searchQueryArgs );
+				query_posts( $query_string . 'cat=1&tag=apples' );
 				$key = esc_html($s, 1);
 				$count = $allsearch->post_count;
 				_e('');
@@ -23,6 +25,7 @@
 			resultados.</h4>
 
 			<?php
+			
 			$index = 1;
 			$new_count = 0;
 			if ( have_posts() ) : while( have_posts() ) : the_post(); ?>
