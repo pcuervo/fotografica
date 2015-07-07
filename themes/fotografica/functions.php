@@ -1416,20 +1416,20 @@
 		if ($filtros == ''){
 
 			$query = "
-				SELECT id FROM wp_posts P 
+				SELECT id FROM wp_posts P
 				INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
 				INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
-				INNER JOIN wp_terms T ON T.term_id = TT.term_id				
+				INNER JOIN wp_terms T ON T.term_id = TT.term_id
 				WHERE post_type = 'publicaciones'
 				AND taxonomy = 'tipo-de-publicacion'";
 
 		} else {
 
 			$query = "
-				SELECT id FROM wp_posts P 
+				SELECT id FROM wp_posts P
 				INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
 				INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
-				INNER JOIN wp_terms T ON T.term_id = TT.term_id				
+				INNER JOIN wp_terms T ON T.term_id = TT.term_id
 				WHERE post_type = 'publicaciones'
 				AND taxonomy = 'tipo-de-publicacion'";
 
@@ -1441,7 +1441,7 @@
 				if( $filtro['value'] == 'coediciones' ) {
 					$query .= "slug = 'coediciones'";
 					continue;
-				}	
+				}
 
 				$query .= "slug = 'nuestras-publicaciones'";
 			}
@@ -2148,20 +2148,20 @@
 		if ($filtros == ''){
 
 			$query = "
-				SELECT id FROM wp_posts P 
+				SELECT id FROM wp_posts P
 				INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
 				INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
-				INNER JOIN wp_terms T ON T.term_id = TT.term_id				
+				INNER JOIN wp_terms T ON T.term_id = TT.term_id
 				WHERE post_type = 'publicaciones'
 				AND taxonomy = 'tipo-de-publicacion'";
 
 		} else {
 
 			$query = "
-				SELECT id FROM wp_posts P 
+				SELECT id FROM wp_posts P
 				INNER JOIN wp_term_relationships TR ON TR.object_id = P.id
 				INNER JOIN wp_term_taxonomy TT ON TT.term_taxonomy_id = TR.term_taxonomy_id
-				INNER JOIN wp_terms T ON T.term_id = TT.term_id				
+				INNER JOIN wp_terms T ON T.term_id = TT.term_id
 				WHERE post_type = 'publicaciones'
 				AND taxonomy = 'tipo-de-publicacion'";
 
@@ -2173,7 +2173,7 @@
 				if( $filtro['value'] == 'coediciones' ) {
 					$query .= "slug = 'coediciones'";
 					continue;
-				}	
+				}
 
 				$query .= "slug = 'nuestras-publicaciones'";
 			}
@@ -2518,7 +2518,9 @@
 				$placeColeccionesName 	= $placeColecciones[0]->name;
 			}
 
-			$circaColecciones = 0;
+			if ( in_category('circa', $post->ID ) ){
+				$circaColecciones = true;
+			}
 
 			$dateColecciones = wp_get_post_terms( $post->ID, 'año' );
 			if ( $dateColecciones ){
@@ -2560,7 +2562,7 @@
 							}
 
 							if ( $circaColecciones ){
-								$html .= ' <span class="[ media--info__circa ]">circa </span>';
+								$html .= ' <span class="[ media--info__circa ]">ca. </span>';
 							}
 
 							if ( $dateColecciones ){
@@ -2862,7 +2864,7 @@
 							}
 
 							if ( $circaRecientes ){
-								$html .= ' <span class="[ media--info__circa ]">circa </span>';
+								$html .= ' <span class="[ media--info__circa ]">ca. </span>';
 							}
 
 							if ( $dateRecientes ){
@@ -2997,7 +2999,7 @@
 							}
 
 							if ( $circaFeatured ){
-								$html .= ' <span class="[ media--info__circa ]">circa </span>';
+								$html .= ' <span class="[ media--info__circa ]">ca. </span>';
 							}
 
 							if ( $dateFeatured ){
