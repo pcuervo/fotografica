@@ -36,14 +36,14 @@
 		$('.js-datepicker').datepicker({
 			changeMonth: 	true,
 			changeYear: 	true,
-			yearRange: 		"-300:+0",
+			yearRange: 		"-100:+30",
 			dateFormat: 	'yy-mm-dd'
 		});
 
 		$('.js-datepicker-2').datepicker({
 			changeMonth: 	true,
 			changeYear: 	true,
-			yearRange: 		"-300:+0",
+			yearRange: 		"-100:+30",
 			dateFormat: 	'yy-mm-dd'
 		});
 
