@@ -2,11 +2,111 @@
 # This file is distributed under the same license as the Twenty Thirteen package.
 msgid ""
 msgstr ""
+<<<<<<< HEAD
+"PO-Revision-Date: 2015-07-27 22:21:23+0000\n"
+=======
 "PO-Revision-Date: 2015-06-28 13:22:04+0000\n"
+>>>>>>> 1ede1c8c6e75e45834a812ec3090c07680caae86
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+<<<<<<< HEAD
+"X-Generator: GlotPress/2.1.0-alpha\n"
+"Project-Id-Version: Twenty Thirteen\n"
+
+#. Author URI of the plugin/theme
+msgid "https://wordpress.org/"
+msgstr "https://wordpress.org/"
+
+#. Author of the plugin/theme
+msgid "the WordPress team"
+msgstr "el equipo WordPress"
+
+#. Description of the plugin/theme
+msgid "The 2013 theme for WordPress takes us back to the blog, featuring a full range of post formats, each displayed beautifully in their own unique way. Design details abound, starting with a vibrant color scheme and matching header images, beautiful typography and icons, and a flexible layout that looks great on any device, big or small."
+msgstr "El tema 2013 para WordPress nos regresa a los blogs, presentando un rango completo de formatos para publicar, cada uno se muestra de manera única. Abundan los detalles de diseño, comenzando por el esquema de colores vibrantes que hacen juego con las imágenes de los encabezados, la hermosa tipografía y los íconos, además de un diseño flexible que se ve genial en cualquier dispositivo, grande o pequeño. "
+
+#. Theme URI of the plugin/theme
+msgid "https://wordpress.org/themes/twentythirteen/"
+msgstr "https://wordpress.org/themes/twentythirteen/"
+
+#. Theme Name of the plugin/theme
+msgid "Twenty Thirteen"
+msgstr "Twenty Thirteen"
+
+#: taxonomy-post_format.php:23
+msgid "%s Archives"
+msgstr "Archivos de %s"
+
+#: tag.php:21
+msgid "Tag Archives: %s"
+msgstr "Archivo de la etiqueta: %s"
+
+#: search.php:18
+msgid "Search Results for: %s"
+msgstr "Resultados de búsqueda por: %s"
+
+#: inc/custom-header.php:59
+msgctxt "header image description"
+msgid "Star"
+msgstr "Estrella"
+
+#: inc/custom-header.php:54
+msgctxt "header image description"
+msgid "Diamond"
+msgstr "Diamante"
+
+#: inc/custom-header.php:49
+msgctxt "header image description"
+msgid "Circle"
+msgstr "Círculo"
+
+#: inc/back-compat.php:37 inc/back-compat.php:47 inc/back-compat.php:60
+msgid "Twenty Thirteen requires at least WordPress version 3.6. You are running version %s. Please upgrade and try again."
+msgstr "El tema 2013 requiere al menos la versión 3.6 de WordPress. Tú estás utilizando la versión %s. Por favor, actualiza e intenta de nuevo. "
+
+#: image.php:52
+msgid "Next <span class=\"meta-nav\">&rarr;</span>"
+msgstr "Siguiente <span class=\"meta-nav\">&rarr;</span>"
+
+#: image.php:51
+msgid "<span class=\"meta-nav\">&larr;</span> Previous"
+msgstr "<span class=\"meta-nav\">&larr;</span> Anterior"
+
+#: image.php:39
+msgid "Full resolution"
+msgstr "Resolución completa"
+
+#: image.php:38
+msgid "Link to full-size image"
+msgstr "Vínculo a la imagen de tamaño completo"
+
+#: image.php:22
+msgid "<span class=\"attachment-meta\">Published on <time class=\"entry-date\" datetime=\"%1$s\">%2$s</time> in <a href=\"%3$s\" title=\"Return to %4$s\" rel=\"gallery\">%5$s</a></span>"
+msgstr "<span class=\"attachment-meta\">Publicado el <time class=\"entry-date\" datetime=\"%1$s\">%2$s</time> en <a href=\"%3$s\" title=\"Volver a %4$s\" rel=\"gallery\">%5$s</a></span>"
+
+#: header.php:44
+msgid "Skip to content"
+msgstr "Ir al contenido"
+
+#: header.php:43
+msgid "Menu"
+msgstr "Menú"
+
+#: functions.php:369
+msgid "Permalink to %s"
+msgstr "Enlace permanente a %s"
+
+#: functions.php:363
+msgctxt "1: post format name. 2: date"
+msgid "%1$s on %2$s"
+msgstr "%1$s en %2$s"
+
+#: functions.php:343
+msgid "View all posts by %s"
+msgstr "Ver todas las entradas por %s"
+=======
 "X-Generator: GlotPress/1.0-alpha-1100\n"
 "Project-Id-Version: Twenty Thirteen\n"
 
@@ -36,11 +136,31 @@ msgstr "Plataforma de publicación semántica personal."
 #: functions.php:97
 msgid "Navigation Menu"
 msgstr "Menú de navegación"
+>>>>>>> 1ede1c8c6e75e45834a812ec3090c07680caae86
 
 #: functions.php:322
 msgid "Sticky"
 msgstr "Destacada"
 
+<<<<<<< HEAD
+#: functions.php:322
+msgid "Sticky"
+msgstr "Destacada"
+
+#: functions.php:304
+msgctxt "Next post link"
+msgid "%title <span class=\"meta-nav\">&rarr;</span>"
+msgstr "%title <span class=\"meta-nav\">&rarr;</span>"
+
+#: functions.php:303
+msgctxt "Previous post link"
+msgid "<span class=\"meta-nav\">&larr;</span> %title"
+msgstr "<span class=\"meta-nav\">&larr;</span> %title"
+
+#: functions.php:300
+msgid "Post navigation"
+msgstr "Ir a la entrada"
+=======
 #: functions.php:300
 msgid "Post navigation"
 msgstr "Ir a la entrada"
@@ -48,6 +168,7 @@ msgstr "Ir a la entrada"
 #: functions.php:343
 msgid "View all posts by %s"
 msgstr "Ver todas las entradas por %s"
+>>>>>>> 1ede1c8c6e75e45834a812ec3090c07680caae86
 
 #: search.php:18
 msgid "Search Results for: %s"
@@ -59,12 +180,63 @@ msgstr "El equipo de WordPress"
 
 #: functions.php:266
 msgid "Posts navigation"
+<<<<<<< HEAD
+msgstr "Ir a las entradas"
+
+#: functions.php:243
+msgid "Appears on posts and pages in the sidebar."
+msgstr "Aparece en las publicaciones y páginas en la barra lateral. "
+
+#: functions.php:241
+msgid "Secondary Widget Area"
+msgstr "Área Secundaria para Widgets"
+
+#: functions.php:233
+msgid "Appears in the footer section of the site."
+msgstr "Aparece en el pie de página del sitio. "
+
+#: functions.php:231
+msgid "Main Widget Area"
+msgstr "Área Principal para Widgets"
+
+#: functions.php:218
+msgid "Page %s"
+msgstr "Página %s"
+
+#. Translators: If there are characters in your language that are not supported
+#. by Bitter, translate this to 'off'. Do not translate into your own language.
+#: functions.php:134
+msgctxt "Bitter font: on or off"
+msgid "on"
+msgstr "activa"
+
+#. Translators: If there are characters in your language that are not supported
+#. by Source Sans Pro, translate this to 'off'. Do not translate into your own
+#. language.
+#: functions.php:128
+msgctxt "Source Sans Pro font: on or off"
+msgid "on"
+msgstr "activa"
+
+#: functions.php:97
+msgid "Navigation Menu"
+msgstr "Menú de navegación"
+
+#: footer.php:19
+msgid "Proudly powered by %s"
+msgstr "Creado con %s"
+=======
 msgstr "Navegación de entradas"
+>>>>>>> 1ede1c8c6e75e45834a812ec3090c07680caae86
 
 #: content-gallery.php:43 content-image.php:39 content-quote.php:29
 #: content-video.php:39 content.php:56
 msgid "Leave a comment"
 msgstr "Dejar un comentario"
+
+#: footer.php:19
+msgid "http://wordpress.org/"
+msgstr "http://wordpress.org/"
 
 #: content-none.php:27
 msgid "It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help."
@@ -76,11 +248,14 @@ msgstr "Parece que no podemos encontrar lo que estás buscando. Tal vez la búsq
 msgid "http://wordpress.org/"
 msgstr "http://wordpress.org/"
 
+<<<<<<< HEAD
+=======
 #: archive.php:31
 msgctxt "monthly archives date format"
 msgid "F Y"
 msgstr "F Y"
 
+>>>>>>> 1ede1c8c6e75e45834a812ec3090c07680caae86
 #: content-aside.php:27 content-aside.php:35 content-audio.php:38
 #: content-chat.php:36 content-gallery.php:46 content-image.php:42
 #: content-link.php:19 content-quote.php:32 content-status.php:26
@@ -92,6 +267,14 @@ msgstr "Editar"
 msgctxt "header image description"
 msgid "Diamond"
 msgstr "Diamante"
+
+#. translators: %s: Name of current post
+#: content-aside.php:16 content-audio.php:27 content-chat.php:26
+#: content-gallery.php:27 content-image.php:26 content-link.php:27
+#: content-quote.php:16 content-status.php:16 content-video.php:26
+#: content.php:44 functions.php:478
+msgid "Continue reading %s <span class=\"meta-nav\">&rarr;</span>"
+msgstr "Seguir leyendo %s <span class=\"meta-nav\">&rarr;</span>"
 
 #. translators: %s: Name of current post
 #: content-aside.php:16 content-audio.php:27 content-chat.php:26
@@ -174,6 +357,13 @@ msgstr "%1$s en %2$s"
 msgid "Monthly Archives: %s"
 msgstr "Archivos Mensuales: %s"
 
+<<<<<<< HEAD
+#: archive.php:31
+msgid "Monthly Archives: %s"
+msgstr "Archivos Mensuales: %s"
+
+=======
+>>>>>>> 1ede1c8c6e75e45834a812ec3090c07680caae86
 #: archive.php:29
 msgid "Daily Archives: %s"
 msgstr "Archivos Diarios: %s"
@@ -186,6 +376,8 @@ msgstr "Parece que no se encontro nada en esta ubicación. ¿Puedes intentar una
 msgid "This is somewhat embarrassing, isn&rsquo;t it?"
 msgstr "Esto es vergonzoso, ¿cierto?"
 
+<<<<<<< HEAD
+=======
 #: inc/back-compat.php:37 inc/back-compat.php:47 inc/back-compat.php:60
 msgid "Twenty Thirteen requires at least WordPress version 3.6. You are running version %s. Please upgrade and try again."
 msgstr "El tema 2013 requiere al menos la versión 3.6 de WordPress. Tú estás utilizando la versión %s. Por favor, actualiza e intenta de nuevo. "
@@ -222,6 +414,7 @@ msgstr "http://wordpress.org/themes/twentythirteen"
 msgid "The 2013 theme for WordPress takes us back to the blog, featuring a full range of post formats, each displayed beautifully in their own unique way. Design details abound, starting with a vibrant color scheme and matching header images, beautiful typography and icons, and a flexible layout that looks great on any device, big or small."
 msgstr "El tema 2013 para WordPress nos regresa a los blogs, presentando un rango completo de formatos para publicar, cada uno se muestra de manera única. Abundan los detalles de diseño, comenzando por el esquema de colores vibrantes que hacen juego con las imágenes de los encabezados, la hermosa tipografía y los íconos, además de un diseño flexible que se ve genial en cualquier dispositivo, grande o pequeño. "
 
+>>>>>>> 1ede1c8c6e75e45834a812ec3090c07680caae86
 #: 404.php:16
 msgid "Not Found"
 msgstr "No Encontrado"

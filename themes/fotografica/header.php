@@ -12,16 +12,19 @@
 		<!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 		<script src="//use.typekit.net/wqp7onq.js"></script>
 		<script>try{Typekit.load();}catch(e){}</script>
+		<!-- Hotjar Tracking Code for www.fotografica.mx -->
 		<script>
-		    (function(f,b){
-		        var c;
-		        f.hj=f.hj||function(){(f.hj.q=f.hj.q||[]).push(arguments)};
-		        f._hjSettings={hjid:23204, hjsv:3};
-		        c=b.createElement("script");c.async=1;
-		        c.src="//static.hotjar.com/c/hotjar-23204.js?sv=3";
-		        b.getElementsByTagName("head")[0].appendChild(c);
-		    })(window,document);
+		    (function(h,o,t,j,a,r){
+		        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+		        h._hjSettings={hjid:23204,hjsv:5};
+		        a=o.getElementsByTagName('head')[0];
+		        r=o.createElement('script');r.async=1;
+		        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+		        a.appendChild(r);
+		    })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
 		</script>
+		
+
 
 	</head>
 

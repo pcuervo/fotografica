@@ -1497,7 +1497,7 @@
 			$existing_ids_in = implode("', '", $existing_ids);
 			$query .= " AND id NOT IN ('".$existing_ids_in."')";
 		}
-		$query .= " AND post_status = 'publish' ORDER BY RAND() DESC LIMIT ".$limit;
+		$query .= " AND post_status = 'publish' ORDER BY post_date DESC LIMIT 20";
 		$posts_info = $wpdb->get_results( $query, OBJECT );
 
 		$info_nuevas_adquisiciones = array();
@@ -2198,7 +2198,8 @@
 			INNER JOIN wp_terms T ON T.term_id = TT.term_id
 			WHERE post_type = 'fotografias'
 			AND taxonomy = 'adquisiciones-recientes'
-			AND name = 'si'";
+			AND name = 'si'
+			AND post_status = 'publish' LIMIT 20";;
 
 		$posts_info = $wpdb->get_results( $query, OBJECT );
 		$results = $wpdb->get_results( $query );
