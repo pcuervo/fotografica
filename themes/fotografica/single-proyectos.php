@@ -41,7 +41,7 @@
 
 		$taxonomia = 'tipo-de-proyecto';
 		if($taxonomia != ''){
-			$bgColecciones = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
+			$bgColecciones 				= wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ),'full' );
 			$coleccionColecciones 		= wp_get_post_terms( $post->ID, $taxonomia );
 			$coleccionColeccionesName 	= $coleccionColecciones[0]->name;
 			$coleccionColeccionesSlug 	= $coleccionColecciones[0]->slug;
@@ -256,22 +256,6 @@
 						$placeColecciones = '';
 						$circaColecciones = 0;
 						$dateColecciones = '';
-						// if(empty($terms)){
-
-						// } else {
-						// 	$args = array(
-						// 		'post_type' 		=> 'fotografias',
-						// 		'posts_per_page' 	=> 2,
-						// 		'orderby' 			=> 'rand',
-						// 		'post__not_in'		=> array($post->ID),
-						// 		'tax_query'			=> array(
-						// 			array(
-						// 				'taxonomy'	=> $tax[$random_tax],
-						// 				'terms'		=> $terms[$random_term],
-						// 			),
-						// 		),
-						// 	);
-						// }
 
 						$args = array(
 							'post_type' 		=> 'fotografias',
@@ -330,7 +314,6 @@
 						?>
 							<article class="[ relacionadas ] [ bg-image ] [ span xmall-12 medium-6 ]" style="background-image: url(<?php echo $bgColecciones[0]; ?>)">
 								<div class="[ opacity-gradient <?php echo ( $counter == 1 ) ? '[ square square-absolute ]' : '[ rectangle rectangle-absolute ]' ?> ]">
-									<a class="[ block ][ media-link ]" href="<?php echo $permalinkColeccion; ?>"></a>
 									<div class="[ media-info media-info--small ] [ xmall-12 ]">
 										<p class="[ text-center ]">
 
@@ -481,9 +464,9 @@
 							<a class="[ block ]" href="<?php the_permalink() ?>">
 								<?php the_post_thumbnail('medium', array( 'class' => 'image-responsive')) ?>
 								<span class="[ opacity-gradient--full ]"></span>
-								<div class="[ media-info media-info--small ] [ xmall-12 ]">
-									<p class="[ text-center ]">
-										<a href="<?php echo $url ?>" class="[ media--info__title ]"><?php the_title() ?></a>
+								<div class="[ media-info media-info--small ][ xmall-12 ]">
+									<p class="[ text-center ][ media--info__title ]">
+										<?php the_title() ?>
 									</p>
 								</div>
 							</a>
